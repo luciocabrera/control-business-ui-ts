@@ -1,0 +1,270 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --border-radius: 10px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+:root {
+  --bg-color: rgb(241 242 243);
+  --form-bg-color: white;
+  --secundary-color: #246b69;
+  --header-bg-color: #144435; /* #246b69;--#004e09*/
+  --text-color: #246b69eb;
+  --text-soft-color: rgba(76, 145, 186, 1);
+  /* --text-strong-color: rgba(42, 85, 111, 1); */
+  --text-strong-color: #246b69;
+  --subtle-color: rgba(242, 247, 251, 1);
+  /* --border-color: rgba(177, 209, 236, 1); */
+  --border-color: #246b69;
+  --shadow-color: rgba(136, 185, 221, 1);
+  --input-color: rgba(255, 255, 255, 1);
+  --outline-color: rgba(241, 191, 132, 1);
+  --mark-color: rgba(175, 130, 67, 0.08);
+  --special-color: rgba(175, 130, 67, 1);
+  --special-bg-color: rgba(187, 139, 72, 1);
+  --special-text-color: rgba(255, 255, 255, 1);
+  --special-shadow-color: rgba(122, 100, 75, 1);
+  --special-mark-color: rgba(255, 255, 255, 0.08);
+  --light-color: rgba(252, 242, 233, 1);
+  --dark-color: rgba(84, 68, 50, 1);
+  --text-title-color: firebrick;
+  --text-subtitle-color: #b22222b3;
+  --input-focus-color: white;
+  --text-color-rgb: 76, 145, 186;
+  --bg-color-rgb: 234, 242, 249;
+  --subtle-color-rgb: 242, 247, 251;
+  --special-color-rgb: 175, 130, 67;
+  --special-text-color-rgb: 255, 255, 255;
+  --special-bg-color-rgb: 187, 139, 72;
+  --shadow-color-rgb: 136, 185, 221;
+  --special-shadow-color-rgb: 122, 100, 75;
+  --outline-color-rgb: 241, 191, 132;
+  --dark-color-rgb: 84, 68, 50;
+  --light-color-rgb: 252, 242, 233;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: rgb(72, 73, 74);
+    --form-bg-color: rgb(72, 73, 74);
+    --secundary-color: white;
+    --header-bg-color: #fcb30094;
+    --text-color: rgba(74, 134, 170, 1);
+    --text-soft-color: rgba(74, 134, 170, 1);
+    --text-strong-color: rgba(106, 185, 234, 1);
+    --subtle-color: rgba(24, 36, 44, 1);
+    --border-color: rgba(48, 68, 83, 1);
+    --shadow-color: rgba(0, 0, 0, 1);
+    --input-color: rgba(32, 32, 32, 1);
+    --outline-color: rgba(206, 156, 91, 1);
+    --mark-color: rgba(159, 120, 69, 0.08);
+    --special-color: rgba(159, 120, 69, 1);
+    --special-bg-color: rgba(139, 104, 59, 1);
+    --special-text-color: rgba(229, 222, 215, 1);
+    --special-shadow-color: rgba(54, 43, 30, 1);
+    --special-mark-color: rgba(229, 222, 215, 0.08);
+    --light-color: rgba(244, 205, 165, 1);
+    --dark-color: rgba(64, 50, 34, 1);
+    --text-color-rgb: 74, 134, 170;
+    --bg-color-rgb: 27, 40, 49;
+    --subtle-color-rgb: 24, 36, 44;
+    --special-color-rgb: 159, 120, 69;
+    --special-text-color-rgb: 229, 222, 215;
+    --special-bg-color-rgb: 139, 104, 59;
+    --shadow-color-rgb: 0, 0, 0;
+    --special-shadow-color-rgb: 54, 43, 30;
+    --outline-color-rgb: 206, 156, 91;
+    --dark-color-rgb: 64, 50, 34;
+    --light-color-rgb: 244, 205, 165;
+  }
+}
+
+@media (prefers-color-scheme: light) and (prefers-contrast: more) {
+  :root {
+    --bg-color: rgba(234, 242, 249, 1);
+    --text-color: rgba(59, 115, 149, 1);
+    --text-soft-color: rgba(59, 115, 149, 1);
+    --text-strong-color: rgba(42, 85, 111, 1);
+    --subtle-color: rgba(242, 247, 251, 1);
+    --border-color: rgba(114, 156, 187, 1);
+    --shadow-color: rgba(110, 151, 181, 1);
+    --input-color: rgba(255, 255, 255, 1);
+    --outline-color: rgba(229, 174, 102, 1);
+    --mark-color: rgba(139, 103, 52, 0.16);
+    --special-color: rgba(139, 103, 52, 1);
+    --special-bg-color: rgba(150, 111, 57, 1);
+    --special-text-color: rgba(255, 255, 255, 1);
+    --special-shadow-color: rgba(63, 50, 36, 1);
+    --special-mark-color: rgba(255, 255, 255, 0.16);
+    --light-color: rgba(252, 242, 233, 1);
+    --dark-color: rgba(84, 68, 50, 1);
+    --text-color-rgb: 59, 115, 149;
+    --bg-color-rgb: 234, 242, 249;
+    --subtle-color-rgb: 242, 247, 251;
+    --special-color-rgb: 139, 103, 52;
+    --special-text-color-rgb: 255, 255, 255;
+    --special-bg-color-rgb: 150, 111, 57;
+    --shadow-color-rgb: 110, 151, 181;
+    --special-shadow-color-rgb: 63, 50, 36;
+    --outline-color-rgb: 229, 174, 102;
+    --dark-color-rgb: 84, 68, 50;
+    --light-color-rgb: 252, 242, 233;
+  }
+}
+
+@media (prefers-color-scheme: dark) and (prefers-contrast: more) {
+  :root {
+    --bg-color: rgba(27, 40, 49, 1);
+    --text-color: rgba(82, 148, 188, 1);
+    --text-soft-color: rgba(82, 148, 188, 1);
+    --text-strong-color: rgba(106, 185, 234, 1);
+    --subtle-color: rgba(24, 36, 44, 1);
+    --border-color: rgba(77, 108, 130, 1);
+    --shadow-color: rgba(0, 0, 0, 1);
+    --input-color: rgba(32, 32, 32, 1);
+    --outline-color: rgba(213, 162, 94, 1);
+    --mark-color: rgba(176, 133, 76, 0.16);
+    --special-color: rgba(176, 133, 76, 1);
+    --special-bg-color: rgba(136, 102, 58, 1);
+    --special-text-color: rgba(242, 239, 236, 1);
+    --special-shadow-color: rgba(0, 0, 0, 1);
+    --special-mark-color: rgba(242, 239, 236, 0.16);
+    --light-color: rgba(247, 224, 202, 1);
+    --dark-color: rgba(64, 50, 34, 1);
+    --text-color-rgb: 82, 148, 188;
+    --bg-color-rgb: 27, 40, 49;
+    --subtle-color-rgb: 24, 36, 44;
+    --special-color-rgb: 176, 133, 76;
+    --special-text-color-rgb: 242, 239, 236;
+    --special-bg-color-rgb: 136, 102, 58;
+    --shadow-color-rgb: 0, 0, 0;
+    --special-shadow-color-rgb: 0, 0, 0;
+    --outline-color-rgb: 213, 162, 94;
+    --dark-color-rgb: 64, 50, 34;
+    --light-color-rgb: 247, 224, 202;
+  }
+}
+
+.close {
+  float: right;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: 0.2;
+}
+.close:focus,
+.close:hover {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+}
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.modal-open {
+  overflow: hidden;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+.fade .modal-dialog {
+  -webkit-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  -o-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: -webkit-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out, -o-transform 0.3s ease-out;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.modal-open {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  outline: 0;
+}
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.modal-header .close {
+  margin-top: -2px;
+}
+.modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+.modal-body {
+  position: relative;
+  padding: 15px;
+}
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+.modal-footer .btn + .btn {
+  margin-bottom: 0;
+  margin-left: 5px;
+}
+.modal-footer .btn-group .btn + .btn {
+  margin-left: -1px;
+}
+.modal-footer .btn-block + .btn-block {
+  margin-left: 0;
+}
