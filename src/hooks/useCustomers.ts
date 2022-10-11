@@ -47,3 +47,16 @@ export const usePostCustomer = () => {
     [apiRequest],
   );
 };
+
+export const useDeleteCustomer = () => {
+  const apiRequest = useApiRequest();
+  return useCallback(
+    async (customerId: IdType): Promise<ApiResponse<unknown>> => {
+      const requestOptions: OptionsType = {
+        method: 'DELETE',
+      };
+      return apiRequest(`${endpoints.customers}/${customerId}`, requestOptions);
+    },
+    [apiRequest],
+  );
+};
