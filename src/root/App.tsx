@@ -7,6 +7,7 @@ import { AuthContextProvider } from 'contexts/AuthContext';
 import { lazy, Suspense } from 'react';
 // router
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { ToastContextProvider } from 'contexts/ToastContext';
 
 // lazy loaded
 const Customers = lazy(() => import(/* webpackChunkName: "Customers" */ 'features/Customers/Customers'));
@@ -21,48 +22,50 @@ const App = () => {
 
   return (
     <AuthContextProvider>
-      <Routes location={state?.backgroundLocation || location}>
-        <Route path="/" element={<Layout />}>
-          <Route
-            index
-            element={
-              <Suspense fallback={<FallBack />}>
-                <Customers />
-              </Suspense>
-            }
-          />
-          <Route
-            path="customers"
-            element={
-              <Suspense fallback={<FallBack />}>
-                <Customers />
-              </Suspense>
-            }
-          >
+      <ToastContextProvider>
+        <Routes location={state?.backgroundLocation || location}>
+          <Route path="/" element={<Layout />}>
             <Route
-              path=":customerId"
+              index
+              element={
+                <Suspense fallback={<FallBack />}>
+                  <Customers />
+                </Suspense>
+              }
+            />
+            <Route
+              path="customers"
+              element={
+                <Suspense fallback={<FallBack />}>
+                  <Customers />
+                </Suspense>
+              }
+            >
+              <Route
+                path=":customerId"
+                element={
+                  <Suspense fallback={<FallBack />}>
+                    <Customer />
+                  </Suspense>
+                }
+              />
+            </Route>
+            <Route path="*" element={<div>No Match</div>} />
+          </Route>
+        </Routes>
+        {state?.backgroundLocation && (
+          <Routes>
+            <Route
+              path="/customers/:customerId"
               element={
                 <Suspense fallback={<FallBack />}>
                   <Customer />
                 </Suspense>
               }
             />
-          </Route>
-          <Route path="*" element={<div>No Match</div>} />
-        </Route>
-      </Routes>
-      {state?.backgroundLocation && (
-        <Routes>
-          <Route
-            path="/customers/:customerId"
-            element={
-              <Suspense fallback={<FallBack />}>
-                <Customer />
-              </Suspense>
-            }
-          />
-        </Routes>
-      )}
+          </Routes>
+        )}
+      </ToastContextProvider>
     </AuthContextProvider>
   );
 };

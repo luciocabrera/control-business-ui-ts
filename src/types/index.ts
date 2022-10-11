@@ -6,6 +6,7 @@ export * from './api';
 export * from './formField';
 export * from './documentType';
 export * from './title';
+export * from './toast';
 
 export type { ModalProps } from 'components/Modal/Modal.types';
 

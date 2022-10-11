@@ -22,7 +22,6 @@ const useGlobalContext = () => {
 
 const GlobalContext = createContext<GlobalContextType>({
   countries: undefined,
-
   setCountries: (newCountries: CountryType[]) => newCountries,
 });
 

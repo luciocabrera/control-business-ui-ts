@@ -13,3 +13,5 @@ export * from './deepEqual';
 export * from './getInitialData';
 
 export * from './getErrorField';
+
+export * from './notify';

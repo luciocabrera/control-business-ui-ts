@@ -44,7 +44,7 @@ const Form = <TDataType extends Record<string, unknown>>({
         show: true,
         title: 'Error Validating Customer',
         message: errorMessages,
-        onClose: () => setModal(initialModal),
+        onAccept: () => setModal(initialModal),
       });
       return;
     }

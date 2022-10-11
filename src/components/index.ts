@@ -28,3 +28,5 @@ export { default as Spinner } from './Spinner/Spinner';
 export { default as FallBack } from './FallBack/FallBack';
 
 export { default as SideNavBar } from './SideNavBar/SideNavBar';
+
+export { default as CustomerActions } from './specific/CustomerActions/CustomerActions';

@@ -4,7 +4,7 @@ import Portal from '../Portal/Portal';
 // types
 import type { ModalProps } from './Modal.types';
 
-const Modal = memo(({ onClose, message, title }: ModalProps) => {
+const Modal = memo(({ onAccept, onClose, message, title, isConfirmation = false }: ModalProps) => {
   return (
     <Portal data-testid="modal-portal">
       <Overlay />
@@ -21,9 +21,14 @@ const Modal = memo(({ onClose, message, title }: ModalProps) => {
               <p>{message}</p>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-default" data-dismiss="modal" onClick={onClose}>
+              <button type="button" className="btn btn-default" data-dismiss="modal" onClick={onAccept}>
                 Accept
               </button>
+              {isConfirmation && (
+                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={onClose}>
+                  Cancel
+                </button>
+              )}
             </div>
           </div>
         </div>

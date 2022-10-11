@@ -1,7 +1,7 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Button, Form, PageSpinner, Overlay } from 'components';
+import { Button, Form, PageSpinner, Overlay, CustomerActions } from 'components';
 // hooks
 import {
   useFetchCustomer,
@@ -36,7 +36,7 @@ const Customer = memo(() => {
 
   const { data: documentTypes, loading: isLoadingDocumentTypes } = useFetchDocumentTypes();
   const { data: titles, loading: isLoadingTitles } = useFetchTitles();
-  const { data: customer, loading: isLoadingCustomer } = useFetchCustomer(customerId);
+  const { data: customer, loading: isLoadingCustomer } = useFetchCustomer(!isCreating ? customerId : undefined);
 
   const refreshCustomers = useRefreshCustomers();
   const refreshCustomer = useRefreshCustomer();
@@ -278,9 +278,12 @@ const Customer = memo(() => {
         onAccept={onAccept}
         onFinish={() => navigate('/customers')}
         actions={
-          <Button id="form-customer-button-cancel" type="button" inverse onClick={onCancel}>
-            Cancel
-          </Button>
+          <>
+            <Button id="form-customer-button-cancel" type="button" inverse onClick={onCancel}>
+              Cancel
+            </Button>
+            {customer && <CustomerActions customer={customer} />}
+          </>
         }
       />
     </FormWrapper>
