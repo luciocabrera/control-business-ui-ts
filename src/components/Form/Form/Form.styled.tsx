@@ -5,7 +5,7 @@ export const FormStyled = styled.form`
   background: var(--form-bg-color);
   -webkit-box-shadow: 6px 6px 22px 1px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 6px 6px 22px 1px rgba(0, 0, 0, 0.4);
-  box-shadow: 6px 6px 22px 1pxrgba (0, 0, 0, 0.4);
+  box-shadow: 6px 6px 22px 1px rgba (0, 0, 0, 0.4);
   z-index: 10;
   position: relative;
   max-width: 95%;
@@ -22,8 +22,14 @@ export const FormStyled = styled.form`
     top: -2px;
     position: relative;
   }
+  main {
+    padding: 2rem 4rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 17rem);
+  }
   footer {
-    padding: 0 2rem 1.2rem;
+    padding: 0.4rem 2rem 1.2rem;
     display: flex;
     gap: 1rem;
   }
@@ -50,11 +56,4 @@ export const FieldGroupStyled = styled.fieldset`
   flex-wrap: wrap;
   gap: 1rem;
   flex: 1;
-`;
-
-export const FormMain = styled.main`
-  padding: 2rem 4rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: calc(100vh - 17rem);
 `;

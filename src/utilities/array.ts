@@ -78,3 +78,51 @@ export const compareValues = (valueA: string | number, valueB: string | number, 
 
   return order === 'desc' ? comparison * -1 : comparison;
 };
+
+export const onSort = (a: string | number, b: string | number) => {
+  // force null and undefined to the bottom
+  a = a === null || a === undefined ? '' : a;
+  b = b === null || b === undefined ? '' : b;
+
+  const numberDateA = getNumberDate(a);
+  const numberDateB = getNumberDate(b);
+
+  if (numberDateA !== null && numberDateB !== null) {
+    a = numberDateA;
+    b = numberDateB;
+  } else {
+    const isANumber = isNumber(a as string);
+    const isBNumber = isNumber(b as string);
+
+    if (isANumber !== true && isBNumber !== true) {
+      // force any string values to lowercase
+      a = typeof a === 'string' ? a.toLowerCase() : a;
+      b = typeof b === 'string' ? b.toLowerCase() : b;
+    }
+  }
+
+  // Return either 1 or -1 to indicate a sort priority
+  if (a > b) {
+    return 1;
+  }
+  if (a < b) {
+    return -1;
+  }
+  // returning 0 or undefined will use any subsequent column sorting methods or the row index as a tiebreaker
+  return 0;
+};
+
+export const getNumberDate = (value: Date | string | number) => {
+  const jsDate = value ? new Date(value) : undefined;
+
+  if (!jsDate) return 0;
+
+  const isValidDate = jsDate instanceof Date;
+  const numberDate = isValidDate === true ? jsDate.getTime() : null;
+
+  return numberDate;
+};
+
+export const isNumber = (value: string) => {
+  return !isNaN(parseInt(value, 10));
+};

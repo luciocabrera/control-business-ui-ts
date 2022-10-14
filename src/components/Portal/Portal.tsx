@@ -6,7 +6,7 @@ type PortalProps = {
   el?: string;
 };
 
-export const Portal = ({ children, el = 'div' }: PortalProps) => {
+export const Portal = ({ children, el = 'fragment' }: PortalProps) => {
   const [container] = useState(document.createElement(el));
 
   useEffect(() => {

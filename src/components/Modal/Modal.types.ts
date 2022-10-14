@@ -1,8 +1,8 @@
-import type { ReactNode, Dispatch, SetStateAction } from 'types';
+import type { ReactNode, MouseEventHandler, Dispatch, SetStateAction } from 'types';
 export type ModalProps = {
   title?: string;
   message?: ReactNode;
-  onClose?: Dispatch<SetStateAction<{}>>;
+  onClose?: MouseEventHandler<HTMLButtonElement> | Dispatch<SetStateAction<{}>>;
   onAccept?: () => void;
   isConfirmation?: boolean;
 };

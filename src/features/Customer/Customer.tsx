@@ -1,7 +1,9 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Button, Form, PageSpinner, Overlay, CustomerActions } from 'components';
+import { Form, PageSpinner, Overlay, CustomerActions, ErrorDisplay } from 'components';
+// contexts
+import { useAddNotification, useAddToast } from 'contexts';
 // hooks
 import {
   useFetchCustomer,
@@ -10,15 +12,15 @@ import {
   useRefreshCustomers,
   useRefreshCustomer,
   useFetchTitles,
+  useNavigate,
+  useParams,
 } from 'hooks';
 // styles
 import styled from 'styled-components';
 // react
 import { memo, useCallback, useMemo } from 'react';
-// router
-import { useNavigate, useParams } from 'react-router-dom';
 // types
-import type { CustomerCreateType, CustomerFormType } from 'types';
+import type { CustomerCreateType, CustomerFormType, FormFieldType } from 'types';
 
 const FormWrapper = styled.section`
   top: 0;
@@ -29,10 +31,14 @@ const FormWrapper = styled.section`
   overflow: hidden;
 `;
 
+export type ResponseErrorType = { cause: { status: string | number; errors: string[] | string } };
+
 const Customer = memo(() => {
   const { customerId } = useParams();
 
-  const isCreating = customerId === 'new';
+  const isCreating = customerId === 'new' || !customerId;
+
+  console.log({ isCreating });
 
   const { data: documentTypes, loading: isLoadingDocumentTypes } = useFetchDocumentTypes();
   const { data: titles, loading: isLoadingTitles } = useFetchTitles();
@@ -41,8 +47,10 @@ const Customer = memo(() => {
   const refreshCustomers = useRefreshCustomers();
   const refreshCustomer = useRefreshCustomer();
   const postCustomer = usePostCustomer();
-
   const navigate = useNavigate();
+
+  const addToast = useAddToast();
+  const addNotification = useAddNotification();
 
   const titlesOptions = useMemo(
     () =>
@@ -62,7 +70,7 @@ const Customer = memo(() => {
     [documentTypes],
   );
 
-  const fields = useMemo(
+  const fields: FormFieldType[] = useMemo(
     () => [
       {
         type: 'row',
@@ -82,8 +90,18 @@ const Customer = memo(() => {
             type: 'text',
             required: true,
             placeholder: `Enter the Person's ID`,
-            maxLength: 50,
+            maxLength: 24,
             value: customer?.documentId,
+            rules: [
+              {
+                type: 'minLength',
+                value: 4,
+              },
+              {
+                type: 'maxLength',
+                value: 24,
+              },
+            ],
           },
         ],
       },
@@ -107,6 +125,12 @@ const Customer = memo(() => {
             placeholder: `Enter the Person's Initials`,
             maxLength: 10,
             value: customer?.initials,
+            rules: [
+              {
+                type: 'maxLength',
+                value: 10,
+              },
+            ],
           },
           {
             accessor: 'firstName',
@@ -116,6 +140,12 @@ const Customer = memo(() => {
             placeholder: `Enter the Person's First Name`,
             maxLength: 50,
             value: customer?.firstName,
+            rules: [
+              {
+                type: 'maxLength',
+                value: 50,
+              },
+            ],
           },
           {
             accessor: 'lastName',
@@ -124,6 +154,12 @@ const Customer = memo(() => {
             placeholder: `Enter the Person's Last Name`,
             maxLength: 50,
             value: customer?.lastName,
+            rules: [
+              {
+                type: 'maxLength',
+                value: 50,
+              },
+            ],
           },
         ],
       },
@@ -142,6 +178,12 @@ const Customer = memo(() => {
                 required: true,
                 maxLength: 50,
                 value: customer?.currentAddress.line1,
+                rules: [
+                  {
+                    type: 'maxLength',
+                    value: 50,
+                  },
+                ],
               },
               {
                 accessor: 'line2',
@@ -150,6 +192,12 @@ const Customer = memo(() => {
                 placeholder: `Apartment, suite, house number, etc.`,
                 maxLength: 50,
                 value: customer?.currentAddress.line2,
+                rules: [
+                  {
+                    type: 'maxLength',
+                    value: 50,
+                  },
+                ],
               },
             ],
           },
@@ -161,18 +209,26 @@ const Customer = memo(() => {
                 label: 'Country',
                 type: 'text',
                 required: true,
-                // options: countriesOptions,
-                // onSelect: (selectedCountry) => onCountrySelect(selectedCountry),
                 value: customer?.currentAddress.country,
+                rules: [
+                  {
+                    type: 'maxLength',
+                    value: 50,
+                  },
+                ],
               },
               {
                 accessor: 'state',
                 label: 'State / Province',
                 type: 'text',
                 required: true,
-                // options: regionsOptions,
-                // onSelect: (selectedRegion) => onRegionSelect(selectedRegion),
                 value: customer?.currentAddress.state,
+                rules: [
+                  {
+                    type: 'maxLength',
+                    value: 50,
+                  },
+                ],
               },
             ],
           },
@@ -184,8 +240,13 @@ const Customer = memo(() => {
                 label: 'City / Town',
                 type: 'text',
                 required: true,
-                // options: citiesOptions,
                 value: customer?.currentAddress.city,
+                rules: [
+                  {
+                    type: 'maxLength',
+                    value: 50,
+                  },
+                ],
               },
               {
                 accessor: 'postalCode',
@@ -193,8 +254,14 @@ const Customer = memo(() => {
                 type: 'text',
                 required: true,
                 placeholder: `XXXX XX`,
-                maxLength: 50,
+                maxLength: 16,
                 value: customer?.currentAddress.postalCode,
+                rules: [
+                  {
+                    type: 'maxLength',
+                    value: 16,
+                  },
+                ],
               },
             ],
           },
@@ -239,52 +306,51 @@ const Customer = memo(() => {
       try {
         const res = await postCustomer(body);
         if ([200, 201].includes(res?.status || 0)) {
-          // notify('success', 'Connection successfully saved', 'The Connection has been successfully saved.');
-          refreshCustomers?.();
+          refreshCustomers();
           refreshCustomer(calculatedCustomerId);
+          addToast?.(
+            'success',
+            'Customer successfully saved',
+            `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully saved.`,
+          );
           navigate(`/customers`);
-        } else {
-          //  notify('error', 'Error saving Connection');
         }
       } catch (err) {
-        // notify('error', 'Error saving Connection', (err as { message: string }).message);
+        const error = err as ResponseErrorType;
+        addNotification?.(<ErrorDisplay errors={error.cause.errors} />, 'Error Saving Customer', 'error');
+
         console.log('error', err);
       }
     },
-    [customerId, navigate, postCustomer, refreshCustomer, refreshCustomers],
-  );
-
-  const onCancel = useCallback(
-    (event: { preventDefault: () => void }) => {
-      event.preventDefault();
-      navigate('/customers');
-    },
-    [navigate],
+    [
+      addNotification,
+      addToast,
+      customer?.firstName,
+      customer?.lastName,
+      customerId,
+      navigate,
+      postCustomer,
+      refreshCustomer,
+      refreshCustomers,
+    ],
   );
 
   if (((isLoadingCustomer || !fields) && !isCreating) || isLoadingDocumentTypes || isLoadingTitles)
     return <PageSpinner />;
 
-  console.log('customer', customer);
-  console.log('fields', fields);
+  const title = `${isCreating ? 'New' : 'Edit'} Customer`;
+
   return (
     <FormWrapper>
       <Overlay />v
       <Form<CustomerFormType>
         icon={detailsViewImg}
-        title="Customer"
+        title={title}
         initialFields={fields}
         initialData={customer}
         onAccept={onAccept}
         onFinish={() => navigate('/customers')}
-        actions={
-          <>
-            <Button id="form-customer-button-cancel" type="button" inverse onClick={onCancel}>
-              Cancel
-            </Button>
-            {customer && <CustomerActions customer={customer} />}
-          </>
-        }
+        actions={<CustomerActions customer={customer} />}
       />
     </FormWrapper>
   );

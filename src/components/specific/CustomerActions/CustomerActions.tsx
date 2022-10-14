@@ -1,48 +1,51 @@
 // components
 import { Modal, Button } from 'components';
 // contexts
-import { useAddToast } from 'contexts/ToastContext';
+import { useAddNotification, useAddToast } from 'contexts';
 // hooks
-import { useDeleteCustomer, useRefreshCustomers } from 'hooks';
+import { useDeleteCustomer, useRefreshCustomers, useParams, useLocation, useNavigate } from 'hooks';
 // react
 import { memo, useCallback, useState } from 'react';
-// router
-import { useLocation, useNavigate } from 'react-router-dom';
 // types
-import type { CustomerType } from 'types';
-import type { ModalType } from 'components/Form/Form/Form.types';
+import type { CustomerType, MouseEvent } from 'types';
+// import type { ModalType } from 'components/Form/Form/Form.types';
 
 type CustomerActionsProps = {
-  customer: CustomerType;
+  customer?: CustomerType;
 };
 
-const initialModal = { show: false };
+// const initialModal = { show: false };
 const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
-  const [modal, setModal] = useState<ModalType>(initialModal);
+  const { customerId, action } = useParams();
 
-  const notify = useAddToast();
+  const isCreating = customerId === 'new' || !customerId;
+  const isEditing = !isCreating && action === 'edit';
 
+  // const [modal, setModal] = useState<ModalType>(initialModal);
+
+  const location = useLocation();
+  const addNotification = useAddNotification();
+
+  const addToast = useAddToast();
   const deleteCustomer = useDeleteCustomer();
   const refreshCustomers = useRefreshCustomers();
-
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const onDeleteScheduledRun = useCallback(async () => {
+  const onConfirmDelete = useCallback(async () => {
     try {
-      const res = await deleteCustomer(customer.customerId);
+      const res = await deleteCustomer(customer?.customerId);
 
       if ([200, 204].includes(res?.status || 0)) {
-        notify?.(
+        addToast?.(
           'success',
           'Customer successfully deleted',
-          `The Customer ${customer.firstName} ${customer.lastName} has been successfully removed.`,
+          `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully removed.`,
         );
       } else {
-        notify?.(
+        addToast?.(
           'error',
           'Error Deleting Customer',
-          `An error has ocurred when trying to delete The Customer ${customer.firstName} ${customer.lastName}. Please try again.`,
+          `An error has ocurred when trying to delete The Customer ${customer?.firstName} ${customer?.lastName}. Please try again.`,
         );
       }
 
@@ -50,39 +53,73 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
 
       if (location.pathname !== '/customers') navigate('/customers');
 
-      setModal(initialModal);
+      // setModal(initialModal);
     } catch (err) {
-      notify?.('error', 'Error Deleting Customer', (err as { message: string }).message);
+      addToast?.('error', 'Error Deleting Customer', (err as { message: string }).message);
       console.log('error', err);
     }
   }, [
-    customer.customerId,
-    customer.firstName,
-    customer.lastName,
+    customer?.customerId,
+    customer?.firstName,
+    customer?.lastName,
     deleteCustomer,
     location.pathname,
     navigate,
-    notify,
+    addToast,
     refreshCustomers,
   ]);
 
   const onDelete = useCallback(() => {
-    setModal({
-      show: true,
-      title: 'Confirm Deletion',
-      message: 'Are you sure you want to delete the current Customer?',
-      onAccept: onDeleteScheduledRun,
-      onClose: () => setModal(initialModal),
-      isConfirmation: true,
-    });
-  }, [onDeleteScheduledRun]);
+    addNotification?.(
+      'Are you sure you want to delete the current Customer?',
+      'Confirm Deletion',
+      'warning',
+      undefined,
+      onConfirmDelete,
+      true,
+    );
+    // setModal({
+    //   show: true,
+    //   title: 'Confirm Deletion',
+    //   message: 'Are you sure you want to delete the current Customer?',
+    //   onAccept: onConfirmDelete,
+    //   onClose: () => setModal(initialModal),
+    //   isConfirmation: true,
+    // });
+  }, [addNotification, onConfirmDelete]);
+
+  const onCancel = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+      navigate(`/customers`);
+    },
+    [navigate],
+  );
+
+  const onEdit = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+      navigate(`edit`);
+    },
+    [navigate],
+  );
 
   return (
     <>
-      <Button id="customer-actions-button-accept" onClick={onDelete} type="button">
-        Delete
+      {!isCreating && !isEditing && (
+        <Button id="customer-actions-button-edit" onClick={onEdit}>
+          Edit
+        </Button>
+      )}
+      <Button id="customer-actions-button-cancel" inverse onClick={onCancel}>
+        Cancel
       </Button>
-      {modal?.show && <Modal {...modal} />}
+      {!isCreating && (
+        <Button id="customer-actions-button-delete" onClick={onDelete} warning>
+          Delete
+        </Button>
+      )}
+      {/* {modal?.show && <Modal {...modal} />} */}
     </>
   );
 });

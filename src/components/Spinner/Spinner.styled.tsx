@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-const sizeSpinner = ({ size }) => {
+const sizeSpinner = ({ size }: { size: string }) => {
   switch (size) {
     case 'md':
       return `height: 5rem;

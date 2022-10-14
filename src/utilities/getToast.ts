@@ -1,8 +1,7 @@
-import { ReactNode } from 'react';
 import { checkImg, errorImg, infoImg, warningImg } from 'assets';
-import type { ToastType, ToastTypeType } from 'types';
+import type { ToastType, ToastTypeType, ReactNode } from 'types';
 
-export const notify = (description: ReactNode, title: string, type: ToastTypeType): ToastType => {
+export const getToast = (description: ReactNode, title: string, type: ToastTypeType): ToastType => {
   let toastProperties = null;
   const id = Math.floor(Math.random() * 101 + 1);
 

@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { HeaderStyled } from './Header.styled';
 import { HeaderProps } from './Header.types';
 
-const Header = memo(({ icon, title, subtitle, children }: HeaderProps) => (
+const Header = memo(({ icon, title, subtitle, children, onClose }: HeaderProps) => (
   <HeaderStyled>
     {icon && <img src={icon} alt={title} />}
     <div id="title-content">
@@ -10,6 +10,11 @@ const Header = memo(({ icon, title, subtitle, children }: HeaderProps) => (
       {subtitle && <span>{subtitle}</span>}
     </div>
     {children && <div id="children-content">{children}</div>}
+    {onClose && (
+      <button type="button" onClick={onClose} className="close" data-dismiss="modal">
+        &times;
+      </button>
+    )}
   </HeaderStyled>
 ));
 

@@ -1,15 +1,15 @@
 //assets
 import { detailsViewImg } from 'assets';
 // components
-import { Header, NewIcon, ReadOnlyTable, PageSpinner } from 'components';
+import { Header, NewIcon, ReadOnlyTable, PageSpinner, Link, Outlet } from 'components';
 // hooks
-import { useFetchCustomers } from '../../hooks';
+import { useFetchCustomers, useLocation } from 'hooks';
 // react
 import { useMemo } from 'react';
-// router
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import type { CustomerType } from 'types';
-import { ColumnDef } from '@tanstack/react-table';
+// types
+import type { CustomerType, ColumnDef } from 'types';
+
+const title = 'Customers';
 
 const Customers = () => {
   const { data: customers, loading } = useFetchCustomers();
@@ -24,7 +24,7 @@ const Customers = () => {
       {
         accessorKey: 'actions',
         cell: ({ row: { original } }) => (
-          <Link to={original.customerId?.toString() ?? ''} state={{ backgroundLocation: location }}>
+          <Link to={`${original.customerId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
             <img src={detailsViewImg} alt="" width="18" height="18" />
           </Link>
         ),
@@ -32,8 +32,6 @@ const Customers = () => {
     ],
     [location],
   );
-
-  const title = 'Customers';
 
   return (
     <>

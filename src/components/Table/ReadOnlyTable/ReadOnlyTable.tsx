@@ -1,13 +1,13 @@
-import {
-  ColumnDef,
-  getSortedRowModel,
-  flexRender,
-  getCoreRowModel,
-  SortingState,
-  useReactTable,
-} from '@tanstack/react-table';
+// hooks
+import { useReactTable } from 'hooks';
+// react
 import { memo, useRef, useState } from 'react';
+// react table
+import { getSortedRowModel, flexRender, getCoreRowModel } from '@tanstack/react-table';
+// styles
 import { TableStyled } from '../Table.styled';
+// types
+import type { ColumnDef, SortingState } from 'types';
 
 type ReadOnlyProps<TData> = {
   data: TData[];

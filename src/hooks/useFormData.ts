@@ -133,10 +133,13 @@ export const useFormData = <TDataType extends Record<string, unknown>>(
   const verifyForm = useCallback(() => {
     const errorFields = validateFields(state.fields || [], state.data);
     const hasChanged = verifyChange();
+    const hasErrors = errorFields.length > 0;
 
-    if (errorFields.length > 0) {
-      dispatch({ type: ActionKind.verify, payload: { hasChanged: hasChanged, hasErrors: true, errors: errorFields } });
-    }
+    dispatch({
+      type: ActionKind.verify,
+      payload: { hasChanged: hasChanged, hasErrors: hasErrors, errors: errorFields },
+    });
+
     return { errorFields, hasChanged };
   }, [state.data, state.fields, verifyChange]);
 

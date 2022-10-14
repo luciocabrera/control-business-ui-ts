@@ -1,4 +1,5 @@
-import { OptionsType } from 'types';
+// types
+import type { OptionsType } from 'types';
 
 export const fetchRequest = async <T>(url: RequestInfo | URL, options?: OptionsType): Promise<T> => {
   const r = await fetch(url, options as RequestInit);
@@ -13,7 +14,6 @@ export const execRequest = async <T>(
   response: T;
   status: number;
 }> => {
-  debugger;
   const r = await fetch(url, options as RequestInit);
   const bodyResponse = await processResponse(r);
 
@@ -21,17 +21,23 @@ export const execRequest = async <T>(
 };
 
 export const processError = async (r: Response, isApplicationJson: boolean) => {
-  let message = '';
+  let errors;
+  let errorResponse;
 
   if (isApplicationJson) {
     const resWithError = await r.json();
 
-    message = `${resWithError?.error || ''}  :  ${resWithError?.message || ''}`;
+    errorResponse = resWithError?.error || '';
+    errors = resWithError?.message || '';
   } else {
-    message = getStatusCustomMessage(r.status);
+    errors = getStatusCustomMessage(r.status);
   }
 
-  throw new Error(message);
+  const error = new Error(errorResponse);
+
+  error.cause = { status: r.status, errors: errors };
+
+  throw error;
 };
 
 export const processResponse = async (r: Response) => {

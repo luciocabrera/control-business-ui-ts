@@ -1,3 +1,4 @@
+import { Button } from 'components';
 import { memo } from 'react';
 import Overlay from '../Overlay/Overlay';
 import Portal from '../Portal/Portal';
@@ -18,16 +19,18 @@ const Modal = memo(({ onAccept, onClose, message, title, isConfirmation = false 
               <h4 className="modal-title">{title}</h4>
             </div>
             <div className="modal-body">
-              <p>{message}</p>
+              <>{message}</>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-default" data-dismiss="modal" onClick={onAccept}>
-                Accept
-              </button>
-              {isConfirmation && (
-                <button type="button" className="btn btn-default" data-dismiss="modal" onClick={onClose}>
+              {onAccept && (
+                <Button className="btn btn-default" data-dismiss="modal" onClick={onAccept}>
+                  Accept
+                </Button>
+              )}
+              {isConfirmation && onClose && (
+                <Button className="btn btn-default" data-dismiss="modal" onClick={onClose}>
                   Cancel
-                </button>
+                </Button>
               )}
             </div>
           </div>

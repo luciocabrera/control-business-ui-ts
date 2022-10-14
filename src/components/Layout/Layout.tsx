@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { SideNavBar } from 'components';
 import { useUser } from 'contexts/AuthContext';
 
-import routes from '../../routes';
+import routes from '../../root/routes';
 
 import { ContentStyled, HeaderStyled } from './Layout.styled';
 

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
-import { OptionsType } from 'types';
+import type { OptionsType } from 'types';
 import { execRequest, fetchRequest } from 'utilities/api';
 import { useAuth } from 'hooks';
 

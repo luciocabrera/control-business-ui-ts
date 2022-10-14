@@ -64,6 +64,7 @@ export type FormFieldBaseType = {
   tooltip?: string;
   normalize?: (value: string) => string;
   disabled?: boolean;
+  readonly?: boolean;
   rules?: FormRuleType[];
 };
 

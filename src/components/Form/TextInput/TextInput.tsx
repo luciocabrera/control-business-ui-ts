@@ -23,7 +23,7 @@ const TextInput = memo(
           maxLength={maxLength}
           type={props.type}
           id={accessor}
-          readOnly={props.disabled}
+          readOnly={props.readonly}
           placeholder={props.placeholder}
           autoComplete="off"
         />

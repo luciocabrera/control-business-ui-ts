@@ -1,10 +1,9 @@
-// PropTypes
-import { Overlay, Spinner } from 'components';
 // Components
+import { Overlay, Spinner } from 'components';
 
 const PageSpinner = () => (
   <Overlay>
-    <Spinner id="page-spinner-styled" />
+    <Spinner />
   </Overlay>
 );
 

@@ -17,6 +17,7 @@ const Select = memo(
           aria-labelledby={accessor}
           id={accessor}
           value={value}
+          disabled={props.readonly}
           onChange={(event) => {
             event.preventDefault();
             onChange?.(event);

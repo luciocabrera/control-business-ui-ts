@@ -1,18 +1,18 @@
 // components
-import { Header, Button, Modal, FormField } from 'components';
+import { Header, Button, FormField, ErrorDisplay } from 'components';
+// contexts
+import { useAddNotification } from 'contexts';
 // hooks
 import { useFormData } from 'hooks';
 // react
-import { useState, memo } from 'react';
+import { memo } from 'react';
 // styles
-import { FieldGroupStyled, FieldRowStyled, FormMain, FormStyled } from './Form.styled';
+import { FieldGroupStyled, FieldRowStyled, FormStyled } from './Form.styled';
 // utilities
 import { getErrorField } from 'utilities';
 // types
 import type { FormFieldBaseType, FormFieldGroupType, FormFieldType, MouseEvent } from 'types';
-import type { FormProps, ModalType } from './Form.types';
-
-const initialModal = { show: false };
+import type { FormProps } from './Form.types';
 
 const Form = <TDataType extends Record<string, unknown>>({
   actions,
@@ -25,7 +25,7 @@ const Form = <TDataType extends Record<string, unknown>>({
 }: FormProps<TDataType>) => {
   const { data, errors, setField, setFieldFromEvent, verifyForm } = useFormData<TDataType>(initialFields, initialData);
 
-  const [modal, setModal] = useState<ModalType>(initialModal);
+  const addNotification = useAddNotification();
 
   const onSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -33,27 +33,16 @@ const Form = <TDataType extends Record<string, unknown>>({
     const { errorFields, hasChanged } = verifyForm();
 
     if (errorFields?.length > 0) {
-      const errorMessages = (
-        <ul>
-          {errorFields.map((err) => (
-            <li>{err.errorMessage}</li>
-          ))}
-        </ul>
-      );
-      setModal({
-        show: true,
-        title: 'Error Validating Customer',
-        message: errorMessages,
-        onAccept: () => setModal(initialModal),
-      });
+      const errorMessages = errorFields.map((err) => err.errorMessage);
+
+      addNotification?.(<ErrorDisplay errors={errorMessages} />, 'Error Validating Customer', 'error');
       return;
     }
 
     if (typeof onAccept === 'function' && hasChanged) {
-      console.log('is saving');
       onAccept(data);
     } else {
-      onFinish?.();
+      onFinish?.(event);
     }
   };
 
@@ -103,19 +92,18 @@ const Form = <TDataType extends Record<string, unknown>>({
     });
 
   return (
-    <>
-      {modal?.show && <Modal {...modal} />}
-      <FormStyled noValidate>
-        <Header icon={icon} title={title}></Header>
-        <FormMain>{getFieldElements(initialFields)}</FormMain>
-        <footer>
+    <FormStyled noValidate>
+      <Header icon={icon} title={title} onClose={onFinish} />
+      <main>{getFieldElements(initialFields)}</main>
+      <footer>
+        {onAccept && (
           <Button id="form-button-accept" onClick={onSubmit}>
             Accept
           </Button>
-          {actions}
-        </footer>
-      </FormStyled>
-    </>
+        )}
+        {actions}
+      </footer>
+    </FormStyled>
   );
 };
 
