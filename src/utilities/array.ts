@@ -66,8 +66,11 @@ export const sortBy =
 
     return compareValues(valueA, valueB, order);
   };
-
-export const compareValues = (valueA: string | number, valueB: string | number, order: 'asc' | 'desc' = 'asc') => {
+export const compareValues = (
+  valueA: string | number,
+  valueB: string | number,
+  order: 'asc' | 'desc' | 'descend' | 'ascend' = 'asc',
+) => {
   let comparison = 0;
 
   if (valueA > valueB) {
@@ -76,7 +79,7 @@ export const compareValues = (valueA: string | number, valueB: string | number, 
     comparison = valueB > valueA ? -1 : 0;
   }
 
-  return order === 'desc' ? comparison * -1 : comparison;
+  return order.startsWith('desc') ? comparison * -1 : comparison;
 };
 
 export const onSort = (a: string | number, b: string | number) => {
@@ -125,4 +128,11 @@ export const getNumberDate = (value: Date | string | number) => {
 
 export const isNumber = (value: string) => {
   return !isNaN(parseInt(value, 10));
+};
+
+export const filter = (value: string | number | boolean, recordValue: string | number) => {
+  const searchValue = String(value).toLowerCase().trim();
+  if (!recordValue) return false;
+
+  return String(recordValue).toLowerCase().includes(searchValue);
 };

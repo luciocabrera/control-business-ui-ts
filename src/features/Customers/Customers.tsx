@@ -19,8 +19,13 @@ const Customers = () => {
     () => [
       { accessorKey: 'documentTypeName', header: 'ID Type' },
       { accessorKey: 'documentId', header: 'ID' },
+      { accessorKey: 'initials', header: 'Initials' },
       { accessorKey: 'firstName', header: 'First Name' },
       { accessorKey: 'lastName', header: 'Last Name' },
+      {
+        accessorFn: (originalRow) => originalRow.defaultPhone?.number,
+        header: 'Phone Number',
+      },
       {
         accessorKey: 'actions',
         cell: ({ row: { original } }) => (

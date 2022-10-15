@@ -10,6 +10,10 @@ export type AddressType = {
   postalCode?: string;
 };
 
+export type PhoneType = {
+  number?: string;
+};
+
 export type CustomerType = AuditType & {
   firstName: string;
   lastName?: string;
@@ -22,6 +26,8 @@ export type CustomerType = AuditType & {
   documentId: string;
   addresses: AddressType[];
   currentAddress: AddressType;
+  phones: PhoneType[];
+  defaultPhone: PhoneType;
 };
 
 export type CustomerCreateType = Omit<
@@ -34,8 +40,10 @@ export type CustomerCreateType = Omit<
   | 'createdBy'
   | 'updatedBy'
   | 'addresses'
+  | 'phones'
   | 'currentAddress'
-> & { customerId?: string | number; addresses: AddressType };
+  | 'defaultPhone'
+> & { customerId?: string | number; addresses: AddressType; phones: PhoneType };
 
 export type CustomerFormType = Omit<
   CustomerType,
@@ -47,6 +55,9 @@ export type CustomerFormType = Omit<
   | 'createdBy'
   | 'updatedBy'
   | 'addresses'
+  | 'phones'
   | 'currentAddress'
+  | 'defaultPhone'
 > &
-  AddressType;
+  AddressType &
+  PhoneType;

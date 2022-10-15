@@ -5,20 +5,11 @@ import { Form, PageSpinner, Overlay, CustomerActions } from 'components';
 // hooks
 import { useFetchCustomer, useParams, useNavigate } from 'hooks';
 // styles
-import styled from 'styled-components';
+import { FormWrapper } from 'styles';
 // react
 import { memo, useMemo } from 'react';
 // types
 import type { CustomerFormType, FormFieldType } from 'types';
-
-const FormWrapper = styled.section`
-  top: 0;
-  left: 0;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-`;
 
 const ViewCustomer = memo(() => {
   const { customerId } = useParams();
@@ -82,6 +73,17 @@ const ViewCustomer = memo(() => {
             type: 'text',
             value: customer?.lastName,
             readonly: true,
+          },
+        ],
+      },
+      {
+        type: 'row',
+        fields: [
+          {
+            accessor: 'number',
+            label: 'Phone Number',
+            type: 'text',
+            value: customer?.defaultPhone?.number,
           },
         ],
       },
@@ -161,6 +163,7 @@ const ViewCustomer = memo(() => {
       customer?.currentAddress.line2,
       customer?.currentAddress.postalCode,
       customer?.currentAddress.state,
+      customer?.defaultPhone?.number,
       customer?.documentId,
       customer?.documentTypeName,
       customer?.firstName,

@@ -8,3 +8,5 @@ export type OptionsType = {
   body?: string | FormData;
   headers?: Record<string, unknown>;
 };
+
+export type APiResponseErrorType = { cause: { status: string | number; errors: string[] | string } };

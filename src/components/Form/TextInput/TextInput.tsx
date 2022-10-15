@@ -18,7 +18,7 @@ const TextInput = memo(
       <FormFieldBase maxLength={maxLength} ref={ref} {...props}>
         <TextInputStyled
           name={accessor}
-          value={value}
+          value={value || ''}
           onChange={onChange}
           maxLength={maxLength}
           type={props.type}

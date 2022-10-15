@@ -16,29 +16,16 @@ import {
   useParams,
 } from 'hooks';
 // styles
-import styled from 'styled-components';
+import { FormWrapper } from 'styles';
 // react
 import { memo, useCallback, useMemo } from 'react';
 // types
-import type { CustomerCreateType, CustomerFormType, FormFieldType } from 'types';
-
-const FormWrapper = styled.section`
-  top: 0;
-  left: 0;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-`;
-
-export type ResponseErrorType = { cause: { status: string | number; errors: string[] | string } };
+import type { APiResponseErrorType, CustomerCreateType, CustomerFormType, FormFieldType } from 'types';
 
 const Customer = memo(() => {
   const { customerId } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
-
-  console.log({ isCreating });
 
   const { data: documentTypes, loading: isLoadingDocumentTypes } = useFetchDocumentTypes();
   const { data: titles, loading: isLoadingTitles } = useFetchTitles();
@@ -80,7 +67,6 @@ const Customer = memo(() => {
             label: 'Id Type',
             type: 'select',
             required: true,
-            placeholder: '',
             options: documentTypesOptions,
             value: customer?.documentTypeName,
           },
@@ -90,7 +76,6 @@ const Customer = memo(() => {
             type: 'text',
             required: true,
             placeholder: `Enter the Person's ID`,
-            maxLength: 24,
             value: customer?.documentId,
             rules: [
               {
@@ -113,7 +98,6 @@ const Customer = memo(() => {
             label: 'Title',
             type: 'select',
             required: true,
-            placeholder: '',
             options: titlesOptions,
             value: customer?.titleName,
           },
@@ -123,7 +107,6 @@ const Customer = memo(() => {
             type: 'text',
             required: false,
             placeholder: `Enter the Person's Initials`,
-            maxLength: 10,
             value: customer?.initials,
             rules: [
               {
@@ -138,7 +121,6 @@ const Customer = memo(() => {
             type: 'text',
             required: true,
             placeholder: `Enter the Person's First Name`,
-            maxLength: 50,
             value: customer?.firstName,
             rules: [
               {
@@ -152,12 +134,28 @@ const Customer = memo(() => {
             label: 'Last Name',
             type: 'text',
             placeholder: `Enter the Person's Last Name`,
-            maxLength: 50,
             value: customer?.lastName,
             rules: [
               {
                 type: 'maxLength',
                 value: 50,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'row',
+        fields: [
+          {
+            accessor: 'number',
+            label: 'Phone Number',
+            type: 'text',
+            value: customer?.defaultPhone?.number,
+            rules: [
+              {
+                type: 'maxLength',
+                value: 16,
               },
             ],
           },
@@ -176,7 +174,6 @@ const Customer = memo(() => {
                 type: 'text',
                 placeholder: `Street`,
                 required: true,
-                maxLength: 50,
                 value: customer?.currentAddress.line1,
                 rules: [
                   {
@@ -190,7 +187,6 @@ const Customer = memo(() => {
                 label: 'Line 2',
                 type: 'text',
                 placeholder: `Apartment, suite, house number, etc.`,
-                maxLength: 50,
                 value: customer?.currentAddress.line2,
                 rules: [
                   {
@@ -275,6 +271,7 @@ const Customer = memo(() => {
       customer?.currentAddress.line2,
       customer?.currentAddress.postalCode,
       customer?.currentAddress.state,
+      customer?.defaultPhone?.number,
       customer?.documentId,
       customer?.documentTypeName,
       customer?.firstName,
@@ -288,8 +285,8 @@ const Customer = memo(() => {
 
   const onAccept = useCallback(
     async (payload: CustomerFormType) => {
-      debugger;
-      const { firstName, lastName, documentId, documentTypeName, titleName, initials, ...currentAddress } = payload;
+      const { firstName, lastName, documentId, documentTypeName, titleName, initials, number, ...currentAddress } =
+        payload;
       const calculatedCustomerId = customerId === 'new' ? undefined : customerId;
 
       const body: CustomerCreateType = {
@@ -301,6 +298,7 @@ const Customer = memo(() => {
         documentTypeName,
         titleName,
         addresses: { ...currentAddress },
+        phones: { number },
       };
 
       try {
@@ -316,10 +314,8 @@ const Customer = memo(() => {
           navigate(`/customers`);
         }
       } catch (err) {
-        const error = err as ResponseErrorType;
+        const error = err as APiResponseErrorType;
         addNotification?.(<ErrorDisplay errors={error.cause.errors} />, 'Error Saving Customer', 'error');
-
-        console.log('error', err);
       }
     },
     [

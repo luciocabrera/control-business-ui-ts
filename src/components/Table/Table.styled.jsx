@@ -64,7 +64,7 @@ th,
 
 td,
 .td {
-  height: 30px;
+  // height: 30px;
 }
 
    tbody {
