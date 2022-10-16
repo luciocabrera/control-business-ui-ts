@@ -2,13 +2,13 @@ import styled from 'styled-components';
 
 export const FieldSetStyled = styled.div`
   min-width: 300px;
-  width: ${({ width }: { width?: number }) => width ?? 100}%;
+  width: ${({ width }: { width?: number; viewMode?: boolean }) => width ?? 100}%;
+  padding: ${({ viewMode }: { width?: number; viewMode?: boolean }) => (viewMode ? '0 0 0.5rem 0' : 0)};
   flex: auto;
   fieldset {
     align-content: stretch;
-    height: 50px;
     background: var(--form-bg-color);
-    padding: 0px;
+    padding: 0;
     border-radius: var(--border-radius);
     border-color: var(--border-color);
     border: 1px solid;

@@ -54,6 +54,10 @@ export const FieldGroupStyled = styled.fieldset`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem;
   flex: 1;
+  align-items: flex-start;
+  align-content: flex-start;
+  justify-content: flex-start;
+  }
 `;

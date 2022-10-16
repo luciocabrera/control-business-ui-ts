@@ -8,7 +8,9 @@ import type { TextInputProps } from './TextInput.types';
 
 const TextInput = memo(
   forwardRef((props: TextInputProps, ref: React.ForwardedRef<unknown>) => {
-    const { accessor, value, onChange, rules } = props;
+    const { accessor, value, onChange, normalize, rules } = props;
+
+    const normalizedValue = normalize?.(value) ?? value;
 
     const maxLength = rules
       ?.filter((rule) => rule.type === 'maxLength')
@@ -18,7 +20,7 @@ const TextInput = memo(
       <FormFieldBase maxLength={maxLength} ref={ref} {...props}>
         <TextInputStyled
           name={accessor}
-          value={value || ''}
+          value={normalizedValue || ''}
           onChange={onChange}
           maxLength={maxLength}
           type={props.type}

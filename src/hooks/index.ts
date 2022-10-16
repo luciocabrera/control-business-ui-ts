@@ -1,5 +1,6 @@
 export * from './useApi';
 export * from './useCustomers';
+export * from './useInvoices';
 export * from './useAuth';
 export * from './useWindowSize';
 export * from './useFormData';

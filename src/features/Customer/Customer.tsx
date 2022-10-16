@@ -347,6 +347,7 @@ const Customer = memo(() => {
         onAccept={onAccept}
         onFinish={() => navigate('/customers')}
         actions={<CustomerActions customer={customer} />}
+        viewMode={false}
       />
     </FormWrapper>
   );

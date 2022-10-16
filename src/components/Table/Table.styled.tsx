@@ -1,17 +1,27 @@
 import styled from 'styled-components';
 
+const radius = ({ useRadius }: { useRadius?: boolean }) =>
+  useRadius &&
+  `
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  `;
+
 export const TableStyled = styled.div`
-  border: 1px solid lightgray;
-  height: calc(100vh - 120px);
-  max-width:  100%; !important;
+  // border: 1px solid lightgray;
+  // height: calc(100vh - 120px);
+   height: ${({ height }: { height?: string; useRadius?: boolean }) => (height ? height : 'inherit')};
+  max-width:  100%;;
   overflow: auto;
   font: 300 12px/14px 'Helvetica Neue Regular', Helvetica, Arial, sans-serif;
+  ${radius}
   table {
     border-collapse: collapse;
     border-spacing: 0;
     font-family: arial, sans-serif;
     table-layout: fixed;
     width: 100%;
+    ${radius}
   }
 
   thead {
@@ -75,8 +85,6 @@ td,
         padding: 5px 10px;
         border-right: 0.05rem solid #c7c7c7;
         cursor: pointer;
-        // height: 26px;
-        // max-height: 26px;
       }
       tr {
         // height: 26px;
@@ -125,54 +133,54 @@ td,
 }
 `;
 
-export const TdStyled = styled.div`
-  padding: 6px 14px 3px 14px;
-`;
+// export const TdStyled = styled.div`
+//   padding: 6px 14px 3px 14px;
+// `;
 
-export const TrStyled = styled.div`
-  :nth-child(even) {
-    background: #f7f7f7;
-  }
-`;
+// export const TrStyled = styled.div`
+//   :nth-child(even) {
+//     background: #f7f7f7;
+//   }
+// `;
 
-export const HeaderStyled = styled.div`
-  cursor: pointer;
-  height: 100%;
-  padding: 0px;
-  margin: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden !important;
-`;
+// export const HeaderStyled = styled.div`
+//   cursor: pointer;
+//   height: 100%;
+//   padding: 0px;
+//   margin: 0px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   overflow: hidden !important;
+// `;
 
-export const TitleHeaderStyled = styled.div`
-  display: flex;
-  align-items: flex-start;
-  width: 100%;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden !important;
-  div {
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-`;
+// export const TitleHeaderStyled = styled.div`
+//   display: flex;
+//   align-items: flex-start;
+//   width: 100%;
+//   white-space: nowrap;
+//   text-overflow: ellipsis;
+//   overflow: hidden !important;
+//   div {
+//     text-overflow: ellipsis;
+//     overflow: hidden;
+//   }
+// `;
 
-export const Resizer = styled.div`
-  display: inline-block;
-  width: 5px;
-  height: 100%;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transform: translateX(50%);
-  z-index: 1;
-  ${'' /* prevents from scrolling while dragging on touch devices */}
-  touch-action:none;
-  background: ${({ isResizing }) => (isResizing ? 'var(--er-accent)' : 'none')};
-`;
+// export const Resizer = styled.div`
+//   display: inline-block;
+//   width: 5px;
+//   height: 100%;
+//   position: absolute;
+//   right: 0;
+//   top: 0;
+//   transform: translateX(50%);
+//   z-index: 1;
+//   ${'' /* prevents from scrolling while dragging on touch devices */}
+//   touch-action:none;
+//   background: ${({ isResizing }) => (isResizing ? 'var(--er-accent)' : 'none')};
+// `;
 
-export const SortIcon = styled.div`
-  margin-left: 6px;
-`;
+// export const SortIcon = styled.div`
+//   margin-left: 6px;
+// `;

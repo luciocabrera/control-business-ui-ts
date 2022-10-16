@@ -23,7 +23,7 @@ const Customers = () => {
       { accessorKey: 'firstName', header: 'First Name' },
       { accessorKey: 'lastName', header: 'Last Name' },
       {
-        accessorFn: (originalRow) => originalRow.defaultPhone?.number,
+        accessorFn: (original) => original.defaultPhone?.number,
         header: 'Phone Number',
       },
       {
@@ -46,7 +46,7 @@ const Customers = () => {
           <NewIcon />
         </Link>
       </Header>
-      <ReadOnlyTable<CustomerType> data={customers} columns={columns} />
+      <ReadOnlyTable<CustomerType> data={customers} columns={columns} height="calc(100vh - 120px)" />
       <Outlet />
     </>
   );

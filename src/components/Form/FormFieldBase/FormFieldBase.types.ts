@@ -11,4 +11,5 @@ export type FormFieldBaseProps = Omit<
   children: ReactElement;
   errorMessage?: string;
   ref: ForwardedRef<unknown>;
+  viewMode?: boolean;
 };

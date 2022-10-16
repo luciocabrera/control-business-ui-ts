@@ -2,19 +2,26 @@
 import { useReactTable } from 'hooks';
 // react
 import { memo, useRef, useState } from 'react';
-// react table
-import { getSortedRowModel, flexRender, getCoreRowModel } from '@tanstack/react-table';
 // styles
 import { TableStyled } from '../Table.styled';
 // types
 import type { ColumnDef, SortingState } from 'types';
+// utilities
+import { getSortedRowModel, flexRender, getCoreRowModel } from 'utilities';
 
 type ReadOnlyProps<TData> = {
+  useRadius?: boolean;
+  height?: string;
   data: TData[];
   columns: ColumnDef<TData, unknown>[];
 };
 
-const ReadOnlyTable = <TData extends Record<string, unknown>>({ columns, data }: ReadOnlyProps<TData>) => {
+const ReadOnlyTable = <TData extends Record<string, unknown>>({
+  columns,
+  data,
+  height,
+  useRadius,
+}: ReadOnlyProps<TData>) => {
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -32,7 +39,7 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({ columns, data }:
   });
 
   return (
-    <TableStyled data-testid="data-table" ref={tableContainerRef}>
+    <TableStyled data-testid="data-table" ref={tableContainerRef} height={height} useRadius={useRadius}>
       <table
         {...{
           style: {

@@ -1,11 +1,13 @@
-import type { FormFieldType, ReactElement, ModalProps, MouseEventHandler, MouseEvent } from 'types';
+import type { FormFieldType, ReactElement, ModalProps, MouseEventHandler, MouseEvent, ReactNode } from 'types';
 
 export type FormProps<TDataType> = {
+  viewMode?: boolean;
   actions?: ReactElement;
   title: string;
   icon?: string;
   initialFields: FormFieldType[];
   initialData?: TDataType;
+  children?: ReactNode;
   onAccept?: (data: TDataType) => void;
   onFinish: (event: MouseEvent<HTMLButtonElement>) => void;
 };

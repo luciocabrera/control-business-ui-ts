@@ -9,7 +9,7 @@ export const endpoints = {
   regions: '/geo/regions',
   cities: '/geo/cities',
   companies: '/companies',
-  invoices: '/invoices',
+  invoices: '/api/invoices',
   customers: '/api/customers',
   documentTypes: '/api/documentTypes',
   titles: '/api/titles',

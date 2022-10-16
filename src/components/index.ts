@@ -33,6 +33,7 @@ export { default as FallBack } from './FallBack/FallBack';
 export { default as SideNavBar } from './SideNavBar/SideNavBar';
 
 export { default as CustomerActions } from './specific/CustomerActions/CustomerActions';
+export { default as InvoiceActions } from './specific/InvoiceActions/InvoiceActions';
 
 export { Routes, Route, Link, Outlet } from 'react-router-dom';
 
@@ -40,3 +41,9 @@ export { default as Toast } from './Toast/Toast';
 export { default as Notification } from './Notification/Notification';
 
 export { default as ErrorDisplay } from './ErrorDisplay/ErrorDisplay';
+
+export { default as DateDisplay } from './DateDisplay/DateDisplay';
+
+export { default as NumberDisplay } from './NumberDisplay/NumberDisplay';
+
+export { default as Tabs } from './Tabs/Tabs';

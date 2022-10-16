@@ -1,0 +1,26 @@
+import type { DateOutputType, DateParameterType } from 'types';
+
+export const getDiffInSeconds = (dt2: DateParameterType, dt1: DateParameterType) => {
+  const sanitizeDt2 = dt2 instanceof Date ? dt2 : new Date(dt2);
+  const sanitizeDt1 = dt1 instanceof Date ? dt1 : new Date(dt1);
+  const diff = (sanitizeDt2.getTime() - sanitizeDt1.getTime()) / 1000;
+  return Math.abs(Math.round(diff));
+};
+
+export const getDateAsString = (
+  date?: DateParameterType,
+  output: DateOutputType = 'date',
+  utc: boolean = false,
+): string => {
+  if (!date) return '';
+
+  const jsDate = date instanceof Date ? date : new Date(date);
+
+  switch (output) {
+    case 'date':
+      return utc ? jsDate.toUTCString() : jsDate.toLocaleDateString();
+    case 'datetime':
+    default:
+      return utc ? jsDate.toUTCString() : jsDate.toLocaleString();
+  }
+};

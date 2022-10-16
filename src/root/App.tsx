@@ -12,6 +12,9 @@ const Customers = lazy(() => import(/* webpackChunkName: "Customers" */ 'feature
 const Customer = lazy(() => import(/* webpackChunkName: "Customer" */ 'features/Customer/Customer'));
 const ViewCustomer = lazy(() => import(/* webpackChunkName: "ViewCustomer" */ 'features/ViewCustomer/ViewCustomer'));
 
+const Invoices = lazy(() => import(/* webpackChunkName: "Customers" */ 'features/Invoices/Invoices'));
+const ViewInvoice = lazy(() => import(/* webpackChunkName: "Customer" */ 'features/ViewInvoice/ViewInvoice'));
+
 type StateLocation = { backgroundLocation?: string } | undefined;
 
 const App = () => {
@@ -33,18 +36,6 @@ const App = () => {
                   </Suspense>
                 }
               />
-
-              {/* <Route path="customers">
-              <Route
-                path=":customerId"
-                element={
-                  <Suspense fallback={<FallBack />}>
-                    <Customer />
-                  </Suspense>
-                }
-              />
-              <Route path="" element={<Page />} />
-            </Route> */}
               <Route
                 path="customers"
                 element={
@@ -78,6 +69,41 @@ const App = () => {
                   }
                 />
               </Route>
+
+              <Route
+                path="invoices"
+                element={
+                  <Suspense fallback={<FallBack />}>
+                    <Invoices />
+                  </Suspense>
+                }
+              >
+                <Route
+                  path="new"
+                  element={
+                    <Suspense fallback={<FallBack />}>
+                      <>work in progress Invoice</>
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path=":invoiceId/:action"
+                  element={
+                    <Suspense fallback={<FallBack />}>
+                      <>work in progress Invoice</>
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path=":invoiceId"
+                  element={
+                    <Suspense fallback={<FallBack />}>
+                      <ViewInvoice />
+                    </Suspense>
+                  }
+                />
+              </Route>
+
               <Route path="*" element={<div>No Match</div>} />
             </Route>
           </Routes>
@@ -85,11 +111,11 @@ const App = () => {
             <Routes>
               <Route
                 path="customers"
-                element={
-                  <Suspense fallback={<FallBack />}>
-                    <Customers />
-                  </Suspense>
-                }
+                // element={
+                //   <Suspense fallback={<FallBack />}>
+                //     <Customers />
+                //   </Suspense>
+                // }
               >
                 <Route
                   path="new"
@@ -112,6 +138,40 @@ const App = () => {
                   element={
                     <Suspense fallback={<FallBack />}>
                       <ViewCustomer />
+                    </Suspense>
+                  }
+                />
+              </Route>
+
+              <Route
+                path="invoices"
+                // element={
+                //   <Suspense fallback={<FallBack />}>
+                //     <Invoices />
+                //   </Suspense>
+                // }
+              >
+                <Route
+                  path="new"
+                  element={
+                    <Suspense fallback={<FallBack />}>
+                      <Customer />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path=":invoiceId/:action"
+                  element={
+                    <Suspense fallback={<FallBack />}>
+                      <Customer />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path=":invoiceId"
+                  element={
+                    <Suspense fallback={<FallBack />}>
+                      <ViewInvoice />
                     </Suspense>
                   }
                 />

@@ -1,5 +1,5 @@
 // components
-import { Header, Button, FormField, ErrorDisplay } from 'components';
+import { Header, Button, FormField, ErrorDisplay, Tabs } from 'components';
 // contexts
 import { useAddNotification } from 'contexts';
 // hooks
@@ -13,9 +13,12 @@ import { getErrorField } from 'utilities';
 // types
 import type { FormFieldBaseType, FormFieldGroupType, FormFieldType, MouseEvent } from 'types';
 import type { FormProps } from './Form.types';
+import { TabType } from 'components/Tabs/Tabs';
 
 const Form = <TDataType extends Record<string, unknown>>({
+  viewMode = true,
   actions,
+  children,
   title,
   icon,
   initialFields,
@@ -51,12 +54,21 @@ const Form = <TDataType extends Record<string, unknown>>({
       const calculatedType = field?.type ?? 'field';
       const groupKey = `form-group-${index}-${field?.label ?? ''}`;
       switch (calculatedType) {
+        case 'tab':
+          const tabField = field as FormFieldGroupType;
+          const tabs: TabType[] =
+            tabField?.fields?.map((field, i) => ({
+              children: getFieldElements(tabField.fields, 100, groupKey),
+              title: field.label || '',
+              key: field.label || '',
+            })) || [];
+          return tabField?.fields && tabs && <Tabs key={groupKey} tabs={tabs} />;
         case 'group':
           const groupField = field as FormFieldGroupType;
           return (
             groupField?.fields && (
               <FieldGroupStyled key={groupKey}>
-                <legend>{field?.label}</legend>
+                <legend>{groupField?.label}</legend>
                 {getFieldElements(groupField?.fields, 100, groupKey)}
               </FieldGroupStyled>
             )
@@ -85,6 +97,7 @@ const Form = <TDataType extends Record<string, unknown>>({
               setFieldFromEvent={setFieldFromEvent}
               setField={setField}
               width={fieldWidth}
+              viewMode={viewMode}
               {...errorField}
             />
           );
@@ -94,7 +107,13 @@ const Form = <TDataType extends Record<string, unknown>>({
   return (
     <FormStyled noValidate>
       <Header icon={icon} title={title} onClose={onFinish} />
-      <main>{getFieldElements(initialFields)}</main>
+      <main>
+        <>
+          {getFieldElements(initialFields)}
+          {children}
+        </>
+      </main>
+
       <footer>
         {onAccept && (
           <Button id="form-button-accept" onClick={onSubmit}>

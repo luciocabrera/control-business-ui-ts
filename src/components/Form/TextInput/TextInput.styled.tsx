@@ -5,10 +5,9 @@ export const TextInputStyled = styled.input`
   border: none;
   background: var(--form-bg-color);
   color: var(--text-color);
-  height: 1.5rem;
   border-radius: 10px;
   padding-left: 10px;
-  top: -2px;
+  top: -5px;
   position: relative;
   :focus-visible {
     outline: none;

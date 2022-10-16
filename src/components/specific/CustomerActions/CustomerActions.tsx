@@ -1,31 +1,27 @@
 // components
-import { Modal, Button } from 'components';
+import { Button } from 'components';
 // contexts
 import { useAddNotification, useAddToast } from 'contexts';
 // hooks
 import { useDeleteCustomer, useRefreshCustomers, useParams, useLocation, useNavigate } from 'hooks';
 // react
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback } from 'react';
 // types
 import type { CustomerType, MouseEvent } from 'types';
-// import type { ModalType } from 'components/Form/Form/Form.types';
 
 type CustomerActionsProps = {
   customer?: CustomerType;
 };
 
-// const initialModal = { show: false };
 const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
   const { customerId, action } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
   const isEditing = !isCreating && action === 'edit';
 
-  // const [modal, setModal] = useState<ModalType>(initialModal);
-
   const location = useLocation();
-  const addNotification = useAddNotification();
 
+  const addNotification = useAddNotification();
   const addToast = useAddToast();
   const deleteCustomer = useDeleteCustomer();
   const refreshCustomers = useRefreshCustomers();
@@ -52,11 +48,8 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
       refreshCustomers?.();
 
       if (location.pathname !== '/customers') navigate('/customers');
-
-      // setModal(initialModal);
     } catch (err) {
       addToast?.('error', 'Error Deleting Customer', (err as { message: string }).message);
-      console.log('error', err);
     }
   }, [
     customer?.customerId,
@@ -78,14 +71,6 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
       onConfirmDelete,
       true,
     );
-    // setModal({
-    //   show: true,
-    //   title: 'Confirm Deletion',
-    //   message: 'Are you sure you want to delete the current Customer?',
-    //   onAccept: onConfirmDelete,
-    //   onClose: () => setModal(initialModal),
-    //   isConfirmation: true,
-    // });
   }, [addNotification, onConfirmDelete]);
 
   const onCancel = useCallback(
@@ -119,7 +104,6 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
           Delete
         </Button>
       )}
-      {/* {modal?.show && <Modal {...modal} />} */}
     </>
   );
 });

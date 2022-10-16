@@ -62,7 +62,7 @@ export type FormFieldBaseType = {
   default?: string | null;
   placeholder?: string;
   tooltip?: string;
-  normalize?: (value: string) => string;
+  normalize?: (value?: string | number) => string;
   disabled?: boolean;
   readonly?: boolean;
   rules?: FormRuleType[];
