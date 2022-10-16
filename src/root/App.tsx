@@ -13,6 +13,7 @@ const Customer = lazy(() => import(/* webpackChunkName: "Customer" */ 'features/
 const ViewCustomer = lazy(() => import(/* webpackChunkName: "ViewCustomer" */ 'features/ViewCustomer/ViewCustomer'));
 
 const Invoices = lazy(() => import(/* webpackChunkName: "Customers" */ 'features/Invoices/Invoices'));
+const Invoice = lazy(() => import(/* webpackChunkName: "Customer" */ 'features/Invoice/Invoice'));
 const ViewInvoice = lazy(() => import(/* webpackChunkName: "Customer" */ 'features/ViewInvoice/ViewInvoice'));
 
 type StateLocation = { backgroundLocation?: string } | undefined;
@@ -82,7 +83,7 @@ const App = () => {
                   path="new"
                   element={
                     <Suspense fallback={<FallBack />}>
-                      <>work in progress Invoice</>
+                      <Invoice />
                     </Suspense>
                   }
                 />
@@ -90,7 +91,7 @@ const App = () => {
                   path=":invoiceId/:action"
                   element={
                     <Suspense fallback={<FallBack />}>
-                      <>work in progress Invoice</>
+                      <Invoice />
                     </Suspense>
                   }
                 />
@@ -155,7 +156,7 @@ const App = () => {
                   path="new"
                   element={
                     <Suspense fallback={<FallBack />}>
-                      <Customer />
+                      <Invoice />
                     </Suspense>
                   }
                 />
@@ -163,7 +164,7 @@ const App = () => {
                   path=":invoiceId/:action"
                   element={
                     <Suspense fallback={<FallBack />}>
-                      <Customer />
+                      <Invoice />
                     </Suspense>
                   }
                 />
