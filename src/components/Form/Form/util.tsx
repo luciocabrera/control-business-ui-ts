@@ -1,8 +1,7 @@
 import { useFormDataArgs } from 'hooks';
-import { FormFieldType, FormFieldGroupType, FormSimpleFieldType } from 'types';
+import { FormFieldType, FormFieldGroupType, FormSimpleFieldType, FieldBaseValueType } from 'types';
 import { getErrorField } from 'utilities';
 import FormField from '../FormField/FormField';
-import TableField from '../TableField/TableField';
 import { FieldGroupStyled, FieldRowStyled } from './Form.styled';
 
 export const getFieldElements = <TDataType extends Record<string, unknown>>(
@@ -16,7 +15,6 @@ export const getFieldElements = <TDataType extends Record<string, unknown>>(
     const calculatedType = field?.type ?? 'field';
     const groupKey = `form-group-${index}-${field?.label ?? ''}`;
 
-    if (field?.render) return field?.render();
     switch (calculatedType) {
       case 'group':
         const groupField = field as FormFieldGroupType;
@@ -39,26 +37,17 @@ export const getFieldElements = <TDataType extends Record<string, unknown>>(
             </FieldRowStyled>
           )
         );
-      // case 'table':
-      //   const tableField = field as FormFieldTableType<TDataType>;
-      //   return (
-      //     <TableField
-      //       columns={tableField.columns || []}
-      //       value={form.data[tableField.accessor]}
-      //       onChange={function (event: ChangeEvent<HTMLInputElement>): void {
-      //         throw new Error('Function not implemented.');
-      //       }}
-      //     />
-      //   );
       case 'field':
       default:
         const simpleField = field as FormSimpleFieldType;
         const errorField = getErrorField(simpleField, form.errors);
         const fieldKey = `${groupId}-form-field-${index}-${simpleField.accessor}`;
+
+        if (field?.render) return field?.render(form.data[simpleField.accessor], form.setField);
         return (
           <FormField
             key={fieldKey}
-            value={form.data[simpleField.accessor] as string | number | undefined}
+            value={form.data[simpleField.accessor] as FieldBaseValueType}
             field={simpleField}
             setFieldFromEvent={form.setFieldFromEvent}
             setField={form.setField}

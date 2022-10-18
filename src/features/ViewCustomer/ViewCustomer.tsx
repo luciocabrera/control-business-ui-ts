@@ -79,6 +79,7 @@ const ViewCustomer = memo(() => {
             label: 'Phone Number',
             type: 'text',
             value: customer?.defaultPhone?.number,
+            readonly: true,
           },
         ],
       },

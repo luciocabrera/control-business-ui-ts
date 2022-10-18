@@ -13,6 +13,8 @@ const Select = memo(
       <FormFieldBase {...props} ref={ref}>
         <SelectStyled
           name={accessor}
+          select-name={accessor}
+          title={accessor}
           aria-label={accessor}
           aria-labelledby={accessor}
           id={accessor}

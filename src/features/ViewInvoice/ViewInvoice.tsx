@@ -16,6 +16,7 @@ import type {
   InvoicesDetails,
   DateParameterType,
   FieldBaseValueType,
+  CreateInvoiceDetail,
 } from 'types';
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
@@ -149,21 +150,12 @@ const ViewInvoice = memo(() => {
             accessor: 'invoiceDetails',
             label: 'invoiceDetails',
             type: 'table',
-            // value: invoice?.invoiceDetails || [],
-            // columns: columns,
-            render: () => (
-              // <pre key="hey">
-              //   {invoice?.invoiceDetails?.map((a) => (
-              //     <pre>{JSON.stringify(a)}</pre>
-              //   ))}
-              // </pre>
-
-              <TableField<InvoicesDetails>
+            render: (value) => (
+              <TableField<InvoicesDetails, CreateInvoiceDetail>
+                accessor="invoiceDetails"
+                label="Details"
                 columns={columns}
-                data={invoice?.invoiceDetails || []}
-                onChange={function (event: ChangeEvent<HTMLInputElement>): void {
-                  throw new Error('Function not implemented.');
-                }}
+                data={value as InvoicesDetails[]}
               />
             ),
             readonly: true,
@@ -177,7 +169,6 @@ const ViewInvoice = memo(() => {
       invoice?.customer?.lastName,
       invoice?.date,
       invoice?.invoice,
-      invoice?.invoiceDetails,
       invoice?.subtotal,
       invoice?.taxes,
       invoice?.total,
@@ -196,9 +187,7 @@ const ViewInvoice = memo(() => {
         initialData={invoice}
         actions={<InvoiceActions invoice={invoice} />}
         onFinish={() => navigate('/invoices')}
-      >
-        {/* <ReadOnlyTable<InvoicesDetails> data={invoice?.invoiceDetails || []} columns={columns} useRadius /> */}
-      </Form>
+      />
     </FormWrapper>
   );
 });

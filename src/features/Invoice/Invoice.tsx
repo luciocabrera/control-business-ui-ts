@@ -1,7 +1,7 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { PageSpinner, Overlay, InvoiceActions, ErrorDisplay } from 'components';
+import { PageSpinner, Overlay, InvoiceActions, ErrorDisplay, NumberDisplay, Form } from 'components';
 // hooks
 import {
   useParams,
@@ -11,17 +11,29 @@ import {
   useFetchCustomers,
   usePostInvoice,
   useRefreshInvoices,
+  useFetchProducts,
 } from 'hooks';
 // styles
 import { FormWrapper } from 'styles';
 // react
-import { memo, useCallback, useMemo } from 'react';
+import { ChangeEvent, memo, useCallback, useMemo } from 'react';
 // types
-import type { InvoiceFormType, FormFieldType, InvoiceCreateType, APiResponseErrorType } from 'types';
+import type {
+  InvoiceFormType,
+  FormFieldType,
+  InvoiceCreateType,
+  APiResponseErrorType,
+  InvoicesDetails,
+  ColumnDef,
+  FieldBaseValueType,
+  CreateInvoiceDetail,
+} from 'types';
 // utilities
 import { getFormattedNumber } from 'utilities';
 import { useAddNotification, useAddToast } from 'contexts';
 import InvoiceForm from './InvoiceForm';
+import TableField from 'components/Form/TableField/TableField';
+import DetailForm from './InvoiceDetailForm';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -47,6 +59,85 @@ const ViewInvoice = memo(() => {
       })),
     [customers],
   );
+  const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
+    () => [
+      {
+        accessorFn: (original) => original.product?.code,
+        header: 'Code',
+      },
+      {
+        accessorFn: (original) => original.product?.name,
+        header: 'Product',
+      },
+      {
+        accessorKey: 'quantity',
+        header: 'Quantity',
+        cell: ({ row: { original } }) => <NumberDisplay value={original.quantity} output={'number'} />,
+      },
+      {
+        accessorKey: 'priceUnit',
+        header: 'Price Unit',
+        cell: ({ row: { original } }) => <NumberDisplay value={original.priceUnit} output={'currency'} />,
+      },
+      {
+        accessorKey: 'priceQuantity',
+        header: 'Price Quantity',
+        cell: ({ row: { original } }) => <NumberDisplay value={original.priceQuantity} output={'currency'} />,
+      },
+    ],
+    [],
+  );
+
+  const { data: products, loading: isLoadingProducts } = useFetchProducts();
+
+  const productsOptions = useMemo(
+    () =>
+      products?.map((product) => ({
+        label: product.name,
+        value: product.productId,
+      })),
+    [products],
+  );
+
+  // const fieldDetails: FormFieldType[] = useMemo(
+  //   () => [
+  //     {
+  //       type: 'row',
+  //       fields: [
+  //         {
+  //           accessor: 'productId',
+  //           label: 'Product',
+  //           type: 'select',
+  //           required: true,
+  //           options: productsOptions,
+  //           value: detail?.productId,
+  //         },
+  //         {
+  //           accessor: 'quantity',
+  //           label: 'Quantity',
+  //           type: 'number',
+  //           required: true,
+  //           value: detail?.quantity,
+  //         },
+  //         {
+  //           accessor: 'priceUnit',
+  //           label: 'Price Unit',
+  //           type: 'number',
+  //           required: true,
+  //           value: detail?.priceUnit,
+  //         },
+  //         {
+  //           accessor: 'priceQuantity',
+  //           label: 'Price Quantity',
+  //           type: 'number',
+  //           required: true,
+  //           value: detail?.priceQuantity,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  //   [detail?.priceQuantity, detail?.priceUnit, detail?.productId, detail?.quantity, productsOptions],
+  // );
 
   const fields: FormFieldType[] = useMemo(
     () => [
@@ -99,7 +190,7 @@ const ViewInvoice = memo(() => {
                     label: 'Subtotal',
                     type: 'text',
                     value: invoice?.subtotal,
-                    normalize: (value: string | number | undefined) => getFormattedNumber(value, 'currency'),
+                    normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
                     readonly: true,
                   },
                 ],
@@ -112,7 +203,7 @@ const ViewInvoice = memo(() => {
                     label: 'Taxes',
                     type: 'text',
                     value: invoice?.taxes,
-                    normalize: (value) => getFormattedNumber(value, 'currency'),
+                    normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
                     readonly: true,
                   },
                 ],
@@ -125,7 +216,7 @@ const ViewInvoice = memo(() => {
                     label: 'Total',
                     type: 'text',
                     value: invoice?.total,
-                    normalize: (value) => getFormattedNumber(value, 'currency'),
+                    normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
                     readonly: true,
                   },
                 ],
@@ -147,8 +238,35 @@ const ViewInvoice = memo(() => {
           },
         ],
       },
+      {
+        type: 'row',
+        fields: [
+          {
+            accessor: 'invoiceDetails',
+            label: 'invoiceDetails',
+            type: 'table',
+            render: (value, setField) => (
+              <TableField<InvoicesDetails, CreateInvoiceDetail>
+                accessor="invoiceDetails"
+                label="Details"
+                columns={columnsDetails}
+                data={value as InvoicesDetails[]}
+                setField={setField}
+                renderDetail={(
+                  onAccept: (detail: CreateInvoiceDetail) => void,
+                  onFinish: () => void,
+                  detail?: InvoicesDetails,
+                ) => <DetailForm detail={detail} onAccept={onAccept} onFinish={onFinish} />}
+              />
+            ),
+
+            readonly: true,
+          },
+        ],
+      },
     ],
     [
+      columnsDetails,
       customersOptions,
       invoice?.customerId,
       invoice?.date,
@@ -199,7 +317,7 @@ const ViewInvoice = memo(() => {
   return (
     <FormWrapper>
       <Overlay />
-      <InvoiceForm<InvoiceFormType>
+      <Form<InvoiceFormType>
         icon={detailsViewImg}
         title={title}
         initialFields={fields}
@@ -208,7 +326,7 @@ const ViewInvoice = memo(() => {
         actions={<InvoiceActions invoice={invoice} />}
         onFinish={() => navigate('/invoices')}
         viewMode={false}
-      ></InvoiceForm>
+      ></Form>
     </FormWrapper>
   );
 });

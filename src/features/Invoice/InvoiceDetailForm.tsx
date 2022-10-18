@@ -11,13 +11,13 @@ import { memo, useMemo } from 'react';
 // types
 import type { CreateInvoiceDetail, FormFieldType, InvoicesDetails } from 'types';
 
-type detailFormProps = {
+export type DetailFormProps = {
   detail?: InvoicesDetails;
   onAccept: (detail: CreateInvoiceDetail) => void;
   onFinish: () => void;
 };
 
-const detailForm = memo(({ detail, onAccept, onFinish }: detailFormProps) => {
+const DetailForm = memo(({ detail, onAccept, onFinish }: DetailFormProps) => {
   const { customerId } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
@@ -93,4 +93,4 @@ const detailForm = memo(({ detail, onAccept, onFinish }: detailFormProps) => {
     </FormWrapper>
   );
 });
-export default detailForm;
+export default DetailForm;
