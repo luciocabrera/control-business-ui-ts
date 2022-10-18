@@ -1,6 +1,8 @@
-import { memo } from 'react';
+import { ReadOnlyTable } from 'components';
+import { ChangeEvent, memo } from 'react';
 import Select from '../Select/Select';
 import TextInput from '../TextInput/TextInput';
+import TableField from '../TableField/TableField';
 import { FormFieldProps } from './FormField.types';
 
 const FormField = memo(({ field, setField, setFieldFromEvent, ...props }: FormFieldProps) => {
@@ -20,8 +22,9 @@ const FormField = memo(({ field, setField, setFieldFromEvent, ...props }: FormFi
       );
     case 'text':
     default:
+      //@ts-ignore
       return <TextInput key={`field-input-${field.accessor}`} onChange={setFieldFromEvent} {...field} {...props} />;
   }
 });
 
-export default FormField;
+export default memo(FormField) as typeof FormField;

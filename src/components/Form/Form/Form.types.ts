@@ -1,4 +1,4 @@
-import type { FormFieldType, ReactElement, ModalProps, MouseEventHandler, MouseEvent, ReactNode } from 'types';
+import type { FormFieldType, ReactElement, ModalProps, MouseEvent, ReactNode } from 'types';
 
 export type FormProps<TDataType> = {
   viewMode?: boolean;

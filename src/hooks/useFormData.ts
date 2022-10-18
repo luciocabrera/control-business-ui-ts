@@ -1,6 +1,13 @@
 // react
 import { useCallback, useEffect, useReducer } from 'react';
-import type { FormFieldErrorType, FormFieldType, SetFieldFromEvent, SetFieldType, VerifyFormType } from 'types';
+import type {
+  FieldValueType,
+  FormFieldErrorType,
+  FormFieldType,
+  SetFieldFromEvent,
+  SetFieldType,
+  VerifyFormType,
+} from 'types';
 // utilities
 import { deepEqual, getInitialData, validateFields } from 'utilities';
 
@@ -26,7 +33,7 @@ type ActionType<TDataType> =
   | { type: ActionKind.reset }
   | {
       type: ActionKind.setField;
-      payload: { accessor: string; value?: string | number };
+      payload: { accessor: string; value?: FieldValueType };
     }
   | {
       type: ActionKind.setForm;
@@ -45,7 +52,7 @@ type ActionType<TDataType> =
       payload: { hasErrors: boolean; hasChanged: boolean; errors?: FormFieldErrorType[] };
     };
 
-type useFormDataArgs<TDataType extends Record<string, unknown>> = {
+export type useFormDataArgs<TDataType extends Record<string, unknown>> = {
   data: TDataType;
   fields?: FormFieldType[];
   errors: FormFieldErrorType[];
@@ -112,7 +119,7 @@ export const useFormData = <TDataType extends Record<string, unknown>>(
   }, [initialFields]);
 
   const setField = useCallback(
-    (accessor: string, value: string | number | undefined) =>
+    (accessor: string, value: FieldValueType) =>
       dispatch({ type: ActionKind.setField, payload: { accessor: accessor, value: value } }),
     [],
   );

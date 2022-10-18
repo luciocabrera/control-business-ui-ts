@@ -11,6 +11,7 @@ export const endpoints = {
   companies: '/companies',
   invoices: '/api/invoices',
   customers: '/api/customers',
+  products: '/api/products',
   documentTypes: '/api/documentTypes',
   titles: '/api/titles',
   auth: { login: `/auth/login` },

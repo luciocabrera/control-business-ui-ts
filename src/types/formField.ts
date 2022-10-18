@@ -1,3 +1,5 @@
+import { ReactNode } from 'types';
+
 export const FIELD_TYPE_NUMBERS = ['number', 'integer', 'float'] as const;
 export const FIELD_TYPE_BOOLEANS = ['boolean'] as const;
 export const FIELD_TYPE_DATES = ['date'] as const;
@@ -55,26 +57,27 @@ export type FormFieldBaseType = {
   accessor: string;
   label: string;
   type: string;
-  value?: string | number;
+  value?: FieldValueType;
   required?: boolean | ((p: unknown) => boolean);
   options?: FormOptionType[];
   display?: string;
   default?: string | null;
   placeholder?: string;
   tooltip?: string;
-  normalize?: (value?: string | number) => string;
+  normalize?: (value?: FieldValueType) => FieldValueType;
   disabled?: boolean;
   readonly?: boolean;
   rules?: FormRuleType[];
 };
 
+export type FormSimpleFieldType = Omit<FormFieldBaseType, 'value'> & { value?: FieldBaseValueType };
+
 export type FormFieldGroupType = {
-  type: string;
   label?: string;
   fields?: FormFieldType[];
 };
 
-export type FormFieldType = FormFieldGroupType | FormFieldBaseType;
+export type FormFieldType = { type: string; render?: () => ReactNode } & (FormFieldGroupType | FormFieldBaseType);
 
 export type FormFieldStateType = {
   accessor: string;
@@ -88,6 +91,9 @@ export type FormFieldErrorType = {
   value?: string | number;
 };
 
-export type SetFieldType = (accessor: string, value: string | number | undefined) => void;
+export type FieldBaseValueType = string | number | undefined;
+export type FieldValueType = FieldBaseValueType | Record<string, unknown> | Record<string, unknown>[];
+
+export type SetFieldType = (accessor: string, value: FieldValueType) => void;
 export type VerifyFormType = () => { errorFields: FormFieldErrorType[]; hasChanged: boolean };
 export type SetFieldFromEvent = (event: React.ChangeEvent<HTMLInputElement>) => void;

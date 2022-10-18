@@ -1,0 +1,73 @@
+import Tabs, { TabType } from 'components/Tabs/Tabs';
+import { useFormDataArgs } from 'hooks';
+import { FormFieldType, FormFieldGroupType, FormFieldBaseType } from 'types';
+import { getErrorField } from 'utilities';
+import FormField from '../FormField/FormField';
+import { FieldGroupStyled, FieldRowStyled } from './Form.styled';
+
+type FieldElementsProps<TDataType extends Record<string, unknown>> = {
+  form: useFormDataArgs<TDataType>;
+  formFields?: FormFieldType[];
+  fieldWidth?: number;
+  groupId: string;
+  viewMode: boolean;
+};
+const FieldElements = <TDataType extends Record<string, unknown>>({
+  form,
+  formFields,
+  fieldWidth,
+  groupId = '',
+  viewMode = true,
+}: FieldElementsProps<TDataType>) =>
+  formFields?.map((field, index) => {
+    const calculatedType = field?.type ?? 'field';
+    const groupKey = `form-group-${index}-${field?.label ?? ''}`;
+    switch (calculatedType) {
+      case 'group':
+        const groupField = field as FormFieldGroupType;
+        return (
+          groupField?.fields && (
+            <FieldGroupStyled key={groupKey}>
+              <legend>{groupField?.label}</legend>
+              <FieldElements
+                form={form}
+                formFields={groupField?.fields}
+                fieldWidth={100}
+                groupId={groupKey}
+                viewMode={viewMode}
+              />
+            </FieldGroupStyled>
+          )
+        );
+      case 'row':
+        const rowField = field as FormFieldGroupType;
+        const calculatedWidth = 100 / rowField?.fields?.length! || 100;
+        const rowKey = `${groupId}-form-row-${index}`;
+        return (
+          rowField?.fields && (
+            <FieldRowStyled key={rowKey}>
+              {getFieldElements(form, rowField?.fields, calculatedWidth, rowKey)}
+            </FieldRowStyled>
+          )
+        );
+      case 'field':
+      default:
+        const simpleField = field as FormFieldBaseType;
+        const errorField = getErrorField(simpleField, form.errors);
+        const fieldKey = `${groupId}-form-field-${index}-${simpleField.accessor}`;
+        return (
+          <FormField
+            key={fieldKey}
+            value={form.data[simpleField.accessor] as string | number | undefined}
+            field={simpleField}
+            setFieldFromEvent={form.setFieldFromEvent}
+            setField={form.setField}
+            width={fieldWidth}
+            viewMode={viewMode}
+            {...errorField}
+          />
+        );
+    }
+  });
+
+export default FieldElements;

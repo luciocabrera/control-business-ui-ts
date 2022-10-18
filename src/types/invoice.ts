@@ -13,12 +13,14 @@ export type InvoicesDetails = {
   priceQuantity: number;
 };
 
+export type CreateInvoiceDetail = Omit<InvoicesDetails, 'product'>;
+
 export type InvoiceType = AuditType & {
   invoiceId: number;
   invoice: string;
   customerId: number;
   customer: InvoiceCustomerType;
-  invoicesDetails: InvoicesDetails[];
+  invoiceDetails: InvoicesDetails[];
   date: Date;
   subtotal: number;
   total: number;
@@ -27,7 +29,6 @@ export type InvoiceType = AuditType & {
 };
 
 export type InvoiceFormType = Omit<InvoiceType, 'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'>;
-// InvoiceCustomerType;
 
 export type InvoiceCreateType = Omit<
   InvoiceType,
