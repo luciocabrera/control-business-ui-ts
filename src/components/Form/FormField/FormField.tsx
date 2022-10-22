@@ -14,7 +14,7 @@ const FormField = memo(({ field, setField, setFieldFromEvent, ...props }: FormFi
           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
             const selected = event.target.options[event.target.selectedIndex]?.value;
             setField(field.accessor, selected);
-            // field.onSelect?.(selected);
+            field.onSelect?.(selected);
           }}
           {...field}
           {...props}
@@ -22,8 +22,17 @@ const FormField = memo(({ field, setField, setFieldFromEvent, ...props }: FormFi
       );
     case 'text':
     default:
-      //@ts-ignore
-      return <TextInput key={`field-input-${field.accessor}`} onChange={setFieldFromEvent} {...field} {...props} />;
+      return (
+        <TextInput
+          key={`field-input-${field.accessor}`}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            field.change?.(event) || setFieldFromEvent(event);
+          }}
+          // onChange={setFieldFromEvent}
+          {...field}
+          {...props}
+        />
+      );
   }
 });
 

@@ -1,19 +1,25 @@
 import { AuditType, CustomerType } from 'types';
 
-type InvoiceCustomerType = Pick<
-  CustomerType,
-  'documentId' | 'initials' | 'firstName' | 'lastName' | 'documentTypeName' | 'titleName'
->;
+type InvoiceCustomerType = Pick<CustomerType, 'documentId' | 'fullNameWithInitials' | 'documentTypeName' | 'titleName'>;
+
+export type ProductInvoicesDetails = {
+  productNameWithCode: string;
+  productDescription: string;
+  productPrice: number;
+};
 
 export type InvoicesDetails = {
   productId: number;
-  product: { code: string; name: string };
+  description: string;
   quantity: number;
   priceUnit: number;
   priceQuantity: number;
-};
+} & ProductInvoicesDetails;
 
-export type CreateInvoiceDetail = Omit<InvoicesDetails, 'product'>;
+export type CreateInvoiceDetail = Omit<
+  InvoicesDetails,
+  'product' | 'productNameWithCode' | 'productDescription' | 'productPrice'
+>;
 
 export type InvoiceType = AuditType & {
   invoiceId: number;
@@ -32,5 +38,5 @@ export type InvoiceFormType = Omit<InvoiceType, 'invoiceId' | 'updatedAt' | 'cre
 
 export type InvoiceCreateType = Omit<
   InvoiceType,
-  'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy' | 'customer'
-> & { invoiceId?: string | number; customerId: number };
+  'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy' | 'customer' | 'invoiceDetails'
+> & { invoiceId?: string | number; customerId: number; invoiceDetails: CreateInvoiceDetail[] };

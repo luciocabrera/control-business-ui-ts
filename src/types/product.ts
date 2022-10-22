@@ -5,6 +5,8 @@ export type ProductType = AuditType & {
   name: string;
   code: string;
   description: string;
+  nameWithCode: string;
+  price: number;
 };
 
 export type ProductFormType = Omit<ProductType, 'productId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'>;

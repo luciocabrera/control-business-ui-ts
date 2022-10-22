@@ -7,18 +7,17 @@ import { useParams, useFetchProducts } from 'hooks';
 // styles
 import { FormWrapper } from 'styles';
 // react
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 // types
-import type { CreateInvoiceDetail, FormFieldType, InvoicesDetails, ProductInvoicesDetails, ProductType } from 'types';
+import type { CreateInvoiceDetail, FormFieldType, InvoicesDetails } from 'types';
 
 export type DetailFormProps = {
   detail?: InvoicesDetails;
-  onAcceptDetail: (detail: CreateInvoiceDetail) => void;
+  onAccept: (detail: CreateInvoiceDetail) => void;
   onFinish: () => void;
 };
 
-const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) => {
-  const [selectedProduct, setSelectedProduct] = useState<ProductInvoicesDetails | undefined>();
+const DetailForm = memo(({ detail, onAccept, onFinish }: DetailFormProps) => {
   const { customerId } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
@@ -34,30 +33,6 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
     [products],
   );
 
-  const onSelectProduct = useCallback(
-    (newSelectedProductId: string) => {
-      const newSelectedProduct = products?.find(
-        ({ productId }: ProductType) => productId === parseInt(newSelectedProductId, 10),
-      );
-      // .map(({ nameWithCode, price, description }: ProductType) => ({
-      //   productNameWithCode: nameWithCode,
-      //   productDescription: description,
-      //   productPrice: price,
-      // }));
-
-      setSelectedProduct({
-        productNameWithCode: newSelectedProduct?.nameWithCode ?? '',
-        productDescription: newSelectedProduct?.description ?? '',
-        productPrice: newSelectedProduct?.price ?? 0,
-      });
-    },
-    [products],
-  );
-
-  const onAccept = (detail: CreateInvoiceDetail) => {
-    debugger;
-    onAcceptDetail?.({ ...detail, ...selectedProduct });
-  };
   const fields: FormFieldType[] = useMemo(
     () => [
       {
@@ -70,7 +45,6 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
             required: true,
             options: productsOptions,
             value: detail?.productId,
-            onSelect: (newSelectedProduct: string) => onSelectProduct(newSelectedProduct),
           },
           {
             accessor: 'description',
@@ -85,9 +59,6 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
             type: 'number',
             required: true,
             value: detail?.quantity,
-            change: (quantity: number, priceUnit: number) => {
-              //   setPartialFields({ quantity: quantity, priceUnit: priceUnit, priceQuantity: quantity * priceUnit });
-            },
           },
           {
             accessor: 'priceUnit',
@@ -101,7 +72,7 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
             label: 'Price Quantity',
             type: 'number',
             required: true,
-            readonly: true,
+            // readonly: true,
             value: detail?.priceQuantity,
           },
         ],
@@ -113,7 +84,6 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
       detail?.priceUnit,
       detail?.productId,
       detail?.quantity,
-      onSelectProduct,
       productsOptions,
     ],
   );

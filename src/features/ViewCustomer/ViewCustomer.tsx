@@ -81,6 +81,13 @@ const ViewCustomer = memo(() => {
             value: customer?.defaultPhone?.number,
             readonly: true,
           },
+          {
+            accessor: 'email',
+            label: 'Email',
+            type: 'text',
+            value: customer?.defaultEmail?.email,
+            readonly: true,
+          },
         ],
       },
       {

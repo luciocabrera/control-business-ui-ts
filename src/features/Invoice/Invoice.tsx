@@ -54,7 +54,7 @@ const ViewInvoice = memo(() => {
   const customersOptions = useMemo(
     () =>
       customers?.map((customer) => ({
-        label: `${customer.firstName} ${customer.lastName}`,
+        label: `${customer.fullNameWithInitials}`,
         value: customer.customerId,
       })),
     [customers],
@@ -62,12 +62,12 @@ const ViewInvoice = memo(() => {
   const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       {
-        accessorFn: (original) => original.product?.code,
-        header: 'Code',
+        accessorKey: 'productNameWithCode',
+        header: 'Product',
       },
       {
-        accessorFn: (original) => original.product?.name,
-        header: 'Product',
+        accessorKey: 'description',
+        header: 'Description',
       },
       {
         accessorKey: 'quantity',
@@ -190,8 +190,8 @@ const ViewInvoice = memo(() => {
                     label: 'Subtotal',
                     type: 'text',
                     value: invoice?.subtotal,
-                    normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-                    readonly: true,
+                    // normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+                    // readonly: true,
                   },
                 ],
               },
@@ -203,8 +203,8 @@ const ViewInvoice = memo(() => {
                     label: 'Taxes',
                     type: 'text',
                     value: invoice?.taxes,
-                    normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-                    readonly: true,
+                    //  normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+                    // readonly: true,
                   },
                 ],
               },
@@ -216,8 +216,8 @@ const ViewInvoice = memo(() => {
                     label: 'Total',
                     type: 'text',
                     value: invoice?.total,
-                    normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-                    readonly: true,
+                    //  normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+                    // readonly: true,
                   },
                 ],
               },
@@ -225,15 +225,28 @@ const ViewInvoice = memo(() => {
                 type: 'row',
                 fields: [
                   {
-                    accessor: 'invoiceDetails',
-                    label: 'invoiceDetails',
-                    type: 'array',
-                    value: invoice?.invoiceDetails,
-                    render: () => <pre>{JSON.stringify(invoice?.invoiceDetails)}</pre>,
-                    readonly: true,
+                    accessor: 'taxesPercentage',
+                    label: 'taxesPercentage',
+                    type: 'number',
+                    value: invoice?.taxesPercentage,
+                    // normalize: (value: FieldBaseValueType) => getFormattedNumber(value || 0),
+                    // readonly: true,
                   },
                 ],
               },
+              // {
+              //   type: 'row',
+              //   fields: [
+              //     {
+              //       accessor: 'invoiceDetails',
+              //       label: 'invoiceDetails',
+              //       type: 'array',
+              //       value: invoice?.invoiceDetails,
+              //       render: () => <pre>{JSON.stringify(invoice?.invoiceDetails)}</pre>,
+              //       readonly: true,
+              //     },
+              //   ],
+              // },
             ],
           },
         ],
@@ -256,7 +269,7 @@ const ViewInvoice = memo(() => {
                   onAccept: (detail: CreateInvoiceDetail) => void,
                   onFinish: () => void,
                   detail?: InvoicesDetails,
-                ) => <DetailForm detail={detail} onAccept={onAccept} onFinish={onFinish} />}
+                ) => <DetailForm detail={detail} onAcceptDetail={onAccept} onFinish={onFinish} />}
               />
             ),
 
@@ -271,9 +284,9 @@ const ViewInvoice = memo(() => {
       invoice?.customerId,
       invoice?.date,
       invoice?.invoice,
-      invoice?.invoiceDetails,
       invoice?.subtotal,
       invoice?.taxes,
+      invoice?.taxesPercentage,
       invoice?.total,
     ],
   );
@@ -281,12 +294,19 @@ const ViewInvoice = memo(() => {
   const onAccept = useCallback(
     async (payload: InvoiceFormType) => {
       const calculatedInvoiceId = invoiceId === 'new' ? undefined : invoiceId;
-      const { customerId, ...rest } = payload;
+      const { customerId, date, invoiceDetails, ...rest } = payload;
 
       debugger;
       const body: InvoiceCreateType = {
         invoiceId: calculatedInvoiceId,
-        customerId: customerId,
+        date: new Date(date),
+        customerId: typeof customerId === 'string' ? parseInt(customerId, 10) : customerId,
+        invoiceDetails: invoiceDetails.map(
+          ({ productId, productNameWithCode, productDescription, productPrice, ...rest }) => ({
+            ...rest,
+            productId: typeof productId === 'string' ? parseInt(productId, 10) : productId,
+          }),
+        ),
         ...rest,
       };
 

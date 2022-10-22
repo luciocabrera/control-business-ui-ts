@@ -36,12 +36,12 @@ const InvoiceForm = <TDataType extends Record<string, unknown>>({
   const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       {
-        accessorFn: (original) => original.product?.code,
-        header: 'Code',
+        accessorKey: 'productNameWithCode',
+        header: 'Product',
       },
       {
-        accessorFn: (original) => original.product?.name,
-        header: 'Product',
+        accessorKey: 'description',
+        header: 'Description',
       },
       {
         accessorKey: 'quantity',
@@ -115,7 +115,9 @@ const InvoiceForm = <TDataType extends Record<string, unknown>>({
           {actions}
         </footer>
       </FormStyled>
-      {showDetailForm && <InvoiceDetailForm onAccept={onAcceptDetail} onFinish={() => setShowDetailForm(false)} />}
+      {showDetailForm && (
+        <InvoiceDetailForm onAcceptDetail={onAcceptDetail} onFinish={() => setShowDetailForm(false)} />
+      )}
     </>
   );
 };

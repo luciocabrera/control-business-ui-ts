@@ -1,3 +1,4 @@
+import { Portal } from 'components';
 import { useFormDataArgs } from 'hooks';
 import { FormFieldType, FormFieldGroupType, FormSimpleFieldType, FieldBaseValueType } from 'types';
 import { getErrorField } from 'utilities';
@@ -43,7 +44,8 @@ export const getFieldElements = <TDataType extends Record<string, unknown>>(
         const errorField = getErrorField(simpleField, form.errors);
         const fieldKey = `${groupId}-form-field-${index}-${simpleField.accessor}`;
 
-        if (field?.render) return field?.render(form.data[simpleField.accessor], form.setField);
+        if (field?.render)
+          return <div key={fieldKey}>{field?.render(form.data[simpleField.accessor], form.setField)}</div>;
         return (
           <FormField
             key={fieldKey}

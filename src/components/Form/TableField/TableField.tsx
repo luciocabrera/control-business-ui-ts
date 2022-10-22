@@ -1,5 +1,6 @@
 //assets
 import { detailsViewImg } from 'assets';
+import { Portal } from 'components';
 import ReadOnlyTable from 'components/Table/ReadOnlyTable/ReadOnlyTable';
 import { memo, forwardRef, useMemo, useCallback, useState } from 'react';
 import type { ColumnDef } from 'types';
@@ -26,11 +27,11 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
 
   const onAcceptDetail = useCallback(
     (detail: DetailData) => {
-      const newDetails = [...new Set([...data, detail])];
-      debugger;
-      //  setField?.(accessor, newDetails);
+      const newDetails = [...new Set([...data, detail as Record<string, unknown>])];
+
+      setField?.(accessor, newDetails);
     },
-    [data],
+    [accessor, data, setField],
   );
 
   const columnsWithActions = useMemo<ColumnDef<TData>[]>(
@@ -62,7 +63,11 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
         <ReadOnlyTable<TData> data={normalizedValue} columns={columnsWithActions} useRadius />{' '}
       </FieldGroupStyled>
       {
-        showDetailForm && renderDetail?.(onAcceptDetail, () => setShowDetailForm(false))
+        showDetailForm && (
+          <Portal>
+            <>{renderDetail?.(onAcceptDetail, () => setShowDetailForm(false))}</>
+          </Portal>
+        )
         // <TableDetailForm onAccept={onAcceptDetail} onFinish={() => setShowDetailForm(false)} title={''} fields={[]} />
       }
     </>

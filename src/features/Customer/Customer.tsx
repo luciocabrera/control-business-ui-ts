@@ -159,6 +159,18 @@ const Customer = memo(() => {
               },
             ],
           },
+          {
+            accessor: 'email',
+            label: 'Email',
+            type: 'text',
+            value: customer?.defaultEmail?.email,
+            rules: [
+              {
+                type: 'maxLength',
+                value: 120,
+              },
+            ],
+          },
         ],
       },
       {
@@ -271,6 +283,7 @@ const Customer = memo(() => {
       customer?.currentAddress.line2,
       customer?.currentAddress.postalCode,
       customer?.currentAddress.state,
+      customer?.defaultEmail?.email,
       customer?.defaultPhone?.number,
       customer?.documentId,
       customer?.documentTypeName,
@@ -285,8 +298,17 @@ const Customer = memo(() => {
 
   const onAccept = useCallback(
     async (payload: CustomerFormType) => {
-      const { firstName, lastName, documentId, documentTypeName, titleName, initials, number, ...currentAddress } =
-        payload;
+      const {
+        firstName,
+        lastName,
+        documentId,
+        documentTypeName,
+        titleName,
+        initials,
+        number,
+        email,
+        ...currentAddress
+      } = payload;
       const calculatedCustomerId = customerId === 'new' ? undefined : customerId;
 
       const body: CustomerCreateType = {
@@ -299,6 +321,7 @@ const Customer = memo(() => {
         titleName,
         addresses: { ...currentAddress },
         phones: { number },
+        emails: { email },
       };
 
       try {

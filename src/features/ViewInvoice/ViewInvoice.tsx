@@ -31,11 +31,7 @@ const ViewInvoice = memo(() => {
   const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       {
-        accessorFn: (original) => original.product?.code,
-        header: 'Code',
-      },
-      {
-        accessorFn: (original) => original.product?.name,
+        accessorKey: 'productNameWithCode',
         header: 'Product',
       },
       {
@@ -88,10 +84,10 @@ const ViewInvoice = memo(() => {
                 ],
               },
               {
-                accessor: 'firstName',
+                accessor: 'fullNameWithInitials',
                 label: 'Customer',
                 type: 'text',
-                value: `${invoice?.customer?.firstName} ${invoice?.customer?.lastName}`,
+                value: invoice?.customer?.fullNameWithInitials,
                 readonly: true,
               },
             ],
@@ -165,8 +161,7 @@ const ViewInvoice = memo(() => {
     ],
     [
       columns,
-      invoice?.customer?.firstName,
-      invoice?.customer?.lastName,
+      invoice?.customer?.fullNameWithInitials,
       invoice?.date,
       invoice?.invoice,
       invoice?.subtotal,

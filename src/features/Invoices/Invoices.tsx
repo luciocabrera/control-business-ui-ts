@@ -24,12 +24,8 @@ const Invoices = () => {
         cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
       },
       {
-        accessorFn: (original) => original.customer?.firstName,
-        header: 'First Name',
-      },
-      {
-        accessorFn: (original) => original.customer?.lastName,
-        header: 'Last Name',
+        accessorFn: (original) => original.customer?.fullNameWithInitials,
+        header: 'Customer',
       },
       {
         accessorKey: 'subtotal',

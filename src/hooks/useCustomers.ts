@@ -36,11 +36,12 @@ export const usePostCustomer = () => {
   const apiRequest = useApiRequest();
   return useCallback(
     async (customer: CustomerCreateType): Promise<ApiResponse<CustomerType>> => {
+      const { customerId, ...rest } = customer;
       const requestOptions: OptionsType = {
-        method: customer.customerId ? 'PATCH' : 'POST',
-        body: JSON.stringify(customer),
+        method: customerId ? 'PATCH' : 'POST',
+        body: JSON.stringify(rest),
       };
-      const url = customer.customerId ? `${endpoints.customers}/${customer.customerId ?? ''}` : endpoints.customers;
+      const url = customerId ? `${endpoints.customers}/${customerId ?? ''}` : endpoints.customers;
 
       return apiRequest<CustomerType>(url, requestOptions);
     },

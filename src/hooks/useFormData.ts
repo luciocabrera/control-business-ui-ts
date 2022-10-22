@@ -6,6 +6,7 @@ import type {
   FormFieldType,
   SetFieldFromEvent,
   SetFieldType,
+  SetPartialFieldsType,
   VerifyFormType,
 } from 'types';
 // utilities
@@ -23,6 +24,7 @@ type StateType<TDataType> = {
 enum ActionKind {
   setField = 'setField',
   setForm = 'setForm',
+  setPartialFields = 'setPartialFields',
   init = 'init',
   setData = 'setData',
   reset = 'reset',
@@ -34,6 +36,10 @@ type ActionType<TDataType> =
   | {
       type: ActionKind.setField;
       payload: { accessor: string; value?: FieldValueType };
+    }
+  | {
+      type: ActionKind.setPartialFields;
+      payload: { partialFields: Partial<TDataType> };
     }
   | {
       type: ActionKind.setForm;
@@ -58,6 +64,7 @@ export type useFormDataArgs<TDataType extends Record<string, unknown>> = {
   errors: FormFieldErrorType[];
   resetForm: () => void;
   setField: SetFieldType;
+  setPartialFields: SetPartialFieldsType<TDataType>;
   verifyForm: VerifyFormType;
   setFieldFromEvent: SetFieldFromEvent;
 };
@@ -78,6 +85,8 @@ export const useFormData = <TDataType extends Record<string, unknown>>(
         return action.payload.accessor
           ? { ...state, data: { ...(state.data as TDataType), [action.payload.accessor]: action.payload.value } }
           : state;
+      case ActionKind.setPartialFields:
+        return { ...state, data: { ...(state.data as TDataType), ...action.payload.partialFields } };
       case ActionKind.setForm:
         return {
           ...state,
@@ -124,6 +133,11 @@ export const useFormData = <TDataType extends Record<string, unknown>>(
     [],
   );
 
+  const setPartialFields = useCallback(
+    (partialFields: Partial<TDataType>) => dispatch({ type: ActionKind.setPartialFields, payload: { partialFields } }),
+    [],
+  );
+
   const setFieldFromEvent = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) =>
       dispatch({ type: ActionKind.setField, payload: { accessor: event.target.name, value: event.target.value } }),
@@ -155,6 +169,7 @@ export const useFormData = <TDataType extends Record<string, unknown>>(
     errors: state.errors as FormFieldErrorType[],
     resetForm,
     setField,
+    setPartialFields,
     setFieldFromEvent,
     verifyForm,
   };
