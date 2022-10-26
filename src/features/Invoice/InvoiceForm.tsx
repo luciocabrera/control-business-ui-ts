@@ -5,10 +5,11 @@ import { FormProps } from 'components/Form/Form/Form.types';
 import { getFieldElements } from 'components/Form/Form/util';
 // contexts
 import { useAddNotification } from 'contexts';
+import { FormDataContext, useFormDataContext } from 'contexts/FormDataContext';
 // hooks
 import { useFormData } from 'hooks';
 // react
-import { memo, useMemo, useState } from 'react';
+import { memo, useContext, useMemo, useState } from 'react';
 
 // styles
 
@@ -27,7 +28,8 @@ const InvoiceForm = <TDataType extends Record<string, unknown>>({
   onAccept,
   onFinish,
 }: FormProps<TDataType>) => {
-  const form = useFormData<TDataType>(initialFields, initialData);
+  const form = useFormDataContext();
+  // const form = useFormData<TDataType>(initialFields, initialData);
 
   const [showDetailForm, setShowDetailForm] = useState(false);
   const { data, verifyForm, setField } = form;
@@ -75,7 +77,7 @@ const InvoiceForm = <TDataType extends Record<string, unknown>>({
     }
 
     if (typeof onAccept === 'function' && hasChanged) {
-      onAccept(data);
+      onAccept(data as TDataType);
     } else {
       onFinish?.(event);
     }
@@ -94,7 +96,7 @@ const InvoiceForm = <TDataType extends Record<string, unknown>>({
         <Header icon={icon} title={title} onClose={onFinish} />
         <main>
           <>
-            {getFieldElements(form, initialFields, undefined, undefined, viewMode)}
+            {getFieldElements(initialFields, undefined, undefined, viewMode)}
             <ReadOnlyTable<InvoicesDetails>
               data={(data?.invoicesDetails as InvoicesDetails[]) || []}
               columns={columns}

@@ -66,7 +66,7 @@ export type FormFieldBaseType = {
   tooltip?: string;
   normalize?: (value?: FieldValueType) => FieldValueType;
   onSelect?: (value?: FieldValueType) => void;
-  change?: SetFieldFromEvent;
+  change?: <TDataType>(data: TDataType, setPartialFields: SetPartialFieldsType<TDataType>) => void;
   disabled?: boolean;
   readonly?: boolean;
   rules?: FormRuleType[];

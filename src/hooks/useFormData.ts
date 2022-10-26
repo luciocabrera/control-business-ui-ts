@@ -29,6 +29,7 @@ enum ActionKind {
   setData = 'setData',
   reset = 'reset',
   verify = 'verify',
+  initFromState = 'initFromState',
 }
 
 type ActionType<TDataType> =
@@ -46,8 +47,12 @@ type ActionType<TDataType> =
       payload: { data: TDataType; fields: FormFieldType[] };
     }
   | {
-      type: ActionKind.init;
+      type: ActionKind.initFromState;
       payload: { fields: FormFieldType[] };
+    }
+  | {
+      type: ActionKind.init;
+      payload: { fields: FormFieldType[]; data: TDataType };
     }
   | {
       type: ActionKind.setData;
@@ -62,6 +67,7 @@ export type useFormDataArgs<TDataType extends Record<string, unknown>> = {
   data: TDataType;
   fields?: FormFieldType[];
   errors: FormFieldErrorType[];
+  initForm: (data: TDataType, fields: FormFieldType[]) => void;
   resetForm: () => void;
   setField: SetFieldType;
   setPartialFields: SetPartialFieldsType<TDataType>;
@@ -69,11 +75,10 @@ export type useFormDataArgs<TDataType extends Record<string, unknown>> = {
   setFieldFromEvent: SetFieldFromEvent;
 };
 
-export const useFormData = <TDataType extends Record<string, unknown>>(
-  initialFields: FormFieldType[],
-  initialData?: TDataType,
-): useFormDataArgs<TDataType> => {
-  const calculatedInitialData = getInitialData(initialFields, initialData);
+export const useFormData = <TDataType extends Record<string, unknown>>(): // initialFields?: FormFieldType[],
+// initialData?: TDataType,
+useFormDataArgs<TDataType> => {
+  // const calculatedInitialData = getInitialData(initialFields || [], initialData) || {};
 
   const reducer = <TDataType extends Record<string, unknown>>(
     state: StateType<TDataType>,
@@ -94,8 +99,16 @@ export const useFormData = <TDataType extends Record<string, unknown>>(
           fields: action.payload.fields,
           initialData: action.payload.data,
         };
+      case ActionKind.initFromState:
+        const newCalculatedDataFormState = getInitialData<TDataType>(action.payload.fields || [], state.data);
+        return {
+          ...state,
+          data: newCalculatedDataFormState,
+          fields: action.payload.fields,
+          initialData: newCalculatedDataFormState,
+        };
       case ActionKind.init:
-        const newCalculatedData = getInitialData<TDataType>(action.payload.fields || [], state.data);
+        const newCalculatedData = getInitialData<TDataType>(action.payload.fields || [], action.payload.data);
         return { ...state, data: newCalculatedData, fields: action.payload.fields, initialData: newCalculatedData };
       case ActionKind.setData:
         return { ...state, data: action.payload.data, initialData: action.payload.data };
@@ -115,17 +128,17 @@ export const useFormData = <TDataType extends Record<string, unknown>>(
     }
   };
   const [state, dispatch] = useReducer(reducer, {
-    fields: initialFields,
-    initialData: calculatedInitialData,
-    data: calculatedInitialData,
+    fields: [], // initialFields || [],
+    initialData: {}, // calculatedInitialData,
+    data: {}, // calculatedInitialData,
     hasErrors: false,
     hasChanged: false,
     errors: [],
   });
 
-  useEffect(() => {
-    dispatch({ type: ActionKind.init, payload: { fields: initialFields } });
-  }, [initialFields]);
+  // useEffect(() => {
+  //   dispatch({ type: ActionKind.initFromState, payload: { fields: initialFields ||[] } });
+  // }, [initialFields]);
 
   const setField = useCallback(
     (accessor: string, value: FieldValueType) =>
@@ -135,6 +148,11 @@ export const useFormData = <TDataType extends Record<string, unknown>>(
 
   const setPartialFields = useCallback(
     (partialFields: Partial<TDataType>) => dispatch({ type: ActionKind.setPartialFields, payload: { partialFields } }),
+    [],
+  );
+
+  const initForm = useCallback(
+    (data: TDataType, fields: FormFieldType[]) => dispatch({ type: ActionKind.init, payload: { data, fields } }),
     [],
   );
 
@@ -167,6 +185,7 @@ export const useFormData = <TDataType extends Record<string, unknown>>(
   return {
     data: state.data as TDataType,
     errors: state.errors as FormFieldErrorType[],
+    initForm,
     resetForm,
     setField,
     setPartialFields,

@@ -1,4 +1,4 @@
-import type { FormFieldBaseType, FormFieldGroupType, FormFieldType } from 'types';
+import type { FieldValueType, FormFieldBaseType, FormFieldGroupType, FormFieldType } from 'types';
 
 export const getInitialData = <T extends Record<string, unknown>>(fields: FormFieldType[], initialData?: T) => {
   let newData: Record<string, unknown> = {} as T;
@@ -21,3 +21,5 @@ export const getInitialData = <T extends Record<string, unknown>>(fields: FormFi
   });
   return newData as T;
 };
+
+const evaluateValue = (value: FieldValueType | (() => void)) => (typeof value === 'function' ? value() : value);

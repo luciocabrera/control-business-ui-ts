@@ -44,7 +44,7 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
       //   productDescription: description,
       //   productPrice: price,
       // }));
-
+      debugger;
       setSelectedProduct({
         productNameWithCode: newSelectedProduct?.nameWithCode ?? '',
         productDescription: newSelectedProduct?.description ?? '',

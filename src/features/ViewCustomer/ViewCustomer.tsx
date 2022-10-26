@@ -10,6 +10,7 @@ import { FormWrapper } from 'styles';
 import { memo, useMemo } from 'react';
 // types
 import type { CustomerFormType, FormFieldType } from 'types';
+import { FormDataContextProvider } from 'contexts/FormDataContext';
 
 const ViewCustomer = memo(() => {
   const { customerId } = useParams();
@@ -161,6 +162,7 @@ const ViewCustomer = memo(() => {
       customer?.currentAddress.line2,
       customer?.currentAddress.postalCode,
       customer?.currentAddress.state,
+      customer?.defaultEmail?.email,
       customer?.defaultPhone?.number,
       customer?.documentId,
       customer?.documentTypeName,
@@ -174,17 +176,19 @@ const ViewCustomer = memo(() => {
   if (isLoadingCustomer || !fields) return <PageSpinner />;
 
   return (
-    <FormWrapper>
-      <Overlay />v
-      <Form<CustomerFormType>
-        icon={detailsViewImg}
-        title="View Customer"
-        initialFields={fields}
-        initialData={customer}
-        actions={<CustomerActions customer={customer} />}
-        onFinish={() => navigate('/customers')}
-      />
-    </FormWrapper>
+    <FormDataContextProvider>
+      <FormWrapper>
+        <Overlay />
+        <Form<CustomerFormType>
+          icon={detailsViewImg}
+          title="View Customer"
+          initialFields={fields}
+          initialData={customer}
+          actions={<CustomerActions customer={customer} />}
+          onFinish={() => navigate('/customers')}
+        />
+      </FormWrapper>
+    </FormDataContextProvider>
   );
 });
 export default ViewCustomer;

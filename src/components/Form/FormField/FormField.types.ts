@@ -2,9 +2,9 @@ import type { FieldBaseValueType, FormFieldBaseType, SetFieldFromEvent, SetField
 
 export type FormFieldProps = {
   viewMode?: boolean;
-  value?: string | number;
+  // value?: string | number;
   width?: number;
   field: Omit<FormFieldBaseType, 'value'> & { value?: FieldBaseValueType };
-  setField: SetFieldType;
-  setFieldFromEvent: SetFieldFromEvent;
+  // setField: SetFieldType;
+  // setFieldFromEvent: SetFieldFromEvent;
 };

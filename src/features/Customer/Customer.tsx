@@ -21,6 +21,7 @@ import { FormWrapper } from 'styles';
 import { memo, useCallback, useMemo } from 'react';
 // types
 import type { APiResponseErrorType, CustomerCreateType, CustomerFormType, FormFieldType } from 'types';
+import { FormDataContextProvider } from 'contexts/FormDataContext';
 
 const Customer = memo(() => {
   const { customerId } = useParams();
@@ -360,19 +361,21 @@ const Customer = memo(() => {
   const title = `${isCreating ? 'New' : 'Edit'} Customer`;
 
   return (
-    <FormWrapper>
-      <Overlay />v
-      <Form<CustomerFormType>
-        icon={detailsViewImg}
-        title={title}
-        initialFields={fields}
-        initialData={customer}
-        onAccept={onAccept}
-        onFinish={() => navigate('/customers')}
-        actions={<CustomerActions customer={customer} />}
-        viewMode={false}
-      />
-    </FormWrapper>
+    <FormDataContextProvider>
+      <FormWrapper>
+        <Overlay />v
+        <Form<CustomerFormType>
+          icon={detailsViewImg}
+          title={title}
+          initialFields={fields}
+          initialData={customer}
+          onAccept={onAccept}
+          onFinish={() => navigate('/customers')}
+          actions={<CustomerActions customer={customer} />}
+          viewMode={false}
+        />
+      </FormWrapper>
+    </FormDataContextProvider>
   );
 });
 export default Customer;
