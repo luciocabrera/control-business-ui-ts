@@ -19,8 +19,9 @@ import type {
   CreateInvoiceDetail,
 } from 'types';
 // utilities
-import { getDateAsString, getFormattedNumber } from 'utilities';
+import { getDateAsString, getFormattedNumber, getInitialData } from 'utilities';
 import TableField from 'components/Form/TableField/TableField';
+import createFastContext from 'contexts/FormDataContextNew';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -171,19 +172,24 @@ const ViewInvoice = memo(() => {
   );
 
   if (isLoadingInvoice || !fields) return <PageSpinner />;
+  const newCalculatedData = getInitialData<InvoiceFormType>(fields, invoice);
+  const { Provider, useStore } = createFastContext<InvoiceFormType>(newCalculatedData);
 
   return (
-    <FormWrapper>
-      <Overlay />
-      <Form<InvoiceFormType>
-        icon={detailsViewImg}
-        title="View invoice"
-        initialFields={fields}
-        initialData={invoice}
-        actions={<InvoiceActions invoice={invoice} />}
-        onFinish={() => navigate('/invoices')}
-      />
-    </FormWrapper>
+    <Provider>
+      <FormWrapper>
+        <Overlay />
+        <Form<InvoiceFormType>
+          icon={detailsViewImg}
+          title="View invoice"
+          initialFields={fields}
+          initialData={invoice}
+          actions={<InvoiceActions invoice={invoice} />}
+          onFinish={() => navigate('/invoices')}
+          useStore={useStore}
+        />
+      </FormWrapper>
+    </Provider>
   );
 });
 export default ViewInvoice;

@@ -10,6 +10,9 @@ export type FormProps<TDataType> = {
   children?: ReactNode;
   onAccept?: (data: TDataType) => void;
   onFinish: (event: MouseEvent<HTMLButtonElement>) => void;
+  useStore: <SelectorOutput>(
+    selector: (store: Record<string, unknown>) => SelectorOutput,
+  ) => [SelectorOutput, (value: Record<string, unknown>) => void];
 };
 
 export type ModalType = ModalProps & {

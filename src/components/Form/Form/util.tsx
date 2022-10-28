@@ -5,7 +5,12 @@ import { getErrorField } from 'utilities';
 import FormField from '../FormField/FormField';
 import { FieldGroupStyled, FieldRowStyled } from './Form.styled';
 
+type UseStore = <SelectorOutput>(
+  selector: (store: Record<string, unknown>) => SelectorOutput,
+) => [SelectorOutput, (value: Record<string, unknown>) => void];
+
 export const getFieldElements = <TDataType extends Record<string, unknown>>(
+  useStore: UseStore,
   formFields?: FormFieldType[],
   fieldWidth?: number,
   groupId: string = '',
@@ -22,7 +27,7 @@ export const getFieldElements = <TDataType extends Record<string, unknown>>(
           groupField?.fields && (
             <FieldGroupStyled key={groupKey}>
               <legend>{groupField?.label}</legend>
-              {getFieldElements(groupField?.fields, 100, groupKey, viewMode)}
+              {getFieldElements(useStore, groupField?.fields, 100, groupKey, viewMode)}
             </FieldGroupStyled>
           )
         );
@@ -33,7 +38,7 @@ export const getFieldElements = <TDataType extends Record<string, unknown>>(
         return (
           rowField?.fields && (
             <FieldRowStyled key={rowKey}>
-              {getFieldElements(rowField?.fields, calculatedWidth, rowKey, viewMode)}
+              {getFieldElements(useStore, rowField?.fields, calculatedWidth, rowKey, viewMode)}
             </FieldRowStyled>
           )
         );
@@ -54,6 +59,7 @@ export const getFieldElements = <TDataType extends Record<string, unknown>>(
             // setField={form.setField}
             width={fieldWidth}
             viewMode={viewMode}
+            useStore={useStore}
             // {...errorField}
           />
         );

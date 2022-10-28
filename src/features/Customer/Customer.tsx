@@ -21,7 +21,9 @@ import { FormWrapper } from 'styles';
 import { memo, useCallback, useMemo } from 'react';
 // types
 import type { APiResponseErrorType, CustomerCreateType, CustomerFormType, FormFieldType } from 'types';
-import { FormDataContextProvider } from 'contexts/FormDataContext';
+// import { FormDataContextProvider } from 'contexts/FormDataContext';
+import createFastContext from 'contexts/FormDataContextNew';
+import { getInitialData } from 'utilities';
 
 const Customer = memo(() => {
   const { customerId } = useParams();
@@ -360,10 +362,13 @@ const Customer = memo(() => {
 
   const title = `${isCreating ? 'New' : 'Edit'} Customer`;
 
+  const newCalculatedData = getInitialData<CustomerFormType>(fields, customer);
+  const { Provider, useStore } = createFastContext<CustomerFormType>(newCalculatedData);
+
   return (
-    <FormDataContextProvider>
+    <Provider>
       <FormWrapper>
-        <Overlay />v
+        <Overlay />
         <Form<CustomerFormType>
           icon={detailsViewImg}
           title={title}
@@ -373,9 +378,10 @@ const Customer = memo(() => {
           onFinish={() => navigate('/customers')}
           actions={<CustomerActions customer={customer} />}
           viewMode={false}
+          useStore={useStore}
         />
       </FormWrapper>
-    </FormDataContextProvider>
+    </Provider>
   );
 });
 export default Customer;

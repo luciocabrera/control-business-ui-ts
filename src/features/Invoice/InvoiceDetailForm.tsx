@@ -10,6 +10,8 @@ import { FormWrapper } from 'styles';
 import { memo, useCallback, useMemo, useState } from 'react';
 // types
 import type { CreateInvoiceDetail, FormFieldType, InvoicesDetails, ProductInvoicesDetails, ProductType } from 'types';
+import createFastContext from 'contexts/FormDataContextNew';
+import { getInitialData } from 'utilities';
 
 export type DetailFormProps = {
   detail?: InvoicesDetails;
@@ -121,21 +123,26 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
   if (isLoadingProducts) return <PageSpinner />;
 
   const title = `${isCreating ? 'New' : 'Edit'} Detail`;
+  const newCalculatedData = getInitialData<CreateInvoiceDetail>(fields, detail);
+  const { Provider, useStore } = createFastContext<CreateInvoiceDetail>(newCalculatedData);
 
   return (
-    <FormWrapper>
-      <Overlay />
-      <Form<CreateInvoiceDetail>
-        icon={detailsViewImg}
-        title={title}
-        initialFields={fields}
-        initialData={detail}
-        onAccept={onAccept}
-        onFinish={onFinish}
-        // actions={<CustomerActions customer={customer} />}
-        viewMode={false}
-      />
-    </FormWrapper>
+    <Provider>
+      <FormWrapper>
+        <Overlay />
+        <Form<CreateInvoiceDetail>
+          icon={detailsViewImg}
+          title={title}
+          initialFields={fields}
+          initialData={detail}
+          onAccept={onAccept}
+          onFinish={onFinish}
+          // actions={<CustomerActions customer={customer} />}
+          viewMode={false}
+          useStore={useStore}
+        />
+      </FormWrapper>
+    </Provider>
   );
 });
 export default DetailForm;

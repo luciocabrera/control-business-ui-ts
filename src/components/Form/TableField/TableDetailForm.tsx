@@ -10,6 +10,8 @@ import { FormWrapper } from 'styles';
 import { memo, useMemo } from 'react';
 // types
 import type { CreateInvoiceDetail, FormFieldType, InvoicesDetails } from 'types';
+import createFastContext from 'contexts/FormDataContextNew';
+import { getInitialData } from 'utilities';
 
 type DetailFormProps<TData> = {
   detail?: TData;
@@ -30,20 +32,27 @@ const TableDetailForm = <TData extends Record<string, unknown>>({
 }: DetailFormProps<TData>) => {
   if (isLoading) return <PageSpinner />;
 
+  const newCalculatedData = getInitialData<TData>(fields, detail);
+  const { Provider, useStore } = createFastContext<TData>(newCalculatedData);
+
   return (
-    <FormWrapper>
-      <Overlay />
-      <Form<TData>
-        icon={detailsViewImg}
-        title={title}
-        initialFields={fields}
-        initialData={detail}
-        onAccept={onAccept}
-        onFinish={onFinish}
-        // actions={<CustomerActions customer={customer} />}
-        viewMode={false}
-      />
-    </FormWrapper>
+    <Provider>
+      <FormWrapper>
+        <Overlay />
+        <Form<TData>
+          icon={detailsViewImg}
+          title={title}
+          initialFields={fields}
+          initialData={detail}
+          onAccept={onAccept}
+          onFinish={onFinish}
+          // actions={<CustomerActions customer={customer} />}
+          viewMode={false}
+          //@ts-ignore
+          useStore={useStore}
+        />
+      </FormWrapper>
+    </Provider>
   );
 };
 export default memo(TableDetailForm) as typeof TableDetailForm;

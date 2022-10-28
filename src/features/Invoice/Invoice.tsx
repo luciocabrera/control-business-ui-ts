@@ -29,11 +29,12 @@ import type {
   CreateInvoiceDetail,
 } from 'types';
 // utilities
-import { getFormattedNumber } from 'utilities';
+import { getFormattedNumber, getInitialData } from 'utilities';
 import { useAddNotification, useAddToast } from 'contexts';
-import InvoiceForm from './InvoiceForm';
+// import InvoiceForm from './InvoiceForm';
 import TableField from 'components/Form/TableField/TableField';
 import DetailForm from './InvoiceDetailForm';
+import createFastContext from 'contexts/FormDataContextNew';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -333,21 +334,26 @@ const ViewInvoice = memo(() => {
   if (((isLoadingInvoice || !fields) && !isCreating) || isLoadingCustomers) return <PageSpinner />;
 
   const title = `${isCreating ? 'New' : 'Edit'} Invoice`;
+  const newCalculatedData = getInitialData<InvoiceFormType>(fields, invoice);
+  const { Provider, useStore } = createFastContext<InvoiceFormType>(newCalculatedData);
 
   return (
-    <FormWrapper>
-      <Overlay />
-      <Form<InvoiceFormType>
-        icon={detailsViewImg}
-        title={title}
-        initialFields={fields}
-        initialData={invoice}
-        onAccept={onAccept}
-        actions={<InvoiceActions invoice={invoice} />}
-        onFinish={() => navigate('/invoices')}
-        viewMode={false}
-      ></Form>
-    </FormWrapper>
+    <Provider>
+      <FormWrapper>
+        <Overlay />
+        <Form<InvoiceFormType>
+          icon={detailsViewImg}
+          title={title}
+          initialFields={fields}
+          initialData={invoice}
+          onAccept={onAccept}
+          actions={<InvoiceActions invoice={invoice} />}
+          onFinish={() => navigate('/invoices')}
+          viewMode={false}
+          useStore={useStore}
+        ></Form>
+      </FormWrapper>
+    </Provider>
   );
 });
 export default ViewInvoice;

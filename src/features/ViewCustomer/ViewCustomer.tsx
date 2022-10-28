@@ -11,6 +11,8 @@ import { memo, useMemo } from 'react';
 // types
 import type { CustomerFormType, FormFieldType } from 'types';
 import { FormDataContextProvider } from 'contexts/FormDataContext';
+import { getInitialData } from 'utilities';
+import createFastContext from 'contexts/FormDataContextNew';
 
 const ViewCustomer = memo(() => {
   const { customerId } = useParams();
@@ -175,8 +177,12 @@ const ViewCustomer = memo(() => {
 
   if (isLoadingCustomer || !fields) return <PageSpinner />;
 
+  const newCalculatedData = getInitialData<CustomerFormType>(fields, customer);
+  const { Provider, useStore } = createFastContext<CustomerFormType>(newCalculatedData);
+
   return (
-    <FormDataContextProvider>
+    // <FormDataContextProvider>
+    <Provider>
       <FormWrapper>
         <Overlay />
         <Form<CustomerFormType>
@@ -186,9 +192,11 @@ const ViewCustomer = memo(() => {
           initialData={customer}
           actions={<CustomerActions customer={customer} />}
           onFinish={() => navigate('/customers')}
+          useStore={useStore}
         />
       </FormWrapper>
-    </FormDataContextProvider>
+    </Provider>
+    // </FormDataContextProvider>
   );
 });
 export default ViewCustomer;
