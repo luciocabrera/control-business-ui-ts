@@ -25,7 +25,7 @@ const Select = memo(
             onChange?.(event);
           }}
         >
-          <option value="" disabled hidden>
+          <option key="default-option" value="">
             Choose {label}
           </option>
           {options?.map((option) => (

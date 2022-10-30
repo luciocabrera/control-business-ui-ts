@@ -1,13 +1,15 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Form, PageSpinner, Overlay, InvoiceActions, NumberDisplay, ReadOnlyTable } from 'components';
+import { Form, PageSpinner, Overlay, InvoiceActions, NumberDisplay, TableField } from 'components';
+// contexts
+import { FormDataContextProvider } from 'contexts';
 // hooks
 import { useParams, useNavigate, useFetchInvoice } from 'hooks';
 // styles
 import { FormWrapper } from 'styles';
 // react
-import { ChangeEvent, memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 // types
 import type {
   InvoiceFormType,
@@ -19,9 +21,7 @@ import type {
   CreateInvoiceDetail,
 } from 'types';
 // utilities
-import { getDateAsString, getFormattedNumber, getInitialData } from 'utilities';
-import TableField from 'components/Form/TableField/TableField';
-import createFastContext from 'contexts/FormDataContextNew';
+import { getDateAsString, getFormattedNumber } from 'utilities';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -147,12 +147,12 @@ const ViewInvoice = memo(() => {
             accessor: 'invoiceDetails',
             label: 'invoiceDetails',
             type: 'table',
-            render: (value) => (
+            render: () => (
               <TableField<InvoicesDetails, CreateInvoiceDetail>
                 accessor="invoiceDetails"
                 label="Details"
                 columns={columns}
-                data={value as InvoicesDetails[]}
+                data={invoice?.invoiceDetails as InvoicesDetails[]}
               />
             ),
             readonly: true,
@@ -165,6 +165,7 @@ const ViewInvoice = memo(() => {
       invoice?.customer?.fullNameWithInitials,
       invoice?.date,
       invoice?.invoice,
+      invoice?.invoiceDetails,
       invoice?.subtotal,
       invoice?.taxes,
       invoice?.total,
@@ -172,11 +173,9 @@ const ViewInvoice = memo(() => {
   );
 
   if (isLoadingInvoice || !fields) return <PageSpinner />;
-  const newCalculatedData = getInitialData<InvoiceFormType>(fields, invoice);
-  const { Provider, useStore } = createFastContext<InvoiceFormType>(newCalculatedData);
 
   return (
-    <Provider>
+    <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoice}>
       <FormWrapper>
         <Overlay />
         <Form<InvoiceFormType>
@@ -186,10 +185,9 @@ const ViewInvoice = memo(() => {
           initialData={invoice}
           actions={<InvoiceActions invoice={invoice} />}
           onFinish={() => navigate('/invoices')}
-          useStore={useStore}
         />
       </FormWrapper>
-    </Provider>
+    </FormDataContextProvider>
   );
 });
 export default ViewInvoice;

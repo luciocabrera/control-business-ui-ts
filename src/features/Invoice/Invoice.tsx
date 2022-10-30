@@ -1,7 +1,7 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { PageSpinner, Overlay, InvoiceActions, ErrorDisplay, NumberDisplay, Form } from 'components';
+import { PageSpinner, InvoiceActions, ErrorDisplay, Form } from 'components';
 // hooks
 import {
   useParams,
@@ -11,30 +11,19 @@ import {
   useFetchCustomers,
   usePostInvoice,
   useRefreshInvoices,
-  useFetchProducts,
 } from 'hooks';
-// styles
-import { FormWrapper } from 'styles';
 // react
-import { ChangeEvent, memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 // types
-import type {
-  InvoiceFormType,
-  FormFieldType,
-  InvoiceCreateType,
-  APiResponseErrorType,
-  InvoicesDetails,
-  ColumnDef,
-  FieldBaseValueType,
-  CreateInvoiceDetail,
-} from 'types';
+import type { InvoiceFormType, FormFieldType, InvoiceCreateType, APiResponseErrorType, InvoicesDetails } from 'types';
 // utilities
-import { getFormattedNumber, getInitialData } from 'utilities';
-import { useAddNotification, useAddToast } from 'contexts';
-// import InvoiceForm from './InvoiceForm';
-import TableField from 'components/Form/TableField/TableField';
+
+import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
+
 import DetailForm from './InvoiceDetailForm';
-import createFastContext from 'contexts/FormDataContextNew';
+
+import InvoiceAmountsField from 'components/Form/Form/InvoiceAmountsField/InvoiceAmountsField';
+import InvoiceDetailsField from 'components/Form/TableField/InvoiceDetailsField';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -60,85 +49,6 @@ const ViewInvoice = memo(() => {
       })),
     [customers],
   );
-  const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
-    () => [
-      {
-        accessorKey: 'productNameWithCode',
-        header: 'Product',
-      },
-      {
-        accessorKey: 'description',
-        header: 'Description',
-      },
-      {
-        accessorKey: 'quantity',
-        header: 'Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.quantity} output={'number'} />,
-      },
-      {
-        accessorKey: 'priceUnit',
-        header: 'Price Unit',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceUnit} output={'currency'} />,
-      },
-      {
-        accessorKey: 'priceQuantity',
-        header: 'Price Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceQuantity} output={'currency'} />,
-      },
-    ],
-    [],
-  );
-
-  const { data: products, loading: isLoadingProducts } = useFetchProducts();
-
-  const productsOptions = useMemo(
-    () =>
-      products?.map((product) => ({
-        label: product.name,
-        value: product.productId,
-      })),
-    [products],
-  );
-
-  // const fieldDetails: FormFieldType[] = useMemo(
-  //   () => [
-  //     {
-  //       type: 'row',
-  //       fields: [
-  //         {
-  //           accessor: 'productId',
-  //           label: 'Product',
-  //           type: 'select',
-  //           required: true,
-  //           options: productsOptions,
-  //           value: detail?.productId,
-  //         },
-  //         {
-  //           accessor: 'quantity',
-  //           label: 'Quantity',
-  //           type: 'number',
-  //           required: true,
-  //           value: detail?.quantity,
-  //         },
-  //         {
-  //           accessor: 'priceUnit',
-  //           label: 'Price Unit',
-  //           type: 'number',
-  //           required: true,
-  //           value: detail?.priceUnit,
-  //         },
-  //         {
-  //           accessor: 'priceQuantity',
-  //           label: 'Price Quantity',
-  //           type: 'number',
-  //           required: true,
-  //           value: detail?.priceQuantity,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   [detail?.priceQuantity, detail?.priceUnit, detail?.productId, detail?.quantity, productsOptions],
-  // );
 
   const fields: FormFieldType[] = useMemo(
     () => [
@@ -184,70 +94,11 @@ const ViewInvoice = memo(() => {
             label: 'Amounts',
             fields: [
               {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'subtotal',
-                    label: 'Subtotal',
-                    type: 'text',
-                    value: invoice?.subtotal,
-                    // normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-                    // readonly: true,
-                  },
-                ],
+                type: 'object',
+                label: 'Amounts',
+                accessor: '',
+                render: () => <InvoiceAmountsField />,
               },
-              {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'taxes',
-                    label: 'Taxes',
-                    type: 'text',
-                    value: invoice?.taxes,
-                    //  normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-                    // readonly: true,
-                  },
-                ],
-              },
-              {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'total',
-                    label: 'Total',
-                    type: 'text',
-                    value: invoice?.total,
-                    //  normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-                    // readonly: true,
-                  },
-                ],
-              },
-              {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'taxesPercentage',
-                    label: 'taxesPercentage',
-                    type: 'number',
-                    value: invoice?.taxesPercentage,
-                    // normalize: (value: FieldBaseValueType) => getFormattedNumber(value || 0),
-                    // readonly: true,
-                  },
-                ],
-              },
-              // {
-              //   type: 'row',
-              //   fields: [
-              //     {
-              //       accessor: 'invoiceDetails',
-              //       label: 'invoiceDetails',
-              //       type: 'array',
-              //       value: invoice?.invoiceDetails,
-              //       render: () => <pre>{JSON.stringify(invoice?.invoiceDetails)}</pre>,
-              //       readonly: true,
-              //     },
-              //   ],
-              // },
             ],
           },
         ],
@@ -259,15 +110,10 @@ const ViewInvoice = memo(() => {
             accessor: 'invoiceDetails',
             label: 'invoiceDetails',
             type: 'table',
-            render: (value, setField) => (
-              <TableField<InvoicesDetails, CreateInvoiceDetail>
-                accessor="invoiceDetails"
-                label="Details"
-                columns={columnsDetails}
-                data={value as InvoicesDetails[]}
-                setField={setField}
+            render: () => (
+              <InvoiceDetailsField
                 renderDetail={(
-                  onAccept: (detail: CreateInvoiceDetail) => void,
+                  onAccept: (detail: InvoicesDetails) => void,
                   onFinish: () => void,
                   detail?: InvoicesDetails,
                 ) => <DetailForm detail={detail} onAcceptDetail={onAccept} onFinish={onFinish} />}
@@ -279,24 +125,13 @@ const ViewInvoice = memo(() => {
         ],
       },
     ],
-    [
-      columnsDetails,
-      customersOptions,
-      invoice?.customerId,
-      invoice?.date,
-      invoice?.invoice,
-      invoice?.subtotal,
-      invoice?.taxes,
-      invoice?.taxesPercentage,
-      invoice?.total,
-    ],
+    [customersOptions, invoice?.customerId, invoice?.date, invoice?.invoice],
   );
 
   const onAccept = useCallback(
     async (payload: InvoiceFormType) => {
       const calculatedInvoiceId = invoiceId === 'new' ? undefined : invoiceId;
       const { customerId, date, invoiceDetails, ...rest } = payload;
-
       debugger;
       const body: InvoiceCreateType = {
         invoiceId: calculatedInvoiceId,
@@ -334,26 +169,20 @@ const ViewInvoice = memo(() => {
   if (((isLoadingInvoice || !fields) && !isCreating) || isLoadingCustomers) return <PageSpinner />;
 
   const title = `${isCreating ? 'New' : 'Edit'} Invoice`;
-  const newCalculatedData = getInitialData<InvoiceFormType>(fields, invoice);
-  const { Provider, useStore } = createFastContext<InvoiceFormType>(newCalculatedData);
 
   return (
-    <Provider>
-      <FormWrapper>
-        <Overlay />
-        <Form<InvoiceFormType>
-          icon={detailsViewImg}
-          title={title}
-          initialFields={fields}
-          initialData={invoice}
-          onAccept={onAccept}
-          actions={<InvoiceActions invoice={invoice} />}
-          onFinish={() => navigate('/invoices')}
-          viewMode={false}
-          useStore={useStore}
-        ></Form>
-      </FormWrapper>
-    </Provider>
+    <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoice}>
+      <Form<InvoiceFormType>
+        icon={detailsViewImg}
+        title={title}
+        initialFields={fields}
+        initialData={invoice}
+        onAccept={onAccept}
+        actions={<InvoiceActions invoice={invoice} />}
+        onFinish={() => navigate('/invoices')}
+        viewMode={false}
+      />
+    </FormDataContextProvider>
   );
 });
 export default ViewInvoice;

@@ -79,10 +79,7 @@ export type FormFieldGroupType = {
   fields?: FormFieldType[];
 };
 
-export type FormFieldType = { type: string; render?: (value: unknown, setField?: SetFieldType) => ReactNode } & (
-  | FormFieldGroupType
-  | FormFieldBaseType
-);
+export type FormFieldType = { type: string; render?: () => ReactNode } & (FormFieldGroupType | FormFieldBaseType);
 
 export type FormFieldStateType = {
   accessor: string;

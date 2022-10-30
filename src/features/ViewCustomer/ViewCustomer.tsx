@@ -1,18 +1,15 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Form, PageSpinner, Overlay, CustomerActions } from 'components';
+import { Form, PageSpinner, CustomerActions } from 'components';
+// contexts
+import { FormDataContextProvider } from 'contexts';
 // hooks
 import { useFetchCustomer, useParams, useNavigate } from 'hooks';
-// styles
-import { FormWrapper } from 'styles';
 // react
 import { memo, useMemo } from 'react';
 // types
 import type { CustomerFormType, FormFieldType } from 'types';
-import { FormDataContextProvider } from 'contexts/FormDataContext';
-import { getInitialData } from 'utilities';
-import createFastContext from 'contexts/FormDataContextNew';
 
 const ViewCustomer = memo(() => {
   const { customerId } = useParams();
@@ -177,26 +174,17 @@ const ViewCustomer = memo(() => {
 
   if (isLoadingCustomer || !fields) return <PageSpinner />;
 
-  const newCalculatedData = getInitialData<CustomerFormType>(fields, customer);
-  const { Provider, useStore } = createFastContext<CustomerFormType>(newCalculatedData);
-
   return (
-    // <FormDataContextProvider>
-    <Provider>
-      <FormWrapper>
-        <Overlay />
-        <Form<CustomerFormType>
-          icon={detailsViewImg}
-          title="View Customer"
-          initialFields={fields}
-          initialData={customer}
-          actions={<CustomerActions customer={customer} />}
-          onFinish={() => navigate('/customers')}
-          useStore={useStore}
-        />
-      </FormWrapper>
-    </Provider>
-    // </FormDataContextProvider>
+    <FormDataContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
+      <Form<CustomerFormType>
+        icon={detailsViewImg}
+        title="View Customer"
+        initialFields={fields}
+        initialData={customer}
+        actions={<CustomerActions customer={customer} />}
+        onFinish={() => navigate('/customers')}
+      />
+    </FormDataContextProvider>
   );
 });
 export default ViewCustomer;

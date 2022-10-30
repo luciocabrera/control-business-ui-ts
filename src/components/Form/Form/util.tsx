@@ -1,16 +1,11 @@
-import { Portal } from 'components';
-import { useFormDataArgs } from 'hooks';
-import { FormFieldType, FormFieldGroupType, FormSimpleFieldType, FieldBaseValueType } from 'types';
-import { getErrorField } from 'utilities';
+// components
 import FormField from '../FormField/FormField';
+// styles
 import { FieldGroupStyled, FieldRowStyled } from './Form.styled';
+// types
+import type { FormFieldType, FormFieldGroupType, FormSimpleFieldType } from 'types';
 
-type UseStore = <SelectorOutput>(
-  selector: (store: Record<string, unknown>) => SelectorOutput,
-) => [SelectorOutput, (value: Record<string, unknown>) => void];
-
-export const getFieldElements = <TDataType extends Record<string, unknown>>(
-  useStore: UseStore,
+export const getFieldElements = (
   formFields?: FormFieldType[],
   fieldWidth?: number,
   groupId: string = '',
@@ -27,7 +22,7 @@ export const getFieldElements = <TDataType extends Record<string, unknown>>(
           groupField?.fields && (
             <FieldGroupStyled key={groupKey}>
               <legend>{groupField?.label}</legend>
-              {getFieldElements(useStore, groupField?.fields, 100, groupKey, viewMode)}
+              {getFieldElements(groupField?.fields, 100, groupKey, viewMode)}
             </FieldGroupStyled>
           )
         );
@@ -38,30 +33,16 @@ export const getFieldElements = <TDataType extends Record<string, unknown>>(
         return (
           rowField?.fields && (
             <FieldRowStyled key={rowKey}>
-              {getFieldElements(useStore, rowField?.fields, calculatedWidth, rowKey, viewMode)}
+              {getFieldElements(rowField?.fields, calculatedWidth, rowKey, viewMode)}
             </FieldRowStyled>
           )
         );
       case 'field':
       default:
         const simpleField = field as FormSimpleFieldType;
-        // const errorField = getErrorField(simpleField, form.errors);
         const fieldKey = `${groupId}-form-field-${index}-${simpleField.accessor}`;
 
-        // if (field?.render)
-        //   return <div key={fieldKey}>{field?.render(form.data[simpleField.accessor], form.setField)}</div>;
-        return (
-          <FormField
-            key={fieldKey}
-            // value={form.data[simpleField.accessor] as FieldBaseValueType}
-            field={simpleField}
-            // setFieldFromEvent={form.setFieldFromEvent}
-            // setField={form.setField}
-            width={fieldWidth}
-            viewMode={viewMode}
-            useStore={useStore}
-            // {...errorField}
-          />
-        );
+        if (field?.render) return <div key={fieldKey}>{field?.render()}</div>;
+        return <FormField key={fieldKey} field={simpleField} width={fieldWidth} viewMode={viewMode} />;
     }
   });

@@ -23,3 +23,5 @@ export * from './getNotification';
 export { createContext } from 'use-context-selector';
 
 export { getSortedRowModel, flexRender, getCoreRowModel } from '@tanstack/react-table';
+
+export { memo } from 'react';

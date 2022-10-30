@@ -11,8 +11,7 @@ export const getInitialData = <T extends Record<string, unknown>>(fields: FormFi
     } else {
       const newField = field as FormFieldBaseType;
       const { accessor } = newField;
-
-      newData[accessor] = initialData?.[accessor] ?? newField?.value ?? '';
+      if (accessor) newData[accessor] = initialData?.[accessor] ?? newField?.value ?? '';
 
       // const accessor = (field as FormFieldBaseType).accessor;
       // newData[accessor] = '';

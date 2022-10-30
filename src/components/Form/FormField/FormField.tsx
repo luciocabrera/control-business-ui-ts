@@ -1,24 +1,21 @@
-import { ReadOnlyTable } from 'components';
-import { ChangeEvent, memo } from 'react';
+// components
 import Select from '../Select/Select';
 import TextInput from '../TextInput/TextInput';
-import TableField from '../TableField/TableField';
-import { FormFieldProps } from './FormField.types';
-import { useFormDataContext } from 'contexts/FormDataContext';
-import { CustomerFormType, FieldBaseValueType } from 'types';
-import { getErrorField } from 'utilities';
-// import createFastContext from 'contexts/FormDataContextNew';
+// contexts
+import { useFormStatusStore, useStore } from 'contexts';
+// types
+import type { FormFieldProps } from './FormField.types';
+import type { FieldBaseValueType } from 'types';
+// utilities
+import { getErrorField, validateField, memo } from 'utilities';
 
-const FormField = memo(({ field, useStore, ...props }: FormFieldProps) => {
-  // const { data, errors, verifyForm, setField, setFieldFromEvent } = useFormDataContext();
+const FormField = memo(({ field, ...props }: FormFieldProps) => {
+  const [fieldValue, setStore] = useStore<FieldBaseValueType, any>((store) => store[field.accessor]);
+  const [formStatus] = useFormStatusStore();
+  const { submittedCounter } = formStatus;
 
-  // const { useStore } = createFastContext();
-
-  //@ts-ignore
-  const [fieldValue, setStore] = useStore((store) => store[field.accessor]);
-  // const errorField = getErrorField(field, errors);
-  //const form = useContext(FormDataContext);
-  // const form = useFormData<TDataType>(initialFields, initialData);
+  const errorFields = submittedCounter > 0 ? validateField(field, fieldValue) : [];
+  const errorField = getErrorField(field, errorFields);
 
   switch (field.type) {
     case 'select':
@@ -27,15 +24,13 @@ const FormField = memo(({ field, useStore, ...props }: FormFieldProps) => {
           key={`field-select-${field.accessor}`}
           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
             const selected = event.target.options[event.target.selectedIndex]?.value;
-            // setField(field.accessor, selected);
             setStore({ [field.accessor]: selected });
             field.onSelect?.(selected);
           }}
-          // value={data[field.accessor] as FieldBaseValueType}
-          value={fieldValue as FieldBaseValueType}
+          value={fieldValue}
           {...field}
           {...props}
-          // {...errorField}
+          {...errorField}
         />
       );
     case 'text':
@@ -44,19 +39,15 @@ const FormField = memo(({ field, useStore, ...props }: FormFieldProps) => {
         <TextInput
           key={`field-input-${field.accessor}`}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            //field.change?.(event) ||
-            // setFieldFromEvent(event);
             setStore({ [field.accessor]: event.target.value });
           }}
-          // onChange={setFieldFromEvent}
           {...field}
           {...props}
-          // {...errorField}
-          // value={data[field.accessor] as FieldBaseValueType}
-          value={fieldValue as FieldBaseValueType}
+          {...errorField}
+          value={fieldValue}
         />
       );
   }
 });
 
-export default memo(FormField) as typeof FormField;
+export default FormField;

@@ -10,6 +10,5 @@ export type TableFieldProps<TData, DetailData> = Omit<
   normalize?: (value?: TableFieldValueType) => TableFieldValueType;
   data: TData[];
   columns: ColumnDef<TData, unknown>[];
-  setField?: SetFieldType;
   renderDetail?: (onAccept: (detail: DetailData) => void, onFinish: () => void, detail?: TData) => ReactNode;
 };

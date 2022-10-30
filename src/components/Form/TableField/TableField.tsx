@@ -2,36 +2,35 @@
 import { detailsViewImg } from 'assets';
 import { Portal } from 'components';
 import ReadOnlyTable from 'components/Table/ReadOnlyTable/ReadOnlyTable';
+import { useStore } from 'contexts';
 import { memo, forwardRef, useMemo, useCallback, useState } from 'react';
 import type { ColumnDef } from 'types';
 import { FieldGroupStyled } from '../Form/Form.styled';
-import TableDetailForm from './TableDetailForm';
-// Prop-types
+
 import type { TableFieldProps } from './TableField.types';
-// Components
 
 const TableField = <TData extends Record<string, unknown>, DetailData>(
-  { data, setField, normalize, columns, accessor, label, renderDetail }: TableFieldProps<TData, DetailData>,
+  { data, normalize, columns, accessor, label, renderDetail }: TableFieldProps<TData, DetailData>,
   ref: React.ForwardedRef<unknown>,
 ) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
-  const normalizedValue = (normalize?.(data) ?? data) as unknown as TData[];
+  const [fieldValue, setStore] = useStore<TData, any>((store: TData) => store[accessor] as TData);
+  const normalizedValue = (normalize?.(data) ?? fieldValue) as unknown as TData[];
 
   const onRemoveDetail = useCallback(
     (original: TData) => {
       const newDetails = data.filter((detail) => detail !== original);
-      setField?.(accessor, newDetails);
+      setStore({ [accessor]: newDetails });
     },
-    [accessor, data, setField],
+    [accessor, data, setStore],
   );
 
   const onAcceptDetail = useCallback(
     (detail: DetailData) => {
       const newDetails = [...new Set([...data, detail as Record<string, unknown>])];
-
-      setField?.(accessor, newDetails);
+      setStore({ [accessor]: newDetails });
     },
-    [accessor, data, setField],
+    [accessor, data, setStore],
   );
 
   const columnsWithActions = useMemo<ColumnDef<TData>[]>(
@@ -62,14 +61,11 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
         <legend>{labelWithAdd}</legend>
         <ReadOnlyTable<TData> data={normalizedValue} columns={columnsWithActions} useRadius />{' '}
       </FieldGroupStyled>
-      {
-        showDetailForm && (
-          <Portal>
-            <>{renderDetail?.(onAcceptDetail, () => setShowDetailForm(false))}</>
-          </Portal>
-        )
-        // <TableDetailForm onAccept={onAcceptDetail} onFinish={() => setShowDetailForm(false)} title={''} fields={[]} />
-      }
+      {showDetailForm && (
+        <Portal>
+          <>{renderDetail?.(onAcceptDetail, () => setShowDetailForm(false))}</>
+        </Portal>
+      )}
     </>
   );
 };

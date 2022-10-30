@@ -4,7 +4,7 @@ type UseStore = <SelectorOutput>(
   selector: (store: Record<string, unknown>) => SelectorOutput,
 ) => [SelectorOutput, (value: Partial<Record<string, unknown>>) => void];
 export type FormFieldProps = {
-  useStore: UseStore;
+  // useStore: UseStore;
   viewMode?: boolean;
   // value?: string | number;
   width?: number;

@@ -1,26 +1,25 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Form, PageSpinner, Overlay } from 'components';
+import { Form, PageSpinner } from 'components';
+// contexts
+import { FormDataContextProvider } from 'contexts';
 // hooks
 import { useParams, useFetchProducts } from 'hooks';
-// styles
-import { FormWrapper } from 'styles';
 // react
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 // types
-import type { CreateInvoiceDetail, FormFieldType, InvoicesDetails, ProductInvoicesDetails, ProductType } from 'types';
-import createFastContext from 'contexts/FormDataContextNew';
-import { getInitialData } from 'utilities';
+import type { CreateInvoiceDetail, FormFieldType, InvoicesDetails, ProductType } from 'types';
+
+import PriceQuantityField from 'components/Form/Form/PriceQuantityField/PriceQuantityField';
 
 export type DetailFormProps = {
   detail?: InvoicesDetails;
-  onAcceptDetail: (detail: CreateInvoiceDetail) => void;
+  onAcceptDetail: (detail: InvoicesDetails) => void;
   onFinish: () => void;
 };
 
 const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) => {
-  const [selectedProduct, setSelectedProduct] = useState<ProductInvoicesDetails | undefined>();
   const { customerId } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
@@ -36,29 +35,19 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
     [products],
   );
 
-  const onSelectProduct = useCallback(
-    (newSelectedProductId: string) => {
-      const newSelectedProduct = products?.find(
-        ({ productId }: ProductType) => productId === parseInt(newSelectedProductId, 10),
-      );
-      // .map(({ nameWithCode, price, description }: ProductType) => ({
-      //   productNameWithCode: nameWithCode,
-      //   productDescription: description,
-      //   productPrice: price,
-      // }));
-      debugger;
-      setSelectedProduct({
-        productNameWithCode: newSelectedProduct?.nameWithCode ?? '',
-        productDescription: newSelectedProduct?.description ?? '',
-        productPrice: newSelectedProduct?.price ?? 0,
-      });
-    },
-    [products],
-  );
-
   const onAccept = (detail: CreateInvoiceDetail) => {
-    debugger;
-    onAcceptDetail?.({ ...detail, ...selectedProduct });
+    const selectedProduct = products?.find(
+      ({ productId }: ProductType) =>
+        productId === (typeof detail.productId === 'number' ? detail.productId : parseInt(detail.productId, 10)),
+    );
+    onAcceptDetail?.({
+      ...detail,
+      ...{
+        productNameWithCode: selectedProduct?.nameWithCode ?? '',
+        productDescription: selectedProduct?.description ?? '',
+        productPrice: selectedProduct?.price ?? 0,
+      },
+    });
   };
   const fields: FormFieldType[] = useMemo(
     () => [
@@ -72,7 +61,6 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
             required: true,
             options: productsOptions,
             value: detail?.productId,
-            onSelect: (newSelectedProduct: string) => onSelectProduct(newSelectedProduct),
           },
           {
             accessor: 'description',
@@ -82,67 +70,36 @@ const DetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) 
             value: detail?.description,
           },
           {
-            accessor: 'quantity',
-            label: 'Quantity',
-            type: 'number',
-            required: true,
-            value: detail?.quantity,
-            change: (quantity: number, priceUnit: number) => {
-              //   setPartialFields({ quantity: quantity, priceUnit: priceUnit, priceQuantity: quantity * priceUnit });
-            },
-          },
-          {
-            accessor: 'priceUnit',
-            label: 'Price Unit',
-            type: 'number',
-            required: true,
-            value: detail?.priceUnit,
-          },
-          {
             accessor: 'priceQuantity',
             label: 'Price Quantity',
             type: 'number',
             required: true,
             readonly: true,
-            value: detail?.priceQuantity,
+            render: () => <PriceQuantityField />,
           },
         ],
       },
     ],
-    [
-      detail?.description,
-      detail?.priceQuantity,
-      detail?.priceUnit,
-      detail?.productId,
-      detail?.quantity,
-      onSelectProduct,
-      productsOptions,
-    ],
+    [detail?.description, detail?.productId, productsOptions],
   );
 
   if (isLoadingProducts) return <PageSpinner />;
 
   const title = `${isCreating ? 'New' : 'Edit'} Detail`;
-  const newCalculatedData = getInitialData<CreateInvoiceDetail>(fields, detail);
-  const { Provider, useStore } = createFastContext<CreateInvoiceDetail>(newCalculatedData);
 
   return (
-    <Provider>
-      <FormWrapper>
-        <Overlay />
-        <Form<CreateInvoiceDetail>
-          icon={detailsViewImg}
-          title={title}
-          initialFields={fields}
-          initialData={detail}
-          onAccept={onAccept}
-          onFinish={onFinish}
-          // actions={<CustomerActions customer={customer} />}
-          viewMode={false}
-          useStore={useStore}
-        />
-      </FormWrapper>
-    </Provider>
+    <FormDataContextProvider<CreateInvoiceDetail> initialFields={fields} initialData={detail}>
+      <Form<CreateInvoiceDetail>
+        icon={detailsViewImg}
+        title={title}
+        initialFields={fields}
+        initialData={detail}
+        onAccept={onAccept}
+        onFinish={onFinish}
+        viewMode={false}
+      />
+    </FormDataContextProvider>
   );
 });
+
 export default DetailForm;

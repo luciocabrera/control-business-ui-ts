@@ -1,9 +1,9 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Form, PageSpinner, Overlay, CustomerActions, ErrorDisplay } from 'components';
+import { Form, PageSpinner, CustomerActions, ErrorDisplay } from 'components';
 // contexts
-import { useAddNotification, useAddToast } from 'contexts';
+import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
 // hooks
 import {
   useFetchCustomer,
@@ -15,15 +15,10 @@ import {
   useNavigate,
   useParams,
 } from 'hooks';
-// styles
-import { FormWrapper } from 'styles';
 // react
 import { memo, useCallback, useMemo } from 'react';
 // types
 import type { APiResponseErrorType, CustomerCreateType, CustomerFormType, FormFieldType } from 'types';
-// import { FormDataContextProvider } from 'contexts/FormDataContext';
-import createFastContext from 'contexts/FormDataContextNew';
-import { getInitialData } from 'utilities';
 
 const Customer = memo(() => {
   const { customerId } = useParams();
@@ -38,7 +33,6 @@ const Customer = memo(() => {
   const refreshCustomer = useRefreshCustomer();
   const postCustomer = usePostCustomer();
   const navigate = useNavigate();
-
   const addToast = useAddToast();
   const addNotification = useAddNotification();
 
@@ -362,26 +356,19 @@ const Customer = memo(() => {
 
   const title = `${isCreating ? 'New' : 'Edit'} Customer`;
 
-  const newCalculatedData = getInitialData<CustomerFormType>(fields, customer);
-  const { Provider, useStore } = createFastContext<CustomerFormType>(newCalculatedData);
-
   return (
-    <Provider>
-      <FormWrapper>
-        <Overlay />
-        <Form<CustomerFormType>
-          icon={detailsViewImg}
-          title={title}
-          initialFields={fields}
-          initialData={customer}
-          onAccept={onAccept}
-          onFinish={() => navigate('/customers')}
-          actions={<CustomerActions customer={customer} />}
-          viewMode={false}
-          useStore={useStore}
-        />
-      </FormWrapper>
-    </Provider>
+    <FormDataContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
+      <Form<CustomerFormType>
+        icon={detailsViewImg}
+        title={title}
+        initialFields={fields}
+        initialData={customer}
+        onAccept={onAccept}
+        onFinish={() => navigate('/customers')}
+        actions={<CustomerActions customer={customer} />}
+        viewMode={false}
+      />
+    </FormDataContextProvider>
   );
 });
 export default Customer;
