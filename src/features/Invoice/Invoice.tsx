@@ -2,6 +2,7 @@
 import { detailsViewImg } from 'assets';
 // components
 import { PageSpinner, InvoiceActions, ErrorDisplay, Form } from 'components';
+import { InvoiceAmountsField, InvoiceDetailsField, InvoiceDetailForm } from './components';
 // hooks
 import {
   useParams,
@@ -11,26 +12,33 @@ import {
   useFetchCustomers,
   usePostInvoice,
   useRefreshInvoices,
+  useFetchInvoiceRates,
 } from 'hooks';
 // react
 import { memo, useCallback, useMemo } from 'react';
 // types
-import type { InvoiceFormType, FormFieldType, InvoiceCreateType, APiResponseErrorType, InvoicesDetails } from 'types';
+import type {
+  InvoiceFormType,
+  FormFieldType,
+  InvoiceCreateType,
+  APiResponseErrorType,
+  InvoicesDetails,
+  DateParameterType,
+  FieldBaseValueType,
+} from 'types';
 // utilities
 
 import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
-
-import DetailForm from './InvoiceDetailForm';
-
-import InvoiceAmountsField from 'components/Form/Form/InvoiceAmountsField/InvoiceAmountsField';
-import InvoiceDetailsField from 'components/Form/TableField/InvoiceDetailsField';
+import { getDateAsString, getFormattedNumber } from 'utilities';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
+  const taxesPercentage = useFetchInvoiceRates();
 
   const isCreating = invoiceId === 'new' || !invoiceId;
 
   const { data: customers, loading: isLoadingCustomers } = useFetchCustomers();
+
   const { data: invoice, loading: isLoadingInvoice } = useFetchInvoice(!isCreating ? invoiceId : undefined);
 
   const refreshInvoices = useRefreshInvoices();
@@ -76,6 +84,7 @@ const ViewInvoice = memo(() => {
                     type: 'date',
                     value: invoice?.date,
                     required: true,
+                    normalize: (value: DateParameterType | undefined) => getDateAsString(value),
                   },
                 ],
               },
@@ -101,6 +110,29 @@ const ViewInvoice = memo(() => {
               },
             ],
           },
+          {
+            type: 'rule',
+            accessor: 'taxesPercentage',
+            value: taxesPercentage,
+          },
+          {
+            accessor: 'subtotal',
+            type: 'rule',
+            value: invoice?.subtotal,
+            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+          },
+          {
+            accessor: 'taxes',
+            type: 'rule',
+            value: invoice?.taxes,
+            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+          },
+          {
+            accessor: 'total',
+            type: 'rule',
+            value: invoice?.total,
+            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+          },
         ],
       },
       {
@@ -116,7 +148,7 @@ const ViewInvoice = memo(() => {
                   onAccept: (detail: InvoicesDetails) => void,
                   onFinish: () => void,
                   detail?: InvoicesDetails,
-                ) => <DetailForm detail={detail} onAcceptDetail={onAccept} onFinish={onFinish} />}
+                ) => <InvoiceDetailForm detail={detail} onAcceptDetail={onAccept} onFinish={onFinish} />}
               />
             ),
 

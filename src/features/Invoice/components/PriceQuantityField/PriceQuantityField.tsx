@@ -3,7 +3,7 @@ import TextInput from 'components/Form/TextInput/TextInput';
 // contexts
 import { useFormStatusStore, useStore } from 'contexts';
 // react
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 // types
 import type { PriceQuantityFieldProps } from './PriceQuantityField.types';
 import type { CreateInvoiceDetail } from 'types';
@@ -61,14 +61,19 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
     [errorsPriceQuantity, priceQuantityField],
   );
 
+  const onQuantityChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setQuantity({ quantity: event.target.value as unknown as number });
+      setPriceQuantity({ priceQuantity: ((event.target.value || 0) as number) * priceUnit });
+    },
+    [priceUnit, setPriceQuantity, setQuantity],
+  );
+
   return (
     <>
       <TextInput
         key={`field-input-quantity`}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setQuantity({ quantity: event.target.value as unknown as number });
-          setPriceQuantity({ priceQuantity: ((event.target.value || 0) as number) * priceUnit });
-        }}
+        onChange={onQuantityChange}
         textAlign="right"
         {...quantityField}
         {...props}

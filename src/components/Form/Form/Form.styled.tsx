@@ -42,7 +42,7 @@ export const FieldRowStyled = styled.fieldset`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  align-content: stretch;
+  align-content: flex-start;
 `;
 
 export const FieldGroupStyled = styled.fieldset`
@@ -60,4 +60,16 @@ export const FieldGroupStyled = styled.fieldset`
   align-content: flex-start;
   justify-content: flex-start;
   }
+`;
+
+export const CustomFieldWrapper = styled.div`
+  background: var(--form-bg-color);
+  padding: 0;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: ${({ width }: { width?: number }) => width || '100'}%;
+  align-content: flex-start;
+  align-items: flex-start;
 `;

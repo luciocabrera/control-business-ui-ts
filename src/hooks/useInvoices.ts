@@ -60,3 +60,8 @@ export const useDeleteInvoice = () => {
     [apiRequest],
   );
 };
+
+export const useFetchInvoiceRates = () => 0.09;
+// useApiData<InvoiceType>({
+//   endpointUrl: invoiceId ? `${endpoints.invoices}/${invoiceId}` : undefined,
+// });

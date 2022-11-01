@@ -1,15 +1,14 @@
 //assets
 import { detailsViewImg } from 'assets';
 // components
-import { NumberDisplay, Portal } from 'components';
-import ReadOnlyTable from 'components/Table/ReadOnlyTable/ReadOnlyTable';
+import { NumberDisplay, Portal, ReadOnlyTable } from 'components';
 // contexts
 import { useStore } from 'contexts';
 // react
 import { memo, forwardRef, useMemo, useCallback, useState, ReactNode } from 'react';
 // types
 import type { ColumnDef, FormFieldBaseType, InvoiceFormType, InvoicesDetails } from 'types';
-import { FieldGroupStyled } from '../Form/Form.styled';
+import { FieldGroupStyled } from '../../../../components/Form/Form/Form.styled';
 
 export type TableFieldProps = Omit<
   FormFieldBaseType,
@@ -40,6 +39,9 @@ const InvoiceDetailsField = ({ normalize, renderDetail }: TableFieldProps, ref: 
   );
   const [, setSubtotal] = useStore<number, Pick<InvoiceFormType, 'subtotal'>>((store) => store.subtotal);
   const [taxes, setTaxes] = useStore<number, Pick<InvoiceFormType, 'taxes'>>((store) => store.taxes);
+  const [taxesPercentage] = useStore<number, Pick<InvoiceFormType, 'taxesPercentage'>>(
+    (store) => store.taxesPercentage,
+  );
   const [, setTotal] = useStore<number, Pick<InvoiceFormType, 'total'>>((store) => store.total);
   const normalizedValue = (normalize?.(invoicesDetails) ?? invoicesDetails) as unknown as InvoicesDetails[];
 
@@ -77,14 +79,14 @@ const InvoiceDetailsField = ({ normalize, renderDetail }: TableFieldProps, ref: 
       const newSubtotal = newDetails?.reduce((previousValue, detail) => {
         return previousValue + detail.priceQuantity;
       }, 0);
-      const newTaxes = (newSubtotal || 0) * 0.09;
+      const newTaxes = (newSubtotal || 0) * taxesPercentage;
       const newTotal = (newSubtotal || 0) + newTaxes;
 
       setSubtotal({ subtotal: newSubtotal });
       setTaxes({ taxes: newTaxes });
       setTotal({ total: newTotal });
     },
-    [setSubtotal, setTaxes, setTotal],
+    [setSubtotal, setTaxes, setTotal, taxesPercentage],
   );
 
   const onRemoveDetail = useCallback(
@@ -134,7 +136,7 @@ const InvoiceDetailsField = ({ normalize, renderDetail }: TableFieldProps, ref: 
     <>
       <FieldGroupStyled key={`table-form-field-invoice-details`}>
         <legend>{labelWithAdd}</legend>
-        <ReadOnlyTable<InvoicesDetails> data={normalizedValue} columns={columnsWithActions} useRadius />{' '}
+        <ReadOnlyTable<InvoicesDetails> data={normalizedValue} columns={columnsWithActions} useRadius />
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>

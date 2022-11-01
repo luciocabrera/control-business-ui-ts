@@ -20,6 +20,7 @@ const Actions = <TDataType extends Record<string, unknown>>({
   const onSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     incrementSubmittedCounter();
+
     const errorFields = validateFields<TDataType>(initialFields, data);
     const hasChanged = !deepEqual<TDataType>(initialData || ({} as TDataType), data);
 

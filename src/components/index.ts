@@ -3,6 +3,8 @@ export { default as Form } from './Form/Form/Form';
 export { default as Button } from './Form/Button/Button';
 export { default as FormField } from './Form/FormField/FormField';
 export { default as TableField } from './Form/TableField/TableField';
+export { default as TextInput } from './Form/TextInput/TextInput';
+export { default as Select } from './Form/Select/Select';
 
 // loaders
 export { default as PageSpinner } from './PageSpinner/PageSpinner';
