@@ -1,7 +1,17 @@
 //assets
-import { detailsViewImg } from 'assets';
+import { detailsViewImg, copyImg } from 'assets';
 // components
-import { Header, NewIcon, ReadOnlyTable, PageSpinner, Link, Outlet, DateDisplay, NumberDisplay } from 'components';
+import {
+  Header,
+  NewIcon,
+  ReadOnlyTable,
+  PageSpinner,
+  Link,
+  Outlet,
+  DateDisplay,
+  NumberDisplay,
+  IconButton,
+} from 'components';
 // hooks
 import { useFetchInvoices, useLocation } from 'hooks';
 // react
@@ -46,9 +56,14 @@ const Invoices = () => {
       {
         accessorKey: 'actions',
         cell: ({ row: { original } }) => (
-          <Link to={`${original.invoiceId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
-            <img src={detailsViewImg} alt="" width="18" height="18" />
-          </Link>
+          <>
+            <Link to={`${original.invoiceId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
+              <IconButton src={detailsViewImg} />
+            </Link>
+            <Link to={`${original.invoiceId?.toString() ?? ''}/copy`} state={{ backgroundLocation: location }}>
+              <IconButton src={copyImg} />
+            </Link>
+          </>
         ),
       },
     ],
@@ -58,7 +73,7 @@ const Invoices = () => {
   return (
     <>
       {loading && <PageSpinner />}
-      <Header title={title}>
+      <Header title={title} isTable>
         <Link to="new" state={{ backgroundLocation: location }}>
           <NewIcon />
         </Link>

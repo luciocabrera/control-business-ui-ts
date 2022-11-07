@@ -1,7 +1,7 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Form, PageSpinner } from 'components';
+import { Button, Form, PageSpinner } from 'components';
 import { InvoiceDetailProduct, PriceQuantityField } from '..';
 // contexts
 import { FormDataContextProvider } from 'contexts';
@@ -31,7 +31,6 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailForm
         ({ productId }: ProductType) =>
           productId === (typeof detail.productId === 'number' ? detail.productId : parseInt(detail.productId, 10)),
       );
-      debugger;
       onAcceptDetail?.({
         ...detail,
         ...{
@@ -102,7 +101,11 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailForm
         initialFields={fields}
         initialData={detail}
         onAccept={onAccept}
-        // actions={<InvoiceActions invoice={invoice} />}
+        actions={
+          <Button id="invoice-details-actions-button-cancel" inverse onClick={onFinish}>
+            Cancel
+          </Button>
+        }
         onFinish={onFinish}
         viewMode={false}
       />

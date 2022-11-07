@@ -1,14 +1,16 @@
 //assets
-import { detailsViewImg } from 'assets';
+import { newImg, editImg, deleteImg, copyImg } from 'assets';
 // components
-import { NumberDisplay, Portal, ReadOnlyTable } from 'components';
+import { NumberDisplay, Portal, ReadOnlyTable, IconButton } from 'components';
 // contexts
 import { useStore } from 'contexts';
 // react
-import { memo, forwardRef, useMemo, useCallback, useState, ReactNode } from 'react';
+import { memo, useMemo, useCallback, useState } from 'react';
 // types
 import type { ColumnDef, FormFieldBaseType, InvoiceFormType, InvoicesDetails } from 'types';
 import { FieldGroupStyled } from '../../../../components/Form/Form/Form.styled';
+import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
+import { LabelDetailsStyled } from './InvoiceDetailsField.styled';
 
 export type TableFieldProps = Omit<
   FormFieldBaseType,
@@ -25,20 +27,16 @@ export type TableFieldProps = Omit<
   | 'columns'
 > & {
   normalize?: (value?: InvoicesDetails[]) => InvoicesDetails[];
-  renderDetail?: (
-    onAccept: (detail: InvoicesDetails) => void,
-    onFinish: () => void,
-    detail?: InvoicesDetails,
-  ) => ReactNode;
 };
 
-const InvoiceDetailsField = ({ normalize, renderDetail }: TableFieldProps, ref: React.ForwardedRef<unknown>) => {
+const InvoiceDetailsField = memo(({ normalize }: TableFieldProps) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
+  const [detail, setDetail] = useState<InvoicesDetails | undefined>();
   const [invoicesDetails, setInvoicesDetails] = useStore<InvoicesDetails[], Pick<InvoiceFormType, 'invoiceDetails'>>(
     (store) => store.invoiceDetails,
   );
   const [, setSubtotal] = useStore<number, Pick<InvoiceFormType, 'subtotal'>>((store) => store.subtotal);
-  const [taxes, setTaxes] = useStore<number, Pick<InvoiceFormType, 'taxes'>>((store) => store.taxes);
+  const [, setTaxes] = useStore<number, Pick<InvoiceFormType, 'taxes'>>((store) => store.taxes);
   const [taxesPercentage] = useStore<number, Pick<InvoiceFormType, 'taxesPercentage'>>(
     (store) => store.taxesPercentage,
   );
@@ -99,6 +97,25 @@ const InvoiceDetailsField = ({ normalize, renderDetail }: TableFieldProps, ref: 
     [invoicesDetails, setInvoicesDetails, updateAmounts],
   );
 
+  const onEditDetail = useCallback(
+    (original: InvoicesDetails) => {
+      onRemoveDetail(original);
+      setDetail(original);
+      setShowDetailForm(true);
+    },
+    [onRemoveDetail],
+  );
+
+  const onCopyDetail = useCallback((original: InvoicesDetails) => {
+    setDetail(original);
+    setShowDetailForm(true);
+  }, []);
+
+  const onAddDetail = useCallback(() => {
+    setDetail(undefined);
+    setShowDetailForm(true);
+  }, []);
+
   const onAcceptDetail = useCallback(
     (detail: InvoicesDetails) => {
       const newDetails = [...new Set([...invoicesDetails, detail])];
@@ -116,20 +133,24 @@ const InvoiceDetailsField = ({ normalize, renderDetail }: TableFieldProps, ref: 
       {
         accessorKey: 'actions',
         cell: ({ row: { original } }) => (
-          <img src={detailsViewImg} alt="" width="18" height="18" onClick={() => onRemoveDetail(original)} />
+          <>
+            <IconButton src={editImg} onClick={() => onEditDetail(original)} />
+            <IconButton src={copyImg} onClick={() => onCopyDetail(original)} />
+            <IconButton src={deleteImg} onClick={() => onRemoveDetail(original)} />
+          </>
         ),
       },
     ],
-    [columnsDetails, onRemoveDetail],
+    [columnsDetails, onCopyDetail, onEditDetail, onRemoveDetail],
   );
 
   const labelWithAdd = (
-    <>
-      Details
-      <button type="button" onClick={() => setShowDetailForm(true)}>
-        Add
-      </button>
-    </>
+    <LabelDetailsStyled>
+      <span>Details</span>
+      <div id="icon-button">
+        <IconButton src={newImg} onClick={onAddDetail} />
+      </div>
+    </LabelDetailsStyled>
   );
 
   return (
@@ -140,10 +161,15 @@ const InvoiceDetailsField = ({ normalize, renderDetail }: TableFieldProps, ref: 
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>
-          <>{renderDetail?.(onAcceptDetail, () => setShowDetailForm(false))}</>
+          <InvoiceDetailForm
+            detail={detail}
+            onAcceptDetail={onAcceptDetail}
+            onFinish={() => setShowDetailForm(false)}
+          />
         </Portal>
       )}
     </>
   );
-};
-export default memo(forwardRef(InvoiceDetailsField)) as typeof InvoiceDetailsField;
+});
+
+export default InvoiceDetailsField;

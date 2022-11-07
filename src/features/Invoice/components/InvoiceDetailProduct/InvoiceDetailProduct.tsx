@@ -2,8 +2,6 @@
 import { TextInput, Select } from 'components';
 // contexts
 import { useFormStatusStore, useStore } from 'contexts';
-// hooks
-import { useFetchProducts } from 'hooks';
 // react
 import { useCallback, useMemo } from 'react';
 // types
@@ -81,6 +79,13 @@ const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductP
     [description, products, quantity, setDescription, setPriceQuantity, setPriceUnit, setProductId],
   );
 
+  const onDescriptionChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setDescription({ description: event.target.value });
+    },
+    [setDescription],
+  );
+
   return (
     <>
       <Select
@@ -93,7 +98,7 @@ const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductP
       />
       <TextInput
         key={`field-input-price-productId`}
-        onChange={() => {}}
+        onChange={onDescriptionChange}
         {...descriptionField}
         {...props}
         {...errorDescriptionField}

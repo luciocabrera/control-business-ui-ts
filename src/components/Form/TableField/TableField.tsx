@@ -10,7 +10,7 @@ import { FieldGroupStyled } from '../Form/Form.styled';
 import type { TableFieldProps } from './TableField.types';
 
 const TableField = <TData extends Record<string, unknown>, DetailData>(
-  { data, normalize, columns, accessor, label, renderDetail }: TableFieldProps<TData, DetailData>,
+  { data, normalize, columns, accessor, label, readonly, renderDetail }: TableFieldProps<TData, DetailData>,
   ref: React.ForwardedRef<unknown>,
 ) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
@@ -33,25 +33,28 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
     [accessor, data, setStore],
   );
 
-  const columnsWithActions = useMemo<ColumnDef<TData>[]>(
-    () => [
-      ...columns,
-      {
+  const columnsWithActions = useMemo<ColumnDef<TData>[]>(() => {
+    const calculatedColumns = [...columns];
+
+    if (readonly)
+      calculatedColumns.push({
         accessorKey: 'actions',
         cell: ({ row: { original } }) => (
           <img src={detailsViewImg} alt="" width="18" height="18" onClick={() => onRemoveDetail(original)} />
         ),
-      },
-    ],
-    [columns, onRemoveDetail],
-  );
+      });
+
+    return calculatedColumns;
+  }, [columns, onRemoveDetail, readonly]);
 
   const labelWithAdd = (
     <>
       {label}
-      <button type="button" onClick={() => setShowDetailForm(true)}>
-        Add
-      </button>
+      {readonly && (
+        <button type="button" onClick={() => setShowDetailForm(true)}>
+          Add
+        </button>
+      )}
     </>
   );
 

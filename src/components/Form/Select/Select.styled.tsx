@@ -8,7 +8,7 @@ export const SelectStyled = styled.select`
   border-radius: var(--border-radius);
   padding-left: 10px;
   border-radius: 10px;
-  top: -5px;
+  top: -3px;
   position: relative;
   :focus-visible {
     outline: none;

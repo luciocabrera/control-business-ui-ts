@@ -17,7 +17,8 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
   const { invoiceId, action } = useParams();
 
   const isCreating = invoiceId === 'new' || !invoiceId;
-  const isEditing = !isCreating && action === 'edit';
+  const isEditing = action === 'edit' && !isCreating;
+  const isCopying = action === 'copy' && !isCreating;
 
   const location = useLocation();
 
@@ -82,7 +83,7 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
 
   return (
     <>
-      {!isCreating && !isEditing && (
+      {!isCreating && !isEditing && !isCopying && (
         <Button id="invoice-actions-button-edit" onClick={onEdit}>
           Edit
         </Button>
@@ -90,16 +91,16 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
       <Button id="invoice-actions-button-cancel" inverse onClick={onCancel}>
         Cancel
       </Button>
-      {!isCreating && (
+      {!isCreating && !isCopying && (
         <Button id="invoice-actions-button-delete" onClick={onDelete} warning>
           Delete
         </Button>
       )}
-      {(isCreating || isEditing) && (
+      {/* {(isCreating || isEditing) && (
         <Button id="invoice-actions-button-add" onClick={onEdit}>
           Add
         </Button>
-      )}
+      )} */}
     </>
   );
 });

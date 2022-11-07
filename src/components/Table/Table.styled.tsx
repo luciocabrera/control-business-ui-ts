@@ -8,10 +8,8 @@ const radius = ({ useRadius }: { useRadius?: boolean }) =>
   `;
 
 export const TableStyled = styled.div`
-  // border: 1px solid lightgray;
-  // height: calc(100vh - 120px);
-   height: ${({ height }: { height?: string; useRadius?: boolean }) => (height ? height : 'inherit')};
-  max-width:  100%;;
+  height: ${({ height }: { height?: string; useRadius?: boolean }) => (height ? height : 'inherit')};
+  max-width:  100%;
   overflow: auto;
   font: 300 12px/14px 'Helvetica Neue Regular', Helvetica, Arial, sans-serif;
   ${radius}
@@ -23,58 +21,28 @@ export const TableStyled = styled.div`
     width: 100%;
     ${radius}
   }
-
   thead {
     background: #03542f;
     color: white;
     margin: 0;
     position: sticky;
     top: 0;
-    cursor: pointer;
+    cursor: pointer;  
+    th {
+      border-bottom: 1px solid lightgray;
+      border-right: 1px solid lightgray;
+      padding: 2px 4px;
+      position: relative;
+      font-weight: bold;
+      text-align: center;
+      height: 30px;
+    }
   }
 
-  th {
-    border-bottom: 1px solid lightgray;
-    border-right: 1px solid lightgray;
-    padding: 2px 4px;
-    text-align: left;
-  }
 
-  td {
-    padding: 6px;
-  }
-
-  
-.tr {
-  display: flex;
-}
-
-tr,
-.tr {
+tr {
   width: fit-content;
   height: 30px;
-}
-
-th,
-.th,
-td,
-.td {
-  box-shadow: inset 0 0 0 1px lightgray;
-  padding: 0.25rem;
-}
-
-th,
-.th {
-  padding: 2px 4px;
-  position: relative;
-  font-weight: bold;
-  text-align: center;
-  height: 30px;
-}
-
-td,
-.td {
-  // height: 30px;
 }
 
    tbody {
@@ -82,28 +50,25 @@ td,
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        padding: 5px 10px;
+        padding: 2px 10px;
         border-right: 0.05rem solid #c7c7c7;
         cursor: pointer;
+        box-shadow: inset 0 0 0 1px lightgray;
       }
       tr {
-        // height: 26px;
-        // max-height: 26px;
         :nth-child(even) {
           background: #a2bd6b1f;
         }
-        // border-bottom: 1px solid #c7c7c7;
         :hover {
           cursor: pointer;
+          // background: #eabb3a24;
+          color: darkcyan;
+          border-bottom: 1px solid;
         }
       }
     }
   }
 
-  .divTable {
-  border: 1px solid lightgray;
-  width: fit-content;
-}
 
 .resizer {
   position: absolute;
@@ -132,55 +97,3 @@ td,
   }
 }
 `;
-
-// export const TdStyled = styled.div`
-//   padding: 6px 14px 3px 14px;
-// `;
-
-// export const TrStyled = styled.div`
-//   :nth-child(even) {
-//     background: #f7f7f7;
-//   }
-// `;
-
-// export const HeaderStyled = styled.div`
-//   cursor: pointer;
-//   height: 100%;
-//   padding: 0px;
-//   margin: 0px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   overflow: hidden !important;
-// `;
-
-// export const TitleHeaderStyled = styled.div`
-//   display: flex;
-//   align-items: flex-start;
-//   width: 100%;
-//   white-space: nowrap;
-//   text-overflow: ellipsis;
-//   overflow: hidden !important;
-//   div {
-//     text-overflow: ellipsis;
-//     overflow: hidden;
-//   }
-// `;
-
-// export const Resizer = styled.div`
-//   display: inline-block;
-//   width: 5px;
-//   height: 100%;
-//   position: absolute;
-//   right: 0;
-//   top: 0;
-//   transform: translateX(50%);
-//   z-index: 1;
-//   ${'' /* prevents from scrolling while dragging on touch devices */}
-//   touch-action:none;
-//   background: ${({ isResizing }) => (isResizing ? 'var(--er-accent)' : 'none')};
-// `;
-
-// export const SortIcon = styled.div`
-//   margin-left: 6px;
-// `;

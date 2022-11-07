@@ -41,7 +41,7 @@ const Customers = () => {
   return (
     <>
       {loading && <PageSpinner />}
-      <Header title={title}>
+      <Header title={title} isTable={true}>
         <Link to="new" state={{ backgroundLocation: location }}>
           <NewIcon />
         </Link>

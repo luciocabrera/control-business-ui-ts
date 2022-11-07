@@ -40,13 +40,7 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
 
   return (
     <TableStyled data-testid="data-table" ref={tableContainerRef} height={height} useRadius={useRadius}>
-      <table
-        {...{
-          style: {
-            width: table.getCenterTotalSize(),
-          },
-        }}
-      >
+      <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

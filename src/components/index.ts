@@ -50,3 +50,5 @@ export { default as DateDisplay } from './DateDisplay/DateDisplay';
 export { default as NumberDisplay } from './NumberDisplay/NumberDisplay';
 
 export { default as Tabs } from './Tabs/Tabs';
+
+export { default as IconButton } from './IconButton/IconButton';

@@ -34,9 +34,15 @@ export type InvoiceType = AuditType & {
   taxesPercentage: number;
 };
 
-export type InvoiceFormType = Omit<InvoiceType, 'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'>;
+export type InvoiceFormType = Omit<
+  InvoiceType,
+  'date' | 'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'
+> & {
+  invoiceId?: number;
+  date?: Date;
+};
 
 export type InvoiceCreateType = Omit<
   InvoiceType,
   'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy' | 'customer' | 'invoiceDetails'
-> & { invoiceId?: string | number; customerId: number; invoiceDetails: CreateInvoiceDetail[] };
+> & { invoiceId?: number; customerId: number; invoiceDetails: CreateInvoiceDetail[] };

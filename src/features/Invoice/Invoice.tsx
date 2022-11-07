@@ -2,7 +2,7 @@
 import { detailsViewImg } from 'assets';
 // components
 import { PageSpinner, InvoiceActions, ErrorDisplay, Form } from 'components';
-import { InvoiceAmountsField, InvoiceDetailsField, InvoiceDetailForm } from './components';
+import { InvoiceAmountsField, InvoiceDetailsField } from './components';
 // hooks
 import {
   useParams,
@@ -22,7 +22,6 @@ import type {
   FormFieldType,
   InvoiceCreateType,
   APiResponseErrorType,
-  InvoicesDetails,
   DateParameterType,
   FieldBaseValueType,
 } from 'types';
@@ -32,14 +31,30 @@ import { useAddNotification, useAddToast, FormDataContextProvider } from 'contex
 import { getDateAsString, getFormattedNumber } from 'utilities';
 
 const ViewInvoice = memo(() => {
-  const { invoiceId } = useParams();
+  const { invoiceId, action } = useParams();
   const taxesPercentage = useFetchInvoiceRates();
 
   const isCreating = invoiceId === 'new' || !invoiceId;
+  const isCopying = action === 'copy' && !isCreating;
 
   const { data: customers, loading: isLoadingCustomers } = useFetchCustomers();
-
   const { data: invoice, loading: isLoadingInvoice } = useFetchInvoice(!isCreating ? invoiceId : undefined);
+
+  const invoiceForm: InvoiceFormType = useMemo(() => {
+    if (isCopying && invoice) return { ...invoice, invoiceId: undefined, invoice: '' };
+    if (invoice) return { ...invoice };
+    return {
+      invoice: '',
+      date: undefined,
+      customerId: 0,
+      customer: { documentId: '', fullNameWithInitials: '', documentTypeName: '', titleName: '' },
+      invoiceDetails: [],
+      subtotal: 0,
+      total: 0,
+      taxes: 0,
+      taxesPercentage: 0,
+    };
+  }, [invoice, isCopying]);
 
   const refreshInvoices = useRefreshInvoices();
   const refreshInvoice = useRefreshInvoice();
@@ -75,7 +90,7 @@ const ViewInvoice = memo(() => {
                     accessor: 'invoice',
                     label: 'Invoice',
                     type: 'text',
-                    value: invoice?.invoice,
+                    value: isCopying ? undefined : invoice?.invoice,
                     required: true,
                   },
                   {
@@ -84,7 +99,7 @@ const ViewInvoice = memo(() => {
                     type: 'date',
                     value: invoice?.date,
                     required: true,
-                    normalize: (value: DateParameterType | undefined) => getDateAsString(value),
+                    normalize: (value: DateParameterType | undefined) => getDateAsString(value, 'date', true),
                   },
                 ],
               },
@@ -142,39 +157,41 @@ const ViewInvoice = memo(() => {
             accessor: 'invoiceDetails',
             label: 'invoiceDetails',
             type: 'table',
-            render: () => (
-              <InvoiceDetailsField
-                renderDetail={(
-                  onAccept: (detail: InvoicesDetails) => void,
-                  onFinish: () => void,
-                  detail?: InvoicesDetails,
-                ) => <InvoiceDetailForm detail={detail} onAcceptDetail={onAccept} onFinish={onFinish} />}
-              />
-            ),
-
+            render: () => <InvoiceDetailsField />,
             readonly: true,
           },
         ],
       },
     ],
-    [customersOptions, invoice?.customerId, invoice?.date, invoice?.invoice],
+    [
+      customersOptions,
+      invoice?.customerId,
+      invoice?.date,
+      invoice?.invoice,
+      invoice?.subtotal,
+      invoice?.taxes,
+      invoice?.total,
+      isCopying,
+      taxesPercentage,
+    ],
   );
 
   const onAccept = useCallback(
     async (payload: InvoiceFormType) => {
-      const calculatedInvoiceId = invoiceId === 'new' ? undefined : invoiceId;
+      const calculatedInvoiceId = isCreating || isCopying ? undefined : parseInt(invoiceId, 10);
       const { customerId, date, invoiceDetails, ...rest } = payload;
       debugger;
       const body: InvoiceCreateType = {
         invoiceId: calculatedInvoiceId,
-        date: new Date(date),
+        date: date ? new Date(date) : new Date(),
         customerId: typeof customerId === 'string' ? parseInt(customerId, 10) : customerId,
-        invoiceDetails: invoiceDetails.map(
-          ({ productId, productNameWithCode, productDescription, productPrice, ...rest }) => ({
-            ...rest,
-            productId: typeof productId === 'string' ? parseInt(productId, 10) : productId,
-          }),
-        ),
+        invoiceDetails: invoiceDetails.map(({ productId, description, quantity, priceUnit, priceQuantity }) => ({
+          description,
+          quantity,
+          priceUnit,
+          priceQuantity,
+          productId: typeof productId === 'string' ? parseInt(productId, 10) : productId,
+        })),
         ...rest,
       };
 
@@ -195,22 +212,33 @@ const ViewInvoice = memo(() => {
         addNotification?.(<ErrorDisplay errors={error.cause.errors} />, 'Error Saving Invoice', 'error');
       }
     },
-    [addNotification, addToast, invoice?.invoice, invoiceId, navigate, postInvoice, refreshInvoice, refreshInvoices],
+    [
+      addNotification,
+      addToast,
+      invoice?.invoice,
+      invoiceId,
+      isCopying,
+      isCreating,
+      navigate,
+      postInvoice,
+      refreshInvoice,
+      refreshInvoices,
+    ],
   );
 
   if (((isLoadingInvoice || !fields) && !isCreating) || isLoadingCustomers) return <PageSpinner />;
 
-  const title = `${isCreating ? 'New' : 'Edit'} Invoice`;
+  const title = `${isCreating || isCopying ? 'New' : 'Edit'} Invoice`;
 
   return (
-    <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoice}>
+    <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoiceForm}>
       <Form<InvoiceFormType>
         icon={detailsViewImg}
         title={title}
         initialFields={fields}
-        initialData={invoice}
+        initialData={invoiceForm}
         onAccept={onAccept}
-        actions={<InvoiceActions invoice={invoice} />}
+        actions={<InvoiceActions invoice={invoiceForm} />}
         onFinish={() => navigate('/invoices')}
         viewMode={false}
       />

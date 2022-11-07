@@ -2,8 +2,8 @@ import { memo } from 'react';
 import { HeaderStyled } from './Header.styled';
 import { HeaderProps } from './Header.types';
 
-const Header = memo(({ icon, title, subtitle, children, onClose }: HeaderProps) => (
-  <HeaderStyled>
+const Header = memo(({ icon, title, subtitle, children, isTable, onClose }: HeaderProps) => (
+  <HeaderStyled isTable={isTable}>
     {icon && <img src={icon} alt={title} />}
     <div id="title-content">
       {title && <h1>{title}</h1>}
