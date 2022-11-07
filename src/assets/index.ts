@@ -7,3 +7,4 @@ export { default as deleteImg } from './images/delete.svg';
 export { default as newImg } from './images/new.svg';
 export { default as editImg } from './images/edit.svg';
 export { default as copyImg } from './images/copy.svg';
+export { default as invoiceImg } from './images/invoice.svg';

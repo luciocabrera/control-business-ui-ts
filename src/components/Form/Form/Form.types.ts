@@ -11,7 +11,7 @@ export type FormProps<TDataType> = FormBaseProps<TDataType> & {
   viewMode?: boolean;
   actions?: ReactElement;
   title: string;
-  icon?: string;
+  icon?: ReactElement | string;
   children?: ReactNode;
 };
 

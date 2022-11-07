@@ -21,6 +21,8 @@ import type {
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
 
+import InvoiceIcon from 'components/Icons/InvoiceIcon/InvoiceIcon';
+
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
   const navigate = useNavigate();
@@ -175,7 +177,7 @@ const ViewInvoice = memo(() => {
   return (
     <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoice}>
       <Form<InvoiceFormType>
-        icon={detailsViewImg}
+        icon={<InvoiceIcon />}
         title="View invoice"
         initialFields={fields}
         initialData={invoice}

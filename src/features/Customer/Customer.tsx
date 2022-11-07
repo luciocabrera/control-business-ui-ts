@@ -1,5 +1,3 @@
-// assets
-import { detailsViewImg } from 'assets';
 // components
 import { Form, PageSpinner, CustomerActions, ErrorDisplay } from 'components';
 // contexts
@@ -19,6 +17,7 @@ import {
 import { memo, useCallback, useMemo } from 'react';
 // types
 import type { APiResponseErrorType, CustomerCreateType, CustomerFormType, FormFieldType } from 'types';
+import CustomerIcon from 'components/Icons/CustomerIcon/CustomerIcon';
 
 const Customer = memo(() => {
   const { customerId } = useParams();
@@ -359,7 +358,7 @@ const Customer = memo(() => {
   return (
     <FormDataContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
       <Form<CustomerFormType>
-        icon={detailsViewImg}
+        icon={<CustomerIcon />}
         title={title}
         initialFields={fields}
         initialData={customer}

@@ -29,9 +29,19 @@ export const FormStyled = styled.form`
     max-height: calc(100vh - 17rem);
   }
   footer {
-    padding: 0.4rem 2rem 1.2rem;
+    padding: 0.4rem 2rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
     gap: 1rem;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 46%), 0 2px 10px 0 rgb(0 0 0 / 42%);
+    align-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    background: linear-gradient(135deg, white 20%, #c2e5da8a 0%, rgb(239 216 165 / 53%) 100%);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
   }
 `;
 export const FieldRowStyled = styled.fieldset`

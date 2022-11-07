@@ -1,5 +1,3 @@
-// assets
-import { detailsViewImg } from 'assets';
 // components
 import { PageSpinner, InvoiceActions, ErrorDisplay, Form } from 'components';
 import { InvoiceAmountsField, InvoiceDetailsField } from './components';
@@ -29,6 +27,7 @@ import type {
 
 import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
 import { getDateAsString, getFormattedNumber } from 'utilities';
+import InvoiceIcon from 'components/Icons/InvoiceIcon/InvoiceIcon';
 
 const ViewInvoice = memo(() => {
   const { invoiceId, action } = useParams();
@@ -52,9 +51,9 @@ const ViewInvoice = memo(() => {
       subtotal: 0,
       total: 0,
       taxes: 0,
-      taxesPercentage: 0,
+      taxesPercentage,
     };
-  }, [invoice, isCopying]);
+  }, [invoice, isCopying, taxesPercentage]);
 
   const refreshInvoices = useRefreshInvoices();
   const refreshInvoice = useRefreshInvoice();
@@ -233,7 +232,7 @@ const ViewInvoice = memo(() => {
   return (
     <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoiceForm}>
       <Form<InvoiceFormType>
-        icon={detailsViewImg}
+        icon={<InvoiceIcon />}
         title={title}
         initialFields={fields}
         initialData={invoiceForm}

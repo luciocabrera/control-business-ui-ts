@@ -2,16 +2,27 @@
 import { detailsViewImg } from 'assets';
 // components
 import { Header, NewIcon, ReadOnlyTable, PageSpinner, Link, Outlet } from 'components';
+import ViewIcon from 'components/Icons/ViewIcon/ViewIcon';
 // hooks
 import { useFetchCustomers, useLocation } from 'hooks';
 // react
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 // types
 import type { CustomerType, ColumnDef } from 'types';
+import TableActions from './components/TableActions';
 
 const title = 'Customers';
 
-const Customers = () => {
+// const Actions = memo(({ original }: { original: CustomerType }) => {
+//   const location = useLocation();
+//   return (
+//     <Link to={`${original.customerId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
+//       <ViewIcon />
+//     </Link>
+//   );
+// });
+
+const Customers = memo(() => {
   const { data: customers, loading } = useFetchCustomers();
   const location = useLocation();
 
@@ -29,13 +40,14 @@ const Customers = () => {
       {
         accessorKey: 'actions',
         cell: ({ row: { original } }) => (
-          <Link to={`${original.customerId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
-            <img src={detailsViewImg} alt="" width="18" height="18" />
-          </Link>
+          <TableActions original={original} />
+          // <Link to={`${original.customerId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
+          //   <img src={detailsViewImg} alt="" width="18" height="18" />
+          // </Link>
         ),
       },
     ],
-    [location],
+    [],
   );
 
   return (
@@ -50,5 +62,6 @@ const Customers = () => {
       <Outlet />
     </>
   );
-};
+});
+
 export default Customers;

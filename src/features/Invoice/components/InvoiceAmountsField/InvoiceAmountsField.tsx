@@ -70,7 +70,7 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
         onChange={() => {}}
         textAlign="right"
         {...taxesPercentageField}
-        value={taxesPercentage}
+        value={`${taxesPercentage}%`}
       />
       <TextInput
         key={`field-input-taxes`}

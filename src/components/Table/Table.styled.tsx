@@ -11,14 +11,17 @@ export const TableStyled = styled.div`
   height: ${({ height }: { height?: string; useRadius?: boolean }) => (height ? height : 'inherit')};
   max-width:  100%;
   overflow: auto;
-  font: 300 12px/14px 'Helvetica Neue Regular', Helvetica, Arial, sans-serif;
+  // font: 300 12px/14px 'Helvetica Neue Regular', Helvetica, Arial, sans-serif;
+  font-family: '72override', var(--font-family);
+  font-size: var(--font-size);
+   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 46%), 0 2px 10px 0 rgb(0 0 0 / 42%);
   ${radius}
   table {
     border-collapse: collapse;
-    border-spacing: 0;
-    font-family: arial, sans-serif;
-    table-layout: fixed;
+     border-spacing: 0;
+    //  table-layout: fixed;
     width: 100%;
+   
     ${radius}
   }
   thead {
@@ -28,14 +31,15 @@ export const TableStyled = styled.div`
     position: sticky;
     top: 0;
     cursor: pointer;  
+    font-family: '72override', var(--font-family);
+    font-size: var(--font-size);
+    font-weight: 400;
     th {
       border-bottom: 1px solid lightgray;
       border-right: 1px solid lightgray;
       padding: 2px 4px;
       position: relative;
-      font-weight: bold;
-      text-align: center;
-      height: 30px;
+
     }
   }
 
@@ -46,6 +50,7 @@ tr {
 }
 
    tbody {
+    font-weight: 300;
       td {
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -86,6 +91,14 @@ tr {
   background: blue;
   opacity: 1;
 }
+
+.cursor-pointer{          
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 1rem;
+    gap: 1rem;
+  }
+
 
 @media (hover: hover) {
   .resizer {

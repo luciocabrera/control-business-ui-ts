@@ -1,5 +1,3 @@
-// assets
-import { detailsViewImg } from 'assets';
 // components
 import { Form, PageSpinner, CustomerActions } from 'components';
 // contexts
@@ -10,6 +8,7 @@ import { useFetchCustomer, useParams, useNavigate } from 'hooks';
 import { memo, useMemo } from 'react';
 // types
 import type { CustomerFormType, FormFieldType } from 'types';
+import CustomerIcon from 'components/Icons/CustomerIcon/CustomerIcon';
 
 const ViewCustomer = memo(() => {
   const { customerId } = useParams();
@@ -177,7 +176,7 @@ const ViewCustomer = memo(() => {
   return (
     <FormDataContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
       <Form<CustomerFormType>
-        icon={detailsViewImg}
+        icon={<CustomerIcon />}
         title="View Customer"
         initialFields={fields}
         initialData={customer}

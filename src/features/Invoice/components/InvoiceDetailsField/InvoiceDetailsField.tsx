@@ -77,7 +77,7 @@ const InvoiceDetailsField = memo(({ normalize }: TableFieldProps) => {
       const newSubtotal = newDetails?.reduce((previousValue, detail) => {
         return previousValue + detail.priceQuantity;
       }, 0);
-      const newTaxes = (newSubtotal || 0) * taxesPercentage;
+      const newTaxes = ((newSubtotal || 0) * taxesPercentage) / 100;
       const newTotal = (newSubtotal || 0) + newTaxes;
 
       setSubtotal({ subtotal: newSubtotal });

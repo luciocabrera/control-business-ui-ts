@@ -22,7 +22,7 @@ const Form = <TDataType extends Record<string, unknown>>({
 }: FormProps<TDataType>) => {
   return (
     <FormStyled noValidate>
-      <Header icon={icon} title={title} onClose={onFinish} />
+      <Header icon={icon} title={title} onClose={onFinish} isTable />
       <main>
         <>
           {getFieldElements(initialFields, undefined, undefined, viewMode)}
