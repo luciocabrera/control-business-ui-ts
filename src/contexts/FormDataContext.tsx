@@ -28,6 +28,7 @@ const useStoreData = <TDataType extends Record<string, unknown>>(
 
   const set = useCallback((value: Partial<TDataType>) => {
     storeFormData.current = { ...storeFormData.current, ...value } as TDataType;
+    console.log('current', storeFormData.current);
     subscribers.current.forEach((callback) => callback());
   }, []);
 

@@ -29,7 +29,7 @@ export const FormStyled = styled.form`
     max-height: calc(100vh - 17rem);
   }
   footer {
-    padding: 0.4rem 2rem;
+    padding: 0.25rem 2rem;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;

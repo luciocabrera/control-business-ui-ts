@@ -9,7 +9,10 @@ import type { FieldBaseValueType } from 'types';
 import { getErrorField, validateField, memo } from 'utilities';
 
 const FormField = memo(({ field, ...props }: FormFieldProps) => {
+  const { options, type, label, accessor, readonly, placeholder, normalize, rules } = field;
+
   const [fieldValue, setStore] = useStore<FieldBaseValueType, any>((store) => store[field.accessor]);
+
   const [formStatus] = useFormStatusStore();
   const { submittedCounter } = formStatus;
 
@@ -24,10 +27,14 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
             const selected = event.target.options[event.target.selectedIndex]?.value;
             setStore({ [field.accessor]: selected });
-            field.onSelect?.(selected);
+            // field.onSelect?.(selected);
           }}
           value={fieldValue}
-          {...field}
+          accessor={accessor}
+          options={options}
+          label={label}
+          readonly={readonly}
+          type={type}
           {...props}
           {...errorField}
         />
@@ -40,7 +47,13 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setStore({ [field.accessor]: event.target.value });
           }}
-          {...field}
+          accessor={accessor}
+          readonly={readonly}
+          label={label}
+          type={type}
+          normalize={normalize}
+          rules={rules}
+          placeholder={placeholder}
           {...props}
           {...errorField}
           value={fieldValue}
