@@ -1,16 +1,13 @@
-import { Outlet } from 'react-router-dom';
-
-import { SideNavBar } from 'components';
-import { useUser } from 'contexts/AuthContext';
-
+// components
+import { Outlet, NavBar } from 'components';
+// routes
 import routes from '../../root/routes';
+// styles
+import { ContentStyled } from './Layout.styled';
+// utilities
+import { memo } from 'utilities';
 
-import { ContentStyled, HeaderStyled } from './Layout.styled';
-import NavBar from 'components/NavBar/NavBar';
-
-const Layout = () => {
-  const user = useUser();
-
+const Layout = memo(() => {
   return (
     <>
       <NavBar routes={routes} />
@@ -19,6 +16,6 @@ const Layout = () => {
       </ContentStyled>
     </>
   );
-};
+});
 
 export default Layout;

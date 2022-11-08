@@ -1,4 +1,4 @@
-import type { ChangeEvent, ColumnDef, FormFieldBaseType, ReactNode, SetFieldType } from 'types';
+import type { ColumnDef, FormFieldBaseType, ReactNode } from 'types';
 type TableFieldValueType = (Record<string, unknown> | string | number)[];
 
 export type TableFieldProps<TData, DetailData> = Omit<

@@ -46,5 +46,7 @@ export { default as NumberDisplay } from './NumberDisplay/NumberDisplay';
 export { default as Tabs } from './Tabs/Tabs';
 
 export { default as IconButton } from './IconButton/IconButton';
+export { default as NavBar } from './NavBar/NavBar';
 
+// styled wrappers
 export { FieldGroupStyled } from './Form/Form/Form.styled';

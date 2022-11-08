@@ -18,6 +18,3 @@ export type FormProps<TDataType> = FormBaseProps<TDataType> & {
 export type ModalType = ModalProps & {
   show: boolean;
 };
-// useStore: <SelectorOutput>(
-//   selector: (store: Record<string, unknown>) => SelectorOutput,
-// ) => [SelectorOutput, (value: Record<string, unknown>) => void];

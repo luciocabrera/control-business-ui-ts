@@ -1,6 +1,5 @@
 // components
-import Select from '../Select/Select';
-import TextInput from '../TextInput/TextInput';
+import { Select, TextInput } from 'components';
 // contexts
 import { useFormStatusStore, useStore } from 'contexts';
 // types

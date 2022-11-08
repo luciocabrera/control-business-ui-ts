@@ -1,11 +1,12 @@
-// React
-import { memo, forwardRef } from 'react';
-import { FieldBaseValueType } from 'types';
+// components
 import FormFieldBase from '../FormFieldBase/FormFieldBase';
-// Prop-types
+// react
+import { memo, forwardRef } from 'react';
+// styles
 import { TextInputStyled } from './TextInput.styled';
+// types
+import type { FieldBaseValueType } from 'types';
 import type { TextInputProps } from './TextInput.types';
-// Components
 
 const TextInput = memo(
   forwardRef(({ textAlign, ...rest }: TextInputProps, ref: React.ForwardedRef<unknown>) => {

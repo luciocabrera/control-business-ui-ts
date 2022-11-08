@@ -1,11 +1,16 @@
-import CopyIcon from 'components/Icons/CopyIcon/CopyIcon';
-import { memo } from 'react';
-import { Link } from 'react-router-dom';
+// components
+import { Link } from 'components';
 // hooks
 import { useLocation } from 'hooks';
-import { InvoiceType } from 'types';
+// icons
+import { CopyIcon, ViewIcon } from 'icons';
+// types
+import type { InvoiceType } from 'types';
+// react
+import { memo } from 'react';
+// styles
 import { TableActionsStyled } from './TableActions.styled';
-import ViewIcon from 'components/Icons/ViewIcon/ViewIcon';
+
 type TableActionsProps = {
   original: InvoiceType;
 };

@@ -1,7 +1,7 @@
 import { Overlay } from 'components';
 import React, { useRef, createContext, useContext, useCallback, useSyncExternalStore, useState } from 'react';
 import { FormWrapper } from 'styles';
-import { FormFieldType } from 'types';
+import type { FormFieldType } from 'types';
 import { getInitialData } from 'utilities';
 
 type FormStatusType = {

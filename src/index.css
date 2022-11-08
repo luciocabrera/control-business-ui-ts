@@ -252,22 +252,8 @@ button.close {
   outline: 0;
 }
 .modal-header {
-  /* padding: 15px;
-  display: flex;
-  padding: 15px;
-  border-bottom: 1px solid darkred;
-  color: darkred;
-  display: flex;
-  align-content: center;
-  align-items: center;
-  flex-wrap: nowrap;
-  justify-content: flex-start; */
-
   padding: 0.4rem;
-  /* border-bottom: 1px solid #e5e5e5; */
   display: flex;
-  /* padding: 15px; */
-  /* border-bottom: 1px solid darkred; */
   color: white;
   display: flex;
   align-content: center;
@@ -290,10 +276,6 @@ button.close {
 }
 .modal-body {
   position: relative;
-  /* padding: 15px;
-   */
-  /* padding: 2rem 4rem;
-   */
   padding: 1rem 2rem 1rem 1.2rem;
   color: var(--text-color);
 }

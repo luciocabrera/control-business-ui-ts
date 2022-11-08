@@ -1,10 +1,14 @@
+// components
 import ErrorDisplay from 'components/ErrorDisplay/ErrorDisplay';
-import { useAddNotification, useFormStatusStore, useStore } from 'contexts';
-import { memo } from 'react';
-import { deepEqual, validateFields } from 'utilities';
 import Button from '../Button/Button';
-
+// contexts
+import { useAddNotification, useFormStatusStore, useStore } from 'contexts';
+// react
+import { memo } from 'react';
+// types
 import type { MouseEvent, FormBaseProps } from 'types';
+// utilities
+import { deepEqual, validateFields } from 'utilities';
 
 type ActionsProps<TDataType> = FormBaseProps<TDataType>;
 
