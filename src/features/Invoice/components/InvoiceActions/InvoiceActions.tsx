@@ -96,11 +96,6 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
           Delete
         </Button>
       )}
-      {/* {(isCreating || isEditing) && (
-        <Button id="invoice-actions-button-add" onClick={onEdit}>
-          Add
-        </Button>
-      )} */}
     </>
   );
 });

@@ -4,11 +4,12 @@ import { Form, PageSpinner, CustomerActions } from 'components';
 import { FormDataContextProvider } from 'contexts';
 // hooks
 import { useFetchCustomer, useParams, useNavigate } from 'hooks';
+// icons
+import { CustomerIcon } from 'icons';
 // react
 import { memo, useMemo } from 'react';
 // types
 import type { CustomerFormType, FormFieldType } from 'types';
-import CustomerIcon from 'components/Icons/CustomerIcon/CustomerIcon';
 
 const ViewCustomer = memo(() => {
   const { customerId } = useParams();

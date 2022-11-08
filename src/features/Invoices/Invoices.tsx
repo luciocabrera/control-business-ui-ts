@@ -1,7 +1,9 @@
 // components
-import { Header, NewIcon, ReadOnlyTable, PageSpinner, Link, Outlet, DateDisplay } from 'components';
+import { Header, ReadOnlyTable, PageSpinner, Link, Outlet, DateDisplay } from 'components';
 // hooks
 import { useFetchInvoices, useLocation } from 'hooks';
+// icons
+import { NewIcon } from 'icons';
 // react
 import { memo, useMemo } from 'react';
 // types

@@ -1,37 +1,22 @@
 //assets
 import { newImg, editImg, deleteImg, copyImg } from 'assets';
 // components
-import { NumberDisplay, Portal, ReadOnlyTable, IconButton } from 'components';
+import { NumberDisplay, Portal, ReadOnlyTable, IconButton, FieldGroupStyled } from 'components';
+import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 // contexts
 import { useStore } from 'contexts';
 // react
 import { memo, useMemo, useCallback, useState } from 'react';
 // types
-import type { ColumnDef, FormFieldBaseType, InvoiceFormType, InvoicesDetails } from 'types';
-import { FieldGroupStyled } from '../../../../components/Form/Form/Form.styled';
-import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
+import type { ColumnDef, InvoiceFormType, InvoicesDetails } from 'types';
+import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
+// styles
 import { LabelDetailsStyled } from './InvoiceDetailsField.styled';
 
-export type TableFieldProps = Omit<
-  FormFieldBaseType,
-  | 'display'
-  | 'default'
-  | 'tooltip'
-  | 'normalize'
-  | 'rules'
-  | 'value'
-  | 'type'
-  | 'label'
-  | 'accessor'
-  | 'data'
-  | 'columns'
-> & {
-  normalize?: (value?: InvoicesDetails[]) => InvoicesDetails[];
-};
-
-const InvoiceDetailsField = memo(({ normalize }: TableFieldProps) => {
+const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [detail, setDetail] = useState<InvoicesDetails | undefined>();
+
   const [invoicesDetails, setInvoicesDetails] = useStore<InvoicesDetails[], Pick<InvoiceFormType, 'invoiceDetails'>>(
     (store) => store.invoiceDetails,
   );
@@ -41,7 +26,11 @@ const InvoiceDetailsField = memo(({ normalize }: TableFieldProps) => {
     (store) => store.taxesPercentage,
   );
   const [, setTotal] = useStore<number, Pick<InvoiceFormType, 'total'>>((store) => store.total);
-  const normalizedValue = (normalize?.(invoicesDetails) ?? invoicesDetails) as unknown as InvoicesDetails[];
+
+  const normalizedValue = useMemo(
+    () => normalize?.(invoicesDetails) ?? invoicesDetails,
+    [invoicesDetails, normalize],
+  ) as unknown as InvoicesDetails[];
 
   const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [

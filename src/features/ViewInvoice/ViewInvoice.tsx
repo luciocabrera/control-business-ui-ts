@@ -1,11 +1,11 @@
-// assets
-import { detailsViewImg } from 'assets';
 // components
 import { Form, PageSpinner, InvoiceActions, NumberDisplay, TableField } from 'components';
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // hooks
 import { useParams, useNavigate, useFetchInvoice } from 'hooks';
+// icons
+import { InvoiceIcon } from 'icons';
 // react
 import { memo, useMemo } from 'react';
 // types
@@ -21,8 +21,6 @@ import type {
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
 
-import InvoiceIcon from 'components/Icons/InvoiceIcon/InvoiceIcon';
-
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
   const navigate = useNavigate();
@@ -34,6 +32,10 @@ const ViewInvoice = memo(() => {
       {
         accessorKey: 'productNameWithCode',
         header: 'Product',
+      },
+      {
+        accessorKey: 'description',
+        header: 'Description',
       },
       {
         accessorKey: 'quantity',

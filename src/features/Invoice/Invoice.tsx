@@ -1,6 +1,8 @@
 // components
 import { PageSpinner, InvoiceActions, ErrorDisplay, Form } from 'components';
 import { InvoiceAmountsField, InvoiceDetailsField } from './components';
+// contexts
+import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
 // hooks
 import {
   useParams,
@@ -12,6 +14,8 @@ import {
   useRefreshInvoices,
   useFetchInvoiceRates,
 } from 'hooks';
+// icons
+import { InvoiceIcon } from 'icons';
 // react
 import { memo, useCallback, useMemo } from 'react';
 // types
@@ -24,10 +28,7 @@ import type {
   FieldBaseValueType,
 } from 'types';
 // utilities
-
-import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
 import { getDateAsString, getFormattedNumber } from 'utilities';
-import InvoiceIcon from 'components/Icons/InvoiceIcon/InvoiceIcon';
 
 const ViewInvoice = memo(() => {
   const { invoiceId, action } = useParams();

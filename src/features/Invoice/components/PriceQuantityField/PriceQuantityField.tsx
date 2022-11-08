@@ -26,10 +26,12 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
     () => ({ accessor: 'quantity', label: 'Quantity', type: 'number', required: true }),
     [],
   );
+
   const errorsQuantity = useMemo(
     () => (submittedCounter > 0 ? validateField(quantityField, quantity) : []),
     [quantity, quantityField, submittedCounter],
   );
+
   const errorFieldQuantity = useMemo(
     () => getErrorField(quantityField, errorsQuantity),
     [errorsQuantity, quantityField],
@@ -39,10 +41,12 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
     () => ({ accessor: 'priceUnit', label: 'Price Unit', type: 'number', required: true }),
     [],
   );
+
   const errorsPriceUnitField = useMemo(
     () => (submittedCounter > 0 ? validateField(priceUnitField, priceUnit) : []),
     [priceUnit, priceUnitField, submittedCounter],
   );
+
   const errorPriceUnitField = useMemo(
     () => getErrorField(priceUnitField, errorsPriceUnitField),
     [errorsPriceUnitField, priceUnitField],
@@ -52,10 +56,12 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
     () => ({ accessor: 'priceQuantity', label: 'Price Quantity', type: 'text', required: true, readonly: true }),
     [],
   );
+
   const errorsPriceQuantity = useMemo(
     () => (submittedCounter > 0 ? validateField(priceQuantityField, priceQuantity) : []),
     [priceQuantity, priceQuantityField, submittedCounter],
   );
+
   const errorPriceQuantityField = useMemo(
     () => getErrorField(priceQuantityField, errorsPriceQuantity),
     [errorsPriceQuantity, priceQuantityField],

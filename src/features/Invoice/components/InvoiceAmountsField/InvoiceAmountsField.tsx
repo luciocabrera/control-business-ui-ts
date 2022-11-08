@@ -9,10 +9,8 @@ import type { InvoiceAmountsFieldProps } from './InvoiceAmountsField.types';
 import type { InvoiceFormType } from 'types';
 // utilities
 import { getErrorField, validateField, memo, getFormattedNumber } from 'utilities';
-// import { useFetchInvoiceRates } from 'hooks';
 
 const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
-  // const taxesPercentage = useFetchInvoiceRates();
   const [subtotal] = useStore<number, Pick<InvoiceFormType, 'subtotal'>>((store) => store.subtotal);
   const [taxes] = useStore<number, Pick<InvoiceFormType, 'taxes'>>((store) => store.taxes);
   const [total] = useStore<number, Pick<InvoiceFormType, 'total'>>((store) => store.total);
@@ -23,16 +21,19 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
   const { submittedCounter } = formStatus;
 
   const subtotalField = useMemo(() => ({ accessor: 'subtotal', label: 'Sub Total', type: 'text' }), []);
+
   const errorsSubtotal = useMemo(
     () => (submittedCounter > 0 ? validateField(subtotalField, subtotal) : []),
     [subtotal, subtotalField, submittedCounter],
   );
+
   const errorFieldSubtotal = useMemo(
     () => getErrorField(subtotalField, errorsSubtotal),
     [errorsSubtotal, subtotalField],
   );
 
   const taxesField = useMemo(() => ({ accessor: 'taxes', label: 'Taxes', type: 'text', required: true }), []);
+
   const errorsTaxesField = useMemo(
     () => (submittedCounter > 0 ? validateField(taxesField, taxes) : []),
     [taxes, taxesField, submittedCounter],
@@ -52,6 +53,7 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
     () => (submittedCounter > 0 ? validateField(totalField, total) : []),
     [total, totalField, submittedCounter],
   );
+
   const errorTotalField = useMemo(() => getErrorField(totalField, errorsTotal), [errorsTotal, totalField]);
 
   return (

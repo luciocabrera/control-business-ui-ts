@@ -10,15 +10,10 @@ import { useParams, useFetchProducts } from 'hooks';
 // react
 import { memo, useCallback, useMemo } from 'react';
 // types
-import type { CreateInvoiceDetail, FormFieldType, InvoicesDetails, ProductType } from 'types';
+import type { CreateInvoiceDetail, FormFieldType, ProductType } from 'types';
+import type { InvoiceDetailFormProps } from './InvoiceDetailForm.types';
 
-export type DetailFormProps = {
-  detail?: InvoicesDetails;
-  onAcceptDetail: (detail: InvoicesDetails) => void;
-  onFinish: () => void;
-};
-
-const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: DetailFormProps) => {
+const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDetailFormProps) => {
   const { customerId } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;

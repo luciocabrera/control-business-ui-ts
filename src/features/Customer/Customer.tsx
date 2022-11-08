@@ -13,11 +13,12 @@ import {
   useNavigate,
   useParams,
 } from 'hooks';
+// icons
+import { CustomerIcon } from 'icons';
 // react
 import { memo, useCallback, useMemo } from 'react';
 // types
 import type { APiResponseErrorType, CustomerCreateType, CustomerFormType, FormFieldType } from 'types';
-import CustomerIcon from 'components/Icons/CustomerIcon/CustomerIcon';
 
 const Customer = memo(() => {
   const { customerId } = useParams();

@@ -16,12 +16,6 @@ export { default as Portal } from './Portal/Portal';
 // headers
 export { default as Header } from './Header/Header';
 
-// icons
-
-export { default as NewIcon } from './Icons/NewIcon/NewIcon';
-export { default as HomeIcon } from './Icons/HomeIcon/HomeIcon';
-export { default as LoginIcon } from './Icons/LoginIcon/LoginIcon';
-
 // table
 export { default as ReadOnlyTable } from './Table/ReadOnlyTable/ReadOnlyTable';
 
@@ -52,3 +46,5 @@ export { default as NumberDisplay } from './NumberDisplay/NumberDisplay';
 export { default as Tabs } from './Tabs/Tabs';
 
 export { default as IconButton } from './IconButton/IconButton';
+
+export { FieldGroupStyled } from './Form/Form/Form.styled';

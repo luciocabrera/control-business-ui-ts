@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { NavStyled } from './NavBar.styled';
 import { Link } from 'react-router-dom';
-import AppIcon from 'components/Icons/AppIcon/AppIcon';
+import AppIcon from 'icons/AppIcon/AppIcon';
 
 type SideNavBarProps = {
   routes: {

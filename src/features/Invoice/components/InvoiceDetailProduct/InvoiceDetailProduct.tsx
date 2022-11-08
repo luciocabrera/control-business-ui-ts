@@ -19,7 +19,6 @@ const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductP
     (store) => store.description,
   );
   const [quantity] = useStore<number, Pick<CreateInvoiceDetail, 'quantity'>>((store) => store.quantity);
-
   const [, setPriceQuantity] = useStore<number, Pick<CreateInvoiceDetail, 'priceQuantity'>>(
     (store) => store.priceQuantity || 0,
   );
