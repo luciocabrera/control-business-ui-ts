@@ -3,7 +3,7 @@ import { Notification } from 'components';
 // hooks
 import { useContextSelector, useCallback, useState } from 'hooks';
 // utilities
-import { createContext } from 'utilities';
+import { createContext, getNotification } from 'utilities';
 // types
 import type {
   ReactNode,
@@ -13,8 +13,6 @@ import type {
   MouseEventHandler,
   SetStateAction,
 } from 'types';
-// utilities
-import { getNotification } from 'utilities';
 
 type NotificationContextType = {
   addNotification: (

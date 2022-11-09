@@ -1,9 +1,7 @@
-// assets
-import { detailsViewImg } from 'assets';
 // components
-import { Form, PageSpinner, Overlay, CustomerActions, ErrorDisplay } from 'components';
+import { Form, PageSpinner, CustomerActions, ErrorDisplay } from 'components';
 // contexts
-import { useAddNotification, useAddToast } from 'contexts';
+import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
 // hooks
 import {
   useFetchCustomer,
@@ -15,8 +13,8 @@ import {
   useNavigate,
   useParams,
 } from 'hooks';
-// styles
-import { FormWrapper } from 'styles';
+// icons
+import { CustomerIcon } from 'icons';
 // react
 import { memo, useCallback, useMemo } from 'react';
 // types
@@ -35,7 +33,6 @@ const Customer = memo(() => {
   const refreshCustomer = useRefreshCustomer();
   const postCustomer = usePostCustomer();
   const navigate = useNavigate();
-
   const addToast = useAddToast();
   const addNotification = useAddNotification();
 
@@ -159,6 +156,18 @@ const Customer = memo(() => {
               },
             ],
           },
+          {
+            accessor: 'email',
+            label: 'Email',
+            type: 'text',
+            value: customer?.defaultEmail?.email,
+            rules: [
+              {
+                type: 'maxLength',
+                value: 120,
+              },
+            ],
+          },
         ],
       },
       {
@@ -271,6 +280,7 @@ const Customer = memo(() => {
       customer?.currentAddress.line2,
       customer?.currentAddress.postalCode,
       customer?.currentAddress.state,
+      customer?.defaultEmail?.email,
       customer?.defaultPhone?.number,
       customer?.documentId,
       customer?.documentTypeName,
@@ -285,8 +295,17 @@ const Customer = memo(() => {
 
   const onAccept = useCallback(
     async (payload: CustomerFormType) => {
-      const { firstName, lastName, documentId, documentTypeName, titleName, initials, number, ...currentAddress } =
-        payload;
+      const {
+        firstName,
+        lastName,
+        documentId,
+        documentTypeName,
+        titleName,
+        initials,
+        number,
+        email,
+        ...currentAddress
+      } = payload;
       const calculatedCustomerId = customerId === 'new' ? undefined : customerId;
 
       const body: CustomerCreateType = {
@@ -299,6 +318,7 @@ const Customer = memo(() => {
         titleName,
         addresses: { ...currentAddress },
         phones: { number },
+        emails: { email },
       };
 
       try {
@@ -337,10 +357,9 @@ const Customer = memo(() => {
   const title = `${isCreating ? 'New' : 'Edit'} Customer`;
 
   return (
-    <FormWrapper>
-      <Overlay />v
+    <FormDataContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
       <Form<CustomerFormType>
-        icon={detailsViewImg}
+        icon={<CustomerIcon />}
         title={title}
         initialFields={fields}
         initialData={customer}
@@ -349,7 +368,7 @@ const Customer = memo(() => {
         actions={<CustomerActions customer={customer} />}
         viewMode={false}
       />
-    </FormWrapper>
+    </FormDataContextProvider>
   );
 });
 export default Customer;

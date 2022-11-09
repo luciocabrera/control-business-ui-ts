@@ -1,6 +1,7 @@
 import { memo } from 'react';
-
+// styles
 import { HelperTextContainer, FieldSetStyled, ErrorContainer } from './FormFieldBase.styled';
+// types
 import type { FormFieldBaseProps } from './FormFieldBase.types';
 
 const FormFieldBase = memo(({ label, placeholder, required, viewMode, ...props }: FormFieldBaseProps) => {

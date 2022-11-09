@@ -1,11 +1,24 @@
-import { ReadOnlyTable } from 'components';
-import { ChangeEvent, memo } from 'react';
-import Select from '../Select/Select';
-import TextInput from '../TextInput/TextInput';
-import TableField from '../TableField/TableField';
-import { FormFieldProps } from './FormField.types';
+// components
+import { Select, TextInput } from 'components';
+// contexts
+import { useFormStatusStore, useStore } from 'contexts';
+// types
+import type { FormFieldProps } from './FormField.types';
+import type { FieldBaseValueType } from 'types';
+// utilities
+import { getErrorField, validateField, memo } from 'utilities';
 
-const FormField = memo(({ field, setField, setFieldFromEvent, ...props }: FormFieldProps) => {
+const FormField = memo(({ field, ...props }: FormFieldProps) => {
+  const { options, type, label, accessor, readonly, placeholder, normalize, rules, textAlign } = field;
+
+  const [fieldValue, setStore] = useStore<FieldBaseValueType, any>((store) => store[field.accessor]);
+
+  const [formStatus] = useFormStatusStore();
+  const { submittedCounter } = formStatus;
+
+  const errorFields = submittedCounter > 0 ? validateField(field, fieldValue) : [];
+  const errorField = getErrorField(field, errorFields);
+
   switch (field.type) {
     case 'select':
       return (
@@ -13,18 +26,41 @@ const FormField = memo(({ field, setField, setFieldFromEvent, ...props }: FormFi
           key={`field-select-${field.accessor}`}
           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
             const selected = event.target.options[event.target.selectedIndex]?.value;
-            setField(field.accessor, selected);
+            setStore({ [field.accessor]: selected });
             // field.onSelect?.(selected);
           }}
-          {...field}
+          value={fieldValue}
+          accessor={accessor}
+          options={options}
+          label={label}
+          readonly={readonly}
+          type={type}
           {...props}
+          {...errorField}
         />
       );
     case 'text':
     default:
-      //@ts-ignore
-      return <TextInput key={`field-input-${field.accessor}`} onChange={setFieldFromEvent} {...field} {...props} />;
+      return (
+        <TextInput
+          key={`field-input-${field.accessor}`}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setStore({ [field.accessor]: event.target.value });
+          }}
+          accessor={accessor}
+          readonly={readonly}
+          label={label}
+          type={type}
+          normalize={normalize}
+          rules={rules}
+          placeholder={placeholder}
+          textAlign={textAlign}
+          {...props}
+          {...errorField}
+          value={fieldValue}
+        />
+      );
   }
 });
 
-export default memo(FormField) as typeof FormField;
+export default FormField;

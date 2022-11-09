@@ -1,15 +1,20 @@
+// components
 import { Overlay } from 'components';
-import { ReactNode } from 'types';
+// react
+import { memo } from 'react';
+// types
+import type { ReactNode } from 'types';
+// styles
 import { FormWrapper } from './ModalForm.styled';
 
 type ModalWrapperProps = {
   children: ReactNode;
 };
 
-const ModalForm = ({ children }: ModalWrapperProps) => (
+const ModalForm = memo(({ children }: ModalWrapperProps) => (
   <FormWrapper>
     <Overlay />
     {children}
   </FormWrapper>
-);
+));
 export default ModalForm;

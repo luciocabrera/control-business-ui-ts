@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 
 export const ContentStyled = styled.div`
-  float: left;
-  width: calc(100% - 42px - 2rem);
-  margin-left: 42px;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
 `;
 
 export const HeaderStyled = styled.header`

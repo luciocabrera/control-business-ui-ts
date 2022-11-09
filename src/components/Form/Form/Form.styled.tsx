@@ -29,9 +29,19 @@ export const FormStyled = styled.form`
     max-height: calc(100vh - 17rem);
   }
   footer {
-    padding: 0.4rem 2rem 1.2rem;
+    padding: 0.25rem 2rem;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
     gap: 1rem;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 46%), 0 2px 10px 0 rgb(0 0 0 / 42%);
+    align-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    background: linear-gradient(135deg, white 20%, #c2e5da8a 0%, rgb(239 216 165 / 53%) 100%);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
   }
 `;
 export const FieldRowStyled = styled.fieldset`
@@ -42,7 +52,7 @@ export const FieldRowStyled = styled.fieldset`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  align-content: stretch;
+  align-content: flex-start;
 `;
 
 export const FieldGroupStyled = styled.fieldset`
@@ -60,4 +70,16 @@ export const FieldGroupStyled = styled.fieldset`
   align-content: flex-start;
   justify-content: flex-start;
   }
+`;
+
+export const CustomFieldWrapper = styled.div`
+  background: var(--form-bg-color);
+  padding: 0;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: ${({ width }: { width?: number }) => width || '100'}%;
+  align-content: flex-start;
+  align-items: flex-start;
 `;

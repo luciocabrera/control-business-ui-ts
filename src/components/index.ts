@@ -2,6 +2,9 @@
 export { default as Form } from './Form/Form/Form';
 export { default as Button } from './Form/Button/Button';
 export { default as FormField } from './Form/FormField/FormField';
+export { default as TableField } from './Form/TableField/TableField';
+export { default as TextInput } from './Form/TextInput/TextInput';
+export { default as Select } from './Form/Select/Select';
 
 // loaders
 export { default as PageSpinner } from './PageSpinner/PageSpinner';
@@ -12,12 +15,6 @@ export { default as Portal } from './Portal/Portal';
 
 // headers
 export { default as Header } from './Header/Header';
-
-// icons
-
-export { default as NewIcon } from './Icons/NewIcon/NewIcon';
-export { default as HomeIcon } from './Icons/HomeIcon/HomeIcon';
-export { default as LoginIcon } from './Icons/LoginIcon/LoginIcon';
 
 // table
 export { default as ReadOnlyTable } from './Table/ReadOnlyTable/ReadOnlyTable';
@@ -47,3 +44,9 @@ export { default as DateDisplay } from './DateDisplay/DateDisplay';
 export { default as NumberDisplay } from './NumberDisplay/NumberDisplay';
 
 export { default as Tabs } from './Tabs/Tabs';
+
+export { default as IconButton } from './IconButton/IconButton';
+export { default as NavBar } from './NavBar/NavBar';
+
+// styled wrappers
+export { FieldGroupStyled } from './Form/Form/Form.styled';

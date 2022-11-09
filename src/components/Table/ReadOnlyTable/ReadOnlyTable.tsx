@@ -40,13 +40,7 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
 
   return (
     <TableStyled data-testid="data-table" ref={tableContainerRef} height={height} useRadius={useRadius}>
-      <table
-        {...{
-          style: {
-            width: table.getCenterTotalSize(),
-          },
-        }}
-      >
+      <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -62,8 +56,8 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
                         {{
-                          asc: ' 🔼',
-                          desc: ' 🔽',
+                          asc: <span>&#8593;</span>, //' 🔼',
+                          desc: <span>&#8595;</span>, //' 🔽',
                         }[header.column.getIsSorted() as string] ?? null}
                       </div>
                     )}

@@ -9,10 +9,13 @@ import type { SelectProps } from './Select.types';
 const Select = memo(
   forwardRef((props: SelectProps, ref: React.ForwardedRef<unknown>) => {
     const { accessor, options, value, label, onChange } = props;
+    console.log('value in select', value);
     return (
       <FormFieldBase {...props} ref={ref}>
         <SelectStyled
           name={accessor}
+          select-name={accessor}
+          title={accessor}
           aria-label={accessor}
           aria-labelledby={accessor}
           id={accessor}
@@ -23,7 +26,7 @@ const Select = memo(
             onChange?.(event);
           }}
         >
-          <option value="" disabled hidden>
+          <option key="default-option" value="">
             Choose {label}
           </option>
           {options?.map((option) => (

@@ -1,33 +1,36 @@
-// React
-import { memo, forwardRef } from 'react';
+// components
 import FormFieldBase from '../FormFieldBase/FormFieldBase';
-// Prop-types
+// react
+import { memo, forwardRef } from 'react';
+// styles
 import { TextInputStyled } from './TextInput.styled';
+// types
+import type { FieldBaseValueType } from 'types';
 import type { TextInputProps } from './TextInput.types';
-// Components
 
 const TextInput = memo(
-  forwardRef((props: TextInputProps, ref: React.ForwardedRef<unknown>) => {
-    const { accessor, value, onChange, normalize, rules } = props;
+  forwardRef(({ textAlign, ...rest }: TextInputProps, ref: React.ForwardedRef<unknown>) => {
+    const { accessor, type, readonly, placeholder, value, onChange, normalize, rules } = rest;
 
-    const normalizedValue = normalize?.(value) ?? value;
+    const normalizedValue = (normalize?.(value) ?? value ?? '') as FieldBaseValueType;
 
     const maxLength = rules
       ?.filter((rule) => rule.type === 'maxLength')
       ?.map((filteredRule) => filteredRule.value)[0] as number;
 
     return (
-      <FormFieldBase maxLength={maxLength} ref={ref} {...props}>
+      <FormFieldBase maxLength={maxLength} ref={ref} {...rest}>
         <TextInputStyled
           name={accessor}
-          value={normalizedValue || ''}
+          value={normalizedValue}
           onChange={onChange}
           maxLength={maxLength}
-          type={props.type}
+          type={type}
           id={accessor}
-          readOnly={props.readonly}
-          placeholder={props.placeholder}
+          readOnly={readonly}
+          placeholder={placeholder}
           autoComplete="off"
+          textAlign={textAlign}
         />
       </FormFieldBase>
     );

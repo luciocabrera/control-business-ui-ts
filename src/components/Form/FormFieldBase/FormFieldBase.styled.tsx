@@ -12,6 +12,7 @@ export const FieldSetStyled = styled.div`
     border-radius: var(--border-radius);
     border-color: var(--border-color);
     border: 1px solid;
+    display: flex;
     :focus-within {
       background: var(--input-focus-color);
       border-color: var(--special-shadow-color);

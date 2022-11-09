@@ -10,7 +10,7 @@ export const getDiffInSeconds = (dt2: DateParameterType, dt1: DateParameterType)
 export const getDateAsString = (
   date?: DateParameterType,
   output: DateOutputType = 'date',
-  utc: boolean = false,
+  iso: boolean = false,
 ): string => {
   if (!date) return '';
 
@@ -18,9 +18,9 @@ export const getDateAsString = (
 
   switch (output) {
     case 'date':
-      return utc ? jsDate.toUTCString() : jsDate.toLocaleDateString();
+      return iso ? jsDate.toISOString().slice(0, 10) : jsDate.toLocaleDateString();
     case 'datetime':
     default:
-      return utc ? jsDate.toUTCString() : jsDate.toLocaleString();
+      return iso ? jsDate.toISOString() : jsDate.toLocaleString();
   }
 };

@@ -1,24 +1,21 @@
-import { Outlet } from 'react-router-dom';
-
-import { SideNavBar } from 'components';
-import { useUser } from 'contexts/AuthContext';
-
+// components
+import { Outlet, NavBar } from 'components';
+// routes
 import routes from '../../root/routes';
+// styles
+import { ContentStyled } from './Layout.styled';
+// utilities
+import { memo } from 'utilities';
 
-import { ContentStyled, HeaderStyled } from './Layout.styled';
-
-const Layout = () => {
-  const user = useUser();
-
+const Layout = memo(() => {
   return (
     <>
-      <HeaderStyled>Welcome {user.email}</HeaderStyled>
-      <SideNavBar routes={routes} />
+      <NavBar routes={routes} />
       <ContentStyled>
         <Outlet />
       </ContentStyled>
     </>
   );
-};
+});
 
 export default Layout;

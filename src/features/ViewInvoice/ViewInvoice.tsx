@@ -1,13 +1,13 @@
-// assets
-import { detailsViewImg } from 'assets';
 // components
-import { Form, PageSpinner, Overlay, InvoiceActions, NumberDisplay, ReadOnlyTable } from 'components';
+import { Form, PageSpinner, InvoiceActions, NumberDisplay, TableField, DateDisplay } from 'components';
+// contexts
+import { FormDataContextProvider } from 'contexts';
 // hooks
 import { useParams, useNavigate, useFetchInvoice } from 'hooks';
-// styles
-import { FormWrapper } from 'styles';
+// icons
+import { InvoiceIcon } from 'icons';
 // react
-import { ChangeEvent, memo, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 // types
 import type {
   InvoiceFormType,
@@ -16,10 +16,10 @@ import type {
   InvoicesDetails,
   DateParameterType,
   FieldBaseValueType,
+  CreateInvoiceDetail,
 } from 'types';
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
-import TableField from 'components/Form/TableField/TableField';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -30,12 +30,17 @@ const ViewInvoice = memo(() => {
   const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       {
-        accessorFn: (original) => original.product?.code,
-        header: 'Code',
+        accessorKey: 'productNameWithCode',
+        header: 'Product',
       },
       {
-        accessorFn: (original) => original.product?.name,
-        header: 'Product',
+        accessorKey: 'date',
+        header: 'Date',
+        cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
+      },
+      {
+        accessorKey: 'description',
+        header: 'Description',
       },
       {
         accessorKey: 'quantity',
@@ -87,10 +92,10 @@ const ViewInvoice = memo(() => {
                 ],
               },
               {
-                accessor: 'firstName',
+                accessor: 'fullNameWithInitials',
                 label: 'Customer',
                 type: 'text',
-                value: `${invoice?.customer?.firstName} ${invoice?.customer?.lastName}`,
+                value: invoice?.customer?.fullNameWithInitials,
                 readonly: true,
               },
             ],
@@ -106,6 +111,7 @@ const ViewInvoice = memo(() => {
                     accessor: 'subtotal',
                     label: 'Subtotal',
                     type: 'text',
+                    textAlign: 'right',
                     value: invoice?.subtotal,
                     normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
                     readonly: true,
@@ -119,8 +125,23 @@ const ViewInvoice = memo(() => {
                     accessor: 'taxes',
                     label: 'Taxes',
                     type: 'text',
+                    textAlign: 'right',
                     value: invoice?.taxes,
                     normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+                    readonly: true,
+                  },
+                ],
+              },
+              {
+                type: 'row',
+                fields: [
+                  {
+                    accessor: 'taxesPercentage',
+                    label: 'Taxes',
+                    type: 'text',
+                    textAlign: 'right',
+                    value: `${invoice?.taxesPercentage}%`,
+                    normalize: (value: FieldBaseValueType) => `${value}%`,
                     readonly: true,
                   },
                 ],
@@ -132,6 +153,7 @@ const ViewInvoice = memo(() => {
                     accessor: 'total',
                     label: 'Total',
                     type: 'text',
+                    textAlign: 'right',
                     value: invoice?.total,
                     normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
                     readonly: true,
@@ -149,21 +171,12 @@ const ViewInvoice = memo(() => {
             accessor: 'invoiceDetails',
             label: 'invoiceDetails',
             type: 'table',
-            // value: invoice?.invoiceDetails || [],
-            // columns: columns,
             render: () => (
-              // <pre key="hey">
-              //   {invoice?.invoiceDetails?.map((a) => (
-              //     <pre>{JSON.stringify(a)}</pre>
-              //   ))}
-              // </pre>
-
-              <TableField<InvoicesDetails>
+              <TableField<InvoicesDetails, CreateInvoiceDetail>
+                accessor="invoiceDetails"
+                label="Details"
                 columns={columns}
-                data={invoice?.invoiceDetails || []}
-                onChange={function (event: ChangeEvent<HTMLInputElement>): void {
-                  throw new Error('Function not implemented.');
-                }}
+                data={invoice?.invoiceDetails as InvoicesDetails[]}
               />
             ),
             readonly: true,
@@ -173,13 +186,13 @@ const ViewInvoice = memo(() => {
     ],
     [
       columns,
-      invoice?.customer?.firstName,
-      invoice?.customer?.lastName,
+      invoice?.customer?.fullNameWithInitials,
       invoice?.date,
       invoice?.invoice,
       invoice?.invoiceDetails,
       invoice?.subtotal,
       invoice?.taxes,
+      invoice?.taxesPercentage,
       invoice?.total,
     ],
   );
@@ -187,19 +200,16 @@ const ViewInvoice = memo(() => {
   if (isLoadingInvoice || !fields) return <PageSpinner />;
 
   return (
-    <FormWrapper>
-      <Overlay />
+    <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoice}>
       <Form<InvoiceFormType>
-        icon={detailsViewImg}
+        icon={<InvoiceIcon />}
         title="View invoice"
         initialFields={fields}
         initialData={invoice}
         actions={<InvoiceActions invoice={invoice} />}
         onFinish={() => navigate('/invoices')}
-      >
-        {/* <ReadOnlyTable<InvoicesDetails> data={invoice?.invoiceDetails || []} columns={columns} useRadius /> */}
-      </Form>
-    </FormWrapper>
+      />
+    </FormDataContextProvider>
   );
 });
 export default ViewInvoice;

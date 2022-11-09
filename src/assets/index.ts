@@ -3,3 +3,8 @@ export { default as checkImg } from './images/check.svg';
 export { default as errorImg } from './images/error.svg';
 export { default as infoImg } from './images/info.svg';
 export { default as warningImg } from './images/warning.svg';
+export { default as deleteImg } from './images/delete.svg';
+export { default as newImg } from './images/new.svg';
+export { default as editImg } from './images/edit.svg';
+export { default as copyImg } from './images/copy.svg';
+export { default as invoiceImg } from './images/invoice.svg';

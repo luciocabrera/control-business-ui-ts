@@ -1,11 +1,11 @@
-// assets
-import { detailsViewImg } from 'assets';
 // components
-import { Form, PageSpinner, Overlay, CustomerActions } from 'components';
+import { Form, PageSpinner, CustomerActions } from 'components';
+// contexts
+import { FormDataContextProvider } from 'contexts';
 // hooks
 import { useFetchCustomer, useParams, useNavigate } from 'hooks';
-// styles
-import { FormWrapper } from 'styles';
+// icons
+import { CustomerIcon } from 'icons';
 // react
 import { memo, useMemo } from 'react';
 // types
@@ -79,6 +79,14 @@ const ViewCustomer = memo(() => {
             label: 'Phone Number',
             type: 'text',
             value: customer?.defaultPhone?.number,
+            readonly: true,
+          },
+          {
+            accessor: 'email',
+            label: 'Email',
+            type: 'text',
+            value: customer?.defaultEmail?.email,
+            readonly: true,
           },
         ],
       },
@@ -153,6 +161,7 @@ const ViewCustomer = memo(() => {
       customer?.currentAddress.line2,
       customer?.currentAddress.postalCode,
       customer?.currentAddress.state,
+      customer?.defaultEmail?.email,
       customer?.defaultPhone?.number,
       customer?.documentId,
       customer?.documentTypeName,
@@ -166,17 +175,16 @@ const ViewCustomer = memo(() => {
   if (isLoadingCustomer || !fields) return <PageSpinner />;
 
   return (
-    <FormWrapper>
-      <Overlay />v
+    <FormDataContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
       <Form<CustomerFormType>
-        icon={detailsViewImg}
+        icon={<CustomerIcon />}
         title="View Customer"
         initialFields={fields}
         initialData={customer}
         actions={<CustomerActions customer={customer} />}
         onFinish={() => navigate('/customers')}
       />
-    </FormWrapper>
+    </FormDataContextProvider>
   );
 });
 export default ViewCustomer;

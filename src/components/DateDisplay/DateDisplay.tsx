@@ -1,7 +1,7 @@
 // types
 import type { DateOutputType, DateParameterType } from 'types';
 // utilities
-import { getDateAsString } from 'utilities';
+import { getDateAsString, memo } from 'utilities';
 
 type DateDisplayProps = {
   date?: DateParameterType;
@@ -9,6 +9,6 @@ type DateDisplayProps = {
   utc?: boolean;
 };
 
-const DateDisplay = ({ date, output, utc }: DateDisplayProps) => <>{getDateAsString(date, output, utc)}</>;
+const DateDisplay = memo(({ date, output, utc }: DateDisplayProps) => <>{getDateAsString(date, output, utc)}</>);
 
 export default DateDisplay;

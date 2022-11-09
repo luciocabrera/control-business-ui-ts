@@ -1,7 +1,8 @@
-// assets
-import { detailsViewImg } from 'assets';
 // components
-import { PageSpinner, Overlay, InvoiceActions, ErrorDisplay } from 'components';
+import { PageSpinner, InvoiceActions, ErrorDisplay, Form } from 'components';
+import { InvoiceAmountsField, InvoiceDetailsField } from './components';
+// contexts
+import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
 // hooks
 import {
   useParams,
@@ -11,25 +12,50 @@ import {
   useFetchCustomers,
   usePostInvoice,
   useRefreshInvoices,
+  useFetchInvoiceRates,
 } from 'hooks';
-// styles
-import { FormWrapper } from 'styles';
+// icons
+import { InvoiceIcon } from 'icons';
 // react
 import { memo, useCallback, useMemo } from 'react';
 // types
-import type { InvoiceFormType, FormFieldType, InvoiceCreateType, APiResponseErrorType } from 'types';
+import type {
+  InvoiceFormType,
+  FormFieldType,
+  InvoiceCreateType,
+  APiResponseErrorType,
+  DateParameterType,
+  FieldBaseValueType,
+  CreateInvoiceDetail,
+} from 'types';
 // utilities
-import { getFormattedNumber } from 'utilities';
-import { useAddNotification, useAddToast } from 'contexts';
-import InvoiceForm from './InvoiceForm';
+import { getDateAsString, getFormattedNumber } from 'utilities';
 
 const ViewInvoice = memo(() => {
-  const { invoiceId } = useParams();
+  const { invoiceId, action } = useParams();
+  const taxesPercentage = useFetchInvoiceRates();
 
   const isCreating = invoiceId === 'new' || !invoiceId;
+  const isCopying = action === 'copy' && !isCreating;
 
   const { data: customers, loading: isLoadingCustomers } = useFetchCustomers();
   const { data: invoice, loading: isLoadingInvoice } = useFetchInvoice(!isCreating ? invoiceId : undefined);
+
+  const invoiceForm: InvoiceFormType = useMemo(() => {
+    if (isCopying && invoice) return { ...invoice, invoiceId: undefined, invoice: '' };
+    if (invoice) return { ...invoice };
+    return {
+      invoice: '',
+      date: undefined,
+      customerId: 0,
+      customer: { documentId: '', fullNameWithInitials: '', documentTypeName: '', titleName: '' },
+      invoiceDetails: [],
+      subtotal: 0,
+      total: 0,
+      taxes: 0,
+      taxesPercentage,
+    };
+  }, [invoice, isCopying, taxesPercentage]);
 
   const refreshInvoices = useRefreshInvoices();
   const refreshInvoice = useRefreshInvoice();
@@ -42,7 +68,7 @@ const ViewInvoice = memo(() => {
   const customersOptions = useMemo(
     () =>
       customers?.map((customer) => ({
-        label: `${customer.firstName} ${customer.lastName}`,
+        label: `${customer.fullNameWithInitials}`,
         value: customer.customerId,
       })),
     [customers],
@@ -65,8 +91,15 @@ const ViewInvoice = memo(() => {
                     accessor: 'invoice',
                     label: 'Invoice',
                     type: 'text',
-                    value: invoice?.invoice,
+                    value: isCopying ? undefined : invoice?.invoice,
                     required: true,
+                    rules: [
+                      {
+                        type: 'length',
+                        value: 6,
+                      },
+                      // { type: 'regex', value: `/^[fF][0-9]{5}/` },
+                    ],
                   },
                   {
                     accessor: 'date',
@@ -74,6 +107,7 @@ const ViewInvoice = memo(() => {
                     type: 'date',
                     value: invoice?.date,
                     required: true,
+                    normalize: (value: DateParameterType | undefined) => getDateAsString(value, 'date', true),
                   },
                 ],
               },
@@ -92,58 +126,47 @@ const ViewInvoice = memo(() => {
             label: 'Amounts',
             fields: [
               {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'subtotal',
-                    label: 'Subtotal',
-                    type: 'text',
-                    value: invoice?.subtotal,
-                    normalize: (value: string | number | undefined) => getFormattedNumber(value, 'currency'),
-                    readonly: true,
-                  },
-                ],
-              },
-              {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'taxes',
-                    label: 'Taxes',
-                    type: 'text',
-                    value: invoice?.taxes,
-                    normalize: (value) => getFormattedNumber(value, 'currency'),
-                    readonly: true,
-                  },
-                ],
-              },
-              {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'total',
-                    label: 'Total',
-                    type: 'text',
-                    value: invoice?.total,
-                    normalize: (value) => getFormattedNumber(value, 'currency'),
-                    readonly: true,
-                  },
-                ],
-              },
-              {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'invoiceDetails',
-                    label: 'invoiceDetails',
-                    type: 'array',
-                    value: invoice?.invoiceDetails,
-                    render: () => <pre>{JSON.stringify(invoice?.invoiceDetails)}</pre>,
-                    readonly: true,
-                  },
-                ],
+                type: 'object',
+                label: 'Amounts',
+                accessor: '',
+                render: () => <InvoiceAmountsField />,
               },
             ],
+          },
+          {
+            type: 'rule',
+            accessor: 'taxesPercentage',
+            value: taxesPercentage,
+          },
+          {
+            accessor: 'subtotal',
+            type: 'rule',
+            value: invoice?.subtotal,
+            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+          },
+          {
+            accessor: 'taxes',
+            type: 'rule',
+            value: invoice?.taxes,
+            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+          },
+          {
+            accessor: 'total',
+            type: 'rule',
+            value: invoice?.total,
+            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+          },
+        ],
+      },
+      {
+        type: 'row',
+        fields: [
+          {
+            accessor: 'invoiceDetails',
+            label: 'invoiceDetails',
+            type: 'table',
+            render: () => <InvoiceDetailsField />,
+            readonly: true,
           },
         ],
       },
@@ -153,22 +176,34 @@ const ViewInvoice = memo(() => {
       invoice?.customerId,
       invoice?.date,
       invoice?.invoice,
-      invoice?.invoiceDetails,
       invoice?.subtotal,
       invoice?.taxes,
       invoice?.total,
+      isCopying,
+      taxesPercentage,
     ],
   );
 
+  const sanitizeInvoiceDetails = (invoiceDetails: CreateInvoiceDetail[]) =>
+    invoiceDetails.map(({ date, productId, description, quantity, priceUnit, priceQuantity }) => ({
+      date: date ? new Date(date) : new Date(),
+      description,
+      quantity,
+      priceUnit,
+      priceQuantity,
+      productId: typeof productId === 'string' ? parseInt(productId, 10) : productId,
+    }));
+
   const onAccept = useCallback(
     async (payload: InvoiceFormType) => {
-      const calculatedInvoiceId = invoiceId === 'new' ? undefined : invoiceId;
-      const { customerId, ...rest } = payload;
-
+      const calculatedInvoiceId = isCreating || isCopying ? undefined : parseInt(invoiceId, 10);
+      const { customerId, date, invoiceDetails, ...rest } = payload;
       debugger;
       const body: InvoiceCreateType = {
         invoiceId: calculatedInvoiceId,
-        customerId: customerId,
+        date: date ? new Date(date) : new Date(),
+        customerId: typeof customerId === 'string' ? parseInt(customerId, 10) : customerId,
+        invoiceDetails: sanitizeInvoiceDetails(invoiceDetails),
         ...rest,
       };
 
@@ -189,27 +224,37 @@ const ViewInvoice = memo(() => {
         addNotification?.(<ErrorDisplay errors={error.cause.errors} />, 'Error Saving Invoice', 'error');
       }
     },
-    [addNotification, addToast, invoice?.invoice, invoiceId, navigate, postInvoice, refreshInvoice, refreshInvoices],
+    [
+      addNotification,
+      addToast,
+      invoice?.invoice,
+      invoiceId,
+      isCopying,
+      isCreating,
+      navigate,
+      postInvoice,
+      refreshInvoice,
+      refreshInvoices,
+    ],
   );
 
   if (((isLoadingInvoice || !fields) && !isCreating) || isLoadingCustomers) return <PageSpinner />;
 
-  const title = `${isCreating ? 'New' : 'Edit'} Invoice`;
+  const title = `${isCreating || isCopying ? 'New' : 'Edit'} Invoice`;
 
   return (
-    <FormWrapper>
-      <Overlay />
-      <InvoiceForm<InvoiceFormType>
-        icon={detailsViewImg}
+    <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoiceForm}>
+      <Form<InvoiceFormType>
+        icon={<InvoiceIcon />}
         title={title}
         initialFields={fields}
-        initialData={invoice}
+        initialData={invoiceForm}
         onAccept={onAccept}
-        actions={<InvoiceActions invoice={invoice} />}
+        actions={<InvoiceActions invoice={invoiceForm} />}
         onFinish={() => navigate('/invoices')}
         viewMode={false}
-      ></InvoiceForm>
-    </FormWrapper>
+      />
+    </FormDataContextProvider>
   );
 });
 export default ViewInvoice;
