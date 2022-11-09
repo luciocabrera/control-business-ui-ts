@@ -61,6 +61,7 @@ export type FormFieldBaseType = {
   required?: boolean | ((p: unknown) => boolean);
   options?: FormOptionType[];
   display?: string;
+  textAlign?: string;
   default?: string | null;
   placeholder?: string;
   tooltip?: string;

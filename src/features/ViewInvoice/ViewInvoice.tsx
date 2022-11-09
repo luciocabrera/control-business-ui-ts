@@ -1,5 +1,5 @@
 // components
-import { Form, PageSpinner, InvoiceActions, NumberDisplay, TableField } from 'components';
+import { Form, PageSpinner, InvoiceActions, NumberDisplay, TableField, DateDisplay } from 'components';
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // hooks
@@ -32,6 +32,11 @@ const ViewInvoice = memo(() => {
       {
         accessorKey: 'productNameWithCode',
         header: 'Product',
+      },
+      {
+        accessorKey: 'date',
+        header: 'Date',
+        cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
       },
       {
         accessorKey: 'description',
@@ -106,6 +111,7 @@ const ViewInvoice = memo(() => {
                     accessor: 'subtotal',
                     label: 'Subtotal',
                     type: 'text',
+                    textAlign: 'right',
                     value: invoice?.subtotal,
                     normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
                     readonly: true,
@@ -119,8 +125,23 @@ const ViewInvoice = memo(() => {
                     accessor: 'taxes',
                     label: 'Taxes',
                     type: 'text',
+                    textAlign: 'right',
                     value: invoice?.taxes,
                     normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+                    readonly: true,
+                  },
+                ],
+              },
+              {
+                type: 'row',
+                fields: [
+                  {
+                    accessor: 'taxesPercentage',
+                    label: 'Taxes',
+                    type: 'text',
+                    textAlign: 'right',
+                    value: `${invoice?.taxesPercentage}%`,
+                    normalize: (value: FieldBaseValueType) => `${value}%`,
                     readonly: true,
                   },
                 ],
@@ -132,6 +153,7 @@ const ViewInvoice = memo(() => {
                     accessor: 'total',
                     label: 'Total',
                     type: 'text',
+                    textAlign: 'right',
                     value: invoice?.total,
                     normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
                     readonly: true,
@@ -170,6 +192,7 @@ const ViewInvoice = memo(() => {
       invoice?.invoiceDetails,
       invoice?.subtotal,
       invoice?.taxes,
+      invoice?.taxesPercentage,
       invoice?.total,
     ],
   );

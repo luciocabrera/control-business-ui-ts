@@ -26,6 +26,7 @@ import type {
   APiResponseErrorType,
   DateParameterType,
   FieldBaseValueType,
+  CreateInvoiceDetail,
 } from 'types';
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
@@ -92,6 +93,13 @@ const ViewInvoice = memo(() => {
                     type: 'text',
                     value: isCopying ? undefined : invoice?.invoice,
                     required: true,
+                    rules: [
+                      {
+                        type: 'length',
+                        value: 6,
+                      },
+                      // { type: 'regex', value: `/^[fF][0-9]{5}/` },
+                    ],
                   },
                   {
                     accessor: 'date',
@@ -176,6 +184,16 @@ const ViewInvoice = memo(() => {
     ],
   );
 
+  const sanitizeInvoiceDetails = (invoiceDetails: CreateInvoiceDetail[]) =>
+    invoiceDetails.map(({ date, productId, description, quantity, priceUnit, priceQuantity }) => ({
+      date: date ? new Date(date) : new Date(),
+      description,
+      quantity,
+      priceUnit,
+      priceQuantity,
+      productId: typeof productId === 'string' ? parseInt(productId, 10) : productId,
+    }));
+
   const onAccept = useCallback(
     async (payload: InvoiceFormType) => {
       const calculatedInvoiceId = isCreating || isCopying ? undefined : parseInt(invoiceId, 10);
@@ -185,13 +203,7 @@ const ViewInvoice = memo(() => {
         invoiceId: calculatedInvoiceId,
         date: date ? new Date(date) : new Date(),
         customerId: typeof customerId === 'string' ? parseInt(customerId, 10) : customerId,
-        invoiceDetails: invoiceDetails.map(({ productId, description, quantity, priceUnit, priceQuantity }) => ({
-          description,
-          quantity,
-          priceUnit,
-          priceQuantity,
-          productId: typeof productId === 'string' ? parseInt(productId, 10) : productId,
-        })),
+        invoiceDetails: sanitizeInvoiceDetails(invoiceDetails),
         ...rest,
       };
 

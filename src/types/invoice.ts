@@ -1,4 +1,4 @@
-import { AuditType, CustomerType } from 'types';
+import type { AuditType, CustomerType, DateParameterType } from 'types';
 
 type InvoiceCustomerType = Pick<CustomerType, 'documentId' | 'fullNameWithInitials' | 'documentTypeName' | 'titleName'>;
 
@@ -9,6 +9,7 @@ export type ProductInvoicesDetails = {
 };
 
 export type InvoicesDetails = {
+  date: DateParameterType;
   productId: number;
   description: string;
   quantity: number;

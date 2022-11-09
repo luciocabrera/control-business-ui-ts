@@ -1,10 +1,10 @@
 import { memo } from 'react';
 
-const CustomerIcon = memo(({ color = 'rgb(157 105 34)' }: { color?: string }) => (
+const CustomerIcon = memo(({ color = '#03542f' }: { color?: string }) => (
   <svg
     stroke={color}
     fill={color}
-    stroke-width="0"
+    strokeWidth="0"
     height="1em"
     width="1em"
     viewBox="0 0 16 16"

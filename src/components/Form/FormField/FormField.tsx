@@ -9,7 +9,7 @@ import type { FieldBaseValueType } from 'types';
 import { getErrorField, validateField, memo } from 'utilities';
 
 const FormField = memo(({ field, ...props }: FormFieldProps) => {
-  const { options, type, label, accessor, readonly, placeholder, normalize, rules } = field;
+  const { options, type, label, accessor, readonly, placeholder, normalize, rules, textAlign } = field;
 
   const [fieldValue, setStore] = useStore<FieldBaseValueType, any>((store) => store[field.accessor]);
 
@@ -54,6 +54,7 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
           normalize={normalize}
           rules={rules}
           placeholder={placeholder}
+          textAlign={textAlign}
           {...props}
           {...errorField}
           value={fieldValue}

@@ -15,6 +15,11 @@ export const validateFieldRules = <T>(field: FormFieldBaseType, data: T) => {
         hasErrors = true;
         errorMessage = rule.message || `The ${field.label}' is mandatory!`;
       }
+    if (rule.type === 'length')
+      if (fieldValue.length !== rule.value) {
+        hasErrors = true;
+        errorMessage = rule.message || `The ${field.label}'s length must be exactly ${rule.value} characters!`;
+      }
     if (rule.type === 'minLength')
       if (fieldValue.length < rule.value) {
         hasErrors = true;

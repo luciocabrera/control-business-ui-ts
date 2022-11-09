@@ -1,7 +1,7 @@
 //assets
 import { newImg, editImg, deleteImg, copyImg } from 'assets';
 // components
-import { NumberDisplay, Portal, ReadOnlyTable, IconButton, FieldGroupStyled } from 'components';
+import { NumberDisplay, Portal, ReadOnlyTable, IconButton, FieldGroupStyled, DateDisplay } from 'components';
 import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 // contexts
 import { useStore } from 'contexts';
@@ -37,6 +37,11 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       {
         accessorKey: 'productNameWithCode',
         header: 'Product',
+      },
+      {
+        accessorKey: 'date',
+        header: 'Date',
+        cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
       },
       {
         accessorKey: 'description',

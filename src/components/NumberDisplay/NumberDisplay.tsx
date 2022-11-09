@@ -1,5 +1,5 @@
 // utilities
-import { getFormattedNumber } from 'utilities';
+import { getFormattedNumber, memo } from 'utilities';
 import { NumberDisplayStyled } from './NumberDisplay.styles';
 
 type NumberDisplayProps = {
@@ -7,8 +7,8 @@ type NumberDisplayProps = {
   output?: 'currency' | 'number';
 };
 
-const NumberDisplay = ({ value, output }: NumberDisplayProps) => (
+const NumberDisplay = memo(({ value, output }: NumberDisplayProps) => (
   <NumberDisplayStyled>{getFormattedNumber(value, output)}</NumberDisplayStyled>
-);
+));
 
 export default NumberDisplay;

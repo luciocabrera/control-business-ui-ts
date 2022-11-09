@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-const InvoiceIcon = memo(({ color = 'rgb(157 105 34)' }: { color?: string }) => (
+const InvoiceIcon = memo(({ color = '#03542f' }: { color?: string }) => (
   <svg
     stroke={color}
     fill={color}

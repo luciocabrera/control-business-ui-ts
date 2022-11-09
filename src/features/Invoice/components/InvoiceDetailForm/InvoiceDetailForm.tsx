@@ -55,6 +55,7 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
           },
         ],
       },
+      { type: 'rule', accessor: 'date', label: 'Date', rules: [{ type: 'required' }] },
       { type: 'rule', accessor: 'productId', label: 'Product', rules: [{ type: 'required' }] },
       {
         type: 'rule',

@@ -36,11 +36,12 @@ export const usePostInvoice = () => {
   const apiRequest = useApiRequest();
   return useCallback(
     async (invoice: InvoiceCreateType): Promise<ApiResponse<InvoiceType>> => {
+      const { invoiceId, ...rest } = invoice;
       const requestOptions: OptionsType = {
         method: invoice.invoiceId ? 'PATCH' : 'POST',
-        body: JSON.stringify(invoice),
+        body: JSON.stringify(rest),
       };
-      const url = invoice.invoiceId ? `${endpoints.invoices}/${invoice.invoiceId ?? ''}` : endpoints.invoices;
+      const url = invoiceId ? `${endpoints.invoices}/${invoiceId ?? ''}` : endpoints.invoices;
 
       return apiRequest<InvoiceType>(url, requestOptions);
     },
