@@ -6,11 +6,21 @@ import { useStore } from 'contexts';
 import { memo, forwardRef, useMemo, useCallback, useState } from 'react';
 import type { ColumnDef } from 'types';
 import { FieldGroupStyled } from '../Form/Form.styled';
+import DataGrid, { Column, SortColumn } from 'react-data-grid';
 
 import type { TableFieldProps } from './TableField.types';
 
 const TableField = <TData extends Record<string, unknown>, DetailData>(
-  { data, normalize, columns, accessor, label, readonly, renderDetail }: TableFieldProps<TData, DetailData>,
+  {
+    data,
+    normalize,
+    columns,
+    accessor,
+    label,
+    readonly,
+    renderDetail,
+    rowKeyGetter,
+  }: TableFieldProps<TData, DetailData>,
   ref: React.ForwardedRef<unknown>,
 ) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
@@ -33,14 +43,15 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
     [accessor, data, setStore],
   );
 
-  const columnsWithActions = useMemo<ColumnDef<TData>[]>(() => {
+  const columnsWithActions = useMemo<Column<TData>[]>(() => {
     const calculatedColumns = [...columns];
 
     if (readonly)
       calculatedColumns.push({
-        accessorKey: 'actions',
-        cell: ({ row: { original } }) => (
-          <img src={detailsViewImg} alt="" width="18" height="18" onClick={() => onRemoveDetail(original)} />
+        key: 'actions',
+        name: '',
+        formatter: ({ row }) => (
+          <img src={detailsViewImg} alt="" width="18" height="18" onClick={() => onRemoveDetail(row)} />
         ),
       });
 
@@ -57,12 +68,41 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
       )}
     </>
   );
+  type Comparator = (a: TData, b: TData) => number;
+  const getComparator = useCallback((sortColumn: string): Comparator => {
+    switch (sortColumn) {
+      // case 'invoice':
+      //   // case 'date':
+      //   return (a, b) => {
+      //     return a[sortColumn].localeCompare(b[sortColumn]);
+      //   };
+      // // case 'available':
+      // //   return (a, b) => {
+      // //     return a[sortColumn] === b[sortColumn] ? 0 : a[sortColumn] ? 1 : -1;
+      // //   };
+      // case 'invoiceId':
+      // case 'subtotal':
+      // case 'taxes':
+      // case 'total':
+      //   return (a, b) => {
+      //     return a[sortColumn] - b[sortColumn];
+      //   };
+      default:
+        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
+    }
+  }, []);
 
   return (
     <>
       <FieldGroupStyled key={`table-form-field-${accessor}`}>
         <legend>{labelWithAdd}</legend>
-        <ReadOnlyTable<TData> data={normalizedValue} columns={columnsWithActions} useRadius />{' '}
+        <ReadOnlyTable<TData>
+          data={normalizedValue}
+          columns={columnsWithActions}
+          useRadius
+          rowKeyGetter={rowKeyGetter}
+          getComparator={getComparator}
+        />{' '}
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>

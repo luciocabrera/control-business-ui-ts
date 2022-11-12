@@ -1,6 +1,8 @@
 import type { ColumnDef, FormFieldBaseType, ReactNode } from 'types';
-type TableFieldValueType = (Record<string, unknown> | string | number)[];
 
+import type { Column } from 'react-data-grid';
+type TableFieldValueType = (Record<string, unknown> | string | number)[];
+declare type Maybe<T> = T | undefined | null;
 export type TableFieldProps<TData, DetailData> = Omit<
   FormFieldBaseType,
   'display' | 'default' | 'tooltip' | 'normalize' | 'rules' | 'value' | 'type'
@@ -9,6 +11,7 @@ export type TableFieldProps<TData, DetailData> = Omit<
   accessor: string;
   normalize?: (value?: TableFieldValueType) => TableFieldValueType;
   data: TData[];
-  columns: ColumnDef<TData, unknown>[];
+  columns: Column<TData, unknown>[];
+  rowKeyGetter: Maybe<(row: TData) => number>;
   renderDetail?: (onAccept: (detail: DetailData) => void, onFinish: () => void, detail?: TData) => ReactNode;
 };

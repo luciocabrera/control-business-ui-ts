@@ -3,6 +3,7 @@ import { newImg, editImg, deleteImg, copyImg } from 'assets';
 // components
 import { NumberDisplay, Portal, ReadOnlyTable, IconButton, FieldGroupStyled, DateDisplay } from 'components';
 import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
+import DataGrid, { Column, SortColumn } from 'react-data-grid';
 // contexts
 import { useStore } from 'contexts';
 // react
@@ -32,39 +33,73 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     [invoicesDetails, normalize],
   ) as unknown as InvoicesDetails[];
 
-  const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
+  const columnsDetails = useMemo<Column<InvoicesDetails>[]>(
     () => [
       {
-        accessorKey: 'productNameWithCode',
-        header: 'Product',
+        key: 'productNameWithCode',
+        name: 'Product',
       },
       {
-        accessorKey: 'date',
-        header: 'Date',
-        cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
+        key: 'date',
+        name: 'Date',
+        formatter: ({ row: { date } }) => <DateDisplay date={date} />,
       },
       {
-        accessorKey: 'description',
-        header: 'Description',
+        key: 'description',
+        name: 'Description',
       },
       {
-        accessorKey: 'quantity',
-        header: 'Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.quantity} output={'number'} />,
+        key: 'quantity',
+        name: 'Quantity',
+        formatter: ({ row: { quantity } }) => <NumberDisplay value={quantity} output={'number'} />,
       },
       {
-        accessorKey: 'priceUnit',
-        header: 'Price Unit',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceUnit} output={'currency'} />,
+        key: 'priceUnit',
+        name: 'Price Unit',
+        formatter: ({ row: { priceUnit } }) => <NumberDisplay value={priceUnit} output={'currency'} />,
       },
       {
-        accessorKey: 'priceQuantity',
-        header: 'Price Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceQuantity} output={'currency'} />,
+        key: 'priceQuantity',
+        name: 'Price Quantity',
+        formatter: ({ row: { priceQuantity } }) => <NumberDisplay value={priceQuantity} output={'currency'} />,
       },
     ],
     [],
   );
+
+  // const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
+  //   () => [
+  //     {
+  //       accessorKey: 'productNameWithCode',
+  //       header: 'Product',
+  //     },
+  //     {
+  //       accessorKey: 'date',
+  //       header: 'Date',
+  //       cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
+  //     },
+  //     {
+  //       accessorKey: 'description',
+  //       header: 'Description',
+  //     },
+  //     {
+  //       accessorKey: 'quantity',
+  //       header: 'Quantity',
+  //       cell: ({ row: { original } }) => <NumberDisplay value={original.quantity} output={'number'} />,
+  //     },
+  //     {
+  //       accessorKey: 'priceUnit',
+  //       header: 'Price Unit',
+  //       cell: ({ row: { original } }) => <NumberDisplay value={original.priceUnit} output={'currency'} />,
+  //     },
+  //     {
+  //       accessorKey: 'priceQuantity',
+  //       header: 'Price Quantity',
+  //       cell: ({ row: { original } }) => <NumberDisplay value={original.priceQuantity} output={'currency'} />,
+  //     },
+  //   ],
+  //   [],
+  // );
 
   const updateAmounts = useCallback(
     (newDetails: InvoicesDetails[]) => {
@@ -121,16 +156,17 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     [invoicesDetails, setInvoicesDetails, updateAmounts],
   );
 
-  const columnsWithActions = useMemo<ColumnDef<InvoicesDetails>[]>(
+  const columnsWithActions = useMemo<Column<InvoicesDetails>[]>(
     () => [
       ...columnsDetails,
       {
-        accessorKey: 'actions',
-        cell: ({ row: { original } }) => (
+        key: 'actions',
+        name: '',
+        formatter: ({ row }) => (
           <>
-            <IconButton src={editImg} onClick={() => onEditDetail(original)} />
-            <IconButton src={copyImg} onClick={() => onCopyDetail(original)} />
-            <IconButton src={deleteImg} onClick={() => onRemoveDetail(original)} />
+            <IconButton src={editImg} onClick={() => onEditDetail(row)} />
+            <IconButton src={copyImg} onClick={() => onCopyDetail(row)} />
+            <IconButton src={deleteImg} onClick={() => onRemoveDetail(row)} />
           </>
         ),
       },
@@ -146,12 +182,42 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       </div>
     </LabelDetailsStyled>
   );
-
+  type Comparator = (a: InvoicesDetails, b: InvoicesDetails) => number;
+  const getComparator = useCallback((sortColumn: string): Comparator => {
+    switch (sortColumn) {
+      case 'description':
+        // case 'date':
+        return (a, b) => {
+          return a[sortColumn].localeCompare(b[sortColumn]);
+        };
+      // case 'available':
+      //   return (a, b) => {
+      //     return a[sortColumn] === b[sortColumn] ? 0 : a[sortColumn] ? 1 : -1;
+      //   };
+      case 'quantity':
+      case 'priceUnit':
+      case 'priceQuantity':
+        return (a, b) => {
+          return a[sortColumn] - b[sortColumn];
+        };
+      default:
+        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
+    }
+  }, []);
+  const rowKeyGetter = useCallback((row: InvoicesDetails): number => {
+    return row?.productId;
+  }, []);
   return (
     <>
       <FieldGroupStyled key={`table-form-field-invoice-details`}>
         <legend>{labelWithAdd}</legend>
-        <ReadOnlyTable<InvoicesDetails> data={normalizedValue} columns={columnsWithActions} useRadius />
+        <ReadOnlyTable<InvoicesDetails>
+          data={normalizedValue}
+          columns={columnsWithActions}
+          useRadius
+          rowKeyGetter={rowKeyGetter}
+          getComparator={getComparator}
+        />
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>

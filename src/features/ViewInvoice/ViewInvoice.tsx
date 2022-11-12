@@ -7,7 +7,8 @@ import { useParams, useNavigate, useFetchInvoice } from 'hooks';
 // icons
 import { InvoiceIcon } from 'icons';
 // react
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
+import DataGrid, { Column, SortColumn } from 'react-data-grid';
 // types
 import type {
   InvoiceFormType,
@@ -27,40 +28,43 @@ const ViewInvoice = memo(() => {
 
   const { data: invoice, loading: isLoadingInvoice } = useFetchInvoice(invoiceId);
 
-  const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
+  const columns = useMemo<Column<InvoicesDetails>[]>(
     () => [
       {
-        accessorKey: 'productNameWithCode',
-        header: 'Product',
+        key: 'productNameWithCode',
+        name: 'Product',
       },
       {
-        accessorKey: 'date',
-        header: 'Date',
-        cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
+        key: 'date',
+        name: 'Date',
+        formatter: ({ row: { date } }) => <DateDisplay date={date} />,
       },
       {
-        accessorKey: 'description',
-        header: 'Description',
+        key: 'description',
+        name: 'Description',
       },
       {
-        accessorKey: 'quantity',
-        header: 'Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.quantity} output={'number'} />,
+        key: 'quantity',
+        name: 'Quantity',
+        formatter: ({ row: { quantity } }) => <NumberDisplay value={quantity} output={'number'} />,
       },
       {
-        accessorKey: 'priceUnit',
-        header: 'Price Unit',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceUnit} output={'currency'} />,
+        key: 'priceUnit',
+        name: 'Price Unit',
+        formatter: ({ row: { priceUnit } }) => <NumberDisplay value={priceUnit} output={'currency'} />,
       },
       {
-        accessorKey: 'priceQuantity',
-        header: 'Price Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceQuantity} output={'currency'} />,
+        key: 'priceQuantity',
+        name: 'Price Quantity',
+        formatter: ({ row: { priceQuantity } }) => <NumberDisplay value={priceQuantity} output={'currency'} />,
       },
     ],
     [],
   );
 
+  const rowKeyGetter = useCallback((row: InvoicesDetails): number => {
+    return row?.productId;
+  }, []);
   const fields: FormFieldType[] = useMemo(
     () => [
       {
@@ -177,6 +181,7 @@ const ViewInvoice = memo(() => {
                 label="Details"
                 columns={columns}
                 data={invoice?.invoiceDetails as InvoicesDetails[]}
+                rowKeyGetter={rowKeyGetter}
               />
             ),
             readonly: true,
@@ -194,6 +199,7 @@ const ViewInvoice = memo(() => {
       invoice?.taxes,
       invoice?.taxesPercentage,
       invoice?.total,
+      rowKeyGetter,
     ],
   );
 

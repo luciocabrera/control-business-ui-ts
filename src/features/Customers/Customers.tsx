@@ -5,8 +5,9 @@ import TableActions from './components/TableActions';
 import { useFetchCustomers, useLocation } from 'hooks';
 // icons
 import { NewIcon } from 'icons';
+import DataGrid, { Column, SortColumn } from 'react-data-grid';
 // react
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 // types
 import type { CustomerType, ColumnDef } from 'types';
 
@@ -16,34 +17,57 @@ const Customers = memo(() => {
   const { data: customers, loading } = useFetchCustomers();
   const location = useLocation();
 
-  const columns = useMemo<ColumnDef<CustomerType>[]>(
+  const columns = useMemo<Column<CustomerType>[]>(
     () => [
-      { accessorKey: 'documentTypeName', header: 'ID Type' },
-      { accessorKey: 'documentId', header: 'ID' },
-      { accessorKey: 'initials', header: 'Initials' },
-      { accessorKey: 'firstName', header: 'First Name' },
-      { accessorKey: 'lastName', header: 'Last Name' },
-      {
-        accessorFn: (original) => original.defaultPhone?.number,
-        header: 'Phone Number',
-      },
-      {
-        accessorKey: 'actions',
-        cell: ({ row: { original } }) => <TableActions original={original} />,
-      },
+      { key: 'documentTypeName', name: 'ID Type' },
+      { key: 'documentId', name: 'ID' },
+      { key: 'initials', name: 'Initials' },
+      { key: 'firstName', name: 'First Name' },
+      { key: 'lastName', name: 'Last Name' },
+      // {
+      //   accessorFn: (original) => original.defaultPhone?.number,
+      //   name: 'Phone Number',
+      // },
+      // {
+      //   key: 'actions',
+      //   cell: ({ row: { original } }) => <TableActions original={original} />,
+      // },
     ],
     [],
   );
+  type Comparator = (a: CustomerType, b: CustomerType) => number;
+  const getComparator = useCallback((sortColumn: string): Comparator => {
+    switch (sortColumn) {
+      case 'documentTypeName':
+        // case 'date':
+        return (a, b) => {
+          return a[sortColumn].localeCompare(b[sortColumn]);
+        };
+
+      default:
+        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
+    }
+  }, []);
+  const rowKeyGetter = useCallback((row: CustomerType): number => {
+    return row?.customerId;
+  }, []);
 
   return (
     <>
       {loading && <PageSpinner />}
-      <Header title={title} isTable={true}>
-        <Link to="new" state={{ backgroundLocation: location }}>
-          <NewIcon />
-        </Link>
-      </Header>
-      <ReadOnlyTable<CustomerType> data={customers} columns={columns} height="calc(100vh - 120px)" />
+      <ReadOnlyTable<CustomerType>
+        data={customers}
+        columns={columns}
+        height="calc(100vh - 120px)"
+        rowKeyGetter={rowKeyGetter}
+        getComparator={getComparator}
+        title={title}
+        actions={
+          <Link to="new" state={{ backgroundLocation: location }} className="link-icon">
+            <NewIcon />
+          </Link>
+        }
+      />
       <Outlet />
     </>
   );

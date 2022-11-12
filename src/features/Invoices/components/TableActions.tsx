@@ -1,7 +1,7 @@
 // components
 import { Link } from 'components';
 // hooks
-import { useLocation } from 'hooks';
+
 // icons
 import { CopyIcon, ViewIcon } from 'icons';
 // types
@@ -10,13 +10,14 @@ import type { InvoiceType } from 'types';
 import { memo } from 'react';
 // styles
 import { TableActionsStyled } from './TableActions.styled';
+import { Location } from 'react-router-dom';
 
 type TableActionsProps = {
   original: InvoiceType;
+  location: Location;
 };
 
-const TableActions = memo(({ original }: TableActionsProps) => {
-  const location = useLocation();
+const TableActions = memo(({ original, location }: TableActionsProps) => {
   return (
     <TableActionsStyled>
       <Link to={`${original.invoiceId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>

@@ -1,0 +1,174 @@
+// hooks
+import { useReactTable } from 'hooks';
+import useSWRInfinite from 'swr';
+// react
+import { memo, useEffect, useRef, useState } from 'react';
+// styles
+import { TableStyled } from '../Table.styled';
+// types
+import type { ColumnDef, SortingState } from 'types';
+// utilities
+import { getSortedRowModel, flexRender, getCoreRowModel } from 'utilities';
+
+import { useVirtual } from 'react-virtual';
+import { Row } from '@tanstack/react-table';
+
+type ReadOnlyProps<TData> = {
+  useRadius?: boolean;
+  height?: string;
+  data: TData[];
+  columns: ColumnDef<TData, unknown>[];
+};
+
+const InfiniteReadOnlyTable = <TData extends Record<string, unknown>>({
+  columns,
+  data,
+  height,
+  useRadius,
+}: ReadOnlyProps<TData>) => {
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+
+  const [sorting, setSorting] = useState<SortingState>([]);
+
+  const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
+    (index) => `https://api.github.com/repos/${repo}/issues?per_page=${PAGE_SIZE}&page=${index + 1}`,
+    fetcher,
+  );
+
+  const issues = data ? [].concat(...data) : [];
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd = isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+  const isRefreshing = isValidating && data && data.length === size;
+
+  //called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
+  const fetchMoreOnBottomReached = useCallback(
+    (containerRefElement?: HTMLDivElement | null) => {
+      if (containerRefElement) {
+        const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+        //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
+        if (scrollHeight - scrollTop - clientHeight < 300 && !isFetching && totalFetched < totalDBRowCount) {
+          fetchNextPage();
+        }
+      }
+    },
+    [fetchNextPage, isFetching, totalFetched, totalDBRowCount],
+  );
+
+  //a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
+  // useEffect(() => {
+  //   fetchMoreOnBottomReached(tableContainerRef.current);
+  // }, [fetchMoreOnBottomReached]);
+
+  const table = useReactTable({
+    data,
+    columns,
+    columnResizeMode: 'onChange',
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+  const { rows } = table.getRowModel();
+
+  //Virtualizing is optional, but might be necessary if we are going to potentially have hundreds or thousands of rows
+  const rowVirtualizer = useVirtual({
+    parentRef: tableContainerRef,
+    size: rows.length,
+    overscan: 10,
+  });
+  const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
+  const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
+  const paddingBottom = virtualRows.length > 0 ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0) : 0;
+
+  return (
+    <TableStyled
+      data-testid="data-table"
+      ref={tableContainerRef}
+      height={height}
+      useRadius={useRadius}
+      onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
+    >
+      <table>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <th key={header.id} colSpan={header.colSpan} style={{ width: header.getSize() }}>
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          className: header.column.getCanSort() ? 'cursor-pointer select-none' : '',
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{
+                          asc: <span>&#8593;</span>, //' 🔼',
+                          desc: <span>&#8595;</span>, //' 🔽',
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    )}
+                    <div
+                      {...{
+                        onMouseDown: header.getResizeHandler(),
+                        onTouchStart: header.getResizeHandler(),
+                        className: `resizer ${header.column.getIsResizing() ? 'isResizing' : ''}`,
+                      }}
+                    />
+                  </th>
+                );
+              })}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {/* {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+              ))}
+            </tr>
+          ))} */}
+          {paddingTop > 0 && (
+            <tr>
+              <td style={{ height: `${paddingTop}px` }} />
+            </tr>
+          )}
+          {virtualRows.map((virtualRow) => {
+            const row = rows[virtualRow.index];
+            return (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => {
+                  return <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>;
+                })}
+              </tr>
+            );
+          })}
+          {paddingBottom > 0 && (
+            <tr>
+              <td style={{ height: `${paddingBottom}px` }} />
+            </tr>
+          )}
+        </tbody>
+        <tfoot>
+          {table.getFooterGroups().map((footerGroup) => (
+            <tr key={footerGroup.id}>
+              {footerGroup.headers.map((header) => (
+                <th key={header.id}>
+                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </tfoot>
+      </table>
+    </TableStyled>
+  );
+};
+
+export default memo(InfiniteReadOnlyTable) as typeof InfiniteReadOnlyTable;

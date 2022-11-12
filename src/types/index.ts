@@ -28,3 +28,5 @@ export type {
   MouseEvent,
   MouseEventHandler,
 } from 'react';
+
+export type { Column } from 'react-data-grid';
