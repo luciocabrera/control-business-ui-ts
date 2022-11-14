@@ -1,17 +1,20 @@
-//assets
-import { newImg, editImg, deleteImg, copyImg } from 'assets';
 // components
 import { NumberDisplay, Portal, ReadOnlyTable, IconButton, FieldGroupStyled, DateDisplay } from 'components';
 import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 // contexts
 import { useStore } from 'contexts';
-// react
-import { memo, useMemo, useCallback, useState } from 'react';
+// hooks
+import { useCallback, useMemo, useState } from 'hooks';
+// icons
+import { CopyIcon, NewIcon, EditIcon, DeleteIcon } from 'icons';
 // types
-import type { ColumnDef, InvoiceFormType, InvoicesDetails } from 'types';
+import type { InvoiceFormType, InvoicesDetails, Column } from 'types';
 import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
 // styles
 import { LabelDetailsStyled } from './InvoiceDetailsField.styled';
+import { TableActionsStyled } from 'styles';
+// utilities
+import { memo } from 'utilities';
 
 const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
@@ -32,35 +35,35 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     [invoicesDetails, normalize],
   ) as unknown as InvoicesDetails[];
 
-  const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
+  const columnsDetails = useMemo<Column<InvoicesDetails>[]>(
     () => [
       {
-        accessorKey: 'productNameWithCode',
-        header: 'Product',
+        key: 'productNameWithCode',
+        name: 'Product',
       },
       {
-        accessorKey: 'date',
-        header: 'Date',
-        cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
+        key: 'date',
+        name: 'Date',
+        formatter: ({ row: { date } }) => <DateDisplay date={date} />,
       },
       {
-        accessorKey: 'description',
-        header: 'Description',
+        key: 'description',
+        name: 'Description',
       },
       {
-        accessorKey: 'quantity',
-        header: 'Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.quantity} output={'number'} />,
+        key: 'quantity',
+        name: 'Quantity',
+        formatter: ({ row: { quantity } }) => <NumberDisplay value={quantity} output={'number'} />,
       },
       {
-        accessorKey: 'priceUnit',
-        header: 'Price Unit',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceUnit} output={'currency'} />,
+        key: 'priceUnit',
+        name: 'Price Unit',
+        formatter: ({ row: { priceUnit } }) => <NumberDisplay value={priceUnit} output={'currency'} />,
       },
       {
-        accessorKey: 'priceQuantity',
-        header: 'Price Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceQuantity} output={'currency'} />,
+        key: 'priceQuantity',
+        name: 'Price Quantity',
+        formatter: ({ row: { priceQuantity } }) => <NumberDisplay value={priceQuantity} output={'currency'} />,
       },
     ],
     [],
@@ -121,17 +124,20 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     [invoicesDetails, setInvoicesDetails, updateAmounts],
   );
 
-  const columnsWithActions = useMemo<ColumnDef<InvoicesDetails>[]>(
+  const columnsWithActions = useMemo<Column<InvoicesDetails>[]>(
     () => [
       ...columnsDetails,
       {
-        accessorKey: 'actions',
-        cell: ({ row: { original } }) => (
-          <>
-            <IconButton src={editImg} onClick={() => onEditDetail(original)} />
-            <IconButton src={copyImg} onClick={() => onCopyDetail(original)} />
-            <IconButton src={deleteImg} onClick={() => onRemoveDetail(original)} />
-          </>
+        key: 'actions',
+        name: 'Actions',
+        sortable: false,
+        width: 150,
+        formatter: ({ row }) => (
+          <TableActionsStyled>
+            <IconButton icon={<EditIcon />} onClick={() => onEditDetail(row)} />
+            <IconButton icon={<CopyIcon />} onClick={() => onCopyDetail(row)} />
+            <IconButton icon={<DeleteIcon />} onClick={() => onRemoveDetail(row)} />
+          </TableActionsStyled>
         ),
       },
     ],
@@ -142,16 +148,40 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     <LabelDetailsStyled>
       <span>Details</span>
       <div id="icon-button">
-        <IconButton src={newImg} onClick={onAddDetail} />
+        <IconButton icon={<NewIcon />} onClick={onAddDetail} />
       </div>
     </LabelDetailsStyled>
   );
+
+  type Comparator = (a: InvoicesDetails, b: InvoicesDetails) => number;
+  const getComparator = useCallback((sortColumn: string): Comparator => {
+    switch (sortColumn) {
+      case 'productNameWithCode':
+      case 'date':
+      case 'description':
+        return (a, b) => a[sortColumn].localeCompare(b[sortColumn]);
+      case 'quantity':
+      case 'priceUnit':
+      case 'priceQuantity':
+        return (a, b) => a[sortColumn] - b[sortColumn];
+
+      default:
+        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
+    }
+  }, []);
 
   return (
     <>
       <FieldGroupStyled key={`table-form-field-invoice-details`}>
         <legend>{labelWithAdd}</legend>
-        <ReadOnlyTable<InvoicesDetails> data={normalizedValue} columns={columnsWithActions} useRadius />
+
+        <ReadOnlyTable<InvoicesDetails>
+          data={normalizedValue}
+          columns={columnsWithActions}
+          useRadius
+          getComparator={getComparator}
+          showHeader={false}
+        />
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>

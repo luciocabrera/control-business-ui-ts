@@ -26,7 +26,8 @@ import type {
   APiResponseErrorType,
   DateParameterType,
   FieldBaseValueType,
-  CreateInvoiceDetail,
+  InvoicesDetails,
+  InvoiceDetailCreate,
 } from 'types';
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
@@ -184,7 +185,7 @@ const ViewInvoice = memo(() => {
     ],
   );
 
-  const sanitizeInvoiceDetails = (invoiceDetails: CreateInvoiceDetail[]) =>
+  const sanitizeInvoiceDetails = (invoiceDetails: InvoicesDetails[]): InvoiceDetailCreate[] =>
     invoiceDetails.map(({ date, productId, description, quantity, priceUnit, priceQuantity }) => ({
       date: date ? new Date(date) : new Date(),
       description,
@@ -198,7 +199,7 @@ const ViewInvoice = memo(() => {
     async (payload: InvoiceFormType) => {
       const calculatedInvoiceId = isCreating || isCopying ? undefined : parseInt(invoiceId, 10);
       const { customerId, date, invoiceDetails, ...rest } = payload;
-      debugger;
+
       const body: InvoiceCreateType = {
         invoiceId: calculatedInvoiceId,
         date: date ? new Date(date) : new Date(),

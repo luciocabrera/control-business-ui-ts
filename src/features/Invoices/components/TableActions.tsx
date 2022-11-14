@@ -9,7 +9,7 @@ import type { InvoiceType } from 'types';
 // react
 import { memo } from 'react';
 // styles
-import { TableActionsStyled } from './TableActions.styled';
+import { TableActionsStyled } from 'styles';
 
 type TableActionsProps = {
   original: InvoiceType;

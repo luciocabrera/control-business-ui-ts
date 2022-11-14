@@ -13,6 +13,12 @@ export const FormStyled = styled.form`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  header {
+    .close {
+      right: 1.5rem;
+      position: absolute;
+    }
+  }
   legend {
     font-weight: bold;
     color: var(--text-strong-color);

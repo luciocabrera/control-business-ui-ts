@@ -9,7 +9,7 @@ export type ProductInvoicesDetails = {
 };
 
 export type InvoicesDetails = {
-  date: DateParameterType;
+  date: string;
   productId: number;
   description: string;
   quantity: number;
@@ -17,10 +17,15 @@ export type InvoicesDetails = {
   priceQuantity: number;
 } & ProductInvoicesDetails;
 
-export type CreateInvoiceDetail = Omit<
+export type InvoiceDetailForm = Omit<
   InvoicesDetails,
   'product' | 'productNameWithCode' | 'productDescription' | 'productPrice'
 >;
+
+export type InvoiceDetailCreate = Omit<
+  InvoicesDetails,
+  'product' | 'productNameWithCode' | 'productDescription' | 'productPrice' | 'date'
+> & { date: Date };
 
 export type InvoiceType = AuditType & {
   invoiceId: number;
@@ -28,7 +33,7 @@ export type InvoiceType = AuditType & {
   customerId: number;
   customer: InvoiceCustomerType;
   invoiceDetails: InvoicesDetails[];
-  date: Date;
+  date: string;
   subtotal: number;
   total: number;
   taxes: number;
@@ -40,10 +45,10 @@ export type InvoiceFormType = Omit<
   'date' | 'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'
 > & {
   invoiceId?: number;
-  date?: Date;
+  date?: string;
 };
 
 export type InvoiceCreateType = Omit<
   InvoiceType,
-  'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy' | 'customer' | 'invoiceDetails'
-> & { invoiceId?: number; customerId: number; invoiceDetails: CreateInvoiceDetail[] };
+  'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy' | 'customer' | 'invoiceDetails' | 'date'
+> & { date: Date; invoiceId?: number; customerId: number; invoiceDetails: InvoiceDetailCreate[] };

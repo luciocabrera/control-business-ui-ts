@@ -4,13 +4,24 @@ import { Portal } from 'components';
 import ReadOnlyTable from 'components/Table/ReadOnlyTable/ReadOnlyTable';
 import { useStore } from 'contexts';
 import { memo, forwardRef, useMemo, useCallback, useState } from 'react';
-import type { ColumnDef } from 'types';
+import type { Column } from 'types';
 import { FieldGroupStyled } from '../Form/Form.styled';
 
 import type { TableFieldProps } from './TableField.types';
 
 const TableField = <TData extends Record<string, unknown>, DetailData>(
-  { data, normalize, columns, accessor, label, readonly, renderDetail }: TableFieldProps<TData, DetailData>,
+  {
+    data,
+    normalize,
+    columns,
+    accessor,
+    label,
+    readonly,
+    showHeader = false,
+    renderDetail,
+    rowKeyGetter,
+    getComparator,
+  }: TableFieldProps<TData, DetailData>,
   ref: React.ForwardedRef<unknown>,
 ) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
@@ -33,14 +44,15 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
     [accessor, data, setStore],
   );
 
-  const columnsWithActions = useMemo<ColumnDef<TData>[]>(() => {
+  const columnsWithActions = useMemo<Column<TData>[]>(() => {
     const calculatedColumns = [...columns];
 
     if (readonly)
       calculatedColumns.push({
-        accessorKey: 'actions',
-        cell: ({ row: { original } }) => (
-          <img src={detailsViewImg} alt="" width="18" height="18" onClick={() => onRemoveDetail(original)} />
+        key: 'actions',
+        name: '',
+        formatter: ({ row }) => (
+          <img src={detailsViewImg} alt="" width="18" height="18" onClick={() => onRemoveDetail(row)} />
         ),
       });
 
@@ -62,7 +74,14 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
     <>
       <FieldGroupStyled key={`table-form-field-${accessor}`}>
         <legend>{labelWithAdd}</legend>
-        <ReadOnlyTable<TData> data={normalizedValue} columns={columnsWithActions} useRadius />{' '}
+        <ReadOnlyTable<TData>
+          data={normalizedValue}
+          columns={columnsWithActions}
+          useRadius
+          rowKeyGetter={rowKeyGetter}
+          getComparator={getComparator}
+          showHeader={false}
+        />
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>

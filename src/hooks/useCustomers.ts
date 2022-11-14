@@ -6,7 +6,6 @@ import { useApiData, useApiDataList, useApiRefreshData, useApiRequest } from './
 import type { ApiResponse, CustomerCreateType, CustomerType, OptionsType } from '../types';
 // react
 import { useCallback } from 'react';
-// utilities
 
 type IdType = string | number | undefined | null;
 

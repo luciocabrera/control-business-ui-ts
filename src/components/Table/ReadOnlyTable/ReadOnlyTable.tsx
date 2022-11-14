@@ -1,102 +1,142 @@
-// hooks
-import { useReactTable } from 'hooks';
+// components
+import { Header, IconButton, DataGrid } from 'components';
+// css
+import 'react-data-grid/lib/styles.css';
 // react
-import { memo, useRef, useState } from 'react';
+import { memo, ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
 // styles
 import { TableStyled } from '../Table.styled';
 // types
-import type { ColumnDef, SortingState } from 'types';
-// utilities
-import { getSortedRowModel, flexRender, getCoreRowModel } from 'utilities';
+import type { Column, SortColumn } from 'types';
+
+type Maybe<T> = T | undefined | null;
 
 type ReadOnlyProps<TData> = {
+  actions?: ReactElement;
+  showHeader?: boolean;
   useRadius?: boolean;
   height?: string;
   data: TData[];
-  columns: ColumnDef<TData, unknown>[];
+  title?: ReactNode;
+  columns: readonly Column<TData, unknown>[];
+  fetchMoreOnBottomReached?: (target: HTMLDivElement) => void;
+  rowKeyGetter?: Maybe<(row: TData) => number>;
+  getComparator: (sortColumn: string) => (a: TData, b: TData) => number;
 };
 
+function isAtBottom({ currentTarget }: React.UIEvent<HTMLDivElement>): boolean {
+  return currentTarget.scrollTop + 10 >= currentTarget.scrollHeight - currentTarget.clientHeight;
+}
+
 const ReadOnlyTable = <TData extends Record<string, unknown>>({
+  actions,
   columns,
   data,
   height,
   useRadius,
+  title,
+  showHeader = true,
+  rowKeyGetter,
+  getComparator,
 }: ReadOnlyProps<TData>) => {
-  const tableContainerRef = useRef<HTMLDivElement>(null);
+  // const tableContainerRef = useRef<HTMLDivElement>(null);
 
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [rows, setRows] = useState(data);
+  const [sortColumns, setSortColumns] = useState<readonly SortColumn[]>([]);
+  const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(() => new Set());
+  const [isLoading, setIsLoading] = useState(false);
 
-  const table = useReactTable({
-    data,
-    columns,
-    columnResizeMode: 'onChange',
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
+  useEffect(() => {
+    setRows(data);
+  }, [data]);
+
+  async function handleScroll(event: React.UIEvent<HTMLDivElement>) {
+    if (isLoading || !isAtBottom(event)) return;
+
+    console.log('should load more data');
+    setIsLoading(true);
+
+    // const newRows = await loadMoreRows(50, rows.length);
+
+    // setRows([...rows, ...newRows]);
+    setIsLoading(false);
+  }
+
+  const sortedRows = useMemo((): readonly TData[] => {
+    if (sortColumns.length === 0) return rows;
+
+    return [...rows].sort((a, b) => {
+      for (const sort of sortColumns) {
+        const comparator = getComparator(sort.columnKey);
+        const compResult = comparator(a, b);
+        if (compResult !== 0) {
+          return sort.direction === 'ASC' ? compResult : -compResult;
+        }
+      }
+      return 0;
+    });
+  }, [getComparator, rows, sortColumns]);
+
+  const gridElement = (
+    <DataGrid
+      rowKeyGetter={rowKeyGetter}
+      columns={columns}
+      rows={sortedRows}
+      defaultColumnOptions={{
+        sortable: true,
+        resizable: true,
+      }}
+      rowHeight={30}
+      selectedRows={selectedRows}
+      onSelectedRowsChange={setSelectedRows}
+      onRowsChange={setRows}
+      sortColumns={sortColumns}
+      onSortColumnsChange={setSortColumns}
+      rowClass={(row) => 'grid-row'}
+      // topSummaryRows={summaryRows}
+      // bottomSummaryRows={summaryRows}
+      className="fill-grid"
+    />
+  );
 
   return (
-    <TableStyled data-testid="data-table" ref={tableContainerRef} height={height} useRadius={useRadius}>
-      <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <th key={header.id} colSpan={header.colSpan} style={{ width: header.getSize() }}>
-                    {header.isPlaceholder ? null : (
-                      <div
-                        {...{
-                          className: header.column.getCanSort() ? 'cursor-pointer select-none' : '',
-                          onClick: header.column.getToggleSortingHandler(),
-                        }}
-                      >
-                        {flexRender(header.column.columnDef.header, header.getContext())}
-                        {{
-                          asc: <span>&#8593;</span>, //' 🔼',
-                          desc: <span>&#8595;</span>, //' 🔽',
-                        }[header.column.getIsSorted() as string] ?? null}
-                      </div>
-                    )}
-                    <div
-                      {...{
-                        onMouseDown: header.getResizeHandler(),
-                        onTouchStart: header.getResizeHandler(),
-                        className: `resizer ${header.column.getIsResizing() ? 'isResizing' : ''}`,
-                      }}
-                    />
-                  </th>
-                );
-              })}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
-      </table>
-    </TableStyled>
+    <>
+      {showHeader && (
+        <Header title={title} isTable>
+          {actions}
+          {/* <ExportButton onExport={() => exportToCsv(gridElement, `${title}.csv`)}>
+          <CsvIcon />
+        </ExportButton>
+        <ExportButton onExport={() => exportToXlsx(gridElement, `${title}.xlsx`)}>
+          <ExcelIcon />
+        </ExportButton>
+        <ExportButton onExport={() => exportToPdf(gridElement, `${title}.pdf`)}>
+          <PdfIcon />
+        </ExportButton> */}
+        </Header>
+      )}
+      <TableStyled height={height}>
+        {gridElement}
+        {isLoading && <div className={'loadMoreRowsClassname'}>Loading more rows...</div>}
+      </TableStyled>
+    </>
   );
 };
+// function ExportButton({ onExport, children }: { onExport: () => Promise<unknown>; children: ReactElement }) {
+//   const [exporting, setExporting] = useState(false);
+//   return (
+//     <IconButton
+//       type="button"
+//       disabled={exporting}
+//       onClick={async () => {
+//         console.log('exporting');
+//         setExporting(true);
+//         await onExport();
+//         setExporting(false);
+//       }}
+//       icon={children}
+//     />
+//   );
+// }
 
 export default memo(ReadOnlyTable) as typeof ReadOnlyTable;

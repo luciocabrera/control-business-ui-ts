@@ -3,23 +3,21 @@ import { Form, PageSpinner, InvoiceActions, NumberDisplay, TableField, DateDispl
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // hooks
-import { useParams, useNavigate, useFetchInvoice } from 'hooks';
+import { useParams, useNavigate, useFetchInvoice, useCallback, useMemo } from 'hooks';
 // icons
 import { InvoiceIcon } from 'icons';
-// react
-import { memo, useMemo } from 'react';
 // types
 import type {
   InvoiceFormType,
   FormFieldType,
-  ColumnDef,
+  Column,
   InvoicesDetails,
   DateParameterType,
   FieldBaseValueType,
-  CreateInvoiceDetail,
+  InvoiceDetailForm,
 } from 'types';
 // utilities
-import { getDateAsString, getFormattedNumber } from 'utilities';
+import { getDateAsString, getFormattedNumber, memo } from 'utilities';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -27,39 +25,55 @@ const ViewInvoice = memo(() => {
 
   const { data: invoice, loading: isLoadingInvoice } = useFetchInvoice(invoiceId);
 
-  const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
+  const columns = useMemo<Column<InvoicesDetails>[]>(
     () => [
       {
-        accessorKey: 'productNameWithCode',
-        header: 'Product',
+        key: 'productNameWithCode',
+        name: 'Product',
       },
       {
-        accessorKey: 'date',
-        header: 'Date',
-        cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
+        key: 'date',
+        name: 'Date',
+        formatter: ({ row: { date } }) => <DateDisplay date={date} />,
       },
       {
-        accessorKey: 'description',
-        header: 'Description',
+        key: 'description',
+        name: 'Description',
       },
       {
-        accessorKey: 'quantity',
-        header: 'Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.quantity} output={'number'} />,
+        key: 'quantity',
+        name: 'Quantity',
+        formatter: ({ row: { quantity } }) => <NumberDisplay value={quantity} output={'number'} />,
       },
       {
-        accessorKey: 'priceUnit',
-        header: 'Price Unit',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceUnit} output={'currency'} />,
+        key: 'priceUnit',
+        name: 'Price Unit',
+        formatter: ({ row: { priceUnit } }) => <NumberDisplay value={priceUnit} output={'currency'} />,
       },
       {
-        accessorKey: 'priceQuantity',
-        header: 'Price Quantity',
-        cell: ({ row: { original } }) => <NumberDisplay value={original.priceQuantity} output={'currency'} />,
+        key: 'priceQuantity',
+        name: 'Price Quantity',
+        formatter: ({ row: { priceQuantity } }) => <NumberDisplay value={priceQuantity} output={'currency'} />,
       },
     ],
     [],
   );
+  type Comparator = (a: InvoicesDetails, b: InvoicesDetails) => number;
+  const getComparator = useCallback((sortColumn: string): Comparator => {
+    switch (sortColumn) {
+      case 'productNameWithCode':
+      case 'date':
+      case 'description':
+        return (a, b) => a[sortColumn].localeCompare(b[sortColumn]);
+      case 'quantity':
+      case 'priceUnit':
+      case 'priceQuantity':
+        return (a, b) => a[sortColumn] - b[sortColumn];
+
+      default:
+        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
+    }
+  }, []);
 
   const fields: FormFieldType[] = useMemo(
     () => [
@@ -172,11 +186,13 @@ const ViewInvoice = memo(() => {
             label: 'invoiceDetails',
             type: 'table',
             render: () => (
-              <TableField<InvoicesDetails, CreateInvoiceDetail>
+              <TableField<InvoicesDetails, InvoiceDetailForm>
                 accessor="invoiceDetails"
                 label="Details"
                 columns={columns}
                 data={invoice?.invoiceDetails as InvoicesDetails[]}
+                getComparator={getComparator}
+                showHeader={false}
               />
             ),
             readonly: true,
@@ -186,6 +202,7 @@ const ViewInvoice = memo(() => {
     ],
     [
       columns,
+      getComparator,
       invoice?.customer?.fullNameWithInitials,
       invoice?.date,
       invoice?.invoice,

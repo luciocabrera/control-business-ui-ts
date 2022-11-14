@@ -70,11 +70,12 @@ export const HeaderStyled = styled.header`
   }
   .children-content {
     text-align: right;
-  }
-
-  button {
-    right: 1.5rem;
-    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+    gap: 1rem;
   }
 `;
 

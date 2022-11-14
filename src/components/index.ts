@@ -50,3 +50,5 @@ export { default as NavBar } from './NavBar/NavBar';
 
 // styled wrappers
 export { FieldGroupStyled } from './Form/Form/Form.styled';
+
+export { default as DataGrid } from 'react-data-grid';

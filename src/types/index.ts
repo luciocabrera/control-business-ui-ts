@@ -15,7 +15,6 @@ export * from './notification';
 export type { ModalProps } from 'components/Modal/Modal.types';
 
 export type { FormBaseProps } from 'components/Form/Form/Form.types';
-export type { ColumnDef, SortingState } from '@tanstack/react-table';
 
 export type {
   ReactElement,
@@ -28,3 +27,5 @@ export type {
   MouseEvent,
   MouseEventHandler,
 } from 'react';
+
+export type { Column, SortColumn } from 'react-data-grid';

@@ -1,76 +1,112 @@
 // components
-import { Header, ReadOnlyTable, PageSpinner, Link, Outlet, DateDisplay } from 'components';
+import { ReadOnlyTable, PageSpinner, Link, Outlet, DateDisplay, NumberDisplay } from 'components';
+import TableActions from './components/TableActions';
 // hooks
-import { useFetchInvoices, useLocation } from 'hooks';
+import { useFetchInvoices, useLocation, useCallback, useMemo } from 'hooks';
 // icons
 import { NewIcon } from 'icons';
-// react
-import { memo, useMemo } from 'react';
 // types
-import type { InvoiceType, ColumnDef } from 'types';
-// utilities
-import { getFormattedNumber, onSort } from 'utilities';
-import TableActions from './components/TableActions';
+import type { InvoiceType, Column } from 'types';
 
+type Comparator = (a: InvoiceType, b: InvoiceType) => number;
 const title = 'Invoices';
 
-const Invoices = memo(() => {
+const Invoices = () => {
   const { data: invoices, loading } = useFetchInvoices();
   const location = useLocation();
 
-  const columns = useMemo<ColumnDef<InvoiceType>[]>(
+  const columns: readonly Column<InvoiceType>[] = useMemo(
     () => [
-      { accessorKey: 'invoice', header: 'Invoice' },
+      { key: 'invoice', name: 'Invoice', width: 150, minWidth: 100, maxWidth: 200 },
       {
-        accessorKey: 'date',
-        header: 'Date',
-        cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
-      },
-      {
-        accessorFn: (original) => original.customer?.fullNameWithInitials,
-        header: 'Customer',
-      },
-      {
-        accessorKey: 'subtotal',
-        header: 'Subtotal',
-        accessorFn: (original) => getFormattedNumber(original.subtotal, 'currency'),
-        sortingFn: (rowA, rowB) => onSort(rowA.original.subtotal, rowB.original.subtotal),
-      },
-      {
-        accessorKey: 'taxes',
-        header: 'Taxes',
-        accessorFn: (original) => getFormattedNumber(original.taxes, 'currency'),
-        sortingFn: (rowA, rowB) => onSort(rowA.original.taxes, rowB.original.taxes),
-      },
-      {
-        accessorKey: 'total',
-        header: 'Total',
-        accessorFn: (original) => getFormattedNumber(original.total, 'currency'),
-        sortingFn: (rowA, rowB) => onSort(rowA.original.total, rowB.original.total),
-      },
+        key: 'date',
+        name: 'Date',
 
+        width: 150,
+        minWidth: 100,
+        maxWidth: 200,
+        formatter: ({ row: { date } }) => <DateDisplay date={date} />,
+      },
       {
-        accessorKey: 'actions',
-        enableSorting: false,
-        size: 5,
-        maxSize: 5,
-        cell: ({ row: { original } }) => <TableActions original={original} />,
+        key: 'customer',
+        name: 'Customer',
+        minWidth: 100,
+        formatter: ({
+          row: {
+            customer: { fullNameWithInitials },
+          },
+        }) => <>{fullNameWithInitials}</>,
+      },
+      {
+        key: 'subtotal',
+        name: 'Subtotal',
+        formatter: ({ row: { subtotal } }) => <NumberDisplay value={subtotal} output={'currency'} />,
+      },
+      {
+        key: 'taxes',
+        name: 'Taxes',
+        formatter: ({ row: { taxes } }) => <NumberDisplay value={taxes} output={'currency'} />,
+      },
+      {
+        key: 'total',
+        name: 'Total',
+        formatter: ({ row: { total } }) => <NumberDisplay value={total} output={'currency'} />,
+      },
+      {
+        key: 'actions',
+        name: 'Actions',
+        sortable: false,
+        resizable: false,
+        width: 100,
+        minWidth: 100,
+        maxWidth: 100,
+        cellClass: 'table-actions',
+        formatter: ({ row }) => <TableActions original={row} />,
       },
     ],
     [],
   );
 
+  const getComparator = useCallback((sortColumn: string): Comparator => {
+    switch (sortColumn) {
+      case 'invoice':
+      case 'date':
+        return (a, b) => a[sortColumn].localeCompare(b[sortColumn]);
+      case 'customer':
+        return (a, b) => a.customer.fullNameWithInitials.localeCompare(b.customer.fullNameWithInitials);
+      case 'invoiceId':
+      case 'subtotal':
+      case 'taxes':
+      case 'total':
+        return (a, b) => a[sortColumn] - b[sortColumn];
+      default:
+        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
+    }
+  }, []);
+
+  const rowKeyGetter = useCallback((row: InvoiceType): number => {
+    return row?.invoiceId;
+  }, []);
+
   return (
     <>
       {loading && <PageSpinner />}
-      <Header title={title} isTable>
-        <Link to="new" state={{ backgroundLocation: location }}>
-          <NewIcon />
-        </Link>
-      </Header>
-      <ReadOnlyTable<InvoiceType> data={invoices} columns={columns} height="calc(100vh - 120px)" />
+      <ReadOnlyTable<InvoiceType>
+        data={invoices}
+        columns={columns}
+        height="calc(100vh - 120px)"
+        rowKeyGetter={rowKeyGetter}
+        getComparator={getComparator}
+        title={title}
+        actions={
+          <Link to="new" state={{ backgroundLocation: location }} className="link-icon">
+            <NewIcon />
+          </Link>
+        }
+      />
       <Outlet />
     </>
   );
-});
+};
+
 export default Invoices;

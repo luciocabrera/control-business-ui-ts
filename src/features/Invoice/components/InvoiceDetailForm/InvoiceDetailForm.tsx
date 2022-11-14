@@ -10,7 +10,7 @@ import { useParams, useFetchProducts } from 'hooks';
 // react
 import { memo, useCallback, useMemo } from 'react';
 // types
-import type { CreateInvoiceDetail, FormFieldType, ProductType } from 'types';
+import type { InvoiceDetailForm as InvoiceDetailFormType, FormFieldType, ProductType } from 'types';
 import type { InvoiceDetailFormProps } from './InvoiceDetailForm.types';
 
 const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDetailFormProps) => {
@@ -21,7 +21,7 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
   const { data: products, loading: isLoadingProducts } = useFetchProducts();
 
   const onAccept = useCallback(
-    (detail: CreateInvoiceDetail) => {
+    (detail: InvoiceDetailFormType) => {
       const selectedProduct = products?.find(
         ({ productId }: ProductType) =>
           productId === (typeof detail.productId === 'number' ? detail.productId : parseInt(detail.productId, 10)),
@@ -90,8 +90,8 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
   const title = `${isCreating ? 'New' : 'Edit'} Detail`;
 
   return (
-    <FormDataContextProvider<CreateInvoiceDetail> initialFields={fields} initialData={detail}>
-      <Form<CreateInvoiceDetail>
+    <FormDataContextProvider<InvoiceDetailFormType> initialFields={fields} initialData={detail}>
+      <Form<InvoiceDetailFormType>
         icon={detailsViewImg}
         title={title}
         initialFields={fields}
