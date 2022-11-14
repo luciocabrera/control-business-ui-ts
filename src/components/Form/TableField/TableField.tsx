@@ -4,9 +4,8 @@ import { Portal } from 'components';
 import ReadOnlyTable from 'components/Table/ReadOnlyTable/ReadOnlyTable';
 import { useStore } from 'contexts';
 import { memo, forwardRef, useMemo, useCallback, useState } from 'react';
-import type { ColumnDef } from 'types';
+import type { Column } from 'types';
 import { FieldGroupStyled } from '../Form/Form.styled';
-import DataGrid, { Column, SortColumn } from 'react-data-grid';
 
 import type { TableFieldProps } from './TableField.types';
 
@@ -18,8 +17,10 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
     accessor,
     label,
     readonly,
+    showHeader = false,
     renderDetail,
     rowKeyGetter,
+    getComparator,
   }: TableFieldProps<TData, DetailData>,
   ref: React.ForwardedRef<unknown>,
 ) => {
@@ -68,29 +69,6 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
       )}
     </>
   );
-  type Comparator = (a: TData, b: TData) => number;
-  const getComparator = useCallback((sortColumn: string): Comparator => {
-    switch (sortColumn) {
-      // case 'invoice':
-      //   // case 'date':
-      //   return (a, b) => {
-      //     return a[sortColumn].localeCompare(b[sortColumn]);
-      //   };
-      // // case 'available':
-      // //   return (a, b) => {
-      // //     return a[sortColumn] === b[sortColumn] ? 0 : a[sortColumn] ? 1 : -1;
-      // //   };
-      // case 'invoiceId':
-      // case 'subtotal':
-      // case 'taxes':
-      // case 'total':
-      //   return (a, b) => {
-      //     return a[sortColumn] - b[sortColumn];
-      //   };
-      default:
-        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
-    }
-  }, []);
 
   return (
     <>
@@ -102,7 +80,8 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
           useRadius
           rowKeyGetter={rowKeyGetter}
           getComparator={getComparator}
-        />{' '}
+          showHeader={false}
+        />
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>

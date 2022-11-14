@@ -6,21 +6,19 @@ import { useFormStatusStore, useStore } from 'contexts';
 import { useCallback, useMemo } from 'react';
 // types
 import type { InvoiceDetailProductProps } from './InvoiceDetailProduct.types';
-import type { CreateInvoiceDetail, DateParameterType, FieldBaseValueType, ProductType } from 'types';
+import type { InvoiceDetailForm, DateParameterType, FieldBaseValueType, ProductType } from 'types';
 // utilities
 import { getErrorField, validateField, memo, getDateAsString } from 'utilities';
 
 const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductProps) => {
-  const [productId, setProductId] = useStore<number, Pick<CreateInvoiceDetail, 'productId'>>(
-    (store) => store.productId,
-  );
-  const [, setPriceUnit] = useStore<number, Pick<CreateInvoiceDetail, 'priceUnit'>>((store) => store.priceUnit);
-  const [description, setDescription] = useStore<FieldBaseValueType, Pick<CreateInvoiceDetail, 'description'>>(
+  const [productId, setProductId] = useStore<number, Pick<InvoiceDetailForm, 'productId'>>((store) => store.productId);
+  const [, setPriceUnit] = useStore<number, Pick<InvoiceDetailForm, 'priceUnit'>>((store) => store.priceUnit);
+  const [description, setDescription] = useStore<FieldBaseValueType, Pick<InvoiceDetailForm, 'description'>>(
     (store) => store.description,
   );
-  const [date, setDate] = useStore<DateParameterType, Pick<CreateInvoiceDetail, 'date'>>((store) => store.date);
-  const [quantity] = useStore<number, Pick<CreateInvoiceDetail, 'quantity'>>((store) => store.quantity);
-  const [, setPriceQuantity] = useStore<number, Pick<CreateInvoiceDetail, 'priceQuantity'>>(
+  const [date, setDate] = useStore<DateParameterType, Pick<InvoiceDetailForm, 'date'>>((store) => store.date);
+  const [quantity] = useStore<number, Pick<InvoiceDetailForm, 'quantity'>>((store) => store.quantity);
+  const [, setPriceQuantity] = useStore<number, Pick<InvoiceDetailForm, 'priceQuantity'>>(
     (store) => store.priceQuantity || 0,
   );
 

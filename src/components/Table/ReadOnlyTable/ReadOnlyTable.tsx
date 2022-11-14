@@ -1,31 +1,29 @@
-// hooks
+// components
+import { Header, IconButton, DataGrid } from 'components';
+// css
 import 'react-data-grid/lib/styles.css';
 // react
-import { memo, ReactElement, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
 // styles
 import { TableStyled } from '../Table.styled';
 // types
-import type { ColumnDef, DateParameterType, InvoiceType } from 'types';
-// utilities
+import type { Column, SortColumn } from 'types';
 
-import DataGrid, { Column, SortColumn } from 'react-data-grid';
+type Maybe<T> = T | undefined | null;
 
-import { exportToCsv, exportToPdf, exportToXlsx } from '../utils/exportUtils';
-import { Header, IconButton } from 'components';
-import { ExcelIcon, PdfIcon, CsvIcon } from 'icons';
-
-declare type Maybe<T> = T | undefined | null;
 type ReadOnlyProps<TData> = {
   actions?: ReactElement;
+  showHeader?: boolean;
   useRadius?: boolean;
   height?: string;
   data: TData[];
   title?: ReactNode;
   columns: readonly Column<TData, unknown>[];
   fetchMoreOnBottomReached?: (target: HTMLDivElement) => void;
-  rowKeyGetter: Maybe<(row: TData) => number>;
+  rowKeyGetter?: Maybe<(row: TData) => number>;
   getComparator: (sortColumn: string) => (a: TData, b: TData) => number;
 };
+
 function isAtBottom({ currentTarget }: React.UIEvent<HTMLDivElement>): boolean {
   return currentTarget.scrollTop + 10 >= currentTarget.scrollHeight - currentTarget.clientHeight;
 }
@@ -37,10 +35,10 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   height,
   useRadius,
   title,
+  showHeader = true,
   rowKeyGetter,
   getComparator,
-}: // fetchMoreOnBottomReached,
-ReadOnlyProps<TData>) => {
+}: ReadOnlyProps<TData>) => {
   // const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const [rows, setRows] = useState(data);
@@ -103,9 +101,10 @@ ReadOnlyProps<TData>) => {
 
   return (
     <>
-      <Header title={title} isTable>
-        {actions}
-        {/* <ExportButton onExport={() => exportToCsv(gridElement, `${title}.csv`)}>
+      {showHeader && (
+        <Header title={title} isTable>
+          {actions}
+          {/* <ExportButton onExport={() => exportToCsv(gridElement, `${title}.csv`)}>
           <CsvIcon />
         </ExportButton>
         <ExportButton onExport={() => exportToXlsx(gridElement, `${title}.xlsx`)}>
@@ -114,7 +113,8 @@ ReadOnlyProps<TData>) => {
         <ExportButton onExport={() => exportToPdf(gridElement, `${title}.pdf`)}>
           <PdfIcon />
         </ExportButton> */}
-      </Header>
+        </Header>
+      )}
       <TableStyled height={height}>
         {gridElement}
         {isLoading && <div className={'loadMoreRowsClassname'}>Loading more rows...</div>}
@@ -122,21 +122,21 @@ ReadOnlyProps<TData>) => {
     </>
   );
 };
-function ExportButton({ onExport, children }: { onExport: () => Promise<unknown>; children: ReactElement }) {
-  const [exporting, setExporting] = useState(false);
-  return (
-    <IconButton
-      type="button"
-      disabled={exporting}
-      onClick={async () => {
-        console.log('exporting');
-        setExporting(true);
-        await onExport();
-        setExporting(false);
-      }}
-      icon={children}
-    />
-  );
-}
+// function ExportButton({ onExport, children }: { onExport: () => Promise<unknown>; children: ReactElement }) {
+//   const [exporting, setExporting] = useState(false);
+//   return (
+//     <IconButton
+//       type="button"
+//       disabled={exporting}
+//       onClick={async () => {
+//         console.log('exporting');
+//         setExporting(true);
+//         await onExport();
+//         setExporting(false);
+//       }}
+//       icon={children}
+//     />
+//   );
+// }
 
 export default memo(ReadOnlyTable) as typeof ReadOnlyTable;

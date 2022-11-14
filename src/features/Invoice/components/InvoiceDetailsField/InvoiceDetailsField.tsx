@@ -1,18 +1,20 @@
-//assets
-import { newImg, editImg, deleteImg, copyImg } from 'assets';
 // components
 import { NumberDisplay, Portal, ReadOnlyTable, IconButton, FieldGroupStyled, DateDisplay } from 'components';
 import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
-import DataGrid, { Column, SortColumn } from 'react-data-grid';
 // contexts
 import { useStore } from 'contexts';
-// react
-import { memo, useMemo, useCallback, useState } from 'react';
+// hooks
+import { useCallback, useMemo, useState } from 'hooks';
+// icons
+import { CopyIcon, NewIcon, EditIcon, DeleteIcon } from 'icons';
 // types
-import type { ColumnDef, InvoiceFormType, InvoicesDetails } from 'types';
+import type { InvoiceFormType, InvoicesDetails, Column } from 'types';
 import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
 // styles
 import { LabelDetailsStyled } from './InvoiceDetailsField.styled';
+import { TableActionsStyled } from 'styles';
+// utilities
+import { memo } from 'utilities';
 
 const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
@@ -66,40 +68,6 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     ],
     [],
   );
-
-  // const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
-  //   () => [
-  //     {
-  //       accessorKey: 'productNameWithCode',
-  //       header: 'Product',
-  //     },
-  //     {
-  //       accessorKey: 'date',
-  //       header: 'Date',
-  //       cell: ({ row: { original } }) => <DateDisplay date={original.date} />,
-  //     },
-  //     {
-  //       accessorKey: 'description',
-  //       header: 'Description',
-  //     },
-  //     {
-  //       accessorKey: 'quantity',
-  //       header: 'Quantity',
-  //       cell: ({ row: { original } }) => <NumberDisplay value={original.quantity} output={'number'} />,
-  //     },
-  //     {
-  //       accessorKey: 'priceUnit',
-  //       header: 'Price Unit',
-  //       cell: ({ row: { original } }) => <NumberDisplay value={original.priceUnit} output={'currency'} />,
-  //     },
-  //     {
-  //       accessorKey: 'priceQuantity',
-  //       header: 'Price Quantity',
-  //       cell: ({ row: { original } }) => <NumberDisplay value={original.priceQuantity} output={'currency'} />,
-  //     },
-  //   ],
-  //   [],
-  // );
 
   const updateAmounts = useCallback(
     (newDetails: InvoicesDetails[]) => {
@@ -161,13 +129,15 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       ...columnsDetails,
       {
         key: 'actions',
-        name: '',
+        name: 'Actions',
+        sortable: false,
+        width: 150,
         formatter: ({ row }) => (
-          <>
-            <IconButton src={editImg} onClick={() => onEditDetail(row)} />
-            <IconButton src={copyImg} onClick={() => onCopyDetail(row)} />
-            <IconButton src={deleteImg} onClick={() => onRemoveDetail(row)} />
-          </>
+          <TableActionsStyled>
+            <IconButton icon={<EditIcon />} onClick={() => onEditDetail(row)} />
+            <IconButton icon={<CopyIcon />} onClick={() => onCopyDetail(row)} />
+            <IconButton icon={<DeleteIcon />} onClick={() => onRemoveDetail(row)} />
+          </TableActionsStyled>
         ),
       },
     ],
@@ -178,45 +148,39 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     <LabelDetailsStyled>
       <span>Details</span>
       <div id="icon-button">
-        <IconButton src={newImg} onClick={onAddDetail} />
+        <IconButton icon={<NewIcon />} onClick={onAddDetail} />
       </div>
     </LabelDetailsStyled>
   );
+
   type Comparator = (a: InvoicesDetails, b: InvoicesDetails) => number;
   const getComparator = useCallback((sortColumn: string): Comparator => {
     switch (sortColumn) {
+      case 'productNameWithCode':
+      case 'date':
       case 'description':
-        // case 'date':
-        return (a, b) => {
-          return a[sortColumn].localeCompare(b[sortColumn]);
-        };
-      // case 'available':
-      //   return (a, b) => {
-      //     return a[sortColumn] === b[sortColumn] ? 0 : a[sortColumn] ? 1 : -1;
-      //   };
+        return (a, b) => a[sortColumn].localeCompare(b[sortColumn]);
       case 'quantity':
       case 'priceUnit':
       case 'priceQuantity':
-        return (a, b) => {
-          return a[sortColumn] - b[sortColumn];
-        };
+        return (a, b) => a[sortColumn] - b[sortColumn];
+
       default:
         throw new Error(`unsupported sortColumn: "${sortColumn}"`);
     }
   }, []);
-  const rowKeyGetter = useCallback((row: InvoicesDetails): number => {
-    return row?.productId;
-  }, []);
+
   return (
     <>
       <FieldGroupStyled key={`table-form-field-invoice-details`}>
         <legend>{labelWithAdd}</legend>
+
         <ReadOnlyTable<InvoicesDetails>
           data={normalizedValue}
           columns={columnsWithActions}
           useRadius
-          rowKeyGetter={rowKeyGetter}
           getComparator={getComparator}
+          showHeader={false}
         />
       </FieldGroupStyled>
       {showDetailForm && (

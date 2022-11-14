@@ -6,16 +6,14 @@ import { useFormStatusStore, useStore } from 'contexts';
 import { useCallback, useMemo } from 'react';
 // types
 import type { PriceQuantityFieldProps } from './PriceQuantityField.types';
-import type { CreateInvoiceDetail } from 'types';
+import type { InvoiceDetailForm } from 'types';
 // utilities
 import { getErrorField, validateField, memo, getFormattedNumber } from 'utilities';
 
 const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
-  const [quantity, setQuantity] = useStore<number, Pick<CreateInvoiceDetail, 'quantity'>>((store) => store.quantity);
-  const [priceUnit, setPriceUnit] = useStore<number, Pick<CreateInvoiceDetail, 'priceUnit'>>(
-    (store) => store.priceUnit,
-  );
-  const [priceQuantity, setPriceQuantity] = useStore<number, Pick<CreateInvoiceDetail, 'priceQuantity'>>(
+  const [quantity, setQuantity] = useStore<number, Pick<InvoiceDetailForm, 'quantity'>>((store) => store.quantity);
+  const [priceUnit, setPriceUnit] = useStore<number, Pick<InvoiceDetailForm, 'priceUnit'>>((store) => store.priceUnit);
+  const [priceQuantity, setPriceQuantity] = useStore<number, Pick<InvoiceDetailForm, 'priceQuantity'>>(
     (store) => store.priceQuantity || 0,
   );
 

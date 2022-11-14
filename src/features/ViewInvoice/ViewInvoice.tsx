@@ -3,24 +3,21 @@ import { Form, PageSpinner, InvoiceActions, NumberDisplay, TableField, DateDispl
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // hooks
-import { useParams, useNavigate, useFetchInvoice } from 'hooks';
+import { useParams, useNavigate, useFetchInvoice, useCallback, useMemo } from 'hooks';
 // icons
 import { InvoiceIcon } from 'icons';
-// react
-import { memo, useCallback, useMemo } from 'react';
-import DataGrid, { Column, SortColumn } from 'react-data-grid';
 // types
 import type {
   InvoiceFormType,
   FormFieldType,
-  ColumnDef,
+  Column,
   InvoicesDetails,
   DateParameterType,
   FieldBaseValueType,
-  CreateInvoiceDetail,
+  InvoiceDetailForm,
 } from 'types';
 // utilities
-import { getDateAsString, getFormattedNumber } from 'utilities';
+import { getDateAsString, getFormattedNumber, memo } from 'utilities';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -61,10 +58,23 @@ const ViewInvoice = memo(() => {
     ],
     [],
   );
+  type Comparator = (a: InvoicesDetails, b: InvoicesDetails) => number;
+  const getComparator = useCallback((sortColumn: string): Comparator => {
+    switch (sortColumn) {
+      case 'productNameWithCode':
+      case 'date':
+      case 'description':
+        return (a, b) => a[sortColumn].localeCompare(b[sortColumn]);
+      case 'quantity':
+      case 'priceUnit':
+      case 'priceQuantity':
+        return (a, b) => a[sortColumn] - b[sortColumn];
 
-  const rowKeyGetter = useCallback((row: InvoicesDetails): number => {
-    return row?.productId;
+      default:
+        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
+    }
   }, []);
+
   const fields: FormFieldType[] = useMemo(
     () => [
       {
@@ -176,12 +186,13 @@ const ViewInvoice = memo(() => {
             label: 'invoiceDetails',
             type: 'table',
             render: () => (
-              <TableField<InvoicesDetails, CreateInvoiceDetail>
+              <TableField<InvoicesDetails, InvoiceDetailForm>
                 accessor="invoiceDetails"
                 label="Details"
                 columns={columns}
                 data={invoice?.invoiceDetails as InvoicesDetails[]}
-                rowKeyGetter={rowKeyGetter}
+                getComparator={getComparator}
+                showHeader={false}
               />
             ),
             readonly: true,
@@ -191,6 +202,7 @@ const ViewInvoice = memo(() => {
     ],
     [
       columns,
+      getComparator,
       invoice?.customer?.fullNameWithInitials,
       invoice?.date,
       invoice?.invoice,
@@ -199,7 +211,6 @@ const ViewInvoice = memo(() => {
       invoice?.taxes,
       invoice?.taxesPercentage,
       invoice?.total,
-      rowKeyGetter,
     ],
   );
 

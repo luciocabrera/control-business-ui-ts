@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { cloneElement } from 'react';
 import type { ReactElement } from 'react';
 

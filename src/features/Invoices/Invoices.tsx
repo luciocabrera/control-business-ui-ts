@@ -1,5 +1,5 @@
 // components
-import { Header, ReadOnlyTable, PageSpinner, Link, Outlet, DateDisplay, NumberDisplay } from 'components';
+import { ReadOnlyTable, PageSpinner, Link, Outlet, DateDisplay, NumberDisplay } from 'components';
 import TableActions from './components/TableActions';
 // hooks
 import { useFetchInvoices, useLocation, useCallback, useMemo } from 'hooks';
@@ -8,8 +8,8 @@ import { NewIcon } from 'icons';
 // types
 import type { InvoiceType, Column } from 'types';
 
-const title = 'Invoices';
 type Comparator = (a: InvoiceType, b: InvoiceType) => number;
+const title = 'Invoices';
 
 const Invoices = () => {
   const { data: invoices, loading } = useFetchInvoices();
@@ -57,11 +57,11 @@ const Invoices = () => {
         name: 'Actions',
         sortable: false,
         resizable: false,
-        width: 90,
-        minWidth: 90,
-        maxWidth: 90,
+        width: 100,
+        minWidth: 100,
+        maxWidth: 100,
         cellClass: 'table-actions',
-        formatter: ({ row }) => <TableActions original={row} location={location} />,
+        formatter: ({ row }) => <TableActions original={row} />,
       },
     ],
     [],
@@ -83,6 +83,7 @@ const Invoices = () => {
         throw new Error(`unsupported sortColumn: "${sortColumn}"`);
     }
   }, []);
+
   const rowKeyGetter = useCallback((row: InvoiceType): number => {
     return row?.invoiceId;
   }, []);
@@ -90,7 +91,6 @@ const Invoices = () => {
   return (
     <>
       {loading && <PageSpinner />}
-
       <ReadOnlyTable<InvoiceType>
         data={invoices}
         columns={columns}

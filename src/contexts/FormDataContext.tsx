@@ -1,7 +1,7 @@
 import { Overlay } from 'components';
-import React, { useRef, createContext, useContext, useCallback, useSyncExternalStore, useState } from 'react';
+import { useRef, createContext, useContext, useCallback, useSyncExternalStore, useState } from 'react';
 import { FormWrapper } from 'styles';
-import type { FormFieldType } from 'types';
+import type { FormFieldType, ReactNode } from 'types';
 import { getInitialData } from 'utilities';
 
 type FormStatusType = {
@@ -81,7 +81,7 @@ export const useFormStatusStore = (): [FormStatusType, () => void] => {
 };
 
 type FormDataContextProviderType<TDataType extends Record<string, unknown>> = {
-  children: React.ReactNode;
+  children: ReactNode;
   initialData?: TDataType;
   initialFields: FormFieldType[];
 };

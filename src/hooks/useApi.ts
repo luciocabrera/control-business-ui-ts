@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import type { OptionsType } from 'types';
 import { execRequest, fetchRequest } from 'utilities/api';
-import { useAuth } from 'hooks';
 
 type useApiDataArgs<TDataType, TPreTransformDataType> = {
   endpointUrl?: string | null;
@@ -15,13 +14,12 @@ export function useApiData<TDataType, TPreTransformDataType = TDataType>({
   transformData,
   refreshInterval,
 }: useApiDataArgs<TDataType, TPreTransformDataType>) {
-  const { user } = useAuth();
   const { data, error, mutate } = useSWR<TDataType>(
     // endpointUrl && user?.accessToken ? endpointUrl : undefined,
     endpointUrl ? endpointUrl : undefined,
     async (url) => {
       try {
-        const bearer = `Bearer ${user?.accessToken}`;
+        const bearer = `Bearer`;
         const options: Record<string, unknown> = {
           headers: {
             accept: 'application/json',
@@ -75,8 +73,7 @@ export function useApiRefreshData() {
 }
 
 export const useApiRequest = () => {
-  const { user } = useAuth();
-  const bearer = `Bearer ${user?.accessToken}`;
+  const bearer = `Bearer`;
 
   return useCallback(
     async <T>(endpointUrl: RequestInfo | URL, customOptions?: OptionsType) => {

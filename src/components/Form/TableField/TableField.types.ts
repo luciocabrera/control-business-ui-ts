@@ -1,4 +1,4 @@
-import type { ColumnDef, FormFieldBaseType, ReactNode } from 'types';
+import type { FormFieldBaseType, ReactNode } from 'types';
 
 import type { Column } from 'react-data-grid';
 type TableFieldValueType = (Record<string, unknown> | string | number)[];
@@ -11,7 +11,9 @@ export type TableFieldProps<TData, DetailData> = Omit<
   accessor: string;
   normalize?: (value?: TableFieldValueType) => TableFieldValueType;
   data: TData[];
+  showHeader?: boolean;
   columns: Column<TData, unknown>[];
-  rowKeyGetter: Maybe<(row: TData) => number>;
+  rowKeyGetter?: Maybe<(row: TData) => number>;
   renderDetail?: (onAccept: (detail: DetailData) => void, onFinish: () => void, detail?: TData) => ReactNode;
+  getComparator: (sortColumn: string) => (a: TData, b: TData) => number;
 };
