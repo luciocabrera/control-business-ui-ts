@@ -16,9 +16,9 @@ export const TableActionsStyled = styled.div`
   a {
     background: transparent;
     cursor: pointer;
-    width: 24px;
+    width: 22px;
     border-radius: 50%;
-    height: 24px;
+    height: 22px;
     display: flex;
     align-items: center;
     align-content: center;

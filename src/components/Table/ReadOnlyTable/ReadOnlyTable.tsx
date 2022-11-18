@@ -11,9 +11,9 @@ import { FilterIcon } from 'icons';
 import { memo, useEffect, useMemo, useState } from 'react';
 // styles
 import { TableStyled } from './ReadOnlyTable.styled';
+import { TableActionsStyled } from 'styles';
 // types
 import type { SortColumn } from 'types';
-
 import type { ReadOnlyProps } from './ReadOnlyTable.types';
 
 // TODO Implement later
@@ -81,8 +81,10 @@ const Table = <TData extends Record<string, unknown>>({
     <>
       {showHeader && (
         <Header title={title} icon={icon}>
-          {actions}
-          {allowFiltering && <IconButton onClick={() => setShowFilterSettings(true)} icon={<FilterIcon />} />}
+          <TableActionsStyled>
+            {actions}
+            {allowFiltering && <IconButton onClick={() => setShowFilterSettings(true)} icon={<FilterIcon />} />}
+          </TableActionsStyled>
         </Header>
       )}
       <TableStyled height={height}>{gridElement}</TableStyled>

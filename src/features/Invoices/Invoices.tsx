@@ -130,7 +130,7 @@ const Invoices = () => {
         getComparator={getComparator}
         title={title}
         actions={
-          <Link to="new" state={{ backgroundLocation: location }} className="link-icon">
+          <Link to="new" state={{ backgroundLocation: location }}>
             <NewIcon />
           </Link>
         }
