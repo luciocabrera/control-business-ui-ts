@@ -15,6 +15,68 @@ const Customers = () => {
   const { data: customers, loading } = useFetchCustomers();
   const location = useLocation();
 
+  const meta = useMemo(
+    () => [
+      {
+        accessor: 'documentTypeName',
+        label: 'Id Type',
+      },
+      {
+        accessor: 'documentId',
+        label: 'ID',
+      },
+      {
+        accessor: 'titleName',
+        label: 'Title',
+      },
+      {
+        accessor: 'initials',
+        label: 'Initials',
+      },
+      {
+        accessor: 'firstName',
+        label: 'First Name',
+      },
+      {
+        accessor: 'lastName',
+        label: 'Last Name',
+      },
+      {
+        accessor: 'number',
+        label: 'Phone Number',
+      },
+      {
+        accessor: 'email',
+        label: 'Email',
+      },
+      {
+        accessor: 'line1',
+        label: 'Line 1',
+      },
+      {
+        accessor: 'line2',
+        label: 'Line 2',
+      },
+      {
+        accessor: 'country',
+        label: 'Country',
+      },
+      {
+        accessor: 'state',
+        label: 'State / Province',
+      },
+      {
+        accessor: 'city',
+        label: 'City / Town',
+      },
+      {
+        accessor: 'postalCode',
+        label: 'ZIP / Postal code',
+      },
+    ],
+    [],
+  );
+
   const columns: readonly Column<CustomerType>[] = useMemo<Column<CustomerType>[]>(
     () => [
       { key: 'documentTypeName', name: 'ID Type' },
@@ -70,6 +132,7 @@ const Customers = () => {
     <>
       {loading && <PageSpinner />}
       <ReadOnlyTable<CustomerType>
+        meta={meta}
         data={customers}
         columns={columns}
         height="calc(100vh - 120px)"

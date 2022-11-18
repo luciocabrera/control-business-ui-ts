@@ -53,6 +53,12 @@ export type FormRuleType = {
   message: string;
 };
 
+export type FormTableSettingsFieldType = {
+  accessor: string;
+  label: string;
+  type: string;
+};
+
 export type FormFieldBaseType = {
   accessor: string;
   label: string;

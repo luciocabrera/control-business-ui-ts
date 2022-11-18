@@ -5,6 +5,5 @@ export type HeaderProps = {
   title?: ReactNode;
   subtitle?: string;
   children?: ReactNode | ReactNode[];
-  isTable?: boolean;
   onClose?: (event: MouseEvent<HTMLButtonElement>) => void;
 };

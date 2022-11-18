@@ -1,2 +1,2 @@
-export { FormWrapper } from './FormWrapper.styled';
-export { TableActionsStyled } from './TableActions.styled';
+export * from './FormWrapper.styled';
+export * from './TableActions.styled';

@@ -1,7 +1,7 @@
 // components
 import FormField from '../FormField/FormField';
 // styles
-import { CustomFieldWrapper, FieldGroupStyled, FieldRowStyled } from './Form.styled';
+import { CustomFieldWrapper, FieldGroupStyled, FieldRowStyled } from '../Form/Form.styled';
 // types
 import type { FormFieldType, FormFieldGroupType, FormSimpleFieldType } from 'types';
 

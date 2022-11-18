@@ -367,6 +367,8 @@ const Customer = memo(() => {
         onFinish={() => navigate('/customers')}
         actions={<CustomerActions customer={customer} />}
         viewMode={false}
+        height="600px"
+        width="850px"
       />
     </FormDataContextProvider>
   );

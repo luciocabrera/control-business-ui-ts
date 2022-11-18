@@ -3,6 +3,8 @@ import type { FormFieldType, ReactElement, ModalProps, MouseEvent, ReactNode } f
 export type FormBaseProps<TDataType> = {
   initialFields: FormFieldType[];
   initialData?: TDataType;
+  width?: string;
+  height?: string;
   onAccept?: (data: TDataType) => void;
   onFinish: (event: MouseEvent<HTMLButtonElement>) => void;
 };

@@ -99,7 +99,6 @@ const ViewInvoice = memo(() => {
                         type: 'length',
                         value: 6,
                       },
-                      // { type: 'regex', value: `/^[fF][0-9]{5}/` },
                     ],
                   },
                   {
@@ -254,6 +253,8 @@ const ViewInvoice = memo(() => {
         actions={<InvoiceActions invoice={invoiceForm} />}
         onFinish={() => navigate('/invoices')}
         viewMode={false}
+        height="612px"
+        width="1120px"
       />
     </FormDataContextProvider>
   );

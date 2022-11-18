@@ -10,3 +10,5 @@ export { default as ViewIcon } from './ViewIcon/ViewIcon';
 export { default as ExcelIcon } from './ExcelIcon/ExcelIcon';
 export { default as PdfIcon } from './PdfIcon/PdfIcon';
 export { default as CsvIcon } from './CsvIcon/CsvIcon';
+
+export { default as FilterIcon } from './FilterIcon/FilterIcon';

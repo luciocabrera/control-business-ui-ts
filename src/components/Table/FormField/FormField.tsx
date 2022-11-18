@@ -1,5 +1,5 @@
 // components
-import { Select, TextInput } from 'components';
+import { Select } from 'components';
 // contexts
 import { useFormStatusStore, useStore } from 'contexts';
 // types
@@ -7,9 +7,10 @@ import type { FormFieldProps } from './FormField.types';
 import type { FieldBaseValueType } from 'types';
 // utilities
 import { getErrorField, validateField, memo } from 'utilities';
+import { TextInputStyled } from 'components/Form/TextInput/TextInput.styled';
 
 const FormField = memo(({ field, ...props }: FormFieldProps) => {
-  const { options, type, label, accessor, readonly, placeholder, normalize, rules, textAlign, required } = field;
+  const { options, type, label, accessor, readonly, placeholder, rules } = field;
 
   const [fieldValue, setStore] = useStore<FieldBaseValueType, any>((store) => store[field.accessor]);
 
@@ -18,6 +19,9 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
 
   const errorFields = submittedCounter > 0 ? validateField(field, fieldValue) : [];
   const errorField = getErrorField(field, errorFields);
+  const maxLength = rules
+    ?.filter((rule) => rule.type === 'maxLength')
+    ?.map((filteredRule) => filteredRule.value)[0] as number;
 
   switch (field.type) {
     case 'select':
@@ -27,14 +31,12 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
             const selected = event.target.options[event.target.selectedIndex]?.value;
             setStore({ [field.accessor]: selected });
-            // field.onSelect?.(selected);
           }}
           value={fieldValue}
           accessor={accessor}
           options={options}
           label={label}
           readonly={readonly}
-          required={required}
           type={type}
           {...props}
           {...errorField}
@@ -43,23 +45,17 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
     case 'text':
     default:
       return (
-        <TextInput
-          key={`field-input-${field.accessor}`}
+        <TextInputStyled
+          name={accessor}
+          value={fieldValue}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setStore({ [field.accessor]: event.target.value });
           }}
-          accessor={accessor}
-          readonly={readonly}
-          label={label}
-          required={required}
+          maxLength={maxLength}
           type={type}
-          normalize={normalize}
-          rules={rules}
+          id={accessor}
           placeholder={placeholder}
-          textAlign={textAlign}
-          {...props}
-          {...errorField}
-          value={fieldValue}
+          autoComplete="off"
         />
       );
   }

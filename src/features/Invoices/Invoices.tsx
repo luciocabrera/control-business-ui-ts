@@ -15,6 +15,36 @@ const Invoices = () => {
   const { data: invoices, loading } = useFetchInvoices();
   const location = useLocation();
 
+  const meta = useMemo(
+    () => [
+      {
+        accessor: 'invoice',
+        label: 'Invoice',
+      },
+      {
+        accessor: 'date',
+        label: 'Date',
+      },
+      {
+        accessor: 'customer',
+        label: 'Customer',
+      },
+      {
+        accessor: 'subtotal',
+        label: 'Subtotal',
+      },
+      {
+        accessor: 'taxes',
+        label: 'Taxes',
+      },
+      {
+        accessor: 'total',
+        label: 'Total',
+      },
+    ],
+    [],
+  );
+
   const columns: readonly Column<InvoiceType>[] = useMemo(
     () => [
       { key: 'invoice', name: 'Invoice', width: 150, minWidth: 100, maxWidth: 200 },
@@ -92,6 +122,7 @@ const Invoices = () => {
     <>
       {loading && <PageSpinner />}
       <ReadOnlyTable<InvoiceType>
+        meta={meta}
         data={invoices}
         columns={columns}
         height="calc(100vh - 120px)"

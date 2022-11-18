@@ -17,14 +17,13 @@ const FormFieldBase = memo(({ label, placeholder, required, viewMode, ...props }
         </legend>
         {props.children}
       </fieldset>
-      {!viewMode && (
-        <HelperTextContainer>
-          <ErrorContainer>{props.hasErrors ? props.errorMessage : msg}</ErrorContainer>
-          {!props.disabled && props.maxLength && props.value && ['text', 'password'].includes(props.type) && (
-            <span>{`${props.value?.toString().length} / ${props.maxLength}`}</span>
-          )}
-        </HelperTextContainer>
-      )}
+
+      <HelperTextContainer>
+        <ErrorContainer>{props.hasErrors ? props.errorMessage : msg}</ErrorContainer>
+        {!props.disabled && props.maxLength && props.value && ['text', 'password'].includes(props.type) && (
+          <span>{`${props.value?.toString().length} / ${props.maxLength}`}</span>
+        )}
+      </HelperTextContainer>
     </FieldSetStyled>
   );
 });

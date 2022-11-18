@@ -1,6 +1,5 @@
-import React, { ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { ButtonGroup, Tab, TabsStyled } from './Tabs.styles';
-const tabs = [{ key: 'tab1', title: 'tab 1', children: <>tab 1</> }];
 
 export type TabType = {
   key: string;

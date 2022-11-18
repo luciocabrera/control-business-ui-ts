@@ -1,5 +1,6 @@
 // components
 import { Form, PageSpinner, InvoiceActions, NumberDisplay, TableField, DateDisplay } from 'components';
+import { InvoiceAmountsField } from 'features/Invoice/components';
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // hooks
@@ -13,11 +14,10 @@ import type {
   Column,
   InvoicesDetails,
   DateParameterType,
-  FieldBaseValueType,
   InvoiceDetailForm,
 } from 'types';
 // utilities
-import { getDateAsString, getFormattedNumber, memo } from 'utilities';
+import { getDateAsString, memo } from 'utilities';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -119,60 +119,10 @@ const ViewInvoice = memo(() => {
             label: 'Amounts',
             fields: [
               {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'subtotal',
-                    label: 'Subtotal',
-                    type: 'text',
-                    textAlign: 'right',
-                    value: invoice?.subtotal,
-                    normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-                    readonly: true,
-                  },
-                ],
-              },
-              {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'taxes',
-                    label: 'Taxes',
-                    type: 'text',
-                    textAlign: 'right',
-                    value: invoice?.taxes,
-                    normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-                    readonly: true,
-                  },
-                ],
-              },
-              {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'taxesPercentage',
-                    label: 'Taxes',
-                    type: 'text',
-                    textAlign: 'right',
-                    value: `${invoice?.taxesPercentage}%`,
-                    normalize: (value: FieldBaseValueType) => `${value}%`,
-                    readonly: true,
-                  },
-                ],
-              },
-              {
-                type: 'row',
-                fields: [
-                  {
-                    accessor: 'total',
-                    label: 'Total',
-                    type: 'text',
-                    textAlign: 'right',
-                    value: invoice?.total,
-                    normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-                    readonly: true,
-                  },
-                ],
+                type: 'object',
+                label: 'Amounts',
+                accessor: '',
+                render: () => <InvoiceAmountsField />,
               },
             ],
           },
@@ -207,10 +157,6 @@ const ViewInvoice = memo(() => {
       invoice?.date,
       invoice?.invoice,
       invoice?.invoiceDetails,
-      invoice?.subtotal,
-      invoice?.taxes,
-      invoice?.taxesPercentage,
-      invoice?.total,
     ],
   );
 
@@ -225,6 +171,8 @@ const ViewInvoice = memo(() => {
         initialData={invoice}
         actions={<InvoiceActions invoice={invoice} />}
         onFinish={() => navigate('/invoices')}
+        height="612px"
+        width="1120px"
       />
     </FormDataContextProvider>
   );

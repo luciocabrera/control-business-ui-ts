@@ -1,4 +1,4 @@
-import type { AuditType, CustomerType, DateParameterType } from 'types';
+import type { AuditType, CustomerType } from 'types';
 
 type InvoiceCustomerType = Pick<CustomerType, 'documentId' | 'fullNameWithInitials' | 'documentTypeName' | 'titleName'>;
 

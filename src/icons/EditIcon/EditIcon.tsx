@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-const EditIcon = memo(({ color = 'rgb(157 105 34)' }: { color?: string }) => (
+const EditIcon = memo(() => (
   <svg
     stroke="rgb(157 105 34)"
     fill="rgb(157 105 34)"

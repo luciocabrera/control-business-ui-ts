@@ -1,29 +1,29 @@
 //assets
 import { detailsViewImg } from 'assets';
+// components
 import { Portal } from 'components';
 import ReadOnlyTable from 'components/Table/ReadOnlyTable/ReadOnlyTable';
+// contexts
 import { useStore } from 'contexts';
-import { memo, forwardRef, useMemo, useCallback, useState } from 'react';
-import type { Column } from 'types';
+// react
+import { memo, useMemo, useCallback, useState } from 'react';
+// styles
 import { FieldGroupStyled } from '../Form/Form.styled';
-
+// types
+import type { Column } from 'types';
 import type { TableFieldProps } from './TableField.types';
 
-const TableField = <TData extends Record<string, unknown>, DetailData>(
-  {
-    data,
-    normalize,
-    columns,
-    accessor,
-    label,
-    readonly,
-    showHeader = false,
-    renderDetail,
-    rowKeyGetter,
-    getComparator,
-  }: TableFieldProps<TData, DetailData>,
-  ref: React.ForwardedRef<unknown>,
-) => {
+const TableField = <TData extends Record<string, unknown>, DetailData>({
+  data,
+  normalize,
+  columns,
+  accessor,
+  label,
+  readonly,
+  renderDetail,
+  rowKeyGetter,
+  getComparator,
+}: TableFieldProps<TData, DetailData>) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [fieldValue, setStore] = useStore<TData, any>((store: TData) => store[accessor] as TData);
   const normalizedValue = (normalize?.(data) ?? fieldValue) as unknown as TData[];
@@ -91,4 +91,4 @@ const TableField = <TData extends Record<string, unknown>, DetailData>(
     </>
   );
 };
-export default memo(forwardRef(TableField)) as typeof TableField;
+export default memo(TableField) as typeof TableField;

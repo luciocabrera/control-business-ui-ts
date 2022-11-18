@@ -6,8 +6,8 @@ import type { HeaderProps } from './Header.types';
 
 const getIcon = (icon?: ReactElement | string) => (typeof icon === 'string' ? <img src={icon} alt="" /> : icon);
 
-const Header = memo(({ icon, title, subtitle, children, isTable, onClose }: HeaderProps) => (
-  <HeaderStyled isTable={isTable}>
+const Header = memo(({ icon, title, subtitle, children, onClose }: HeaderProps) => (
+  <HeaderStyled>
     {icon && getIcon(icon)}
     <div className="title-content">
       {title && <span>{title}</span>}

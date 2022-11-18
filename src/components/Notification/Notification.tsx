@@ -1,4 +1,4 @@
-import { Button, Header, Overlay, Portal } from 'components';
+import { Button, Overlay, Portal } from 'components';
 import { useDeleteNotification, useNotifications } from 'contexts';
 import { memo } from 'react';
 
