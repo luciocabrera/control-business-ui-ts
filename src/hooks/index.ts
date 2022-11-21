@@ -5,6 +5,8 @@ export * from './useWindowSize';
 export * from './useDocumentTypes';
 export * from './useTitles';
 export * from './useProducts';
+export * from './useDebounce';
+export * from './useElementSize';
 
 export { useLocation, useNavigate, useParams } from 'react-router-dom';
 

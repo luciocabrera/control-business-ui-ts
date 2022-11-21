@@ -28,6 +28,6 @@ export type {
   MouseEventHandler,
 } from 'react';
 
-export type { Column, SortColumn } from 'react-data-grid';
+export type { Column, SortColumn, RowHeightArgs } from 'react-data-grid';
 
 export type Maybe<T> = T | undefined | null;

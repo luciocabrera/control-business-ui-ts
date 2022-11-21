@@ -1,5 +1,5 @@
-import { ColumnDef } from '@tanstack/react-table';
-import type { ReactElement, ReactNode, Column, Maybe } from 'types';
+import { RowsChangeData } from 'react-data-grid';
+import type { ReactElement, ReactNode, Column, Maybe, RowHeightArgs } from 'types';
 
 export type MetaType = {
   accessor: string;
@@ -18,9 +18,11 @@ export type ReadOnlyProps<TData> = {
   height?: string;
   data: TData[];
   title?: ReactNode;
-  columns: readonly Column<TData, unknown>[] | ColumnDef<TData, unknown>[];
+  columns: readonly Column<TData, unknown>[];
   meta?: MetaType[];
   icon?: ReactElement | string;
+  rowHeight?: Maybe<number | ((args: RowHeightArgs<TData>) => number)>;
+  onRowsChange?: Maybe<(rows: TData[], data: RowsChangeData<TData, unknown>, setRows: (rows: TData[]) => void) => void>;
   fetchMoreOnBottomReached?: (target: HTMLDivElement) => void;
   rowKeyGetter?: Maybe<(row: TData) => number>;
   getComparator: (sortColumn: string) => (a: TData, b: TData) => number;

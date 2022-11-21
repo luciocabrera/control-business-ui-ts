@@ -6,7 +6,7 @@ import { useFetchInvoices, useLocation, useCallback, useMemo } from 'hooks';
 // icons
 import { NewIcon } from 'icons';
 // types
-import type { InvoiceType, Column } from 'types';
+import type { Column, InvoiceType } from 'types';
 
 type Comparator = (a: InvoiceType, b: InvoiceType) => number;
 const title = 'Invoices';
@@ -44,6 +44,70 @@ const Invoices = () => {
     ],
     [],
   );
+
+  // const columns: ColumnDef<InvoiceType>[] = useMemo(
+  //   () => [
+  //     { accessorKey: 'invoice', name: 'Invoice', width: 150, minWidth: 100, maxWidth: 200 },
+  //     {
+  //       accessorKey: 'date',
+  //       header: 'Date',
+
+  //       width: 150,
+  //       minWidth: 100,
+  //       maxWidth: 200,
+  //       cell: ({
+  //         row: {
+  //           original: { date },
+  //         },
+  //       }) => <DateDisplay date={date} />,
+  //     },
+  //     {
+  //       accessorKey: 'customer',
+  //       header: 'Customer',
+  //       minWidth: 100,
+  //       cell: ({
+  //         row: {
+  //           original: {
+  //             customer: { fullNameWithInitials },
+  //           },
+  //         },
+  //       }) => <>{fullNameWithInitials}</>,
+  //     },
+  //     {
+  //       accessorKey: 'subtotal',
+  //       header: 'Subtotal',
+  //       cell: ({
+  //         row: {
+  //           original: { subtotal },
+  //         },
+  //       }) => <NumberDisplay value={subtotal} output={'currency'} />,
+  //     },
+  //     {
+  //       accessorKey: 'taxes',
+  //       header: 'Taxes',
+  //       cell: ({
+  //         row: {
+  //           original: { taxes },
+  //         },
+  //       }) => <NumberDisplay value={taxes} output={'currency'} />,
+  //     },
+  //     {
+  //       accessorKey: 'total',
+  //       header: 'Total',
+  //       cell: ({
+  //         row: {
+  //           original: { total },
+  //         },
+  //       }) => <NumberDisplay value={total} output={'currency'} />,
+  //     },
+  //     {
+  //       accessorKey: 'actions',
+  //       header: 'Actions',
+  //       cell: ({ row: { original } }) => <TableActions original={original} />,
+  //     },
+  //   ],
+  //   [],
+  // );
 
   const columns: readonly Column<InvoiceType>[] = useMemo(
     () => [

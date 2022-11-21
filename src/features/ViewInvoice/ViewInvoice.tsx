@@ -15,9 +15,10 @@ import type {
   InvoicesDetails,
   DateParameterType,
   InvoiceDetailForm,
+  FieldBaseValueType,
 } from 'types';
 // utilities
-import { getDateAsString, memo } from 'utilities';
+import { getDateAsString, getFormattedNumber, memo } from 'utilities';
 
 const ViewInvoice = memo(() => {
   const { invoiceId } = useParams();
@@ -126,6 +127,29 @@ const ViewInvoice = memo(() => {
               },
             ],
           },
+          {
+            type: 'rule',
+            accessor: 'taxesPercentage',
+            value: invoice?.taxesPercentage,
+          },
+          {
+            accessor: 'subtotal',
+            type: 'rule',
+            value: invoice?.subtotal,
+            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+          },
+          {
+            accessor: 'taxes',
+            type: 'rule',
+            value: invoice?.taxes,
+            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+          },
+          {
+            accessor: 'total',
+            type: 'rule',
+            value: invoice?.total,
+            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+          },
         ],
       },
       {
@@ -157,6 +181,10 @@ const ViewInvoice = memo(() => {
       invoice?.date,
       invoice?.invoice,
       invoice?.invoiceDetails,
+      invoice?.subtotal,
+      invoice?.taxes,
+      invoice?.taxesPercentage,
+      invoice?.total,
     ],
   );
 

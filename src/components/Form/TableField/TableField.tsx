@@ -1,8 +1,7 @@
 //assets
 import { detailsViewImg } from 'assets';
 // components
-import { Portal } from 'components';
-import ReadOnlyTable from 'components/Table/ReadOnlyTable/ReadOnlyTable';
+import { Portal, ReadOnlyTable } from 'components';
 // contexts
 import { useStore } from 'contexts';
 // react
