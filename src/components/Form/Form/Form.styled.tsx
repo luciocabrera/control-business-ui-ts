@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 export const FormStyled = styled.form`
+  container-type: inline-size;
+  container-name: form-container;
   border-radius: 12px;
   background: var(--form-bg-color);
   box-shadow: 6px 6px 22px 1px rgba(0, 0, 0, 0.4);
   z-index: 10;
-  position: absolute;
+  position: relative;
   ${({ width }: { width?: string }) => (width ? `width: ${width}` : ``)};
   ${({ height }: { width?: string; height?: string }) => (height ? `height: ${height}` : ``)};
   max-width: 95%;
@@ -15,6 +17,10 @@ export const FormStyled = styled.form`
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
+
+  fieldset {
+    min-width: 300px;
+  }
   header {
     min-height: 40px;
     max-height: 40px;
@@ -51,6 +57,7 @@ export const FormStyled = styled.form`
     border-bottom-right-radius: 12px;
   }
 `;
+
 export const FieldRowStyled = styled.fieldset`
   background: var(--form-bg-color);
   padding: 0;
@@ -63,7 +70,7 @@ export const FieldRowStyled = styled.fieldset`
 `;
 
 export const FieldGroupStyled = styled.fieldset`
-  background: var(--form-bg-color);
+  background:var(--form-bg-color);
   padding: 0.5rem;
   border-radius: var(--border-radius);
   border-color: var(--border-color);
@@ -79,6 +86,7 @@ export const FieldGroupStyled = styled.fieldset`
 `;
 
 export const CustomFieldWrapper = styled.div`
+  container-type: inline-size;
   background: var(--form-bg-color);
   padding: 0;
   border: none;

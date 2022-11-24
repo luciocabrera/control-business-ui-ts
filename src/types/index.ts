@@ -30,4 +30,6 @@ export type {
 
 export type { Column, SortColumn, RowHeightArgs } from 'react-data-grid';
 
+export type { ColumnDef } from '@tanstack/react-table';
+
 export type Maybe<T> = T | undefined | null;

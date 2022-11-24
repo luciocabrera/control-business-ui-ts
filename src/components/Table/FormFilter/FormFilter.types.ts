@@ -1,5 +1,5 @@
 import type { ReactElement, MouseEvent } from 'types';
-import type { FieldFilter, MetaType } from '../ReadOnlyTable/ReadOnlyTable.types';
+import type { FieldFilter, MetaType } from '../ReadOnlyTable_/ReadOnlyTable.types';
 
 export type FormBaseProps = {
   initialFields: MetaType[];

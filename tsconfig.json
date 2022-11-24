@@ -15,9 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "baseUrl": "src"
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true
   },
   "include": ["src"]
 }

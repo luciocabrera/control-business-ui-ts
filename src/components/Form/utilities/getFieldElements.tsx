@@ -46,7 +46,7 @@ export const getFieldElements = (
 
         if (field?.render)
           return (
-            <CustomFieldWrapper width={fieldWidth} key={fieldKey}>
+            <CustomFieldWrapper id="custom-field-wrapper" width={fieldWidth} key={fieldKey}>
               {field?.render()}
             </CustomFieldWrapper>
           );

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const TableStyled = styled.div`
+  width: ${({ width }: { height?: string; width?: string; useRadius?: boolean }) => (width ? width : 'inherit')};
+
   [role='grid'] {
     height: ${({ height }: { height?: string; useRadius?: boolean }) => (height ? height : 'inherit')};
   }
@@ -10,13 +12,13 @@ export const TableStyled = styled.div`
   // This query will take effect for any screen smaller than 760px
   // and also iPads specifically.
   // */
-  //   @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-  //     /* Force table to not be like tables anymore */
+  // @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  //   //     /* Force table to not be like tables anymore */
 
-  //        [role='grid'],
-  //        [role='row'],
-  //        [role='columnheader'],
-  //        [role='gridcell'] {
+  //   [role='grid'],
+  //   [role='row'],
+  //   [role='columnheader'],
+  //   [role='gridcell'] {
   //     display: block;
   //   }
 
@@ -36,6 +38,7 @@ export const TableStyled = styled.div`
   //     border: none;
   //     border-bottom: 1px solid #eee;
   //     position: relative;
+  //     grid-column-start: auto !important;
   //     // padding-left: 50%;
   //   }
 

@@ -4,22 +4,20 @@ import { Link } from 'components';
 import { useLocation } from 'hooks';
 // icons
 import { ViewIcon } from 'icons';
-// types
-import type { CustomerType } from 'types';
 // react
 import { memo } from 'react';
 // styles
 import { TableActionsStyled } from 'styles';
 
 type TableActionsProps = {
-  original: CustomerType;
+  customerId: number;
 };
 
-const TableActions = memo(({ original }: TableActionsProps) => {
+const TableActions = memo(({ customerId }: TableActionsProps) => {
   const location = useLocation();
   return (
     <TableActionsStyled>
-      <Link to={`${original.customerId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
+      <Link to={`${customerId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
         <ViewIcon />
       </Link>
     </TableActionsStyled>

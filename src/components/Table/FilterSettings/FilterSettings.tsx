@@ -11,9 +11,9 @@ import { DeleteIcon, EditIcon, NewIcon } from 'icons';
 import { FormWrapper, TableActionsStyled } from 'styles';
 import { FormStyled } from 'components/Form/Form/Form.styled';
 // types
-import type { Column } from 'types';
+import type { ColumnDef } from 'types';
 import type { FilterSettingsProps, FieldsFiltersSettings } from './FilterSettings.types';
-import type { FieldFilter } from '../ReadOnlyTable/ReadOnlyTable.types';
+import type { FieldFilter } from '../ReadOnlyTable_/ReadOnlyTable.types';
 
 const title = 'Filters';
 
@@ -26,19 +26,19 @@ const FilterSettings = ({ onFinish, meta }: FilterSettingsProps) => {
   );
 
   console.log('filters', filters);
-  const columnsDetails = useMemo<Column<FieldFilter>[]>(
+  const columnsDetails = useMemo<ColumnDef<FieldFilter>[]>(
     () => [
       {
-        key: 'label',
-        name: 'Field',
+        accessorKey: 'label',
+        header: 'Field',
       },
       {
-        key: 'condition',
-        name: 'Condition',
+        accessorKey: 'condition',
+        header: 'Condition',
       },
       {
-        key: 'value',
-        name: 'Value',
+        accessorKey: 'value',
+        header: 'Value',
       },
     ],
     [],
@@ -73,35 +73,24 @@ const FilterSettings = ({ onFinish, meta }: FilterSettingsProps) => {
     [filters, setFilters],
   );
 
-  const columnsWithActions = useMemo<Column<FieldFilter>[]>(
+  const columnsWithActions = useMemo<ColumnDef<FieldFilter>[]>(
     () => [
       ...columnsDetails,
       {
-        key: 'actions',
-        name: 'Actions',
-        sortable: false,
+        accessorKey: 'actions',
+        header: 'Actions',
+        sort: false,
         width: 150,
-        formatter: ({ row }) => (
+        cell: ({ row: { original } }) => (
           <TableActionsStyled>
-            <IconButton icon={<EditIcon />} onClick={() => onEditDetail(row)} />
-            <IconButton icon={<DeleteIcon />} onClick={() => onRemoveDetail(row)} />
+            <IconButton icon={<EditIcon />} onClick={() => onEditDetail(original)} />
+            <IconButton icon={<DeleteIcon />} onClick={() => onRemoveDetail(original)} />
           </TableActionsStyled>
         ),
       },
     ],
     [columnsDetails, onEditDetail, onRemoveDetail],
   );
-
-  type Comparator = (a: FieldFilter, b: FieldFilter) => number;
-  const getComparator = useCallback((sortColumn: string): Comparator => {
-    switch (sortColumn) {
-      case 'label':
-      case 'condition':
-        return (a, b) => a[sortColumn].localeCompare(b[sortColumn]);
-      default:
-        return () => 0;
-    }
-  }, []);
 
   return (
     <Portal>
@@ -113,7 +102,6 @@ const FilterSettings = ({ onFinish, meta }: FilterSettingsProps) => {
             columns={columnsWithActions}
             allowFiltering={false}
             height="33vh"
-            getComparator={getComparator}
             title={title}
             actions={<IconButton icon={<NewIcon />} onClick={() => setShowDetailForm(true)} />}
           />

@@ -4,14 +4,14 @@ import { InvoiceAmountsField } from 'features/Invoice/components';
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // hooks
-import { useParams, useNavigate, useFetchInvoice, useCallback, useMemo } from 'hooks';
+import { useParams, useNavigate, useFetchInvoice, useMemo } from 'hooks';
 // icons
 import { InvoiceIcon } from 'icons';
 // types
 import type {
   InvoiceFormType,
   FormFieldType,
-  Column,
+  ColumnDef,
   InvoicesDetails,
   DateParameterType,
   InvoiceDetailForm,
@@ -26,55 +26,55 @@ const ViewInvoice = memo(() => {
 
   const { data: invoice, loading: isLoadingInvoice } = useFetchInvoice(invoiceId);
 
-  const columns = useMemo<Column<InvoicesDetails>[]>(
+  const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       {
-        key: 'productNameWithCode',
-        name: 'Product',
+        accessorKey: 'productNameWithCode',
+        header: 'Product',
       },
       {
-        key: 'date',
-        name: 'Date',
-        formatter: ({ row: { date } }) => <DateDisplay date={date} />,
+        accessorKey: 'date',
+        header: 'Date',
+        cell: ({
+          row: {
+            original: { date },
+          },
+        }) => <DateDisplay date={date} />,
       },
       {
-        key: 'description',
-        name: 'Description',
+        accessorKey: 'description',
+        header: 'Description',
       },
       {
-        key: 'quantity',
-        name: 'Quantity',
-        formatter: ({ row: { quantity } }) => <NumberDisplay value={quantity} output={'number'} />,
+        accessorKey: 'quantity',
+        header: 'Quantity',
+        cell: ({
+          row: {
+            original: { quantity },
+          },
+        }) => <NumberDisplay value={quantity} output={'number'} />,
       },
       {
-        key: 'priceUnit',
-        name: 'Price Unit',
-        formatter: ({ row: { priceUnit } }) => <NumberDisplay value={priceUnit} output={'currency'} />,
+        accessorKey: 'priceUnit',
+        header: 'Price Unit',
+        cell: ({
+          row: {
+            original: { priceUnit },
+          },
+        }) => <NumberDisplay value={priceUnit} output={'currency'} />,
       },
       {
-        key: 'priceQuantity',
-        name: 'Price Quantity',
-        formatter: ({ row: { priceQuantity } }) => <NumberDisplay value={priceQuantity} output={'currency'} />,
+        accessorKey: 'priceQuantity',
+        header: 'Price Quantity',
+        cell: ({
+          row: {
+            original: { priceQuantity },
+          },
+        }) => <NumberDisplay value={priceQuantity} output={'currency'} />,
       },
     ],
     [],
   );
-  type Comparator = (a: InvoicesDetails, b: InvoicesDetails) => number;
-  const getComparator = useCallback((sortColumn: string): Comparator => {
-    switch (sortColumn) {
-      case 'productNameWithCode':
-      case 'date':
-      case 'description':
-        return (a, b) => a[sortColumn].localeCompare(b[sortColumn]);
-      case 'quantity':
-      case 'priceUnit':
-      case 'priceQuantity':
-        return (a, b) => a[sortColumn] - b[sortColumn];
-
-      default:
-        throw new Error(`unsupported sortColumn: "${sortColumn}"`);
-    }
-  }, []);
 
   const fields: FormFieldType[] = useMemo(
     () => [
@@ -165,7 +165,6 @@ const ViewInvoice = memo(() => {
                 label="Details"
                 columns={columns}
                 data={invoice?.invoiceDetails as InvoicesDetails[]}
-                getComparator={getComparator}
                 showHeader={false}
               />
             ),
@@ -176,7 +175,6 @@ const ViewInvoice = memo(() => {
     ],
     [
       columns,
-      getComparator,
       invoice?.customer?.fullNameWithInitials,
       invoice?.date,
       invoice?.invoice,

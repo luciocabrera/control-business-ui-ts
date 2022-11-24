@@ -4,25 +4,23 @@ import { Link } from 'components';
 import { useLocation } from 'hooks';
 // icons
 import { CopyIcon, ViewIcon } from 'icons';
-// types
-import type { InvoiceType } from 'types';
 // react
 import { memo } from 'react';
 // styles
 import { TableActionsStyled } from 'styles';
 
 type TableActionsProps = {
-  original: InvoiceType;
+  invoiceId: number;
 };
 
-const TableActions = memo(({ original }: TableActionsProps) => {
+const TableActions = memo(({ invoiceId }: TableActionsProps) => {
   const location = useLocation();
   return (
     <TableActionsStyled>
-      <Link to={`${original.invoiceId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
+      <Link to={`${invoiceId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
         <ViewIcon />
       </Link>
-      <Link to={`${original.invoiceId?.toString() ?? ''}/copy`} state={{ backgroundLocation: location }}>
+      <Link to={`${invoiceId?.toString() ?? ''}/copy`} state={{ backgroundLocation: location }}>
         <CopyIcon />
       </Link>
     </TableActionsStyled>

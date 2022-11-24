@@ -1,5 +1,4 @@
-import { ColumnDef } from '@tanstack/react-table';
-import type { ReactElement, ReactNode, Column, Maybe } from 'types';
+import type { ReactElement, ReactNode, ColumnDef } from 'types';
 
 export type MetaType = {
   accessor: string;
@@ -18,10 +17,7 @@ export type ReadOnlyProps<TData> = {
   height?: string;
   data: TData[];
   title?: ReactNode;
-  columns: readonly Column<TData, unknown>[] | ColumnDef<TData, unknown>[];
-  meta?: MetaType[];
+  columns: ColumnDef<TData, unknown>[];
   icon?: ReactElement | string;
   fetchMoreOnBottomReached?: (target: HTMLDivElement) => void;
-  rowKeyGetter?: Maybe<(row: TData) => number>;
-  getComparator: (sortColumn: string) => (a: TData, b: TData) => number;
 };

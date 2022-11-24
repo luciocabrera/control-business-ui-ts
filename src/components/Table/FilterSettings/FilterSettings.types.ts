@@ -1,4 +1,4 @@
-import type { FieldFilter, MetaType } from '../ReadOnlyTable/ReadOnlyTable.types';
+import type { FieldFilter, MetaType } from '../ReadOnlyTable_/ReadOnlyTable.types';
 
 export type FieldsFiltersSettings = {
   filters: FieldFilter[];

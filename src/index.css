@@ -7,10 +7,80 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   --border-radius: 10px;
+  container-type: inline-size;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+:root {
+  --main-bg-color: brown;
+  /* ***********Colors********** */
+  --er-blue: #5197d6;
+  --er-accent: #fa5400;
+  --er-success: #48bd1f;
+  --er-error: #fe0000;
+  --er-warn: rgb(238, 180, 80);
+  --er-teal: #007a87;
+  /* ***********Hover State Colors********** */
+  --er-hover-blue: #7cb1e0;
+  /* *******grey-scale******* */
+  --er-white: #ffffff;
+  --er-black: #111;
+  --er-grey-1: #f7f7f7;
+  --er-grey-2: #ececec;
+  --main-bg-color: brown;
+  /* ***********Colors********** */
+  --er-blue: #5197d6;
+  --er-accent: #fa5400;
+  --er-success: #48bd1f;
+  --er-error: #fe0000;
+  --er-warn: rgb(238, 180, 80);
+  --er-teal: #007a87;
+  /* ***********Hover State Colors********** */
+  --er-hover-blue: #7cb1e0;
+  /* *******grey-scale******* */
+  --er-white: #ffffff;
+  --er-black: #111;
+  --er-grey-1: #f7f7f7;
+  --er-grey-2: #ececec;
+  --er-grey-3: #e5e5e5;
+  --er-grey-4: #c7c7c7;
+  --er-grey-5: #b2b2b4;
+  --er-grey-6: #8b8c8c;
+  --er-grey-7: #6d6d6d;
+  /* *******z-index********* */
+  --z-index-layer-1: 1;
+  --z-index-layer-2: 2;
+  --z-index-layer-3: 3;
+  --z-index-layer-4: 4;
+  --z-index-layer-5: 5;
+  --z-index-layer-6: 6;
+  --z-index-layer-7: 7;
+  --z-index-layer-8: 8;
+  --z-index-layer-9: 9;
+  --z-index-layer-10: 10;
+  --highest-order-z-index: 2000;
+  --max-z-index: 20001;
+  --er-grey-3: #e5e5e5;
+  --er-grey-4: #c7c7c7;
+  --er-grey-5: #b2b2b4;
+  --er-grey-6: #8b8c8c;
+  --er-grey-7: #6d6d6d;
+  /* *******z-index********* */
+  --z-index-layer-1: 1;
+  --z-index-layer-2: 2;
+  --z-index-layer-3: 3;
+  --z-index-layer-4: 4;
+  --z-index-layer-5: 5;
+  --z-index-layer-6: 6;
+  --z-index-layer-7: 7;
+  --z-index-layer-8: 8;
+  --z-index-layer-9: 9;
+  --z-index-layer-10: 10;
+  --highest-order-z-index: 2000;
+  --max-z-index: 20001;
 }
 
 :root {
@@ -238,6 +308,7 @@ button.close {
   min-width: 25%;
   border-radius: 12px;
   border-radius: 12px;
+  min-width: 300px;
 }
 .modal-content {
   position: relative;
@@ -363,4 +434,47 @@ div [role='columnheader'] {
 .grid-row:hover {
   background: var(--rdg-row-hover-background-color);
   cursor: pointer;
+}
+
+@container form-container (max-width: 700px) {
+  main {
+    padding: 1rem 1rem !important;
+  }
+  fieldset {
+    width: 100% !important;
+  }
+}
+
+@container form-container (min-width: 701px) and ( max-width: 1200px) {
+  main {
+    padding: 2rem 2rem !important;
+  }
+}
+@container (max-width: 700px) {
+  #table-styled {
+    width: 100%;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    border-bottom: 2px solid #333;
+  }
+  tfoot {
+    display: none;
+  }
+
+  tbody tr {
+    border: 1px solid #000;
+    padding: 0.25em;
+  }
 }

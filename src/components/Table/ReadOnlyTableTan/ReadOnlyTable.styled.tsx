@@ -3,9 +3,7 @@ import styled from 'styled-components';
 export const TableStyled = styled.div`
   border: 1px solid lightgray;
 
-  // max-width: 100%; // 900px !important;
   height: ${({ height }: { height?: string; useRadius?: boolean }) => (height ? height : 'inherit')};
-  // height: 500px;
   max-width: calc(100vw - 68px) !important;
   overflow: auto;
   table {
@@ -13,24 +11,12 @@ export const TableStyled = styled.div`
     border-spacing: 0;
     font-family: arial, sans-serif;
     table-layout: fixed;
-    // max-width: calc(100vw - 68px);
     font-family: '72override', var(--font-family);
     font-size: var(--font-size);
     font-weight: 300;
-    // width: calc(100vw - 68px);
-
-    // width: 100%;
   }
-  // tr {
-  //   height: 28px;
-  // }
 
-  // thead {
-  //   background: lightgray;
-  //   margin: 0;
-  //   position: sticky;
-  //   top: 0;
-  // }
+
   thead {
     background: #03542f;
     color: white;
@@ -44,8 +30,9 @@ export const TableStyled = styled.div`
     th {
       border-bottom: 1px solid lightgray;
       border-right: 1px solid lightgray;
-      padding: 2px 4px;
+       padding: 2px 6px;
       position: relative;
+          height: 30px;
     }
   }
 
@@ -60,6 +47,26 @@ export const TableStyled = styled.div`
     padding: 6px;
   }
 
+      tbody {
+      td {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+      }
+      tr {
+        border-bottom: 1px solid #b2b2b47a;
+        :nth-of-type(odd) {
+  background: #a2bd6b1f;
+}
+        :hover {
+          color: var(--er-teal);
+          background: var(--er-grey-3) !important;
+          cursor: pointer;
+        }
+      }
+    }
+  }
   .resizer {
     position: absolute;
     right: 0;
@@ -87,32 +94,66 @@ export const TableStyled = styled.div`
     }
   }
 
-  @media screen and (max-width: 40em) {
-    /*
-    Force table elements to not behave like tables anymore
-    Hide table headers (but not display: none;, for accessibility)
-  */
+//   @media screen and (max-width: 40em) {
+//     /*
+//     Force table elements to not behave like tables anymore
+//     Hide table headers (but not display: none;, for accessibility)
+//   */
+// width:100%;
 
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-      display: block;
-    }
-    thead tr {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-      border-bottom: 2px solid #333;
-    }
+//     table,
+//     thead,
+//     tbody,
+//     th,
+//     td,
+//     tr {
+//       display: block;
+//     }
+//     thead tr {
+//       position: absolute;
+//       top: -9999px;
+//       left: -9999px;
+//       border-bottom: 2px solid #333;
+//     }
+//     tfoot{
+// display:none;
+//     }
 
-    tbody tr {
-      border: 1px solid #000;
-      padding: 0.25em;
-    }
-  }
+//     tbody tr {
+//       border: 1px solid #000;
+//       padding: 0.25em;
+//     }
+//   }
+//   @container (max-width: 700px) {
+//     /*
+//     Force table elements to not behave like tables anymore
+//     Hide table headers (but not display: none;, for accessibility)
+//   */
+// width:100%;
+
+//     table,
+//     thead,
+//     tbody,
+//     th,
+//     td,
+//     tr {
+//       display: block;
+//     }
+//     thead tr {
+//       position: absolute;
+//       top: -9999px;
+//       left: -9999px;
+//       border-bottom: 2px solid #333;
+//     }
+//     tfoot{
+// display:none;
+//     }
+
+//     tbody tr {
+//       border: 1px solid #000;
+//       padding: 0.25em;
+//     }
+//   }
 `;
 
 // td.pivoted {

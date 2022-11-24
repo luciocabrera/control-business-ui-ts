@@ -104,6 +104,7 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
         }
         onFinish={onFinish}
         viewMode={false}
+        width="650px"
       />
     </FormDataContextProvider>
   );

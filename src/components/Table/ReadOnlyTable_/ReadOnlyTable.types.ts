@@ -16,9 +16,11 @@ export type ReadOnlyProps<TData> = {
   allowSorting?: boolean;
   useRadius?: boolean;
   height?: string;
+  width?: string;
   data: TData[];
   title?: ReactNode;
   columns: readonly Column<TData, unknown>[];
+  columnsConcise?: readonly Column<TData, unknown>[];
   meta?: MetaType[];
   icon?: ReactElement | string;
   rowHeight?: Maybe<number | ((args: RowHeightArgs<TData>) => number)>;
