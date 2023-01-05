@@ -29,7 +29,7 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
 
   const onConfirmDelete = useCallback(async () => {
     try {
-      const res = await deleteCustomer(customer?.customerId);
+      const res = await deleteCustomer(customer?.peopleId);
 
       if ([200, 204].includes(res?.status || 0)) {
         addToast?.(
@@ -52,14 +52,14 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
       addToast?.('error', 'Error Deleting Customer', (err as { message: string }).message);
     }
   }, [
-    customer?.customerId,
+    deleteCustomer,
+    customer?.peopleId,
     customer?.firstName,
     customer?.lastName,
-    deleteCustomer,
+    refreshCustomers,
     location.pathname,
     navigate,
     addToast,
-    refreshCustomers,
   ]);
 
   const onDelete = useCallback(() => {

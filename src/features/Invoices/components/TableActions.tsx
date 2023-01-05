@@ -17,10 +17,18 @@ const TableActions = memo(({ invoiceId }: TableActionsProps) => {
   const location = useLocation();
   return (
     <TableActionsStyled>
-      <Link to={`${invoiceId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
+      <Link
+        to={`${invoiceId?.toString() ?? ''}`}
+        aria-label={`View invoice ${invoiceId?.toString() ?? ''}`}
+        state={{ backgroundLocation: location }}
+      >
         <ViewIcon />
       </Link>
-      <Link to={`${invoiceId?.toString() ?? ''}/copy`} state={{ backgroundLocation: location }}>
+      <Link
+        to={`${invoiceId?.toString() ?? ''}/copy`}
+        aria-label={`Copy invoice ${invoiceId?.toString() ?? ''}`}
+        state={{ backgroundLocation: location }}
+      >
         <CopyIcon />
       </Link>
     </TableActionsStyled>

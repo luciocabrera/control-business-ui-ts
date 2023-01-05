@@ -17,7 +17,7 @@ import {
 // icons
 import { InvoiceIcon } from 'icons';
 // react
-import { memo, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 // types
 import type {
   InvoiceFormType,
@@ -32,15 +32,15 @@ import type {
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
 
-const ViewInvoice = memo(() => {
+const Invoice = () => {
   const { invoiceId, action } = useParams();
   const taxesPercentage = useFetchInvoiceRates();
 
   const isCreating = invoiceId === 'new' || !invoiceId;
   const isCopying = action === 'copy' && !isCreating;
 
-  const { data: customers, loading: isLoadingCustomers } = useFetchCustomers();
-  const { data: invoice, loading: isLoadingInvoice } = useFetchInvoice(!isCreating ? invoiceId : undefined);
+  const { data: customers, isLoading: isLoadingCustomers } = useFetchCustomers();
+  const { data: invoice, isLoading: isLoadingInvoice } = useFetchInvoice(!isCreating ? invoiceId : undefined);
 
   const invoiceForm: InvoiceFormType = useMemo(() => {
     if (isCopying && invoice) return { ...invoice, invoiceId: undefined, invoice: '' };
@@ -49,8 +49,7 @@ const ViewInvoice = memo(() => {
       invoice: '',
       date: undefined,
       customerId: 0,
-      customer: { documentId: '', fullNameWithInitials: '', documentTypeName: '', titleName: '' },
-      invoiceDetails: [],
+      details: [],
       subtotal: 0,
       total: 0,
       taxes: 0,
@@ -70,7 +69,7 @@ const ViewInvoice = memo(() => {
     () =>
       customers?.map((customer) => ({
         label: `${customer.fullNameWithInitials}`,
-        value: customer.customerId,
+        value: customer.peopleId,
       })),
     [customers],
   );
@@ -162,8 +161,8 @@ const ViewInvoice = memo(() => {
         type: 'row',
         fields: [
           {
-            accessor: 'invoiceDetails',
-            label: 'invoiceDetails',
+            accessor: 'details',
+            label: 'details',
             type: 'table',
             render: () => <InvoiceDetailsField />,
             readonly: true,
@@ -197,20 +196,25 @@ const ViewInvoice = memo(() => {
   const onAccept = useCallback(
     async (payload: InvoiceFormType) => {
       const calculatedInvoiceId = isCreating || isCopying ? undefined : parseInt(invoiceId, 10);
-      const { customerId, date, invoiceDetails, ...rest } = payload;
+      const { customerId, date, details, ...rest } = payload;
 
       const body: InvoiceCreateType = {
         invoiceId: calculatedInvoiceId,
         date: date ? new Date(date) : new Date(),
         customerId: typeof customerId === 'string' ? parseInt(customerId, 10) : customerId,
-        invoiceDetails: sanitizeInvoiceDetails(invoiceDetails),
+        details: sanitizeInvoiceDetails(details),
         ...rest,
       };
 
+      if (isCreating || isCopying) {
+        body.createdBy = 1;
+      } else {
+        body.updatedBy = 1;
+      }
       try {
         const res = await postInvoice(body);
         if ([200, 201].includes(res?.status || 0)) {
-          refreshInvoices();
+          await refreshInvoices();
           refreshInvoice(calculatedInvoiceId);
           addToast?.(
             'success',
@@ -238,6 +242,8 @@ const ViewInvoice = memo(() => {
     ],
   );
 
+  const onFinish = useCallback(() => navigate('/invoices'), [navigate]);
+
   if (((isLoadingInvoice || !fields) && !isCreating) || isLoadingCustomers) return <PageSpinner />;
 
   const title = `${isCreating || isCopying ? 'New' : 'Edit'} Invoice`;
@@ -251,12 +257,12 @@ const ViewInvoice = memo(() => {
         initialData={invoiceForm}
         onAccept={onAccept}
         actions={<InvoiceActions invoice={invoiceForm} />}
-        onFinish={() => navigate('/invoices')}
+        onFinish={onFinish}
         viewMode={false}
         height="612px"
         width="1120px"
       />
     </FormDataContextProvider>
   );
-});
-export default ViewInvoice;
+};
+export default Invoice;

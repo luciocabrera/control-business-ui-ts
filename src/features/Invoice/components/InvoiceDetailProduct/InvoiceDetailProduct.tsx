@@ -41,7 +41,6 @@ const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductP
   const productField = useMemo(
     () => ({
       accessor: 'productId',
-
       label: 'Product',
       type: 'select',
       required: true,

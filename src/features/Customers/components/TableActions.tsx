@@ -17,7 +17,11 @@ const TableActions = memo(({ customerId }: TableActionsProps) => {
   const location = useLocation();
   return (
     <TableActionsStyled>
-      <Link to={`${customerId?.toString() ?? ''}`} state={{ backgroundLocation: location }}>
+      <Link
+        to={`${customerId?.toString() ?? ''}`}
+        aria-label={`View customer ${customerId?.toString() ?? ''}`}
+        state={{ backgroundLocation: location }}
+      >
         <ViewIcon />
       </Link>
     </TableActionsStyled>

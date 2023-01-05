@@ -13,11 +13,12 @@ import { FormStyled } from 'components/Form/Form/Form.styled';
 // types
 import type { ColumnDef } from 'types';
 import type { FilterSettingsProps, FieldsFiltersSettings } from './FilterSettings.types';
-import type { FieldFilter } from '../ReadOnlyTable_/ReadOnlyTable.types';
+import type { FieldFilter } from '../ReadOnlyTableTan/ReadOnlyTable.types';
+import { memo } from 'react';
 
 const title = 'Filters';
 
-const FilterSettings = ({ onFinish, meta }: FilterSettingsProps) => {
+const FilterSettings = <TData extends Record<string, unknown>>({ onFinish, columns }: FilterSettingsProps<TData>) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [, setDetail] = useState<FieldFilter | undefined>();
 
@@ -65,7 +66,6 @@ const FilterSettings = ({ onFinish, meta }: FilterSettingsProps) => {
   const onAcceptDetail = useCallback(
     (detail: FieldFilter) => {
       const newDetails = [...new Set([...(filters || []), detail])];
-
       setFilters({ filters: newDetails }, 'filters');
 
       setShowDetailForm(false);
@@ -79,18 +79,28 @@ const FilterSettings = ({ onFinish, meta }: FilterSettingsProps) => {
       {
         accessorKey: 'actions',
         header: 'Actions',
-        sort: false,
         width: 150,
         cell: ({ row: { original } }) => (
           <TableActionsStyled>
-            <IconButton icon={<EditIcon />} onClick={() => onEditDetail(original)} />
-            <IconButton icon={<DeleteIcon />} onClick={() => onRemoveDetail(original)} />
+            <IconButton id="edit-filter" icon={<EditIcon />} onClick={() => onEditDetail(original)} />
+            <IconButton id="delete-filter" icon={<DeleteIcon />} onClick={() => onRemoveDetail(original)} />
           </TableActionsStyled>
         ),
       },
     ],
     [columnsDetails, onEditDetail, onRemoveDetail],
   );
+
+  // const initialFields = useMemo(
+  //   () =>
+  //     columns.map((col) => ({
+  //       accessor: col['accessorKey' as keyof ColumnDef<TData>] || '',
+  //       label: col['header' as keyof ColumnDef<TData>] || '',
+  //       condition: '',
+  //       value: '',
+  //     })),
+  //   [columns],
+  // );
 
   return (
     <Portal>
@@ -103,13 +113,14 @@ const FilterSettings = ({ onFinish, meta }: FilterSettingsProps) => {
             allowFiltering={false}
             height="33vh"
             title={title}
-            actions={<IconButton icon={<NewIcon />} onClick={() => setShowDetailForm(true)} />}
+            actions={<IconButton id="show-filter-modal" icon={<NewIcon />} onClick={() => setShowDetailForm(true)} />}
           />
           {showDetailForm && (
             <Portal>
               <FormFilter
                 title={title}
-                initialFields={meta || []}
+                // initialFields={initialFields}
+                columns={columns}
                 onAccept={onAcceptDetail}
                 onFinish={() => setShowDetailForm(false)}
               />
@@ -129,4 +140,4 @@ const FilterSettings = ({ onFinish, meta }: FilterSettingsProps) => {
   );
 };
 
-export default FilterSettings;
+export default memo(FilterSettings) as typeof FilterSettings;

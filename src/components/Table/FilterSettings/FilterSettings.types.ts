@@ -1,11 +1,12 @@
-import type { FieldFilter, MetaType } from '../ReadOnlyTable_/ReadOnlyTable.types';
+import type { ColumnDef } from 'types';
+import type { FieldFilter } from '../ReadOnlyTableTan/ReadOnlyTable.types';
 
 export type FieldsFiltersSettings = {
   filters: FieldFilter[];
   sorting: FieldFilter[];
 };
 
-export type FilterSettingsProps = {
+export type FilterSettingsProps<TData> = {
   onFinish: () => void;
-  meta?: MetaType[];
+  columns: ColumnDef<TData, unknown>[];
 };

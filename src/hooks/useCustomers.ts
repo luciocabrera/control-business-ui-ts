@@ -37,7 +37,7 @@ export const usePostCustomer = () => {
     async (customer: CustomerCreateType): Promise<ApiResponse<CustomerType>> => {
       const { customerId, ...rest } = customer;
       const requestOptions: OptionsType = {
-        method: customerId ? 'PATCH' : 'POST',
+        method: customerId ? 'PUT' : 'POST',
         body: JSON.stringify(rest),
       };
       const url = customerId ? `${endpoints.customers}/${customerId ?? ''}` : endpoints.customers;

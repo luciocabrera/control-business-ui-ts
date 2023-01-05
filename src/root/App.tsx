@@ -12,9 +12,9 @@ const Customers = lazy(() => import(/* webpackChunkName: "Customers" */ 'feature
 const Customer = lazy(() => import(/* webpackChunkName: "Customer" */ 'features/Customer/Customer'));
 const ViewCustomer = lazy(() => import(/* webpackChunkName: "ViewCustomer" */ 'features/ViewCustomer/ViewCustomer'));
 
-const Invoices = lazy(() => import(/* webpackChunkName: "Customers" */ 'features/Invoices/Invoices'));
-const Invoice = lazy(() => import(/* webpackChunkName: "Customer" */ 'features/Invoice/Invoice'));
-const ViewInvoice = lazy(() => import(/* webpackChunkName: "Customer" */ 'features/ViewInvoice/ViewInvoice'));
+const Invoices = lazy(() => import(/* webpackChunkName: "Invoices" */ 'features/Invoices/Invoices'));
+const Invoice = lazy(() => import(/* webpackChunkName: "Invoice" */ 'features/Invoice/Invoice'));
+const ViewInvoice = lazy(() => import(/* webpackChunkName: "ViewInvoice" */ 'features/ViewInvoice/ViewInvoice'));
 
 type StateLocation = { backgroundLocation?: string } | undefined;
 

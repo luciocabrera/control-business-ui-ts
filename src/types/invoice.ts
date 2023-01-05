@@ -31,8 +31,8 @@ export type InvoiceType = AuditType & {
   invoiceId: number;
   invoice: string;
   customerId: number;
-  customer: InvoiceCustomerType;
-  invoiceDetails: InvoicesDetails[];
+  customer: string;
+  details: InvoicesDetails[];
   date: string;
   subtotal: number;
   total: number;
@@ -42,7 +42,15 @@ export type InvoiceType = AuditType & {
 
 export type InvoiceFormType = Omit<
   InvoiceType,
-  'date' | 'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'
+  | 'date'
+  | 'invoiceId'
+  | 'updatedAt'
+  | 'createdAt'
+  | 'createdBy'
+  | 'updatedBy'
+  | 'createdByAlias'
+  | 'updatedByAlias'
+  | 'customer'
 > & {
   invoiceId?: number;
   date?: string;
@@ -50,5 +58,5 @@ export type InvoiceFormType = Omit<
 
 export type InvoiceCreateType = Omit<
   InvoiceType,
-  'invoiceId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy' | 'customer' | 'invoiceDetails' | 'date'
-> & { date: Date; invoiceId?: number; customerId: number; invoiceDetails: InvoiceDetailCreate[] };
+  'invoiceId' | 'updatedAt' | 'createdAt' | 'customer' | 'details' | 'date' | 'createdByAlias' | 'updatedByAlias'
+> & { date: Date; invoiceId?: number; customerId: number; details: InvoiceDetailCreate[] };

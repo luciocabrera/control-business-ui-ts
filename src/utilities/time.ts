@@ -1,4 +1,5 @@
-import type { DateOutputType, DateParameterType } from 'types';
+export type DateParameterType = Date | string;
+export type DateOutputType = 'date' | 'datetime';
 
 export const getDiffInSeconds = (dt2: DateParameterType, dt1: DateParameterType) => {
   const sanitizeDt2 = dt2 instanceof Date ? dt2 : new Date(dt2);

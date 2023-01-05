@@ -67,6 +67,7 @@ export const FieldRowStyled = styled.fieldset`
   flex-wrap: wrap;
   width: 100%;
   align-content: flex-start;
+  min-width: 300px;
 `;
 
 export const FieldGroupStyled = styled.fieldset`
@@ -82,6 +83,7 @@ export const FieldGroupStyled = styled.fieldset`
   align-items: flex-start;
   align-content: flex-start;
   justify-content: flex-start;
+  min-width: 300px;
   }
 `;
 

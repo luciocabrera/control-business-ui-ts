@@ -20,8 +20,8 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [detail, setDetail] = useState<InvoicesDetails | undefined>();
 
-  const [invoicesDetails, setInvoicesDetails] = useStore<InvoicesDetails[], Pick<InvoiceFormType, 'invoiceDetails'>>(
-    (store) => store.invoiceDetails,
+  const [invoicesDetails, setInvoicesDetails] = useStore<InvoicesDetails[], Pick<InvoiceFormType, 'details'>>(
+    (store) => store.details,
   );
   const [, setSubtotal] = useStore<number, Pick<InvoiceFormType, 'subtotal'>>((store) => store.subtotal);
   const [, setTaxes] = useStore<number, Pick<InvoiceFormType, 'taxes'>>((store) => store.taxes);
@@ -104,7 +104,7 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     (original: InvoicesDetails) => {
       const newDetails = invoicesDetails.filter((detail) => detail !== original);
 
-      setInvoicesDetails({ invoiceDetails: newDetails });
+      setInvoicesDetails({ details: newDetails });
       updateAmounts(newDetails);
     },
     [invoicesDetails, setInvoicesDetails, updateAmounts],
@@ -132,8 +132,7 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const onAcceptDetail = useCallback(
     (detail: InvoicesDetails) => {
       const newDetails = [...new Set([...invoicesDetails, detail])];
-
-      setInvoicesDetails({ invoiceDetails: newDetails });
+      setInvoicesDetails({ details: newDetails });
       updateAmounts(newDetails);
       setShowDetailForm(false);
     },
@@ -149,9 +148,9 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
         sort: false,
         cell: ({ row: { original } }) => (
           <TableActionsStyled>
-            <IconButton icon={<EditIcon />} onClick={() => onEditDetail(original)} />
-            <IconButton icon={<CopyIcon />} onClick={() => onCopyDetail(original)} />
-            <IconButton icon={<DeleteIcon />} onClick={() => onRemoveDetail(original)} />
+            <IconButton id="edit-invoice-detail" icon={<EditIcon />} onClick={() => onEditDetail(original)} />
+            <IconButton id="copy-invoice-detail" icon={<CopyIcon />} onClick={() => onCopyDetail(original)} />
+            <IconButton id="delete-invoice-detail" icon={<DeleteIcon />} onClick={() => onRemoveDetail(original)} />
           </TableActionsStyled>
         ),
       },
@@ -163,7 +162,7 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     <LabelDetailsStyled>
       <span>Details</span>
       <div id="icon-button">
-        <IconButton icon={<NewIcon />} onClick={onAddDetail} />
+        <IconButton id="new-invoice-detail" icon={<NewIcon />} onClick={onAddDetail} />
       </div>
     </LabelDetailsStyled>
   );

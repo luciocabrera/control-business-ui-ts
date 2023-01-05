@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 
 export const TableStyled = styled.div`
-  border: 1px solid lightgray;
+
+
+  // overflow: auto;
+  //   max-width: 100%;
+  //   display: block;
+
+
 
   height: ${({ height }: { height?: string; useRadius?: boolean }) => (height ? height : 'inherit')};
-  max-width: calc(100vw - 68px) !important;
+   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 46%), 0 2px 10px 0 rgb(0 0 0 / 42%);
   overflow: auto;
   table {
     border-collapse: collapse;
@@ -14,6 +20,13 @@ export const TableStyled = styled.div`
     font-family: '72override', var(--font-family);
     font-size: var(--font-size);
     font-weight: 300;
+
+
+
+
+    //     width: 100%;
+    // border-collapse: collapse;
+    // overflow-x: scroll;
   }
 
 
@@ -24,15 +37,14 @@ export const TableStyled = styled.div`
     position: sticky;
     top: 0;
     cursor: pointer;
-    font-family: '72override', var(--font-family);
-    font-size: var(--font-size);
-    font-weight: 400;
+       box-shadow: 0 1px 5px 0 rgb(0 0 0 / 40%), 0 2px 10px 0 rgb(0 0 0 / 38%);
     th {
       border-bottom: 1px solid lightgray;
       border-right: 1px solid lightgray;
        padding: 2px 6px;
       position: relative;
-          height: 30px;
+          height: 28px;
+        
     }
   }
 
@@ -56,7 +68,7 @@ export const TableStyled = styled.div`
       }
       tr {
         border-bottom: 1px solid #b2b2b47a;
-        :nth-of-type(odd) {
+        :nth-of-type(even) {
   background: #a2bd6b1f;
 }
         :hover {
@@ -94,66 +106,6 @@ export const TableStyled = styled.div`
     }
   }
 
-//   @media screen and (max-width: 40em) {
-//     /*
-//     Force table elements to not behave like tables anymore
-//     Hide table headers (but not display: none;, for accessibility)
-//   */
-// width:100%;
-
-//     table,
-//     thead,
-//     tbody,
-//     th,
-//     td,
-//     tr {
-//       display: block;
-//     }
-//     thead tr {
-//       position: absolute;
-//       top: -9999px;
-//       left: -9999px;
-//       border-bottom: 2px solid #333;
-//     }
-//     tfoot{
-// display:none;
-//     }
-
-//     tbody tr {
-//       border: 1px solid #000;
-//       padding: 0.25em;
-//     }
-//   }
-//   @container (max-width: 700px) {
-//     /*
-//     Force table elements to not behave like tables anymore
-//     Hide table headers (but not display: none;, for accessibility)
-//   */
-// width:100%;
-
-//     table,
-//     thead,
-//     tbody,
-//     th,
-//     td,
-//     tr {
-//       display: block;
-//     }
-//     thead tr {
-//       position: absolute;
-//       top: -9999px;
-//       left: -9999px;
-//       border-bottom: 2px solid #333;
-//     }
-//     tfoot{
-// display:none;
-//     }
-
-//     tbody tr {
-//       border: 1px solid #000;
-//       padding: 0.25em;
-//     }
-//   }
 `;
 
 // td.pivoted {

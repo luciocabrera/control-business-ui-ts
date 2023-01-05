@@ -10,9 +10,9 @@ export const endpoints = {
   cities: '/geo/cities',
   companies: '/companies',
   invoices: '/api/invoices',
-  customers: '/api/customers',
+  customers: '/api/people',
   products: '/api/products',
-  documentTypes: '/api/documentTypes',
+  documentTypes: '/api/document_types',
   titles: '/api/titles',
   auth: { login: `/auth/login` },
 };

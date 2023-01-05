@@ -38,7 +38,7 @@ export const usePostInvoice = () => {
     async (invoice: InvoiceCreateType): Promise<ApiResponse<InvoiceType>> => {
       const { invoiceId, ...rest } = invoice;
       const requestOptions: OptionsType = {
-        method: invoice.invoiceId ? 'PATCH' : 'POST',
+        method: invoice.invoiceId ? 'PUT' : 'POST',
         body: JSON.stringify(rest),
       };
       const url = invoiceId ? `${endpoints.invoices}/${invoiceId ?? ''}` : endpoints.invoices;

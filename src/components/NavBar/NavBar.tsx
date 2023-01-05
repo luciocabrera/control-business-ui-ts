@@ -16,13 +16,13 @@ const NavBar = memo(({ routes }: SideNavBarProps) => (
   <NavStyled>
     <ul>
       <li key="home" id="app-home">
-        <Link to="/">
+        <Link to="/" aria-label={`Go Home`}>
           <AppIcon />
         </Link>
       </li>
       {routes.map((route) => (
         <li key={route.text}>
-          <Link to={route.path}>
+          <Link to={route.path} aria-label={`Go to ${route.text}`}>
             {route.icon} {route.text}
           </Link>
         </li>

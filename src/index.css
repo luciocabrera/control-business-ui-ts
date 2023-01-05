@@ -440,8 +440,14 @@ div [role='columnheader'] {
   main {
     padding: 1rem 1rem !important;
   }
-  fieldset {
-    width: 100% !important;
+  fieldset,
+  #custom-field-wrapper {
+    width: 100%;
+  }
+
+  #field-group,
+  #field-row {
+    max-width: calc(100% - 1rem);
   }
 }
 
@@ -474,7 +480,7 @@ div [role='columnheader'] {
   }
 
   tbody tr {
-    border: 1px solid #000;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 36%), 0 1px 5px 0 rgb(0 0 0 / 30%);
     padding: 0.25em;
   }
 }

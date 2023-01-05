@@ -1,6 +1,8 @@
 export type AuditType = {
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: string;
-  updatedBy?: string;
+  createdBy?: number;
+  updatedBy?: number;
+  createdByAlias: string;
+  updatedByAlias: string;
 };

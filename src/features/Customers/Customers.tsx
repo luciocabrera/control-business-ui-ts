@@ -11,7 +11,7 @@ import type { CustomerType, ColumnDef } from 'types';
 const title = 'Customers';
 
 const Customers = () => {
-  const { data: customers, loading } = useFetchCustomers();
+  const { data: customers, isLoading } = useFetchCustomers();
   const location = useLocation();
 
   const columns: ColumnDef<CustomerType>[] = useMemo(
@@ -26,11 +26,9 @@ const Customers = () => {
         header: 'Phone Number',
         cell: ({
           row: {
-            original: {
-              defaultPhone: { number },
-            },
+            original: { defaultPhone },
           },
-        }) => <>{number}</>,
+        }) => defaultPhone?.phone ?? '',
       },
       {
         accessorKey: 'actions',
@@ -38,9 +36,9 @@ const Customers = () => {
         sort: false,
         cell: ({
           row: {
-            original: { customerId },
+            original: { peopleId },
           },
-        }) => <TableActions customerId={customerId} />,
+        }) => <TableActions customerId={peopleId} />,
       },
     ],
     [],
@@ -48,14 +46,14 @@ const Customers = () => {
 
   return (
     <>
-      {loading && <PageSpinner />}
+      {isLoading && <PageSpinner />}
       <ReadOnlyTable<CustomerType>
         data={customers}
         columns={columns}
         height="calc(100vh - 120px)"
         title={title}
         actions={
-          <Link to="new" state={{ backgroundLocation: location }} className="link-icon">
+          <Link to="new" aria-label={`New customer`} state={{ backgroundLocation: location }}>
             <NewIcon />
           </Link>
         }

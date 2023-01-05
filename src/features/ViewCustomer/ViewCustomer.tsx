@@ -7,7 +7,7 @@ import { useFetchCustomer, useParams, useNavigate } from 'hooks';
 // icons
 import { CustomerIcon } from 'icons';
 // react
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 // types
 import type { CustomerFormType, FormFieldType } from 'types';
 
@@ -15,7 +15,7 @@ const ViewCustomer = memo(() => {
   const { customerId } = useParams();
   const navigate = useNavigate();
 
-  const { data: customer, loading: isLoadingCustomer } = useFetchCustomer(customerId);
+  const { data: customer, isLoading: isLoadingCustomer } = useFetchCustomer(customerId);
 
   const fields: FormFieldType[] = useMemo(
     () => [
@@ -78,7 +78,7 @@ const ViewCustomer = memo(() => {
             accessor: 'number',
             label: 'Phone Number',
             type: 'text',
-            value: customer?.defaultPhone?.number,
+            value: customer?.defaultPhone?.phone,
             readonly: true,
           },
           {
@@ -101,14 +101,14 @@ const ViewCustomer = memo(() => {
                 accessor: 'line1',
                 label: 'Line 1',
                 type: 'text',
-                value: customer?.currentAddress.line1,
+                value: customer?.defaultAddress.line1,
                 readonly: true,
               },
               {
                 accessor: 'line2',
                 label: 'Line 2',
                 type: 'text',
-                value: customer?.currentAddress.line2,
+                value: customer?.defaultAddress.line2,
                 readonly: true,
               },
             ],
@@ -120,14 +120,14 @@ const ViewCustomer = memo(() => {
                 accessor: 'country',
                 label: 'Country',
                 type: 'text',
-                value: customer?.currentAddress.country,
+                value: customer?.defaultAddress.country,
                 readonly: true,
               },
               {
                 accessor: 'state',
                 label: 'State / Province',
                 type: 'text',
-                value: customer?.currentAddress.state,
+                value: customer?.defaultAddress.region,
                 readonly: true,
               },
             ],
@@ -139,14 +139,14 @@ const ViewCustomer = memo(() => {
                 accessor: 'city',
                 label: 'City / Town',
                 type: 'text',
-                value: customer?.currentAddress.city,
+                value: customer?.defaultAddress.city,
                 readonly: true,
               },
               {
                 accessor: 'postalCode',
                 label: 'ZIP / Postal code',
                 type: 'text',
-                value: customer?.currentAddress.postalCode,
+                value: customer?.defaultAddress.postalCode,
                 readonly: true,
               },
             ],
@@ -155,14 +155,14 @@ const ViewCustomer = memo(() => {
       },
     ],
     [
-      customer?.currentAddress.city,
-      customer?.currentAddress.country,
-      customer?.currentAddress.line1,
-      customer?.currentAddress.line2,
-      customer?.currentAddress.postalCode,
-      customer?.currentAddress.state,
+      customer?.defaultAddress.city,
+      customer?.defaultAddress.country,
+      customer?.defaultAddress.line1,
+      customer?.defaultAddress.line2,
+      customer?.defaultAddress.postalCode,
+      customer?.defaultAddress.region,
       customer?.defaultEmail?.email,
-      customer?.defaultPhone?.number,
+      customer?.defaultPhone?.phone,
       customer?.documentId,
       customer?.documentTypeName,
       customer?.firstName,
@@ -171,6 +171,8 @@ const ViewCustomer = memo(() => {
       customer?.titleName,
     ],
   );
+
+  const onFinish = useCallback(() => navigate('/customers'), [navigate]);
 
   if (isLoadingCustomer || !fields) return <PageSpinner />;
 
@@ -182,7 +184,7 @@ const ViewCustomer = memo(() => {
         initialFields={fields}
         initialData={customer}
         actions={<CustomerActions customer={customer} />}
-        onFinish={() => navigate('/customers')}
+        onFinish={onFinish}
         height="600px"
         width="850px"
       />

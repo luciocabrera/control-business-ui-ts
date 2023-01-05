@@ -18,7 +18,7 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
 
   const isCreating = customerId === 'new' || !customerId;
 
-  const { data: products, loading: isLoadingProducts } = useFetchProducts();
+  const { data: products, isLoading: isLoadingProducts } = useFetchProducts();
 
   const onAccept = useCallback(
     (detail: InvoiceDetailFormType) => {

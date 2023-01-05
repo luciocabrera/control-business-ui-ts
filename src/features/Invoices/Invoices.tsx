@@ -13,12 +13,12 @@ import { getFormattedNumber } from 'utilities';
 const title = 'Invoices';
 
 const Invoices = () => {
-  const { data: invoices, loading } = useFetchInvoices();
+  const { data: invoices, isLoading } = useFetchInvoices();
   const location = useLocation();
 
   const columns: ColumnDef<InvoiceType>[] = useMemo(
     () => [
-      { accessorKey: 'invoice', name: 'Invoice' },
+      { accessorKey: 'invoice', header: 'Invoice' },
       {
         accessorKey: 'date',
         header: 'Date',
@@ -31,14 +31,6 @@ const Invoices = () => {
       {
         accessorKey: 'customer',
         header: 'Customer',
-        minWidth: 100,
-        cell: ({
-          row: {
-            original: {
-              customer: { fullNameWithInitials },
-            },
-          },
-        }) => <>{fullNameWithInitials}</>,
       },
       {
         accessorKey: 'subtotal',
@@ -47,7 +39,7 @@ const Invoices = () => {
           row: {
             original: { subtotal },
           },
-        }) => <>{getFormattedNumber(subtotal, 'currency')}</>,
+        }) => getFormattedNumber(subtotal, 'currency'),
       },
       {
         accessorKey: 'taxes',
@@ -56,7 +48,7 @@ const Invoices = () => {
           row: {
             original: { taxes },
           },
-        }) => <>{getFormattedNumber(taxes, 'currency')}</>,
+        }) => getFormattedNumber(taxes, 'currency'),
       },
       {
         accessorKey: 'total',
@@ -65,12 +57,11 @@ const Invoices = () => {
           row: {
             original: { total },
           },
-        }) => <>{getFormattedNumber(total, 'currency')}</>,
+        }) => getFormattedNumber(total, 'currency'),
       },
       {
         accessorKey: 'actions',
         header: 'Actions',
-        sort: false,
         cell: ({
           row: {
             original: { invoiceId },
@@ -83,14 +74,14 @@ const Invoices = () => {
 
   return (
     <>
-      {loading && <PageSpinner />}
+      {isLoading && <PageSpinner />}
       <ReadOnlyTable<InvoiceType>
         data={invoices}
         columns={columns}
         height="calc(100vh - 120px)"
         title={title}
         actions={
-          <Link to="new" state={{ backgroundLocation: location }}>
+          <Link to="new" aria-label={`New invoice`} state={{ backgroundLocation: location }}>
             <NewIcon />
           </Link>
         }

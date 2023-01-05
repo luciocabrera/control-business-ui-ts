@@ -4,7 +4,7 @@ import { InvoiceAmountsField } from 'features/Invoice/components';
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // hooks
-import { useParams, useNavigate, useFetchInvoice, useMemo } from 'hooks';
+import { useParams, useNavigate, useFetchInvoice, useMemo, useCallback } from 'hooks';
 // icons
 import { InvoiceIcon } from 'icons';
 // types
@@ -18,13 +18,13 @@ import type {
   FieldBaseValueType,
 } from 'types';
 // utilities
-import { getDateAsString, getFormattedNumber, memo } from 'utilities';
+import { getDateAsString, getFormattedNumber } from 'utilities';
 
-const ViewInvoice = memo(() => {
+const ViewInvoice = () => {
   const { invoiceId } = useParams();
   const navigate = useNavigate();
 
-  const { data: invoice, loading: isLoadingInvoice } = useFetchInvoice(invoiceId);
+  const { data: invoice, isLoading: isLoadingInvoice } = useFetchInvoice(invoiceId);
 
   const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
@@ -110,7 +110,7 @@ const ViewInvoice = memo(() => {
                 accessor: 'fullNameWithInitials',
                 label: 'Customer',
                 type: 'text',
-                value: invoice?.customer?.fullNameWithInitials,
+                value: invoice?.customer,
                 readonly: true,
               },
             ],
@@ -156,15 +156,15 @@ const ViewInvoice = memo(() => {
         type: 'row',
         fields: [
           {
-            accessor: 'invoiceDetails',
-            label: 'invoiceDetails',
+            accessor: 'details',
+            label: 'details',
             type: 'table',
             render: () => (
               <TableField<InvoicesDetails, InvoiceDetailForm>
-                accessor="invoiceDetails"
+                accessor="details"
                 label="Details"
                 columns={columns}
-                data={invoice?.invoiceDetails as InvoicesDetails[]}
+                data={invoice?.details as InvoicesDetails[]}
                 showHeader={false}
               />
             ),
@@ -175,16 +175,18 @@ const ViewInvoice = memo(() => {
     ],
     [
       columns,
-      invoice?.customer?.fullNameWithInitials,
+      invoice?.customer,
       invoice?.date,
       invoice?.invoice,
-      invoice?.invoiceDetails,
+      invoice?.details,
       invoice?.subtotal,
       invoice?.taxes,
       invoice?.taxesPercentage,
       invoice?.total,
     ],
   );
+
+  const onFinish = useCallback(() => navigate('/invoices'), [navigate]);
 
   if (isLoadingInvoice || !fields) return <PageSpinner />;
 
@@ -196,11 +198,11 @@ const ViewInvoice = memo(() => {
         initialFields={fields}
         initialData={invoice}
         actions={<InvoiceActions invoice={invoice} />}
-        onFinish={() => navigate('/invoices')}
+        onFinish={onFinish}
         height="612px"
         width="1120px"
       />
     </FormDataContextProvider>
   );
-});
+};
 export default ViewInvoice;

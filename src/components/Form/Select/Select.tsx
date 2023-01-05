@@ -9,7 +9,7 @@ import type { SelectProps } from './Select.types';
 const Select = memo(
   forwardRef((props: SelectProps, ref: React.ForwardedRef<unknown>) => {
     const { accessor, options, value, label, onChange } = props;
-    console.log('value in select', value);
+
     return (
       <FormFieldBase {...props} ref={ref}>
         <SelectStyled

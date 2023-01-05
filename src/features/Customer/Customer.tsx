@@ -16,18 +16,18 @@ import {
 // icons
 import { CustomerIcon } from 'icons';
 // react
-import { memo, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 // types
 import type { APiResponseErrorType, CustomerCreateType, CustomerFormType, FormFieldType } from 'types';
 
-const Customer = memo(() => {
+const Customer = () => {
   const { customerId } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
 
-  const { data: documentTypes, loading: isLoadingDocumentTypes } = useFetchDocumentTypes();
-  const { data: titles, loading: isLoadingTitles } = useFetchTitles();
-  const { data: customer, loading: isLoadingCustomer } = useFetchCustomer(!isCreating ? customerId : undefined);
+  const { data: documentTypes, isLoading: isLoadingDocumentTypes } = useFetchDocumentTypes();
+  const { data: titles, isLoading: isLoadingTitles } = useFetchTitles();
+  const { data: customer, isLoading: isLoadingCustomer } = useFetchCustomer(!isCreating ? customerId : undefined);
 
   const refreshCustomers = useRefreshCustomers();
   const refreshCustomer = useRefreshCustomer();
@@ -40,7 +40,7 @@ const Customer = memo(() => {
     () =>
       titles?.map((title) => ({
         label: title.name,
-        value: title.name,
+        value: title.titleId,
       })),
     [titles],
   );
@@ -49,7 +49,7 @@ const Customer = memo(() => {
     () =>
       documentTypes?.map((documentType) => ({
         label: documentType.name,
-        value: documentType.name,
+        value: documentType.documentTypeId,
       })),
     [documentTypes],
   );
@@ -60,12 +60,12 @@ const Customer = memo(() => {
         type: 'row',
         fields: [
           {
-            accessor: 'documentTypeName',
+            accessor: 'documentTypeId',
             label: 'Id Type',
             type: 'select',
             required: true,
             options: documentTypesOptions,
-            value: customer?.documentTypeName,
+            value: customer?.documentTypeId,
           },
           {
             accessor: 'documentId',
@@ -91,18 +91,17 @@ const Customer = memo(() => {
         type: 'row',
         fields: [
           {
-            accessor: 'titleName',
+            accessor: 'titleId',
             label: 'Title',
             type: 'select',
             required: true,
             options: titlesOptions,
-            value: customer?.titleName,
+            value: customer?.titleId,
           },
           {
             accessor: 'initials',
             label: 'Initials',
             type: 'text',
-            required: false,
             placeholder: `Enter the Person's Initials`,
             value: customer?.initials,
             rules: [
@@ -116,7 +115,6 @@ const Customer = memo(() => {
             accessor: 'firstName',
             label: 'First Name',
             type: 'text',
-            required: true,
             placeholder: `Enter the Person's First Name`,
             value: customer?.firstName,
             rules: [
@@ -145,10 +143,10 @@ const Customer = memo(() => {
         type: 'row',
         fields: [
           {
-            accessor: 'number',
+            accessor: 'phone',
             label: 'Phone Number',
             type: 'text',
-            value: customer?.defaultPhone?.number,
+            value: customer?.defaultPhone?.phone,
             rules: [
               {
                 type: 'maxLength',
@@ -183,7 +181,7 @@ const Customer = memo(() => {
                 type: 'text',
                 placeholder: `Street`,
                 required: true,
-                value: customer?.currentAddress.line1,
+                value: customer?.defaultAddress.line1,
                 rules: [
                   {
                     type: 'maxLength',
@@ -196,7 +194,7 @@ const Customer = memo(() => {
                 label: 'Line 2',
                 type: 'text',
                 placeholder: `Apartment, suite, house number, etc.`,
-                value: customer?.currentAddress.line2,
+                value: customer?.defaultAddress.line2,
                 rules: [
                   {
                     type: 'maxLength',
@@ -214,7 +212,7 @@ const Customer = memo(() => {
                 label: 'Country',
                 type: 'text',
                 required: true,
-                value: customer?.currentAddress.country,
+                value: customer?.defaultAddress.country,
                 rules: [
                   {
                     type: 'maxLength',
@@ -223,11 +221,11 @@ const Customer = memo(() => {
                 ],
               },
               {
-                accessor: 'state',
+                accessor: 'region',
                 label: 'State / Province',
                 type: 'text',
                 required: true,
-                value: customer?.currentAddress.state,
+                value: customer?.defaultAddress.region,
                 rules: [
                   {
                     type: 'maxLength',
@@ -245,7 +243,7 @@ const Customer = memo(() => {
                 label: 'City / Town',
                 type: 'text',
                 required: true,
-                value: customer?.currentAddress.city,
+                value: customer?.defaultAddress.city,
                 rules: [
                   {
                     type: 'maxLength',
@@ -260,7 +258,7 @@ const Customer = memo(() => {
                 required: true,
                 placeholder: `XXXX XX`,
                 maxLength: 16,
-                value: customer?.currentAddress.postalCode,
+                value: customer?.defaultAddress.postalCode,
                 rules: [
                   {
                     type: 'maxLength',
@@ -274,20 +272,20 @@ const Customer = memo(() => {
       },
     ],
     [
-      customer?.currentAddress.city,
-      customer?.currentAddress.country,
-      customer?.currentAddress.line1,
-      customer?.currentAddress.line2,
-      customer?.currentAddress.postalCode,
-      customer?.currentAddress.state,
+      customer?.defaultAddress.city,
+      customer?.defaultAddress.country,
+      customer?.defaultAddress.line1,
+      customer?.defaultAddress.line2,
+      customer?.defaultAddress.postalCode,
+      customer?.defaultAddress.region,
       customer?.defaultEmail?.email,
-      customer?.defaultPhone?.number,
+      customer?.defaultPhone?.phone,
       customer?.documentId,
-      customer?.documentTypeName,
+      customer?.documentTypeId,
       customer?.firstName,
       customer?.initials,
       customer?.lastName,
-      customer?.titleName,
+      customer?.titleId,
       documentTypesOptions,
       titlesOptions,
     ],
@@ -295,31 +293,28 @@ const Customer = memo(() => {
 
   const onAccept = useCallback(
     async (payload: CustomerFormType) => {
-      const {
-        firstName,
-        lastName,
-        documentId,
-        documentTypeName,
-        titleName,
-        initials,
-        number,
-        email,
-        ...currentAddress
-      } = payload;
+      const { firstName, lastName, documentId, documentTypeId, titleId, initials, phone, email, ...defaultAddress } =
+        payload;
       const calculatedCustomerId = customerId === 'new' ? undefined : customerId;
 
       const body: CustomerCreateType = {
+        companyId: 1,
         customerId: calculatedCustomerId,
         initials,
         firstName,
         lastName,
         documentId,
-        documentTypeName,
-        titleName,
-        addresses: { ...currentAddress },
-        phones: { number },
-        emails: { email },
+        documentTypeId: typeof documentTypeId === 'string' ? parseInt(documentTypeId, 10) : documentTypeId,
+        titleId: typeof titleId === 'string' ? parseInt(titleId, 10) : titleId,
+        addresses: [{ ...defaultAddress, main: true }],
+        phones: phone ? [{ phone, main: true }] : [],
+        emails: email ? [{ email, main: true }] : [],
       };
+      if (isCreating) {
+        body.createdBy = 1;
+      } else {
+        body.updatedBy = 1;
+      }
 
       try {
         const res = await postCustomer(body);
@@ -344,12 +339,15 @@ const Customer = memo(() => {
       customer?.firstName,
       customer?.lastName,
       customerId,
+      isCreating,
       navigate,
       postCustomer,
       refreshCustomer,
       refreshCustomers,
     ],
   );
+
+  const onFinish = useCallback(() => navigate('/customers'), [navigate]);
 
   if (((isLoadingCustomer || !fields) && !isCreating) || isLoadingDocumentTypes || isLoadingTitles)
     return <PageSpinner />;
@@ -364,7 +362,7 @@ const Customer = memo(() => {
         initialFields={fields}
         initialData={customer}
         onAccept={onAccept}
-        onFinish={() => navigate('/customers')}
+        onFinish={onFinish}
         actions={<CustomerActions customer={customer} />}
         viewMode={false}
         height="600px"
@@ -372,5 +370,6 @@ const Customer = memo(() => {
       />
     </FormDataContextProvider>
   );
-});
+};
+
 export default Customer;

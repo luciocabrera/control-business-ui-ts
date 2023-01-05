@@ -1,3 +1,4 @@
+//@ts-nocheck
 // components
 import { Button, Header, Select, TextInput } from 'components';
 // icons
@@ -10,18 +11,24 @@ import { FormStyled } from 'components/Form/Form/Form.styled';
 import type { MouseEvent, FormOptionType } from 'types';
 import type { FormProps } from './FormFilter.types';
 
-const FormFilter = ({ title, initialFields, onAccept, onFinish }: FormProps) => {
+const FormFilter = <TData extends Record<string, unknown>>({
+  title,
+  columns,
+  initialFields,
+  onAccept,
+  onFinish,
+}: FormProps<TData>) => {
   const [selectedField, setSelectedField] = useState<string>();
   const [condition, setCondition] = useState<string>();
   const [value, setValue] = useState<string>();
 
   const fieldsOptions: FormOptionType[] = useMemo(
     () =>
-      initialFields?.map((field) => ({
-        label: field.label || '',
-        value: field.accessor || '',
+      columns?.map((column) => ({
+        label: (column.header as string) || '',
+        value: (column.accessorKey as string) || '',
       })),
-    [initialFields],
+    [columns],
   );
 
   const conditionsOptions: FormOptionType[] = useMemo(
@@ -35,17 +42,18 @@ const FormFilter = ({ title, initialFields, onAccept, onFinish }: FormProps) => 
 
   const onSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const selected = initialFields.find((field) => field.accessor === selectedField);
+    debugger;
+    const selected = columns.find((field) => field.accessorKey === selectedField);
     if (selectedField && selected && condition && value)
       onAccept?.({
         accessor: selectedField || '',
-        label: selected?.label || '',
+        label: (selected?.header as string) || '',
         condition: condition || '',
         value: value,
       });
   };
   return (
-    <FormStyled noValidate>
+    <FormStyled noValidate width="701px">
       <Header icon={<FilterIcon />} title={title} onClose={onFinish} />
       <main>
         <>
@@ -53,7 +61,7 @@ const FormFilter = ({ title, initialFields, onAccept, onFinish }: FormProps) => 
             key={`field-select-field`}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
               const selected = event.target.options[event.target.selectedIndex]?.value;
-              // const selected = initialFields.find((field) => field.label === selectedValue);
+
               setSelectedField(selected);
             }}
             value={selectedField}

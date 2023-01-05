@@ -1,15 +1,5 @@
 import React, { memo } from 'react';
-
-//3 TanStack Libraries!!!
-import {
-  // ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-} from '@tanstack/react-table';
-
+import { flexRender, getCoreRowModel, getSortedRowModel, SortingState, useReactTable } from '@tanstack/react-table';
 import { elementScroll, useVirtualizer, VirtualizerOptions } from '@tanstack/react-virtual';
 import { ReadOnlyProps } from './ReadOnlyTable.types';
 import { TableStyled } from './ReadOnlyTable.styled';
@@ -24,21 +14,9 @@ const ReadOnlyTableTanNew = <TData extends Record<string, unknown>>({
   columns,
   data,
   height,
-}: //,
-// title,
-// showHeader = true,
-// allowFiltering = true,
-// meta,
-// icon,
-// rowKeyGetter,
-// getComparator,
-ReadOnlyProps<TData>) => {
-  // const rerender = React.useReducer(() => ({}), {})[1];
-
-  //we need a reference to the scrolling element for logic down below
-
+}: ReadOnlyProps<TData>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const parentRef = React.useRef<HTMLDivElement>();
+  const parentRef = React.useRef<HTMLDivElement>(null);
   const scrollingRef = React.useRef<number>();
 
   const scrollToFn: VirtualizerOptions<any, any>['scrollToFn'] = React.useCallback((offset, canSmooth, instance) => {
@@ -63,53 +41,9 @@ ReadOnlyProps<TData>) => {
 
     requestAnimationFrame(run);
   }, []);
-  // const calculatedColumns = React.useMemo<ColumnDef<TData>[]>(
-  //   () => columns.map((col) => ({ accessorKey: col.key, header: col.name, cell: <col className="" /> })) as ColumnDef<TData>[],
-  //   [columns],
-  // );
-
-  // //react-query has an useInfiniteQuery hook just for this situation!
-  // const { data, fetchNextPage, isFetching, isLoading } = useInfiniteQuery<PersonApiResponse>(
-  //   ['table-data', sorting], //adding sorting state as key causes table to reset and fetch from new beginning upon sort
-  //   async ({ pageParam = 0 }) => {
-  //     const start = pageParam * fetchSize;
-  //     const fetchedData = fetchData(start, fetchSize, sorting); //pretend api call
-  //     return fetchedData;
-  //   },
-  //   {
-  //     getNextPageParam: (_lastGroup, groups) => groups.length,
-  //     keepPreviousData: true,
-  //     refetchOnWindowFocus: false,
-  //   },
-  // );
-
-  //we must flatten the array of arrays from the useInfiniteQuery hook
-  // const flatData = React.useMemo(() => data?.pages?.flatMap((page) => page.data) ?? [], [data]);
-  // const totalDBRowCount = data?.pages?.[0]?.meta?.totalRowCount ?? 0;
-  // const totalFetched = flatData.length;
-
-  // //called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
-  // const fetchMoreOnBottomReached = React.useCallback(
-  //   (containerRefElement?: HTMLDivElement | null) => {
-  //     if (containerRefElement) {
-  //       const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-  //       //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
-  //       if (scrollHeight - scrollTop - clientHeight < 300 && !isFetching && totalFetched < totalDBRowCount) {
-  //         fetchNextPage();
-  //       }
-  //     }
-  //   },
-  //   [fetchNextPage, isFetching, totalFetched, totalDBRowCount],
-  // );
-
-  // //a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
-  // React.useEffect(() => {
-  //   fetchMoreOnBottomReached(tableContainerRef.current);
-  // }, [fetchMoreOnBottomReached]);
 
   const table = useReactTable({
     data: data,
-    //@ts-ignore
     columns: columns,
     state: {
       sorting,
@@ -133,18 +67,8 @@ ReadOnlyProps<TData>) => {
   });
 
   return (
-    <TableStyled
-      //@ts-ignore
-      ref={parentRef}
-      height={height}
-    >
-      <table
-      // style={{
-      //   height: `${rowVirtualizer.getTotalSize()}px`,
-      //   width: '100%',
-      //   position: 'relative',
-      // }}
-      >
+    <TableStyled ref={parentRef} height={height}>
+      <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -160,8 +84,8 @@ ReadOnlyProps<TData>) => {
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
                         {{
-                          asc: ' 🔼',
-                          desc: ' 🔽',
+                          asc: <span>&#8593;</span>,
+                          desc: <span>&#8595;</span>,
                         }[header.column.getIsSorted() as string] ?? null}
                       </div>
                     )}
@@ -186,21 +110,6 @@ ReadOnlyProps<TData>) => {
           }}
         >
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-            // <div
-            //   key={virtualRow.index}
-            //   className={virtualRow.index % 2 ? 'ListItemOdd' : 'ListItemEven'}
-            //   style={{
-            //     position: 'absolute',
-            //     top: 0,
-            //     left: 0,
-            //     width: '100%',
-            //     height: `${virtualRow.size}px`,
-            //     transform: `translateY(${virtualRow.start}px)`,
-            //   }}
-            // >
-            //   Row {virtualRow.index}
-            // </div>
-
             const row = rows[virtualRow.index];
             return (
               <tr

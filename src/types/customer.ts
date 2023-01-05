@@ -3,25 +3,30 @@ import { AuditType } from './audit';
 export type AddressType = {
   addressId?: number;
   country?: string;
-  state?: string;
+  region?: string;
   city?: string;
   line1?: string;
   line2?: string;
   postalCode?: string;
+  main?: boolean;
 };
 
 export type PhoneType = {
-  number?: string;
+  phone?: string;
+  main?: boolean;
 };
 
 export type EmailType = {
   email?: string;
+  main?: boolean;
 };
 
 export type CustomerType = AuditType & {
+  companyId: number;
   firstName: string;
   lastName?: string;
   initials?: string;
+  peopleId: number;
   customerId: number;
   documentTypeId: number;
   documentTypeName: string;
@@ -30,7 +35,7 @@ export type CustomerType = AuditType & {
   titleName: string;
   documentId: string;
   addresses: AddressType[];
-  currentAddress: AddressType;
+  defaultAddress: AddressType;
   phones: PhoneType[];
   defaultPhone: PhoneType;
   emails: EmailType[];
@@ -38,26 +43,21 @@ export type CustomerType = AuditType & {
 };
 
 export type CustomerExcludes =
+  | 'peopleId'
   | 'customerId'
-  | 'documentTypeId'
-  | 'titleId'
+  | 'documentTypeName'
+  | 'titleName'
   | 'updatedAt'
   | 'createdAt'
-  | 'createdBy'
-  | 'updatedBy'
-  | 'addresses'
-  | 'phones'
-  | 'emails'
-  | 'currentAddress'
+  | 'defaultAddress'
   | 'defaultPhone'
   | 'defaultEmail'
+  | 'createdByAlias'
+  | 'updatedByAlias'
   | 'fullNameWithInitials';
 
 export type CustomerCreateType = Omit<CustomerType, CustomerExcludes> & {
   customerId?: string | number;
-  addresses: AddressType;
-  phones: PhoneType;
-  emails: EmailType;
 };
 
 export type CustomerFormType = Omit<CustomerType, CustomerExcludes> & AddressType & PhoneType & EmailType;

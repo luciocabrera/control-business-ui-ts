@@ -20,7 +20,7 @@ export const getFieldElements = (
         const groupField = field as FormFieldGroupType;
         return (
           groupField?.fields && (
-            <FieldGroupStyled key={groupKey}>
+            <FieldGroupStyled key={groupKey} id="field-group">
               <legend>{groupField?.label}</legend>
               {getFieldElements(groupField?.fields, 100, groupKey, viewMode)}
             </FieldGroupStyled>
@@ -32,7 +32,7 @@ export const getFieldElements = (
         const rowKey = `${groupId}-form-row-${index}`;
         return (
           rowField?.fields && (
-            <FieldRowStyled key={rowKey}>
+            <FieldRowStyled key={rowKey} id="field-row">
               {getFieldElements(rowField?.fields, calculatedWidth, rowKey, viewMode)}
             </FieldRowStyled>
           )
