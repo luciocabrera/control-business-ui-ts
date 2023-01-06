@@ -17,7 +17,7 @@ export { default as Portal } from './Portal/Portal';
 export { default as Header } from './Header/Header';
 
 // table
-export { default as ReadOnlyTable } from './Table/ReadOnlyTableTan/ReadOnlyTableTan';
+export { default as ReadOnlyTable } from './Table/ReadOnlyTable/ReadOnlyTable';
 
 export { default as Modal } from './Modal/Modal';
 

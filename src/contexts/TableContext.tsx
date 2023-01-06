@@ -1,70 +1,149 @@
-import { createContext, ReactNode, useCallback, useContext, useRef, useSyncExternalStore } from 'react';
+import type { ColumnFiltersState, SortingState } from '@tanstack/react-table';
+import { type ReactNode, useContext, createContext, useReducer } from 'react';
 
-type StoreTableType<TDataType> = {
-  filters: TDataType[];
-  sorting: TDataType[];
+export type ColumnMetaItem = {
+  name: string;
+  id: string;
+  type?: 'number' | 'date' | 'datetime' | 'string' | 'enum';
+  options?: string[];
 };
 
-const useStoreTable = <TDataType extends Record<string, unknown>>({
-  filters,
-  sorting,
-}: StoreTableType<TDataType>): {
-  get: () => StoreTableType<TDataType> | undefined;
-  set: (value: Partial<TDataType>, key: string) => void;
-  subscribe: (callback: () => void) => () => void;
-} => {
-  const storeTable = useRef({ filters, sorting });
+export type ColumnMetaState = ColumnMetaItem[];
 
-  const get = useCallback(() => storeTable.current, []);
+// An enum with all the types of actions to use in our reducer
+export enum TableContextActionKind {
+  setColumnFilters = 'setColumnFilters',
+  setColumnMeta = 'setColumnMeta',
+  setSorting = 'setSorting',
+  toggleShowColumnFilters = 'toggleShowColumnFilters',
+}
 
-  const subscribers = useRef(new Set<() => void>());
+// A type for our actions
+type TableContextAction =
+  | {
+      type: TableContextActionKind.setColumnMeta;
+      payload: Pick<TableContextState, 'columnMeta'>;
+    }
+  | {
+      type: TableContextActionKind.setColumnFilters;
+      payload: Pick<TableContextState, 'columnFilters'>;
+    }
+  | {
+      type: TableContextActionKind.setSorting;
+      payload: Pick<TableContextState, 'sorting'>;
+    }
+  | {
+      type: TableContextActionKind.toggleShowColumnFilters;
+    };
 
-  const set = useCallback((value: Partial<TDataType>) => {
-    storeTable.current = { ...storeTable.current, ...value };
-
-    console.log('storeTable', storeTable);
-    subscribers.current.forEach((callback) => callback());
-  }, []);
-
-  const subscribe = useCallback((callback: () => void) => {
-    subscribers.current.add(callback);
-    return () => subscribers.current.delete(callback);
-  }, []);
-
-  return {
-    get,
-    set,
-    subscribe,
-  };
+// A type for our state
+type TableContextState = {
+  columnFilters: ColumnFiltersState;
+  columnMeta: ColumnMetaState;
+  sorting: SortingState;
+  filterQuery: string;
+  sortingQuery: string;
+  fullQuery: string;
+  showColumnFilters: boolean;
 };
 
-type UseStoreTableReturnType = ReturnType<typeof useStoreTable>;
+type TableContextType = {
+  state: TableContextState;
+  dispatch: React.Dispatch<TableContextAction>;
+};
 
-const TableContext = createContext<UseStoreTableReturnType | null>(null);
+const defaultState: TableContextState = {
+  columnFilters: [],
+  columnMeta: [],
+  sorting: [],
+  filterQuery: '',
+  sortingQuery: '',
+  fullQuery: '',
+  showColumnFilters: false,
+};
 
-export const useTableContext = <SelectorOutput, TDataType>(
-  selector: (store: TDataType) => SelectorOutput,
-): [SelectorOutput, (value: Partial<TDataType>, key: string) => void] => {
-  const store = useContext(TableContext);
-  if (!store) {
-    throw new Error('Store not found');
+// Our reducer function that uses a switch statement to handle our actions
+const tableContextReducer = (state: TableContextState, action: TableContextAction): TableContextState => {
+  const { type } = action;
+  switch (type) {
+    case TableContextActionKind.setColumnMeta:
+      return {
+        ...state,
+        columnMeta: action.payload.columnMeta,
+      };
+
+    case TableContextActionKind.setColumnFilters:
+      const filterQuery = action.payload.columnFilters
+        .map((cf) => {
+          const currentFilterMeta = state.columnMeta.find((cm) => cm.id === cf.id);
+
+          switch (currentFilterMeta?.type || '') {
+            case 'date':
+            case 'datetime':
+              const dateVal = cf.value as Date[];
+              return `&filter=${cf.id} gt ${dateVal[0].toISOString()}&filter=${cf.id} lt ${dateVal[1].toISOString()}`;
+            case 'number':
+              const numberVal = cf.value as number[];
+              return `&filter=${cf.id} gt ${numberVal[0]}&filter=${cf.id} lt ${numberVal[1]} `;
+            case 'enum':
+              return `&filter=${cf.id} equals ${cf.value}`;
+            default:
+              return `&filter=${cf.id} contains ${cf.value} `;
+          }
+        })
+        .join('');
+
+      return {
+        ...state,
+        showColumnFilters: false,
+        columnFilters: action.payload.columnFilters,
+        filterQuery,
+        fullQuery: `${filterQuery}${state.sortingQuery}`,
+      };
+
+    case TableContextActionKind.setSorting:
+      const sortingQuery = action.payload.sorting.map((s) => `&orderBy=${s.id} ${s.desc ? 'desc' : 'asc'}`).join('');
+      return {
+        ...state,
+        sorting: action.payload.sorting,
+        sortingQuery,
+        fullQuery: `${state.filterQuery}${sortingQuery}`,
+      };
+
+    case TableContextActionKind.toggleShowColumnFilters:
+      return {
+        ...state,
+        showColumnFilters: !state.showColumnFilters,
+      };
+    default:
+      return state;
   }
-
-  const state = useSyncExternalStore(store.subscribe, () => selector(store.get() as TDataType));
-
-  return [state, store.set];
 };
 
-type TableContextProviderType = {
+const TableContext = createContext<TableContextType>({
+  state: defaultState,
+  dispatch: () => null,
+});
+
+const useStoreContext = (columnMeta?: ColumnMetaState) => {
+  const [state, dispatch] = useReducer(tableContextReducer, {
+    ...defaultState,
+    columnMeta: columnMeta ?? defaultState.columnMeta,
+  });
+
+  return { state, dispatch };
+};
+
+export const useTableContext = () => {
+  const context = useContext(TableContext);
+  return { ...context };
+};
+
+type TableContextProviderProps = {
   children: ReactNode;
+  columnMeta?: ColumnMetaState;
 };
 
-export const TableContextProvider = <TDataType extends Record<string, unknown>>({
-  children,
-}: TableContextProviderType) => {
-  return (
-    <TableContext.Provider value={useStoreTable<TDataType>({ filters: [], sorting: [] }) as UseStoreTableReturnType}>
-      {children}
-    </TableContext.Provider>
-  );
-};
+export const TableContextProvider = ({ children, columnMeta }: TableContextProviderProps) => (
+  <TableContext.Provider value={useStoreContext(columnMeta)}>{children}</TableContext.Provider>
+);

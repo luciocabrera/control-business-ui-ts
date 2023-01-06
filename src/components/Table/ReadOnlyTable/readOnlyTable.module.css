@@ -1,0 +1,120 @@
+.table-wrapper {
+  overflow: auto;
+  max-width: 100%;
+  display: block;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 46%), 0 2px 10px 0 rgb(0 0 0 / 42%);
+}
+.table-wrapper table {
+  border-collapse: collapse;
+  overflow-x: scroll;
+  width: -webkit-fill-available;
+  font-family: '72override', var(--font-family);
+  font-size: var(--font-size);
+  font-weight: 300;
+  background: #ffffff;
+}
+
+.table-wrapper tbody {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.88);
+  list-style: none;
+  border-radius: 8px;
+}
+
+.table-wrapper tr {
+  border-bottom: 1px solid #b2b2b47a;
+  width: 100%;
+}
+
+.table-wrapper tr:nth-of-type(even) {
+  background: #a2bd6b1f;
+}
+
+.table-wrapper tr:hover {
+  cursor: pointer;
+}
+
+.table-wrapper tbody tr:hover {
+  color: var(--er-teal);
+  background: var(--er-grey-3) !important;
+}
+
+.table-wrapper thead {
+  background: #03542f;
+  color: white;
+  font-weight: 300;
+  margin: 0;
+  position: sticky;
+  cursor: pointer;
+  box-shadow: 0 1px 5px 0 rgb(0 0 0 / 40%), 0 2px 10px 0 rgb(0 0 0 / 38%);
+}
+
+.table-wrapper th {
+  border-bottom: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  padding: 2px 4px;
+  text-align: left;
+  position: relative;
+  height: 24px;
+}
+
+.table-wrapper td {
+  padding: 2px 4px;
+  height: 24px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: 1rem;
+}
+
+.header-icon {
+  font-size: 12px;
+}
+
+.expander {
+  border-radius: 6px;
+  border: 1px solid darkgray;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+@media (hover: hover) {
+  .resizer {
+    opacity: 0;
+  }
+
+  *:hover > .resizer {
+    opacity: 1;
+  }
+}
+
+.simple-td {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+.resizer.isResizing {
+  background: blue;
+  opacity: 1;
+}

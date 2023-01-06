@@ -7,11 +7,12 @@ import { useFetchCustomers, useLocation, useMemo } from 'hooks';
 import { NewIcon } from 'icons';
 // types
 import type { CustomerType, ColumnDef } from 'types';
+import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
 
 const title = 'Customers';
 
 const Customers = () => {
-  const { data: customers, isLoading } = useFetchCustomers();
+  const dataHook = useFetchCustomers();
   const location = useLocation();
 
   const columns: ColumnDef<CustomerType>[] = useMemo(
@@ -32,7 +33,8 @@ const Customers = () => {
       },
       {
         accessorKey: 'actions',
-        header: 'Actions',
+        header: '',
+        enableColumnSorting: false,
         sort: false,
         cell: ({
           row: {
@@ -46,9 +48,8 @@ const Customers = () => {
 
   return (
     <>
-      {isLoading && <PageSpinner />}
-      <ReadOnlyTable<CustomerType>
-        data={customers}
+      <ReadOnlyHookedTable<CustomerType>
+        dataHook={dataHook}
         columns={columns}
         height="calc(100vh - 120px)"
         title={title}

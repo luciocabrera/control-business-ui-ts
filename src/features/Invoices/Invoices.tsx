@@ -9,11 +9,12 @@ import { NewIcon } from 'icons';
 import type { ColumnDef, InvoiceType } from 'types';
 // utilities
 import { getFormattedNumber } from 'utilities';
+import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
 
 const title = 'Invoices';
 
 const Invoices = () => {
-  const { data: invoices, isLoading } = useFetchInvoices();
+  const dataHook = useFetchInvoices();
   const location = useLocation();
 
   const columns: ColumnDef<InvoiceType>[] = useMemo(
@@ -61,7 +62,13 @@ const Invoices = () => {
       },
       {
         accessorKey: 'actions',
-        header: 'Actions',
+        header: '',
+        enableColumnFilter: false,
+        enableColumnSorting: false,
+        enableColumnResizing: false,
+        canResize: false,
+        maxWidth: 150,
+        width: 10,
         cell: ({
           row: {
             original: { invoiceId },
@@ -74,9 +81,8 @@ const Invoices = () => {
 
   return (
     <>
-      {isLoading && <PageSpinner />}
-      <ReadOnlyTable<InvoiceType>
-        data={invoices}
+      <ReadOnlyHookedTable<InvoiceType>
+        dataHook={dataHook}
         columns={columns}
         height="calc(100vh - 120px)"
         title={title}

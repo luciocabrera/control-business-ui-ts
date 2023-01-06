@@ -1750,6 +1750,13 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
+"@tanstack/match-sorter-utils@^8.7.2":
+  version "8.7.2"
+  resolved "https://registry.yarnpkg.com/@tanstack/match-sorter-utils/-/match-sorter-utils-8.7.2.tgz#6308c250308e103ab476928cc4ee26cf328716f5"
+  integrity sha512-bptNeoexeDB947fWoCPwUchPSx5FA9gwzU0bkXz0du5pT8Ud2+1ob+xOgHj6EF3VN0kdXtLhwjPyhY7/dJglkg==
+  dependencies:
+    remove-accents "0.4.2"
+
 "@tanstack/react-table@^8.7.4":
   version "8.7.4"
   resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.7.4.tgz#cca662c738cd23f8f7522907a9612e08640ed4e0"
@@ -7467,6 +7474,11 @@ relateurl@^0.2.7:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha512-G08Dxvm4iDN3MLM0EsP62EDV9IuhXPR6blNz6Utcp7zyV3tr4HVNINt6MpaRWbxoOHT3Q7YN2P+jaHX8vUbgog==
+
+remove-accents@0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/remove-accents/-/remove-accents-0.4.2.tgz#0a43d3aaae1e80db919e07ae254b285d9e1c7bb5"
+  integrity sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==
 
 renderkid@^3.0.0:
   version "3.0.0"

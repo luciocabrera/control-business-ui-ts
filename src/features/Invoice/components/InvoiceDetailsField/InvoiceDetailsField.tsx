@@ -175,7 +175,7 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
         <ReadOnlyTable<InvoicesDetails>
           data={normalizedValue}
           columns={columnsWithActions}
-          useRadius
+          // useRadius
           showHeader={false}
         />
       </FieldGroupStyled>
