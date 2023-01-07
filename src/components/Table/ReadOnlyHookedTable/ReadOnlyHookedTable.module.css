@@ -46,6 +46,7 @@
   color: white;
   font-weight: 300;
   margin: 0;
+  top: 0;
   position: sticky;
   cursor: pointer;
   box-shadow: 0 1px 5px 0 rgb(0 0 0 / 40%), 0 2px 10px 0 rgb(0 0 0 / 38%);
