@@ -4,7 +4,7 @@ import Button from '../Button/Button';
 // contexts
 import { useAddNotification, useFormStatusStore, useStore } from 'contexts';
 // react
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 // types
 import type { MouseEvent, FormBaseProps } from 'types';
 // utilities
@@ -21,25 +21,29 @@ const Actions = <TDataType extends Record<string, unknown>>({
   const addNotification = useAddNotification();
   const [data] = useStore<TDataType, TDataType>((store) => store);
   const [, incrementSubmittedCounter] = useFormStatusStore();
-  const onSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    incrementSubmittedCounter();
+  const onSubmit = useCallback(
+    async (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      incrementSubmittedCounter();
 
-    const errorFields = validateFields<TDataType>(initialFields, data);
-    const hasChanged = !deepEqual<TDataType>(initialData || ({} as TDataType), data);
+      const errorFields = validateFields<TDataType>(initialFields, data);
+      const hasChanged = !deepEqual<TDataType>(initialData || ({} as TDataType), data);
 
-    if (errorFields?.length > 0) {
-      const errorMessages = errorFields.map((err) => err.errorMessage);
-      addNotification?.(<ErrorDisplay errors={errorMessages} />, 'Error Validating Customer', 'error');
-      return;
-    }
+      if (errorFields?.length > 0) {
+        const errorMessages = errorFields.map((err) => err.errorMessage);
+        addNotification?.(<ErrorDisplay errors={errorMessages} />, 'Error Validating Customer', 'error');
+        return;
+      }
 
-    if (typeof onAccept === 'function' && hasChanged) {
-      onAccept(data);
-    } else {
-      onFinish?.(event);
-    }
-  };
+      if (typeof onAccept === 'function' && hasChanged) {
+        onAccept(data);
+      } else {
+        onFinish?.(event);
+      }
+    },
+    [addNotification, data, incrementSubmittedCounter, initialData, initialFields, onAccept, onFinish],
+  );
+
   return (
     <Button id="form-button-accept" onClick={onSubmit}>
       Accept

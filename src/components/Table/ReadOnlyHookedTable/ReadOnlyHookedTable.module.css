@@ -54,14 +54,14 @@
 .table-wrapper th {
   border-bottom: 1px solid lightgray;
   border-right: 1px solid lightgray;
-  padding: 2px 4px;
+  padding: 0.2rem 0.4rem;
   text-align: left;
   position: relative;
   height: 24px;
 }
 
 .table-wrapper td {
-  padding: 2px 4px;
+  padding: 0.2rem 0.4rem;
   height: 24px;
   white-space: nowrap;
   text-overflow: ellipsis;

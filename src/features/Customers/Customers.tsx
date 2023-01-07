@@ -1,5 +1,5 @@
 // components
-import { ReadOnlyTable, PageSpinner, Link, Outlet } from 'components';
+import { Link, Outlet } from 'components';
 import TableActions from './components/TableActions';
 // hooks
 import { useFetchCustomers, useLocation, useMemo } from 'hooks';
@@ -8,11 +8,16 @@ import { NewIcon } from 'icons';
 // types
 import type { CustomerType, ColumnDef } from 'types';
 import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
+import { ColumnMetaState, TableContextProvider, useTableContext } from 'contexts';
 
 const title = 'Customers';
 
-const Customers = () => {
+const CustomersBase = () => {
+  const { state } = useTableContext();
+  console.log('state', state);
+
   const dataHook = useFetchCustomers();
+
   const location = useLocation();
 
   const columns: ColumnDef<CustomerType>[] = useMemo(
@@ -61,6 +66,24 @@ const Customers = () => {
       />
       <Outlet />
     </>
+  );
+};
+
+const Customers = () => {
+  const columnMeta: ColumnMetaState = useMemo(
+    () => [
+      { id: 'documentId', name: 'ID' },
+      { id: 'initials', name: 'Initials' },
+      { id: 'firstName', name: 'First Name' },
+      { id: 'lastName', name: 'Last Name' },
+    ],
+    [],
+  );
+
+  return (
+    <TableContextProvider columnMeta={columnMeta}>
+      <CustomersBase />
+    </TableContextProvider>
   );
 };
 

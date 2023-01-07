@@ -5,7 +5,7 @@ import { FilterIcon } from 'icons';
 // contexts
 import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
 // react
-import { Fragment, memo, useEffect, useRef, useState } from 'react';
+import { Fragment, memo, useEffect, useRef, useState, useCallback } from 'react';
 // react table
 import {
   getExpandedRowModel,
@@ -27,6 +27,8 @@ import { RankingInfo, rankItem } from '@tanstack/match-sorter-utils';
 import type { ReadOnlyProps } from './ReadOnlyHookedTable.types';
 import Header from 'components/Header/Header';
 import { TableActionsStyled } from 'styles';
+import { IconButton } from 'components';
+import FormFilter from '../FormFilter/FormFilter';
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -58,13 +60,17 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
   dataHook,
   title,
   showHeader = true,
-  allowFiltering,
+  allowFiltering = true,
 }: ReadOnlyProps<TData>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const {
-    state: { columnFilters },
+    state: { columnFilters, showColumnFilters },
     dispatch,
   } = useTableContext();
+
+  const onSetShowFilters = useCallback(() => {
+    dispatch({ type: TableContextActionKind.toggleShowColumnFilters });
+  }, [dispatch]);
 
   const isInfinite = isInfiniteResponse(dataHook);
 
@@ -134,15 +140,15 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
         <Header title={title}>
           <TableActionsStyled>
             {actions}
-            {/* {allowFiltering && (
-              <IconButton id="show-filters" onClick={() => setShowFilterSettings(true)} icon={<FilterIcon />} />
-            )} */}
+            {allowFiltering && <IconButton id="show-filters" onClick={onSetShowFilters} icon={<FilterIcon />} />}
           </TableActionsStyled>
         </Header>
       )}
       {/* <FilterSettings onFinish={() => setShowFilterSettings(false)} columns={columns} /> */}
       {isLoading && <FallBack />}
+      {showColumnFilters && <FormFilter />}
       <div
+        id="table-wrapper"
         ref={parentRef}
         style={{ height: height }}
         className={styles['table-wrapper']}

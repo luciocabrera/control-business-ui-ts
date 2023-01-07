@@ -114,7 +114,7 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
       )}
       {/* <FilterSettings onFinish={() => setShowFilterSettings(false)} columns={columns} /> */}
       {isLoading && <FallBack />}
-      <div ref={parentRef} style={{ height: height }} className={styles['table-wrapper']}>
+      <div id="table-wrapper" ref={parentRef} style={{ height: height }} className={styles['table-wrapper']}>
         <table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
