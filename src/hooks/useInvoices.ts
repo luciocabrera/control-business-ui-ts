@@ -3,9 +3,17 @@ import { endpoints } from '../configs/configs';
 // hooks
 import { useApiData, useApiDataList, useApiRefreshData, useApiRequest } from './useApi';
 // types
-import type { ApiResponse, InvoiceCreateType, InvoiceType, OptionsType } from '../types';
+import type {
+  ApiResponse,
+  DailyCurrentMonth,
+  InvoiceCreateType,
+  InvoicesStats,
+  InvoiceType,
+  OptionsType,
+} from '../types';
 // react
 import { useCallback } from 'react';
+import { parseToNumber } from 'utilities';
 // utilities
 
 type IdType = string | number | undefined | null;
@@ -20,6 +28,54 @@ export const useRefreshInvoices = () => {
 
   return useCallback(() => mutate(`${endpoints.invoices}`), [mutate]);
 };
+
+export const useFetchInvoicesStats = (type: string = 'daily_current_month') =>
+  useApiDataList({
+    endpointUrl: `${endpoints.invoices}/stats/${type}`,
+    transformData: (data: InvoicesStats[]) => {
+      const seriesInvoices: DailyCurrentMonth[] = [];
+      const seriesSubTotalSum: DailyCurrentMonth[] = [];
+      const seriesTaxesSum: DailyCurrentMonth[] = [];
+      data.forEach((record: InvoicesStats) => {
+        seriesInvoices.push({
+          date: record.date
+            ? new Date(record.date as unknown as string).toLocaleDateString()
+            : record.year?.toString() ?? '',
+          value: parseToNumber(record.invoicesCount),
+        });
+        seriesSubTotalSum.push({
+          date: record.date
+            ? new Date(record.date as unknown as string).toLocaleDateString()
+            : record.year?.toString() ?? '',
+          value: parseToNumber(record.subtotalSum),
+        });
+        seriesTaxesSum.push({
+          date: record.date
+            ? new Date(record.date as unknown as string).toLocaleDateString()
+            : record.year?.toString() ?? '',
+          value: parseToNumber(record.taxesSum),
+        });
+      });
+      return {
+        invoices: [
+          {
+            label: 'Invoices',
+            data: seriesInvoices,
+          },
+        ],
+        amounts: [
+          {
+            label: 'Sub Total',
+            data: seriesSubTotalSum,
+          },
+          {
+            label: 'Taxes',
+            data: seriesTaxesSum,
+          },
+        ],
+      };
+    },
+  });
 
 export const useFetchInvoice = (invoiceId: IdType) =>
   useApiData<InvoiceType>({

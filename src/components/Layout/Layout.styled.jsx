@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const ContentStyled = styled.div`
   padding: 1rem 1.5rem;
+  width: calc(100% - 3rem);
+  height: calc(100% - 4.5rem);
 `;
 
 export const HeaderStyled = styled.header`

@@ -72,7 +72,7 @@ export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
   transformData,
   refreshInterval,
 }: UseApiDataArgs<TDataType, TPreTransformDataType>): UseApiDataResponse<TDataType> => {
-  const accessToken = ''; // useAccessToken();
+  const accessToken = 'token'; // useAccessToken();
   const shouldExecute = getShouldExecute(accessToken);
 
   const { data, error, mutate, isValidating, isLoading } = useSWR<TDataType>(
@@ -134,7 +134,7 @@ export const useApiInfiniteData = <TDataType, TPreTransformDataType = TDataType>
 }: UseApiDataArgs<TDataType, TPreTransformDataType> & {
   pageSize: number;
 }): UseApiInfiniteDataResponse<TDataType> => {
-  const accessToken = ''; // useAccessToken();
+  const accessToken = 'token'; // useAccessToken();
   const shouldExecute = getShouldExecute(accessToken);
   const { data, error, size, setSize, isValidating, isLoading, ...rest }: SWRInfiniteResponse<TDataType> =
     useSWRInfinite<TDataType>(
@@ -200,7 +200,7 @@ export const useApiDataList = <TDataType, TPreTransformDataType = TDataType>(
 export const useApiRefreshData = () => useSWRConfig();
 
 export const useApiRequest = () => {
-  const accessToken = ''; // useAccessToken();
+  const accessToken = 'token'; // useAccessToken();
   return useCallback(
     async <T>(endpointUrl: RequestInfo | URL, customOptions?: OptionsType) => {
       const requestOptions = getRequestOptions(customOptions, accessToken);
@@ -211,7 +211,7 @@ export const useApiRequest = () => {
 };
 
 export const useApiDownload = () => {
-  const accessToken = ''; // useAccessToken();
+  const accessToken = 'token'; // useAccessToken();
   return useCallback(
     async (endpointUrl: RequestInfo | URL, fileName: string, customOptions?: OptionsType) => {
       const requestOptions = getRequestOptions(customOptions, accessToken);

@@ -2,6 +2,7 @@
 import { Routes, Route, FallBack, Layout } from 'components';
 // contexts
 import { NotificationContextProvider, ToastContextProvider } from 'contexts';
+import CurrentMonthChart from 'features/Home/components/CurrentMonthChart/CurrentMonthChart';
 // hooks
 import { useLocation } from 'hooks';
 // react
@@ -15,6 +16,8 @@ const ViewCustomer = lazy(() => import(/* webpackChunkName: "ViewCustomer" */ 'f
 const Invoices = lazy(() => import(/* webpackChunkName: "Invoices" */ 'features/Invoices/Invoices'));
 const Invoice = lazy(() => import(/* webpackChunkName: "Invoice" */ 'features/Invoice/Invoice'));
 const ViewInvoice = lazy(() => import(/* webpackChunkName: "ViewInvoice" */ 'features/ViewInvoice/ViewInvoice'));
+
+const Home = lazy(() => import(/* webpackChunkName: "Home" */ 'features/Home/Home'));
 
 type StateLocation = { backgroundLocation?: string } | undefined;
 
@@ -32,7 +35,7 @@ const App = () => {
               index
               element={
                 <Suspense fallback={<FallBack />}>
-                  <p>Welcome!!!</p>
+                  <Home />
                 </Suspense>
               }
             />

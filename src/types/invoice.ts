@@ -60,3 +60,24 @@ export type InvoiceCreateType = Omit<
   InvoiceType,
   'invoiceId' | 'updatedAt' | 'createdAt' | 'customer' | 'details' | 'date' | 'createdByAlias' | 'updatedByAlias'
 > & { date: Date; invoiceId?: number; customerId: number; details: InvoiceDetailCreate[] };
+
+export type InvoicesStats = {
+  subtotalSum: number;
+  totalSum: number;
+  taxesSum: number;
+  subtotalMin: number;
+  totalMin: number;
+  taxesMin: number;
+  subtotalMax: number;
+  totalMax: number;
+  taxesMax: number;
+  subtotalAvg: number;
+  totalAvg: number;
+  taxesAvg: number;
+  invoicesCount: number;
+  date?: Date;
+  year?: number | string;
+  period?: string;
+};
+
+export type DailyCurrentMonth = { date: string; value: number };

@@ -1,0 +1,51 @@
+.card-chart-wrapper {
+  width: 100%;
+  height: auto;
+}
+
+.card-chart-body {
+  width: 100%;
+  height: 80%;
+  background: white;
+  min-width: 300px;
+}
+
+.card-chart-header > .title {
+  font-weight: bolder;
+}
+/* .card-chart-wrapper {
+  width: calc(50% - 0.5rem);
+  height: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 300px;
+  background: white;
+  border-radius: 0.8rem;
+  box-shadow: 0 30px 40px rgba(0, 0, 0, 0.1);
+}
+
+
+.card-chart-header {
+  width: 100%;
+  height: 20%;
+  background: white;
+  min-width: 300px;
+  padding-left: 1.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 0;
+}
+
+.card-chart-header > .title {
+  font-weight: bolder;
+}
+
+.card-chart-header > .subtitle {
+  font-weight: bolder;
+}
+
+.card-chart-body {
+  width: 100%;
+  height: 80%;
+  background: white;
+  min-width: 300px;
+} */

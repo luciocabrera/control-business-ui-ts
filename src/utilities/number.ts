@@ -11,5 +11,9 @@ export const getFormattedNumber = (value?: string | number, output: 'currency' |
     case 'number':
     default:
       return new Intl.NumberFormat().format(sanitizedValue);
+    // Number(Math.round(parseFloat(value + 'e' + decimalPlaces)) + 'e-' + decimalPlaces).toFixed(decimalPlaces);
   }
 };
+
+export const parseToNumber = (value?: string | number, decimalPlaces: number = 2) =>
+  Number(Math.round(parseFloat(value + 'e' + decimalPlaces)) + 'e-' + decimalPlaces);
