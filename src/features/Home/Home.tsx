@@ -1,5 +1,6 @@
 import React from 'react';
 import CurrentMonthChart from './components/CurrentMonthChart/CurrentMonthChart';
+import SummaryLastMonthsChart from './components/SummaryLastMonthsChart/SummaryLastMonthsChart';
 import SummaryYearsChart from './components/SummaryYearsChart/SummaryYearsChart';
 
 const Home = () => {
@@ -19,6 +20,7 @@ const Home = () => {
       }}
     >
       <CurrentMonthChart />
+      <SummaryLastMonthsChart />
       <SummaryYearsChart />
     </div>
   );

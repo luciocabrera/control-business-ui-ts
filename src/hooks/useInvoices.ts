@@ -29,6 +29,14 @@ export const useRefreshInvoices = () => {
   return useCallback(() => mutate(`${endpoints.invoices}`), [mutate]);
 };
 
+const getAxisValue = ({ type, record }: { type: string; record: InvoicesStats }) => {
+  if (type === 'daily_current_month') return new Date(record.date as unknown as string).toLocaleDateString();
+  if (type === 'yearly') return record.year?.toString() ?? '';
+  if (type === 'monthly') return record.period?.toString() ?? '';
+
+  return '';
+};
+
 export const useFetchInvoicesStats = (type: string = 'daily_current_month') =>
   useApiDataList({
     endpointUrl: `${endpoints.invoices}/stats/${type}`,
@@ -38,21 +46,15 @@ export const useFetchInvoicesStats = (type: string = 'daily_current_month') =>
       const seriesTaxesSum: DailyCurrentMonth[] = [];
       data.forEach((record: InvoicesStats) => {
         seriesInvoices.push({
-          date: record.date
-            ? new Date(record.date as unknown as string).toLocaleDateString()
-            : record.year?.toString() ?? '',
+          date: getAxisValue({ type, record }),
           value: parseToNumber(record.invoicesCount),
         });
         seriesSubTotalSum.push({
-          date: record.date
-            ? new Date(record.date as unknown as string).toLocaleDateString()
-            : record.year?.toString() ?? '',
+          date: getAxisValue({ type, record }),
           value: parseToNumber(record.subtotalSum),
         });
         seriesTaxesSum.push({
-          date: record.date
-            ? new Date(record.date as unknown as string).toLocaleDateString()
-            : record.year?.toString() ?? '',
+          date: getAxisValue({ type, record }),
           value: parseToNumber(record.taxesSum),
         });
       });

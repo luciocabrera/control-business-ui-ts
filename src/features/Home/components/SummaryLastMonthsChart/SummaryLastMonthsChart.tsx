@@ -3,11 +3,11 @@ import { useFetchInvoicesStats } from 'hooks';
 import React from 'react';
 import type { AxisOptions } from 'react-charts';
 import type { DailyCurrentMonth } from 'types';
-import styles from './CurrentMonthChart.module.css';
+import styles from './SummaryLastMonthsChart.module.css';
 
-const CurrentMonthChart = () => {
-  const { data, isLoading } = useFetchInvoicesStats();
-  debugger;
+const SummaryLastMonthsChart = () => {
+  const { data, isLoading } = useFetchInvoicesStats('monthly');
+
   const primaryAxis = React.useMemo(
     (): AxisOptions<DailyCurrentMonth> => ({
       getValue: (datum) => datum.date,
@@ -44,9 +44,9 @@ const CurrentMonthChart = () => {
     <>
       <div className={styles['card-chart-wrapper']}>
         <CardChart
-          title={'Amounts current month'}
-          subtitle={'Sub total, Taxes and Total grouped by Day'}
-          colorTitleClass="color3"
+          title={'Amounts by Month'}
+          subtitle={'Sub total, Taxes and Total grouped by Month in the last 12 months'}
+          colorTitleClass="color4"
           data={data.amounts}
           primaryAxis={primaryAxis}
           secondaryAxes={amountAxes}
@@ -54,9 +54,9 @@ const CurrentMonthChart = () => {
       </div>
       <div className={styles['card-chart-wrapper']}>
         <CardChart
-          title={'Invoices current month'}
-          subtitle={'Nr of Invoices groped by Day'}
-          colorTitleClass="color3"
+          title={'Invoices by Month'}
+          subtitle={'Nr of Invoices groped by Month in the last 12 months'}
+          colorTitleClass="color4"
           data={data.invoices}
           primaryAxis={primaryAxis}
           secondaryAxes={invoicesAxes}
@@ -66,4 +66,4 @@ const CurrentMonthChart = () => {
   );
 };
 
-export default CurrentMonthChart;
+export default SummaryLastMonthsChart;

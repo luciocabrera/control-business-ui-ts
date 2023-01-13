@@ -5,7 +5,7 @@
 
 .card-chart-body {
   width: 100%;
-  height: 80%;
+  height: calc(80% - 2rem);
   background: white;
   min-width: 300px;
 }
@@ -13,6 +13,25 @@
 .card-chart-header > .title {
   font-weight: bolder;
 }
+.card-chart-header > .subtitle {
+  font-weight: 400;
+}
+
+.color3 {
+  color: #224b34;
+}
+
+.color4 {
+  color: #ec4899;
+}
+.color5 {
+  color: #ecb22d;
+}
+
+.card-chart-header {
+  padding: 1rem 1.2rem 1rem;
+}
+
 /* .card-chart-wrapper {
   width: calc(50% - 0.5rem);
   height: 50%;

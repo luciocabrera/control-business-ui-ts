@@ -17,7 +17,7 @@ const useStoreData = <TDataType extends Record<string, unknown>>(
   initialState?: TDataType,
 ): {
   get: () => TDataType | undefined;
-  set: (value: TDataType) => void;
+  set: (value: Partial<TDataType>) => void;
   subscribe: (callback: () => void) => () => void;
   getFormStatus: () => FormStatusType;
   incrementSubmittedCounter: () => void;

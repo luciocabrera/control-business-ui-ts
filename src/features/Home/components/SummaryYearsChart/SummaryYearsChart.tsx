@@ -11,6 +11,7 @@ const SummaryYearsChart = () => {
   const primaryAxis = React.useMemo(
     (): AxisOptions<DailyCurrentMonth> => ({
       getValue: (datum) => datum.date,
+      scaleType: 'band',
     }),
     [],
   );
@@ -20,6 +21,7 @@ const SummaryYearsChart = () => {
       {
         getValue: (datum) => datum.value,
         stacked: true,
+        scaleType: 'linear',
       },
     ],
     [],
@@ -30,6 +32,7 @@ const SummaryYearsChart = () => {
       {
         getValue: (datum) => datum.value,
         elementType: 'area',
+        scaleType: 'linear',
       },
     ],
     [],
@@ -43,6 +46,7 @@ const SummaryYearsChart = () => {
         <CardChart
           title={'Amounts by Year'}
           subtitle={'Sub total, Taxes and Total grouped by Year'}
+          colorTitleClass="color5"
           data={data.amounts}
           primaryAxis={primaryAxis}
           secondaryAxes={amountAxes}
@@ -52,6 +56,7 @@ const SummaryYearsChart = () => {
         <CardChart
           title={'Invoices by Year'}
           subtitle={'Nr of Invoices groped by Year'}
+          colorTitleClass="color5"
           data={data.invoices}
           primaryAxis={primaryAxis}
           secondaryAxes={invoicesAxes}
