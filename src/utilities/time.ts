@@ -25,3 +25,8 @@ export const getDateAsString = (
       return iso ? jsDate.toISOString() : jsDate.toLocaleString();
   }
 };
+
+export const isDateBetween = ({ dateToCheck, from, to }: { dateToCheck: string | Date; from: Date; to: Date }) => {
+  const d = new Date(dateToCheck);
+  return from <= d && d <= to;
+};

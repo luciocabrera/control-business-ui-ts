@@ -10,7 +10,6 @@ type Series<TData> = {
 type CardChartProps<TData> = {
   title: string;
   subtitle: string;
-  colorTitleClass: string;
   data: Series<TData>[];
   primaryAxis: AxisOptions<TData>;
   secondaryAxes: AxisOptions<TData>[];
@@ -20,7 +19,6 @@ const CardChart = <TData extends Record<string, unknown>>({
   data,
   title,
   subtitle,
-  colorTitleClass,
   primaryAxis,
   secondaryAxes,
 }: CardChartProps<TData>) => {
@@ -29,8 +27,8 @@ const CardChart = <TData extends Record<string, unknown>>({
     <div className={styles['card-chart-wrapper']}>
       {(title || subtitle) && (
         <div className={styles['card-chart-header']}>
-          {title && <div className={[styles['title'], styles[colorTitleClass]].join(' ')}>{title}</div>}
-          {subtitle && <div className={[styles['subtitle'], styles[colorTitleClass]].join(' ')}>{subtitle}</div>}
+          {title && <div className={styles['title']}>{title}</div>}
+          {subtitle && <div className={styles['subtitle']}>{subtitle}</div>}
         </div>
       )}
       <div className={styles['card-chart-body']}>

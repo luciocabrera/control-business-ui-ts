@@ -13,15 +13,15 @@ type FormStatusType = {
   submittedCounter: number;
 };
 
-const useStoreData = <TDataType extends Record<string, unknown>>(
-  initialState?: TDataType,
-): {
+type UseStoreData<TDataType> = {
   get: () => TDataType | undefined;
   set: (value: Partial<TDataType>) => void;
   subscribe: (callback: () => void) => () => void;
   getFormStatus: () => FormStatusType;
   incrementSubmittedCounter: () => void;
-} => {
+};
+
+const useStoreData = <TDataType extends Record<string, unknown>>(initialState?: TDataType): UseStoreData<TDataType> => {
   const storeFormData = useRef(initialState);
   const [storeFormStatus, setStoreFormStatus] = useState({ submittedCounter: 0 });
 
@@ -33,7 +33,6 @@ const useStoreData = <TDataType extends Record<string, unknown>>(
 
   const set = useCallback((value: Partial<TDataType>) => {
     storeFormData.current = { ...storeFormData.current, ...value } as TDataType;
-    console.log('current', storeFormData.current);
     subscribers.current.forEach((callback) => callback());
   }, []);
 
@@ -61,9 +60,16 @@ type UseStoreDataReturnType = ReturnType<typeof useStoreData>;
 
 const StoreContext = createContext<UseStoreDataReturnType | null>(null);
 
+type UsesStore<SelectorOutput, TDataType> = [
+  SelectorOutput,
+  (value: Partial<TDataType>) => void,
+  () => FormStatusType,
+  () => void,
+];
+
 export const useStore = <SelectorOutput, TDataType>(
   selector: (store: TDataType) => SelectorOutput,
-): [SelectorOutput, (value: Partial<TDataType>) => void, () => FormStatusType, () => void] => {
+): UsesStore<SelectorOutput, TDataType> => {
   const store = useContext(StoreContext);
   if (!store) {
     throw new Error('Store not found');
@@ -74,7 +80,9 @@ export const useStore = <SelectorOutput, TDataType>(
   return [state, store.set, store.getFormStatus, store.incrementSubmittedCounter];
 };
 
-export const useFormStatusStore = (): [FormStatusType, () => void] => {
+type UseFormStatusStore = [FormStatusType, () => void];
+
+export const useFormStatusStore = (): UseFormStatusStore => {
   const store = useContext(StoreContext);
   if (!store) {
     throw new Error('Store not found');

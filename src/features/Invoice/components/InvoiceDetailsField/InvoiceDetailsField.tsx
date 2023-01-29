@@ -1,18 +1,18 @@
 // components
-import { NumberDisplay, Portal, ReadOnlyTable, IconButton, FieldGroupStyled, DateDisplay } from 'components';
+import { Portal, ReadOnlyTable, IconButton, FieldGroupStyled } from 'components';
 import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 // contexts
 import { useStore } from 'contexts';
 // hooks
 import { useCallback, useMemo, useState } from 'hooks';
+import { useInvoiceDetailsConfig } from './useInvoiceDetailsConfig';
 // icons
 import { CopyIcon, NewIcon, EditIcon, DeleteIcon } from 'icons';
 // types
-import type { InvoiceFormType, InvoicesDetails, ColumnDef } from 'types';
+import type { InvoiceFormType, InvoicesDetails, ColumnDef, CellContext } from 'types';
 import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
 // styles
-import { LabelDetailsStyled } from './InvoiceDetailsField.styled';
-import { TableActionsStyled } from 'styles';
+import styles from './InvoiceDetailsField.module.css';
 // utilities
 import { memo } from 'utilities';
 
@@ -29,61 +29,11 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     (store) => store.taxesPercentage,
   );
   const [, setTotal] = useStore<number, Pick<InvoiceFormType, 'total'>>((store) => store.total);
-
+  const columnsDetails = useInvoiceDetailsConfig();
   const normalizedValue = useMemo(
     () => normalize?.(invoicesDetails) ?? invoicesDetails,
     [invoicesDetails, normalize],
   ) as unknown as InvoicesDetails[];
-
-  const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
-    () => [
-      {
-        accessorKey: 'productNameWithCode',
-        header: 'Product',
-      },
-      {
-        accessorKey: 'date',
-        header: 'Date',
-        cell: ({
-          row: {
-            original: { date },
-          },
-        }) => <DateDisplay date={date} />,
-      },
-      {
-        accessorKey: 'description',
-        header: 'Description',
-      },
-      {
-        accessorKey: 'quantity',
-        header: 'Quantity',
-        cell: ({
-          row: {
-            original: { quantity },
-          },
-        }) => <NumberDisplay value={quantity} output={'number'} />,
-      },
-      {
-        accessorKey: 'priceUnit',
-        header: 'Price Unit',
-        cell: ({
-          row: {
-            original: { priceUnit },
-          },
-        }) => <NumberDisplay value={priceUnit} output={'currency'} />,
-      },
-      {
-        accessorKey: 'priceQuantity',
-        header: 'Price Quantity',
-        cell: ({
-          row: {
-            original: { priceQuantity },
-          },
-        }) => <NumberDisplay value={priceQuantity} output={'currency'} />,
-      },
-    ],
-    [],
-  );
 
   const updateAmounts = useCallback(
     (newDetails: InvoicesDetails[]) => {
@@ -139,53 +89,51 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     [invoicesDetails, setInvoicesDetails, updateAmounts],
   );
 
+  const getActionsCell = useCallback(
+    ({ row: { original } }: CellContext<InvoicesDetails, unknown>) => (
+      <div className={styles['actions-wrapper']}>
+        <IconButton id="edit-invoice-detail" icon={<EditIcon />} onClick={() => onEditDetail(original)} />
+        <IconButton id="copy-invoice-detail" icon={<CopyIcon />} onClick={() => onCopyDetail(original)} />
+        <IconButton id="delete-invoice-detail" icon={<DeleteIcon />} onClick={() => onRemoveDetail(original)} />
+      </div>
+    ),
+    [onCopyDetail, onEditDetail, onRemoveDetail],
+  );
+
   const columnsWithActions = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       ...columnsDetails,
       {
-        accessorKey: 'actions',
+        accessorKey: '',
         header: 'Actions',
         sort: false,
-        cell: ({ row: { original } }) => (
-          <TableActionsStyled>
-            <IconButton id="edit-invoice-detail" icon={<EditIcon />} onClick={() => onEditDetail(original)} />
-            <IconButton id="copy-invoice-detail" icon={<CopyIcon />} onClick={() => onCopyDetail(original)} />
-            <IconButton id="delete-invoice-detail" icon={<DeleteIcon />} onClick={() => onRemoveDetail(original)} />
-          </TableActionsStyled>
-        ),
+        enableResizing: false,
+        cell: getActionsCell,
       },
     ],
-    [columnsDetails, onCopyDetail, onEditDetail, onRemoveDetail],
+    [columnsDetails, getActionsCell],
   );
 
+  const hideDetailForm = useCallback(() => setShowDetailForm(false), []);
+
   const labelWithAdd = (
-    <LabelDetailsStyled>
+    <div className={styles['label-wrapper']}>
       <span>Details</span>
-      <div id="icon-button">
+      <div id="icon-button" className={styles['icon']}>
         <IconButton id="new-invoice-detail" icon={<NewIcon />} onClick={onAddDetail} />
       </div>
-    </LabelDetailsStyled>
+    </div>
   );
 
   return (
     <>
-      <FieldGroupStyled key={`table-form-field-invoice-details`} id="field-group-styled--invoice-details">
+      <FieldGroupStyled key={`table-form-field-invoice-details`} id="field-group-styled-invoice-details">
         <legend>{labelWithAdd}</legend>
-
-        <ReadOnlyTable<InvoicesDetails>
-          data={normalizedValue}
-          columns={columnsWithActions}
-          // useRadius
-          showHeader={false}
-        />
+        <ReadOnlyTable<InvoicesDetails> data={normalizedValue} columns={columnsWithActions} showHeader={false} />
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>
-          <InvoiceDetailForm
-            detail={detail}
-            onAcceptDetail={onAcceptDetail}
-            onFinish={() => setShowDetailForm(false)}
-          />
+          <InvoiceDetailForm detail={detail} onAcceptDetail={onAcceptDetail} onFinish={hideDetailForm} />
         </Portal>
       )}
     </>

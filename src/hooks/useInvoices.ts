@@ -3,14 +3,7 @@ import { endpoints } from '../configs/configs';
 // hooks
 import { useApiData, useApiDataList, useApiRefreshData, useApiRequest } from './useApi';
 // types
-import type {
-  ApiResponse,
-  DailyCurrentMonth,
-  InvoiceCreateType,
-  InvoicesStats,
-  InvoiceType,
-  OptionsType,
-} from '../types';
+import type { ApiResponse, DataRowChart, InvoiceCreateType, InvoicesStats, InvoiceType, OptionsType } from '../types';
 // react
 import { useCallback } from 'react';
 import { parseToNumber } from 'utilities';
@@ -41,9 +34,9 @@ export const useFetchInvoicesStats = (type: string = 'daily_current_month') =>
   useApiDataList({
     endpointUrl: `${endpoints.invoices}/stats/${type}`,
     transformData: (data: InvoicesStats[]) => {
-      const seriesInvoices: DailyCurrentMonth[] = [];
-      const seriesSubTotalSum: DailyCurrentMonth[] = [];
-      const seriesTaxesSum: DailyCurrentMonth[] = [];
+      const seriesInvoices: DataRowChart[] = [];
+      const seriesSubTotalSum: DataRowChart[] = [];
+      const seriesTaxesSum: DataRowChart[] = [];
       data.forEach((record: InvoicesStats) => {
         seriesInvoices.push({
           date: getAxisValue({ type, record }),
@@ -75,6 +68,7 @@ export const useFetchInvoicesStats = (type: string = 'daily_current_month') =>
             data: seriesTaxesSum,
           },
         ],
+        data,
       };
     },
   });

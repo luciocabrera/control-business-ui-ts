@@ -28,6 +28,8 @@ export type {
   MouseEventHandler,
 } from 'react';
 
-export type { ColumnDef } from '@tanstack/react-table';
+export type { ColumnDef, CellContext } from '@tanstack/react-table';
+
+export type { ColumnMetaState } from 'contexts';
 
 export type Maybe<T> = T | undefined | null;

@@ -100,14 +100,14 @@ const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductP
     [description, products, quantity, setDescription, setPriceQuantity, setPriceUnit, setProductId],
   );
 
-  const onDescriptionChange = useCallback(
+  const handleOnDescriptionChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setDescription({ description: event.target.value });
     },
     [setDescription],
   );
 
-  const onDateChange = useCallback(
+  const handleOnDateChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setDate({ date: event.target.value });
     },
@@ -125,8 +125,8 @@ const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductP
         {...errorFieldProductId}
       />
       <TextInput
-        key={`field-input-price-productId`}
-        onChange={onDescriptionChange}
+        key={`field-input-description`}
+        onChange={handleOnDescriptionChange}
         {...descriptionField}
         {...props}
         {...errorDescriptionField}
@@ -134,7 +134,7 @@ const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductP
       />
       <TextInput
         key={`field-input-carried-out`}
-        onChange={onDateChange}
+        onChange={handleOnDateChange}
         {...dateField}
         {...props}
         {...errorDateField}

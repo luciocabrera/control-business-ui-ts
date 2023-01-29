@@ -1,55 +1,22 @@
 // components
 import { Link, Outlet } from 'components';
-import TableActions from './components/TableActions';
+import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
+// contexts
+import { TableContextProvider } from 'contexts';
 // hooks
-import { useFetchCustomers, useLocation, useMemo } from 'hooks';
+import { useFetchCustomers, useLocation } from 'hooks';
+import useCustomersConfig from './hooks/useCustomersConfig';
 // icons
 import { NewIcon } from 'icons';
 // types
-import type { CustomerType, ColumnDef } from 'types';
-import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
-import { ColumnMetaState, TableContextProvider, useTableContext } from 'contexts';
+import type { CustomerType } from 'types';
 
 const title = 'Customers';
 
 const CustomersBase = () => {
-  const { state } = useTableContext();
-  console.log('state', state);
-
   const dataHook = useFetchCustomers();
-
   const location = useLocation();
-
-  const columns: ColumnDef<CustomerType>[] = useMemo(
-    () => [
-      { accessorKey: 'documentTypeName', header: 'ID Type' },
-      { accessorKey: 'documentId', header: 'ID' },
-      { accessorKey: 'initials', header: 'Initials' },
-      { accessorKey: 'firstName', header: 'First Name' },
-      { accessorKey: 'lastName', header: 'Last Name' },
-      {
-        accessorKey: 'defaultPhone',
-        header: 'Phone Number',
-        cell: ({
-          row: {
-            original: { defaultPhone },
-          },
-        }) => defaultPhone?.phone ?? '',
-      },
-      {
-        accessorKey: 'actions',
-        header: '',
-        enableColumnSorting: false,
-        sort: false,
-        cell: ({
-          row: {
-            original: { peopleId },
-          },
-        }) => <TableActions customerId={peopleId} />,
-      },
-    ],
-    [],
-  );
+  const { columns } = useCustomersConfig();
 
   return (
     <>
@@ -70,15 +37,7 @@ const CustomersBase = () => {
 };
 
 const Customers = () => {
-  const columnMeta: ColumnMetaState = useMemo(
-    () => [
-      { id: 'documentId', name: 'ID' },
-      { id: 'initials', name: 'Initials' },
-      { id: 'firstName', name: 'First Name' },
-      { id: 'lastName', name: 'Last Name' },
-    ],
-    [],
-  );
+  const { columnMeta } = useCustomersConfig();
 
   return (
     <TableContextProvider columnMeta={columnMeta}>

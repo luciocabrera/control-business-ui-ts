@@ -11,9 +11,12 @@ type TabsProps = {
   tabs: TabType[];
 };
 
+// const Tab = () => {};
+
 const Tabs = ({ tabs, defaultSelectedTab }: TabsProps) => {
   const [active, setActive] = useState(defaultSelectedTab ?? tabs[0].key);
   const activeChildren = tabs.find((tab) => tab.key === active)?.children;
+  // const handleTabOnClick = useCallback((key: string) => setActive(key), []);
   return (
     <TabsStyled>
       <ButtonGroup>

@@ -1,0 +1,12 @@
+.home-wrapper {
+  display: flex;
+  /* flex-wrap: wrap;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  gap: 1rem;
+  box-shadow: 0 30px 40px rgba(0, 0, 0, 0.1); */
+  height: 100%;
+  container-type: inline-size;
+  container-name: home-wrapper;
+}

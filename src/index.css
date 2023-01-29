@@ -443,6 +443,29 @@ div [role='columnheader'] {
   cursor: pointer;
 }
 
+/* @media (max-width: 700px) {
+  [class*='section-wrapper'] {
+    overflow-y: auto;
+  }
+} */
+
+@container home-wrapper (max-width: 700px) {
+  [class*='section-wrapper'] {
+    overflow-y: auto;
+    height: -webkit-fill-available;
+  }
+}
+
+@container section-wrapper (max-width: 700px) {
+  [data-parent='section-wrapper'] {
+    width: calc(100% - 1rem) !important;
+  }
+  [data-dashboard-role='table'] {
+    padding: 1rem 0;
+    height: auto !important;
+  }
+}
+
 @container form-container (max-width: 700px) {
   main {
     padding: 1rem 1rem !important;

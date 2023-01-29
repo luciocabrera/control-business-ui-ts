@@ -2,14 +2,14 @@ import CardChart from 'components/CardChart/CardChart';
 import { useFetchInvoicesStats } from 'hooks';
 import React from 'react';
 import type { AxisOptions } from 'react-charts';
-import type { DailyCurrentMonth } from 'types';
+import type { DataRowChart } from 'types';
 import styles from './SummaryYearsChart.module.css';
 
 const SummaryYearsChart = () => {
   const { data, isLoading } = useFetchInvoicesStats('yearly');
 
   const primaryAxis = React.useMemo(
-    (): AxisOptions<DailyCurrentMonth> => ({
+    (): AxisOptions<DataRowChart> => ({
       getValue: (datum) => datum.date,
       scaleType: 'band',
     }),
@@ -30,7 +30,7 @@ const SummaryYearsChart = () => {
   const invoicesAxes = React.useMemo<AxisOptions<typeof data.invoices[number]['data'][number]>[]>(
     () => [
       {
-        getValue: (datum) => datum.value,
+        getValue: (datum: { value: any }) => datum.value,
         elementType: 'area',
         scaleType: 'linear',
       },
@@ -46,7 +46,6 @@ const SummaryYearsChart = () => {
         <CardChart
           title={'Amounts by Year'}
           subtitle={'Sub total, Taxes and Total grouped by Year'}
-          colorTitleClass="color5"
           data={data.amounts}
           primaryAxis={primaryAxis}
           secondaryAxes={amountAxes}
@@ -56,7 +55,6 @@ const SummaryYearsChart = () => {
         <CardChart
           title={'Invoices by Year'}
           subtitle={'Nr of Invoices groped by Year'}
-          colorTitleClass="color5"
           data={data.invoices}
           primaryAxis={primaryAxis}
           secondaryAxes={invoicesAxes}

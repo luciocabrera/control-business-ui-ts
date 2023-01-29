@@ -42,7 +42,6 @@ const FormFilter = <TData extends Record<string, unknown>>({
 
   const onSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    debugger;
     const selected = columns.find((field) => field.accessorKey === selectedField);
     if (selectedField && selected && condition && value)
       onAccept?.({

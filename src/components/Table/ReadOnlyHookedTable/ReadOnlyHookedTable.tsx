@@ -111,7 +111,7 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
       columnFilters,
       sorting,
     },
-    manualFiltering: true,
+    manualFiltering: isInfinite,
     manualSorting: isInfinite,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -169,7 +169,7 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
                             desc: <span>&#8595;</span>,
                           }[header.column.getIsSorted() as string] ?? null}
 
-                          {/* {header.column.getIsFiltered() ? <FilterIcon className={cls['header-icon']} /> : null} */}
+                          {header.column.getIsFiltered() ? <FilterIcon className={styles['header-icon']} /> : null}
                         </div>
                       )}
                       {header.column.getCanResize() && (

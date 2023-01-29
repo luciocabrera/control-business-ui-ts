@@ -80,4 +80,4 @@ export type InvoicesStats = {
   period?: string;
 };
 
-export type DailyCurrentMonth = { date: string; value: number };
+export type DataRowChart = { date: string; value: number };

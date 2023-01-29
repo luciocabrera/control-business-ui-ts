@@ -1,83 +1,23 @@
 // components
-import { PageSpinner, Link, Outlet, DateDisplay, ReadOnlyTable } from 'components';
-import TableActions from './components/TableActions';
+import { Link, Outlet } from 'components';
+import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
+// contexts
+import { TableContextProvider } from 'contexts';
 // hooks
-import { useFetchInvoices, useLocation, useMemo } from 'hooks';
+import { useFetchInvoices, useLocation } from 'hooks';
+import useInvoicesConfig from './hooks/useInvoicesConfig';
 // icons
 import { NewIcon } from 'icons';
 // types
-import type { ColumnDef, InvoiceType } from 'types';
-// utilities
-import { getFormattedNumber } from 'utilities';
-import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
+import type { InvoiceType } from 'types';
+import { memo } from 'react';
 
 const title = 'Invoices';
 
-const Invoices = () => {
+const InvoicesBase = () => {
   const dataHook = useFetchInvoices();
   const location = useLocation();
-
-  const columns: ColumnDef<InvoiceType>[] = useMemo(
-    () => [
-      { accessorKey: 'invoice', header: 'Invoice' },
-      {
-        accessorKey: 'date',
-        header: 'Date',
-        cell: ({
-          row: {
-            original: { date },
-          },
-        }) => <DateDisplay date={date} />,
-      },
-      {
-        accessorKey: 'customer',
-        header: 'Customer',
-      },
-      {
-        accessorKey: 'subtotal',
-        header: 'Subtotal',
-        cell: ({
-          row: {
-            original: { subtotal },
-          },
-        }) => getFormattedNumber(subtotal, 'currency'),
-      },
-      {
-        accessorKey: 'taxes',
-        header: 'Taxes',
-        cell: ({
-          row: {
-            original: { taxes },
-          },
-        }) => getFormattedNumber(taxes, 'currency'),
-      },
-      {
-        accessorKey: 'total',
-        header: 'Total',
-        cell: ({
-          row: {
-            original: { total },
-          },
-        }) => getFormattedNumber(total, 'currency'),
-      },
-      {
-        accessorKey: 'actions',
-        header: '',
-        enableColumnFilter: false,
-        enableColumnSorting: false,
-        enableColumnResizing: false,
-        canResize: false,
-        maxWidth: 150,
-        width: 10,
-        cell: ({
-          row: {
-            original: { invoiceId },
-          },
-        }) => <TableActions invoiceId={invoiceId} />,
-      },
-    ],
-    [],
-  );
+  const { columns } = useInvoicesConfig();
 
   return (
     <>
@@ -94,6 +34,16 @@ const Invoices = () => {
       />
       <Outlet />
     </>
+  );
+};
+
+const Invoices = () => {
+  const { columnMeta } = useInvoicesConfig();
+
+  return (
+    <TableContextProvider columnMeta={columnMeta}>
+      <InvoicesBase />
+    </TableContextProvider>
   );
 };
 
