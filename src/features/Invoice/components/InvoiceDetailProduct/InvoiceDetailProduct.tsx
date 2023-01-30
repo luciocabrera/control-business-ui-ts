@@ -1,7 +1,7 @@
 // components
 import { TextInput, Select } from 'components';
 // contexts
-import { useFormStatusStore, useStore } from 'contexts';
+import { useFormMetaContext, useFieldsContext } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
 // types
@@ -11,14 +11,16 @@ import type { InvoiceDetailForm, DateParameterType, FieldBaseValueType, ProductT
 import { getErrorField, validateField, memo, getDateAsString } from 'utilities';
 
 const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductProps) => {
-  const [productId, setProductId] = useStore<number, Pick<InvoiceDetailForm, 'productId'>>((store) => store.productId);
-  const [, setPriceUnit] = useStore<number, Pick<InvoiceDetailForm, 'priceUnit'>>((store) => store.priceUnit);
-  const [description, setDescription] = useStore<FieldBaseValueType, Pick<InvoiceDetailForm, 'description'>>(
+  const [productId, setProductId] = useFieldsContext<number, Pick<InvoiceDetailForm, 'productId'>>(
+    (store) => store.productId,
+  );
+  const [, setPriceUnit] = useFieldsContext<number, Pick<InvoiceDetailForm, 'priceUnit'>>((store) => store.priceUnit);
+  const [description, setDescription] = useFieldsContext<FieldBaseValueType, Pick<InvoiceDetailForm, 'description'>>(
     (store) => store.description,
   );
-  const [date, setDate] = useStore<DateParameterType, Pick<InvoiceDetailForm, 'date'>>((store) => store.date);
-  const [quantity] = useStore<number, Pick<InvoiceDetailForm, 'quantity'>>((store) => store.quantity);
-  const [, setPriceQuantity] = useStore<number, Pick<InvoiceDetailForm, 'priceQuantity'>>(
+  const [date, setDate] = useFieldsContext<DateParameterType, Pick<InvoiceDetailForm, 'date'>>((store) => store.date);
+  const [quantity] = useFieldsContext<number, Pick<InvoiceDetailForm, 'quantity'>>((store) => store.quantity);
+  const [, setPriceQuantity] = useFieldsContext<number, Pick<InvoiceDetailForm, 'priceQuantity'>>(
     (store) => store.priceQuantity || 0,
   );
 
@@ -33,8 +35,7 @@ const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductP
     [products],
   );
 
-  const [formStatus] = useFormStatusStore();
-  const { submittedCounter } = formStatus;
+  const [submittedCounter] = useFormMetaContext<number>('submittedCounter');
 
   // Product -Service
   // ---------------------------------------------------------------------------------------------------

@@ -2,32 +2,32 @@
 import ErrorDisplay from 'components/ErrorDisplay/ErrorDisplay';
 import Button from '../Button/Button';
 // contexts
-import { useAddNotification, useFormStatusStore, useStore } from 'contexts';
+import { useAddNotification, useFieldsContext, useFormMetaContext } from 'contexts';
 // react
 import { memo, useCallback } from 'react';
 // types
-import type { MouseEvent, FormBaseProps } from 'types';
+import type { MouseEvent, FormBaseProps, FormFieldType } from 'types';
 // utilities
 import { deepEqual, validateFields } from 'utilities';
 
 type ActionsProps<TDataType> = FormBaseProps<TDataType>;
 
-const Actions = <TDataType extends Record<string, unknown>>({
-  initialFields,
-  initialData,
-  onAccept,
-  onFinish,
-}: ActionsProps<TDataType>) => {
+const Actions = <TDataType extends Record<string, unknown>>({ onAccept, onFinish }: ActionsProps<TDataType>) => {
   const addNotification = useAddNotification();
-  const [data] = useStore<TDataType, TDataType>((store) => store);
-  const [, incrementSubmittedCounter] = useFormStatusStore();
+  const [data] = useFieldsContext<TDataType, TDataType>((store) => store);
+  const [initialFields] = useFormMetaContext('initialFields');
+
+  const [initialData] = useFormMetaContext('initialData');
+
+  const [submittedCounter, incrementSubmittedCounter] = useFormMetaContext<number>('submittedCounter');
+
   const onSubmit = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
-      incrementSubmittedCounter();
+      incrementSubmittedCounter?.(submittedCounter + 1);
 
-      const errorFields = validateFields<TDataType>(initialFields, data);
-      const hasChanged = !deepEqual<TDataType>(initialData || ({} as TDataType), data);
+      const errorFields = validateFields<TDataType>(initialFields as FormFieldType[], data);
+      const hasChanged = !deepEqual<TDataType>((initialData || {}) as TDataType, data);
 
       if (errorFields?.length > 0) {
         const errorMessages = errorFields.map((err) => err.errorMessage);
@@ -41,7 +41,16 @@ const Actions = <TDataType extends Record<string, unknown>>({
         onFinish?.(event);
       }
     },
-    [addNotification, data, incrementSubmittedCounter, initialData, initialFields, onAccept, onFinish],
+    [
+      addNotification,
+      data,
+      incrementSubmittedCounter,
+      initialData,
+      initialFields,
+      onAccept,
+      onFinish,
+      submittedCounter,
+    ],
   );
 
   return (

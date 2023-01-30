@@ -94,8 +94,6 @@ const FormFilter = () => {
       <Form<Record<string, unknown>>
         // icon={<CustomerIcon />}
         title={'title'}
-        initialFields={formFields}
-        initialData={initialValues}
         onAccept={onAccept}
         // onFinish={onFinish}
         // actions={<CustomerActions customer={customer} />}

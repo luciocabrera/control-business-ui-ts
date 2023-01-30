@@ -2,7 +2,7 @@
 import { Portal, ReadOnlyTable, IconButton, FieldGroupStyled } from 'components';
 import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 // contexts
-import { useStore } from 'contexts';
+import { useFieldsContext } from 'contexts';
 // hooks
 import { useCallback, useMemo, useState } from 'hooks';
 import { useInvoiceDetailsConfig } from './useInvoiceDetailsConfig';
@@ -20,15 +20,15 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [detail, setDetail] = useState<InvoicesDetails | undefined>();
 
-  const [invoicesDetails, setInvoicesDetails] = useStore<InvoicesDetails[], Pick<InvoiceFormType, 'details'>>(
+  const [invoicesDetails, setInvoicesDetails] = useFieldsContext<InvoicesDetails[], Pick<InvoiceFormType, 'details'>>(
     (store) => store.details,
   );
-  const [, setSubtotal] = useStore<number, Pick<InvoiceFormType, 'subtotal'>>((store) => store.subtotal);
-  const [, setTaxes] = useStore<number, Pick<InvoiceFormType, 'taxes'>>((store) => store.taxes);
-  const [taxesPercentage] = useStore<number, Pick<InvoiceFormType, 'taxesPercentage'>>(
+  const [, setSubtotal] = useFieldsContext<number, Pick<InvoiceFormType, 'subtotal'>>((store) => store.subtotal);
+  const [, setTaxes] = useFieldsContext<number, Pick<InvoiceFormType, 'taxes'>>((store) => store.taxes);
+  const [taxesPercentage] = useFieldsContext<number, Pick<InvoiceFormType, 'taxesPercentage'>>(
     (store) => store.taxesPercentage,
   );
-  const [, setTotal] = useStore<number, Pick<InvoiceFormType, 'total'>>((store) => store.total);
+  const [, setTotal] = useFieldsContext<number, Pick<InvoiceFormType, 'total'>>((store) => store.total);
   const columnsDetails = useInvoiceDetailsConfig();
   const normalizedValue = useMemo(
     () => normalize?.(invoicesDetails) ?? invoicesDetails,

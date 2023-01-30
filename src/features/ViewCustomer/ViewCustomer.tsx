@@ -181,8 +181,6 @@ const ViewCustomer = memo(() => {
       <Form<CustomerFormType>
         icon={<CustomerIcon />}
         title="View Customer"
-        initialFields={fields}
-        initialData={customer}
         actions={<CustomerActions customer={customer} />}
         onFinish={onFinish}
         height="600px"

@@ -94,8 +94,6 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
       <Form<InvoiceDetailFormType>
         icon={detailsViewImg}
         title={title}
-        initialFields={fields}
-        initialData={detail}
         onAccept={onAccept}
         actions={
           <Button id="invoice-details-actions-button-cancel" inverse onClick={onFinish}>

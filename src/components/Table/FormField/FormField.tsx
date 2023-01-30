@@ -2,7 +2,7 @@
 import { Select } from 'components';
 import { TextInputStyled } from 'components/Form/TextInput/TextInput.styled';
 // contexts
-import { useFormStatusStore, useStore } from 'contexts';
+import { useFormMetaContext, useFieldsContext } from 'contexts';
 // hooks
 import { useCallback, useMemo } from 'hooks';
 // types
@@ -14,12 +14,13 @@ import { getErrorField, validateField, memo } from 'utilities';
 const FormField = memo(({ field, ...props }: FormFieldProps) => {
   const { options, type, label, accessor, readonly, placeholder, rules } = field;
 
-  const [fieldValue, setStore] = useStore<FieldBaseValueType, Record<string, FieldBaseValueType>>(
+  const [fieldValue, setStore] = useFieldsContext<FieldBaseValueType, Record<string, FieldBaseValueType>>(
     (store) => store[field.accessor],
   );
 
-  const [formStatus] = useFormStatusStore();
-  const { submittedCounter } = formStatus;
+  const [submittedCounter] = useFormMetaContext<number>('submittedCounter');
+
+  console.log('submittedCounter', submittedCounter);
 
   const errorFields = useMemo(
     () => (submittedCounter > 0 ? validateField(field, fieldValue) : []),

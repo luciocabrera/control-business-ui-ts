@@ -1,8 +1,8 @@
 import type { FormFieldType, ReactElement, ModalProps, MouseEvent, ReactNode } from 'types';
 
 export type FormBaseProps<TDataType> = {
-  initialFields: FormFieldType[];
-  initialData?: TDataType;
+  // initialFields: FormFieldType[];
+  // initialData?: TDataType;
   width?: string;
   height?: string;
   onAccept?: (data: TDataType) => void;

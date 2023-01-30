@@ -132,8 +132,6 @@ const Invoice = () => {
       <Form<InvoiceFormType>
         icon={<InvoiceIcon />}
         title={title}
-        initialFields={fields}
-        initialData={invoiceForm}
         onAccept={handleOnAccept}
         actions={<InvoiceActions invoice={invoiceForm} />}
         onFinish={handleOnFinish}

@@ -30,15 +30,7 @@ const TableDetailForm = <TData extends Record<string, unknown>>({
 
   return (
     <FormDataContextProvider<TData> initialFields={fields} initialData={detail}>
-      <Form<TData>
-        icon={detailsViewImg}
-        title={title}
-        initialFields={fields}
-        initialData={detail}
-        onAccept={onAccept}
-        onFinish={onFinish}
-        viewMode={false}
-      />
+      <Form<TData> icon={detailsViewImg} title={title} onAccept={onAccept} onFinish={onFinish} viewMode={false} />
     </FormDataContextProvider>
   );
 };

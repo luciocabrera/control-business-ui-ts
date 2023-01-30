@@ -1,7 +1,7 @@
 // components
 import TextInput from 'components/Form/TextInput/TextInput';
 // contexts
-import { useFormStatusStore, useStore } from 'contexts';
+import { useFormMetaContext, useFieldsContext } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
 // types
@@ -11,14 +11,17 @@ import type { InvoiceDetailForm } from 'types';
 import { getErrorField, validateField, memo, getFormattedNumber } from 'utilities';
 
 const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
-  const [quantity, setQuantity] = useStore<number, Pick<InvoiceDetailForm, 'quantity'>>((store) => store.quantity);
-  const [priceUnit, setPriceUnit] = useStore<number, Pick<InvoiceDetailForm, 'priceUnit'>>((store) => store.priceUnit);
-  const [priceQuantity, setPriceQuantity] = useStore<number, Pick<InvoiceDetailForm, 'priceQuantity'>>(
+  const [quantity, setQuantity] = useFieldsContext<number, Pick<InvoiceDetailForm, 'quantity'>>(
+    (store) => store.quantity,
+  );
+  const [priceUnit, setPriceUnit] = useFieldsContext<number, Pick<InvoiceDetailForm, 'priceUnit'>>(
+    (store) => store.priceUnit,
+  );
+  const [priceQuantity, setPriceQuantity] = useFieldsContext<number, Pick<InvoiceDetailForm, 'priceQuantity'>>(
     (store) => store.priceQuantity || 0,
   );
 
-  const [formStatus] = useFormStatusStore();
-  const { submittedCounter } = formStatus;
+  const [submittedCounter] = useFormMetaContext<number>('submittedCounter');
 
   const quantityField = useMemo(
     () => ({ accessor: 'quantity', label: 'Quantity', type: 'number', required: true }),

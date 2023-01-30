@@ -195,8 +195,6 @@ const ViewInvoice = () => {
       <Form<InvoiceFormType>
         icon={<InvoiceIcon />}
         title="View invoice"
-        initialFields={fields}
-        initialData={invoice}
         actions={<InvoiceActions invoice={invoice} />}
         onFinish={onFinish}
         height="612px"

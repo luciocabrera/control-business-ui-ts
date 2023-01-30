@@ -3,7 +3,7 @@ import { detailsViewImg } from 'assets';
 // components
 import { Portal, ReadOnlyTable } from 'components';
 // contexts
-import { useStore } from 'contexts';
+import { useFieldsContext } from 'contexts';
 // react
 import { memo, useMemo, useCallback, useState } from 'react';
 // styles
@@ -22,7 +22,7 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
   renderDetail,
 }: TableFieldProps<TData, DetailData>) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
-  const [fieldValue, setStore] = useStore<TData, any>((store: TData) => store[accessor] as TData);
+  const [fieldValue, setStore] = useFieldsContext<TData, any>((store: TData) => store[accessor] as TData);
   const normalizedValue = (normalize?.(data) ?? fieldValue) as unknown as TData[];
 
   const onRemoveDetail = useCallback(

@@ -101,8 +101,6 @@ const Customer = () => {
       <Form<CustomerFormType>
         icon={<CustomerIcon />}
         title={title}
-        initialFields={fields}
-        initialData={customer}
         onAccept={handleOnAccept}
         onFinish={handleOnFinish}
         actions={<CustomerActions customer={customer} />}
