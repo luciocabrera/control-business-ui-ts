@@ -5,7 +5,7 @@ import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 import { useFieldsContext } from 'contexts';
 // hooks
 import { useCallback, useMemo, useState } from 'hooks';
-import { useInvoiceDetailsConfig } from './useInvoiceDetailsConfig';
+import { useInvoiceDetailsConfig } from './hooks/useInvoiceDetailsConfig';
 // icons
 import { CopyIcon, NewIcon, EditIcon, DeleteIcon } from 'icons';
 // types

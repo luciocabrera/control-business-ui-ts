@@ -5,7 +5,7 @@ import { Portal, ReadOnlyTable } from 'components';
 // contexts
 import { useFieldsContext } from 'contexts';
 // react
-import { memo, useMemo, useCallback, useState } from 'react';
+import { useMemo, useCallback, useState } from 'react';
 // styles
 import { FieldGroupStyled } from '../Form/Form.styled';
 // types
@@ -81,4 +81,4 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
     </>
   );
 };
-export default memo(TableField) as typeof TableField;
+export default TableField;

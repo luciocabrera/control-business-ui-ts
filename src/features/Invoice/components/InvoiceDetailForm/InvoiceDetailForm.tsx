@@ -1,16 +1,17 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Button, Form, PageSpinner } from 'components';
-import { InvoiceDetailProduct, PriceQuantityField } from '..';
+import { Button, PageSpinner } from 'components';
+import Form from 'components/Form/Form/Form';
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // hooks
 import { useParams, useFetchProducts } from 'hooks';
+import useInvoiceDetailFormConfig from './hooks/useInvoiceDetailFormConfig';
 // react
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback } from 'react';
 // types
-import type { InvoiceDetailForm as InvoiceDetailFormType, FormFieldType, ProductType } from 'types';
+import type { InvoiceDetailForm as InvoiceDetailFormType, ProductType } from 'types';
 import type { InvoiceDetailFormProps } from './InvoiceDetailForm.types';
 
 const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDetailFormProps) => {
@@ -19,6 +20,8 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
   const isCreating = customerId === 'new' || !customerId;
 
   const { data: products, isLoading: isLoadingProducts } = useFetchProducts();
+
+  const { fields } = useInvoiceDetailFormConfig(products);
 
   const onAccept = useCallback(
     (detail: InvoiceDetailFormType) => {
@@ -36,53 +39,6 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
       });
     },
     [onAcceptDetail, products],
-  );
-
-  const fields: FormFieldType[] = useMemo(
-    () => [
-      {
-        type: 'row',
-        fields: [
-          {
-            accessor: '',
-            type: 'object',
-            render: () => <InvoiceDetailProduct products={products} />,
-          },
-          {
-            accessor: '',
-            type: 'object',
-            render: () => <PriceQuantityField />,
-          },
-        ],
-      },
-      { type: 'rule', accessor: 'date', label: 'Date', rules: [{ type: 'required' }] },
-      { type: 'rule', accessor: 'productId', label: 'Product', rules: [{ type: 'required' }] },
-      {
-        type: 'rule',
-        accessor: 'description',
-        label: 'Description',
-        rules: [{ type: 'required' }],
-      },
-      {
-        type: 'rule',
-        accessor: 'quantity',
-        label: 'Quantity',
-        rules: [{ type: 'required' }],
-      },
-      {
-        type: 'rule',
-        accessor: 'priceUnit',
-        label: 'Price',
-        rules: [{ type: 'required' }],
-      },
-      {
-        type: 'rule',
-        accessor: 'priceQuantity',
-        label: 'Price Quantity',
-        rules: [{ type: 'required' }],
-      },
-    ],
-    [products],
   );
 
   if (isLoadingProducts) return <PageSpinner />;

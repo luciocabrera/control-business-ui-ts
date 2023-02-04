@@ -1,100 +1,46 @@
 // components
 import { Overlay } from 'components';
 // react
-import { useRef, createContext, useContext, useCallback, useSyncExternalStore, useState, useMemo } from 'react';
+import { createContext, useContext, useCallback, useSyncExternalStore, useState, useMemo, useEffect } from 'react';
 // styles
 import { FormWrapper } from 'styles';
 // types
-import type { FormFieldType, ReactNode } from 'types';
+import type { FormFieldType, ReactElement } from 'types';
 // utilities
 import { getInitialData } from 'utilities';
-import { useStoreData, UseStoreDataReturnType } from './useStore';
 
-export type FormMetaType = {
+import { useStore, StoreReturnType } from './useStore';
+
+export type FormMetaType<TDataType extends Record<string, unknown>> = {
   submittedCounter: number;
-  initialData?: Record<string, unknown>;
-  initialFields: FormFieldType[];
-};
-
-// type UseStoreData<TDataType> = {
-//   get: () => TDataType | undefined;
-//   set: (value: Partial<TDataType>) => void;
-//   subscribe: (callback: () => void) => () => void;
-//   getFormStatus: () => FormStatusType;
-//   incrementSubmittedCounter: () => void;
-// };
-
-// const useStoreData = <TDataType extends Record<string, unknown>>(initialState?: TDataType): UseStoreData<TDataType> => {
-//   const storeFormData = useRef(initialState);
-//   const [storeFormStatus, setStoreFormStatus] = useState({ submittedCounter: 0 });
-
-//   const get = useCallback(() => storeFormData.current, []);
-
-//   const getFormStatus = useCallback(() => storeFormStatus, [storeFormStatus]);
-
-//   const subscribers = useRef(new Set<() => void>());
-
-//   const set = useCallback((value: Partial<TDataType>) => {
-//     storeFormData.current = { ...storeFormData.current, ...value } as TDataType;
-//     subscribers.current.forEach((callback) => callback());
-//   }, []);
-
-//   const subscribe = useCallback((callback: () => void) => {
-//     subscribers.current.add(callback);
-//     return () => subscribers.current.delete(callback);
-//   }, []);
-
-//   const incrementSubmittedCounter = useCallback(() => {
-//     setStoreFormStatus({ submittedCounter: storeFormStatus.submittedCounter + 1 });
-
-//     subscribers.current.forEach((callback) => callback());
-//   }, [storeFormStatus]);
-
-//   return {
-//     get,
-//     set,
-//     subscribe,
-//     getFormStatus,
-//     incrementSubmittedCounter,
-//   };
-// };
-
-// type UseStoreDataReturnType = ReturnType<typeof useStoreData>;
-
-// type UseFormStatusStore = [FormStatusType, () => void];
-
-// export const useFormStatusStore = (): UseFormStatusStore => {
-//   const store = useContext(FieldsContext);
-//   if (!store) {
-//     throw new Error('Store not found');
-//   }
-
-//   const state = useSyncExternalStore(store.subscribe, () => store.getFormStatus());
-
-//   return [state, store.incrementSubmittedCounter];
-// };
-
-type FormDataContextProviderType<TDataType extends Record<string, unknown>> = {
-  children: ReactNode;
   initialData?: TDataType;
   initialFields: FormFieldType[];
 };
 
-// type UseStoreData<TDataType> = {
-//   get: () => TDataType | undefined;
-//   set: (value: Partial<TDataType>) => void;
-//   subscribe: (callback: () => void) => () => void;
-//   getFormStatus: () => FormStatusType;
-//   incrementSubmittedCounter: () => void;
-// };
+type FormDataContextProviderType<TDataType extends Record<string, unknown>> = {
+  children: ReactElement;
+  initialData?: TDataType;
+  initialFields: FormFieldType[];
+};
 
-export const FieldsContext = createContext<{
-  useFormStoreData: UseStoreDataReturnType;
-  formMetaData: UseStoreDataReturnType; //FormMetaType;
+const initialData = { get: () => undefined, set: () => undefined, subscribe: (callback: () => void) => callback };
+
+const initialMetaData = {
+  formMetaData: { submittedCounter: 0, initialData: undefined, initialFields: [] },
+  handleSetFormMetaData: () => {},
+};
+
+type MetaDataReturnType = {
+  formMetaData: FormMetaType<Record<string, unknown>>;
+  handleSetFormMetaData: (metaData: Partial<FormMetaType<Record<string, unknown>>>) => void;
+};
+
+export const FormContext = createContext<{
+  data: StoreReturnType;
+  metaData: MetaDataReturnType;
 }>({
-  useFormStoreData: { get: () => undefined, set: () => undefined, subscribe: (callback: () => void) => callback },
-  // formMetaData: { initialFields: [], initialData: {}, submittedCounter: 0 },
-  formMetaData: { get: () => undefined, set: () => undefined, subscribe: (callback: () => void) => callback },
+  data: initialData,
+  metaData: initialMetaData,
 });
 
 type UsesStore<SelectorOutput, TDataType> = [SelectorOutput, (value: Partial<TDataType>) => void];
@@ -102,45 +48,35 @@ type UsesStore<SelectorOutput, TDataType> = [SelectorOutput, (value: Partial<TDa
 export const useFieldsContext = <SelectorOutput, TDataType>(
   selector: (store: TDataType) => SelectorOutput,
 ): UsesStore<SelectorOutput, TDataType> => {
-  const store = useContext(FieldsContext);
+  const store = useContext(FormContext);
   if (!store) {
     throw new Error('Store not found');
   }
 
-  const state = useSyncExternalStore(store.useFormStoreData.subscribe, () =>
-    selector(store.useFormStoreData.get() as TDataType),
-  );
+  const state = useSyncExternalStore(store.data.subscribe, () => selector(store.data.get() as TDataType));
 
-  return [state, store.useFormStoreData.set];
+  return [state, store.data.set];
 };
 
-export const useFormMetaContextNew = <SelectorOutput, TDataType>(
+export const useFormMetaContext = <SelectorOutput, TDataType extends Record<string, unknown>>(
   selector: (store: TDataType) => SelectorOutput,
 ): UsesStore<SelectorOutput, TDataType> => {
-  const store = useContext(FieldsContext);
+  const store = useContext(FormContext);
   if (!store) {
     throw new Error('Store not found');
   }
 
-  const state = useSyncExternalStore(store.formMetaData.subscribe, () =>
-    selector(store.formMetaData.get() as TDataType),
+  const state = useMemo(
+    () => selector(store.metaData.formMetaData as unknown as TDataType),
+    [selector, store.metaData.formMetaData],
   );
 
-  return [state, store.formMetaData.set];
-};
-
-export const useFormMetaContext = <TDataType extends Record<string, unknown> | FormFieldType[] | number>(
-  selector: keyof FormMetaType,
-): [TDataType, (newValue: TDataType) => void] => {
-  const store = useContext(FieldsContext);
-  if (!store) {
-    throw new Error('Store not found');
-  }
-
-  let state = store.formMetaData[selector] as TDataType;
-  const set = (newValue: TDataType) => {
-    state = newValue;
-  };
+  const set = useCallback(
+    (metaData: Partial<TDataType>) => {
+      store.metaData.handleSetFormMetaData(metaData);
+    },
+    [store.metaData],
+  );
 
   return [state, set];
 };
@@ -150,31 +86,36 @@ export const FormDataContextProvider = <TDataType extends Record<string, unknown
   initialData,
   initialFields,
 }: FormDataContextProviderType<TDataType>) => {
-  const initialFormState = useState({ initialFields, initialData, submittedCounter: 0 });
+  const [formMetaData, setFormMetaData] = useState<FormMetaType<TDataType>>({
+    submittedCounter: 0,
+    initialData: {} as TDataType,
+    initialFields: [],
+  });
   const initialFormData = useMemo(
     () => getInitialData<TDataType>(initialFields, initialData),
     [initialData, initialFields],
   );
+  const data = useStore<TDataType>(initialFormData) as StoreReturnType;
 
-  // const incrementSubmittedCounter = useCallback(() => {
-  //   setStoreFormStatus({ submittedCounter: storeFormStatus.submittedCounter + 1 });
+  const handleSetFormMetaData = useCallback((metaData: Partial<FormMetaType<Record<string, unknown>>>) => {
+    setFormMetaData((prev) => ({ ...prev, ...(metaData as TDataType) }));
+  }, []);
 
-  //   subscribers.current.forEach((callback) => callback());
-  // }, [storeFormStatus]);
+  useEffect(() => {
+    setFormMetaData((prev) => ({ ...prev, initialData, initialFields }));
+  }, [initialData, initialFields]);
 
-  const useFormStoreData = useStoreData<TDataType>(initialFormData) as UseStoreDataReturnType;
-  // const formMetaData = useStoreData<FormMetaType>(initialFormState.current) as UseStoreDataReturnType;
   const value = useMemo(
-    () => ({ useFormStoreData, formMetaData: initialFormState.current }),
-    [initialFormState, useFormStoreData],
+    () => ({ data, metaData: { formMetaData, handleSetFormMetaData } }),
+    [data, formMetaData, handleSetFormMetaData],
   );
 
   return (
-    <FieldsContext.Provider value={value}>
+    <FormContext.Provider value={value}>
       <FormWrapper>
         <Overlay />
         {children}
       </FormWrapper>
-    </FieldsContext.Provider>
+    </FormContext.Provider>
   );
 };

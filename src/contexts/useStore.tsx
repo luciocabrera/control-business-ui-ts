@@ -1,23 +1,21 @@
 // react
-import { useRef, createContext, useContext, useCallback, useSyncExternalStore } from 'react';
+import { useRef, useCallback } from 'react';
 
-type UseStoreData<TDataType> = {
+export type StoreType<TDataType> = {
   get: () => TDataType | undefined;
   set: (value: Partial<TDataType>) => void;
   subscribe: (callback: () => void) => () => void;
 };
 
-export const useStoreData = <TDataType extends Record<string, unknown>>(
-  initialState?: TDataType,
-): UseStoreData<TDataType> => {
-  const storeFormData = useRef(initialState);
+export const useStore = <TDataType extends Record<string, unknown>>(initialState?: TDataType): StoreType<TDataType> => {
+  const store = useRef(initialState);
 
-  const get = useCallback(() => storeFormData.current, []);
+  const get = useCallback(() => store.current, []);
 
   const subscribers = useRef(new Set<() => void>());
 
   const set = useCallback((value: Partial<TDataType>) => {
-    storeFormData.current = { ...storeFormData.current, ...value } as TDataType;
+    store.current = { ...store.current, ...value } as TDataType;
     subscribers.current.forEach((callback) => callback());
   }, []);
 
@@ -33,21 +31,4 @@ export const useStoreData = <TDataType extends Record<string, unknown>>(
   };
 };
 
-export type UseStoreDataReturnType = ReturnType<typeof useStoreData>;
-
-// export const StoreContext = createContext<UseStoreDataReturnType | null>(null);
-
-// type UsesStore<SelectorOutput, TDataType> = [SelectorOutput, (value: Partial<TDataType>) => void];
-
-// export const useStore = <SelectorOutput, TDataType>(
-//   selector: (store: TDataType) => SelectorOutput,
-// ): UsesStore<SelectorOutput, TDataType> => {
-//   const store = useContext(StoreContext);
-//   if (!store) {
-//     throw new Error('Store not found');
-//   }
-
-//   const state = useSyncExternalStore(store.subscribe, () => selector(store.get() as TDataType));
-
-//   return [state, store.set];
-// };
+export type StoreReturnType = ReturnType<typeof useStore>;

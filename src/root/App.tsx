@@ -2,7 +2,6 @@
 import { Routes, Route, FallBack, Layout } from 'components';
 // contexts
 import { NotificationContextProvider, ToastContextProvider } from 'contexts';
-import CurrentMonthChart from 'features/Home/components/CurrentMonthChart/CurrentMonthChart';
 // hooks
 import { useLocation } from 'hooks';
 // react

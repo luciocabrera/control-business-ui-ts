@@ -1,13 +1,14 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Form, PageSpinner } from 'components';
+import { PageSpinner } from 'components';
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // react
 import { memo } from 'react';
 // types
 import type { FormFieldType } from 'types';
+import Form from '../Form/Form';
 
 type DetailFormProps<TData> = {
   detail?: TData;

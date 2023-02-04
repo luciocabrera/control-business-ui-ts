@@ -2,9 +2,9 @@
 import { useMemo } from 'react';
 // types
 import type { ColumnDef, InvoiceType, ColumnMetaState } from 'types';
-import { isDateBetween } from 'utilities';
 // utilities
 import { getActionsCell, getDateCell, getSubTotalCell, getTaxesCell, getTotalCell } from '../utils/utils';
+import { isDateBetween } from 'utilities';
 
 const useInvoicesConfig = () => {
   const columns: ColumnDef<InvoiceType>[] = useMemo(

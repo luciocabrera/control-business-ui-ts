@@ -1,7 +1,7 @@
 // components
 import { Select, TextInput } from 'components';
 // contexts
-import { useFormMetaContext, useFieldsContext } from 'contexts';
+import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // types
 import type { FormFieldProps } from './FormField.types';
 import type { FieldBaseValueType } from 'types';
@@ -14,7 +14,9 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
 
   const [fieldValue, setStore] = useFieldsContext<FieldBaseValueType, any>((store) => store[field.accessor]);
 
-  const [submittedCounter] = useFormMetaContext<number>('submittedCounter');
+  const [submittedCounter] = useFormMetaContext<number, Pick<FormMetaType<any>, 'submittedCounter'>>(
+    (store) => store.submittedCounter,
+  );
 
   const errorFields = submittedCounter > 0 ? validateField(field, fieldValue) : [];
   const errorField = getErrorField(field, errorFields);

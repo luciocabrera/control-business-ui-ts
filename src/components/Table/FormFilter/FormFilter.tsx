@@ -1,13 +1,12 @@
 // components
 
-import { Button, Form, Header, TextInput } from 'components';
-import { FormStyled } from 'components/Form/Form/Form.styled';
+import { TextInput } from 'components';
+import Form from 'components/Form/Form/Form';
 import { FormDataContextProvider, useAddNotification } from 'contexts';
 // contexts
 import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
-import { FilterIcon } from 'icons';
 // react
-import { MouseEvent, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 const FormFilter = () => {
   const {

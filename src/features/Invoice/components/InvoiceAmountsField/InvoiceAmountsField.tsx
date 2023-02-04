@@ -1,7 +1,7 @@
 // components
 import TextInput from 'components/Form/TextInput/TextInput';
 // contexts
-import { useFormMetaContext, useFieldsContext } from 'contexts';
+import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
 // types
@@ -17,7 +17,9 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
   const [taxesPercentage] = useFieldsContext<number, Pick<InvoiceFormType, 'taxesPercentage'>>(
     (store) => store.taxesPercentage,
   );
-  const [submittedCounter] = useFormMetaContext<number>('submittedCounter');
+  const [submittedCounter] = useFormMetaContext<number, Pick<FormMetaType<InvoiceFormType>, 'submittedCounter'>>(
+    (store) => store.submittedCounter,
+  );
   const subtotalField = useMemo(() => ({ accessor: 'subtotal', label: 'Sub Total', type: 'text' }), []);
 
   const errorsSubtotal = useMemo(

@@ -1,11 +1,10 @@
 // components
 import FallBack from 'components/FallBack/FallBack';
-import { FilterIcon } from 'icons';
 // import FilterSettings from '../FilterSettings/FilterSettings';
 // contexts
-import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
+import { useTableContext } from 'contexts/TableContext';
 // react
-import { Fragment, memo, useEffect, useRef, useState } from 'react';
+import { Fragment, memo, useRef, useState } from 'react';
 // react table
 import {
   getExpandedRowModel,
@@ -188,4 +187,4 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   );
 };
 
-export default memo(ReadOnlyTable) as typeof ReadOnlyTable;
+export default ReadOnlyTable;

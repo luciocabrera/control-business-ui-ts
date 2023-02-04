@@ -9,8 +9,8 @@ import { FormStyled } from './Form.styled';
 import type { FormProps } from './Form.types';
 // utilities
 import { getFieldElements } from '../utilities/getFieldElements';
-import { useFormMetaContext } from 'contexts';
-import { FormFieldType } from 'types';
+import { FormMetaType, useFormMetaContext } from 'contexts';
+import type { FormFieldType } from 'types';
 
 const Form = <TDataType extends Record<string, unknown>>({
   viewMode,
@@ -18,14 +18,14 @@ const Form = <TDataType extends Record<string, unknown>>({
   children,
   title,
   icon,
-  // initialFields,
-  // initialData,
   onAccept,
   onFinish,
   width,
   height,
 }: FormProps<TDataType>) => {
-  const [initialFields] = useFormMetaContext<FormFieldType[]>('initialFields');
+  const [initialFields] = useFormMetaContext<FormFieldType[], Pick<FormMetaType<TDataType>, 'initialFields'>>(
+    (store) => store.initialFields,
+  );
 
   return (
     <FormStyled noValidate width={width} height={height}>

@@ -10,13 +10,12 @@ import useInvoicesConfig from './hooks/useInvoicesConfig';
 import { NewIcon } from 'icons';
 // types
 import type { InvoiceType } from 'types';
-import { memo } from 'react';
 
 const title = 'Invoices';
 
 const InvoicesBase = () => {
-  const dataHook = useFetchInvoices();
   const location = useLocation();
+  const dataHook = useFetchInvoices();
   const { columns } = useInvoicesConfig();
 
   return (

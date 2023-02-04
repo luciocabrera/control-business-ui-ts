@@ -14,8 +14,8 @@ import type { CustomerType } from 'types';
 const title = 'Customers';
 
 const CustomersBase = () => {
-  const dataHook = useFetchCustomers();
   const location = useLocation();
+  const dataHook = useFetchCustomers();
   const { columns } = useCustomersConfig();
 
   return (

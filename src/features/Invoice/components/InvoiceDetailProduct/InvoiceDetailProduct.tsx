@@ -1,7 +1,7 @@
 // components
 import { TextInput, Select } from 'components';
 // contexts
-import { useFormMetaContext, useFieldsContext } from 'contexts';
+import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
 // types
@@ -35,7 +35,9 @@ const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductP
     [products],
   );
 
-  const [submittedCounter] = useFormMetaContext<number>('submittedCounter');
+  const [submittedCounter] = useFormMetaContext<number, Pick<FormMetaType<InvoiceDetailForm>, 'submittedCounter'>>(
+    (store) => store.submittedCounter,
+  );
 
   // Product -Service
   // ---------------------------------------------------------------------------------------------------

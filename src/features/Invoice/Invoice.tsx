@@ -1,5 +1,6 @@
 // components
-import { PageSpinner, InvoiceActions, ErrorDisplay, Form } from 'components';
+import { PageSpinner, InvoiceActions, ErrorDisplay } from 'components';
+import Form from 'components/Form/Form/Form';
 // contexts
 import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
 // hooks
@@ -12,6 +13,7 @@ import {
   useRefreshInvoices,
   useFetchInvoiceRates,
 } from 'hooks';
+import useInvoiceConfig from './hooks/useInvoiceConfig';
 // icons
 import { InvoiceIcon } from 'icons';
 // react
@@ -24,8 +26,6 @@ import type {
   InvoicesDetails,
   InvoiceDetailCreate,
 } from 'types';
-// utilities
-import useInvoiceConfig from './hooks/useInvoiceConfig';
 
 const Invoice = () => {
   const { invoiceId, action } = useParams();
@@ -34,7 +34,6 @@ const Invoice = () => {
   const isCreating = invoiceId === 'new' || !invoiceId;
   const isCopying = action === 'copy' && !isCreating;
 
-  // const { data: customers, isLoading: isLoadingCustomers } = useFetchCustomers();
   const { data: invoice, isLoading: isLoadingInvoice } = useFetchInvoice(!isCreating ? invoiceId : undefined);
 
   const invoiceForm: InvoiceFormType = useMemo(() => {

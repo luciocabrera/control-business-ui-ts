@@ -5,10 +5,10 @@
   "proxy": "http://localhost:5500",
   "dependencies": {
     "@tanstack/match-sorter-utils": "^8.7.6",
-    "@tanstack/react-table": "^8.7.8",
+    "@tanstack/react-table": "^8.7.9",
     "@tanstack/react-virtual": "^3.0.0-alpha.0",
     "react": "^18.2.0",
-    "react-charts": "^3.0.0-beta.54",
+    "react-charts": "3.0.0-beta.54",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
     "react-virtual": "^2.10.4",
@@ -17,10 +17,11 @@
     "use-context-selector": "^1.4.1"
   },
   "scripts": {
-    "start": "set PORT=3006 && react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "build:ci": "vite build",
+    "dev": "vite --port 3006",
+    "start": "vite --port 3006",
+    "build": "tsc && vite build",
+    "preview": "vite preview --port 3006",
     "typecheck": "tsc --noEmit"
   },
   "eslintConfig": {
@@ -43,13 +44,16 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
-    "@types/react": "^18.0.26",
+    "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-table": "^7.7.14",
     "@types/styled-components": "^5.1.26",
-    "react-scripts": "^5.0.1",
-    "typescript": "^4.9.4",
+    "@vitejs/plugin-react": "^3.1.0",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.1",
+    "vite-plugin-svgr": "^2.4.0",
+    "vite-tsconfig-paths": "^4.0.5",
     "web-vitals": "^3.1.1"
   }
 }

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 // types
 import type { InvoicesDetails, ColumnDef } from 'types';
 // utils
-import { getDateCell, getPriceQuantityCell, getPriceUnitCell, getQuantityCell } from './utils';
+import { getDateCell, getPriceQuantityCell, getPriceUnitCell, getQuantityCell } from '../utils/utils';
 
 export const useInvoiceDetailsConfig = () => {
   const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(

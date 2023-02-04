@@ -1,5 +1,5 @@
 // components
-import { Form, PageSpinner, CustomerActions, ErrorDisplay } from 'components';
+import { PageSpinner, CustomerActions, ErrorDisplay } from 'components';
 // contexts
 import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
 // hooks
@@ -18,6 +18,7 @@ import { CustomerIcon } from 'icons';
 import { useCallback } from 'react';
 // types
 import type { APiResponseErrorType, CustomerCreateType, CustomerFormType } from 'types';
+import Form from 'components/Form/Form/Form';
 
 const Customer = () => {
   const { customerId } = useParams();
