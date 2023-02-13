@@ -10,8 +10,6 @@ export * from './useElementSize';
 
 export { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-export { useContextSelector } from 'use-context-selector';
-
 export { useCallback, useEffect, useState, useMemo } from 'react';
 
 export { default as useSWRInfinite } from 'swr';

@@ -4,17 +4,17 @@ import { useFetchInvoicesStats } from 'hooks';
 import React from 'react';
 import type { AxisOptions } from 'react-charts';
 import type { DataRowChart, InvoicesStats } from 'types';
-import styles from './SummaryLastMonthsChart.module.css';
+import styles from './CurrentMonthChart.module.css';
 import { useInvoicesStatsConfig } from './useInvoicesStatsConfig';
 
-const SummaryLastMonthsChart = () => {
-  const { data, isLoading } = useFetchInvoicesStats('monthly');
+const CurrentMonthChart = () => {
+  const { data, isLoading } = useFetchInvoicesStats();
   const columns = useInvoicesStatsConfig();
 
   const primaryAxis = React.useMemo(
     (): AxisOptions<DataRowChart> => ({
       getValue: (datum) => datum.date,
-      scaleType: 'band',
+      // scaleType: 'band',
     }),
     [],
   );
@@ -24,7 +24,7 @@ const SummaryLastMonthsChart = () => {
       {
         getValue: (datum) => datum.value,
         stacked: true,
-        scaleType: 'linear',
+        // scaleType: 'linear',
       },
     ],
     [],
@@ -53,8 +53,8 @@ const SummaryLastMonthsChart = () => {
       <div data-parent="section-wrapper" className={styles['section-column']}>
         <div data-parent="section-wrapper" className={styles['card-chart-wrapper']}>
           <CardChart
-            title={'Amounts by Month'}
-            subtitle={'Sub total, Taxes and Total grouped by Month in the last 12 months'}
+            title={'Amounts current month'}
+            subtitle={'Sub total, Taxes and Total grouped by Day'}
             data={data.amounts}
             primaryAxis={primaryAxis}
             secondaryAxes={amountAxes}
@@ -62,8 +62,8 @@ const SummaryLastMonthsChart = () => {
         </div>
         <div data-parent="section-wrapper" className={styles['card-chart-wrapper']}>
           <CardChart
-            title={'Invoices by Month'}
-            subtitle={'Nr of Invoices groped by Month in the last 12 months'}
+            title={'Invoices current month'}
+            subtitle={'Nr of Invoices groped by Day'}
             data={data.invoices}
             primaryAxis={primaryAxis}
             secondaryAxes={invoicesAxes}
@@ -72,29 +72,6 @@ const SummaryLastMonthsChart = () => {
       </div>
     </div>
   );
-
-  // return (
-  //   <>
-  //     <div className={styles['card-chart-wrapper']}>
-  //       <CardChart
-  //         title={'Amounts by Month'}
-  //         subtitle={'Sub total, Taxes and Total grouped by Month in the last 12 months'}
-  //         data={data.amounts}
-  //         primaryAxis={primaryAxis}
-  //         secondaryAxes={amountAxes}
-  //       />
-  //     </div>
-  //     <div className={styles['card-chart-wrapper']}>
-  //       <CardChart
-  //         title={'Invoices by Month'}
-  //         subtitle={'Nr of Invoices groped by Month in the last 12 months'}
-  //         data={data.invoices}
-  //         primaryAxis={primaryAxis}
-  //         secondaryAxes={invoicesAxes}
-  //       />
-  //     </div>
-  //   </>
-  // );
 };
 
-export default SummaryLastMonthsChart;
+export default CurrentMonthChart;

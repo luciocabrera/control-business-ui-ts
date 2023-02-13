@@ -25,6 +25,7 @@ const Actions = <TDataType extends Record<string, unknown>>({ onAccept, onFinish
     number,
     Pick<FormMetaType<TDataType>, 'submittedCounter'>
   >((store) => store.submittedCounter);
+  console.log('Actions');
 
   const onSubmit = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {

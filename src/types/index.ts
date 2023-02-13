@@ -10,7 +10,7 @@ export * from './formField';
 export * from './documentType';
 export * from './title';
 export * from './toast';
-export * from './notification';
+export * from '../components/Notifications/Notifications';
 
 export type { ModalProps } from 'components/Modal/Modal.types';
 

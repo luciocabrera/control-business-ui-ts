@@ -129,7 +129,12 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     <>
       <FieldGroupStyled key={`table-form-field-invoice-details`} id="field-group-styled-invoice-details">
         <legend>{labelWithAdd}</legend>
-        <ReadOnlyTable<InvoicesDetails> data={normalizedValue} columns={columnsWithActions} showHeader={false} />
+        <ReadOnlyTable<InvoicesDetails>
+          data={normalizedValue}
+          columns={columnsWithActions}
+          showHeader={false}
+          isLoading={false}
+        />
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>

@@ -6,7 +6,7 @@ import { useApiData, useApiDataList, useApiRefreshData, useApiRequest } from './
 import type { ApiResponse, DataRowChart, InvoiceCreateType, InvoicesStats, InvoiceType, OptionsType } from '../types';
 // react
 import { useCallback } from 'react';
-import { parseToNumber } from 'utilities';
+import { getDateAsString, parseToNumber } from 'utilities';
 // utilities
 
 type IdType = string | number | undefined | null;
@@ -29,6 +29,20 @@ const getAxisValue = ({ type, record }: { type: string; record: InvoicesStats })
 
   return '';
 };
+
+export const useFetchInvoicesStatsNew = (type: string = 'daily_current_month') =>
+  useApiDataList<InvoicesStats[]>({
+    endpointUrl: `${endpoints.invoices}/stats/${type}`,
+    transformData: (data: InvoicesStats[]) => {
+      return data.map((stat) => {
+        const { date, ...rest } = stat;
+        return {
+          date: getDateAsString(date),
+          ...rest,
+        };
+      });
+    },
+  });
 
 export const useFetchInvoicesStats = (type: string = 'daily_current_month') =>
   useApiDataList({

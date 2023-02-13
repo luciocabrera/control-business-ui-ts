@@ -33,6 +33,8 @@ const Customer = () => {
   const addToast = useAddToast();
   const addNotification = useAddNotification();
 
+  console.log('Customer');
+
   const { fields } = useCustomerConfig(customer);
 
   const handleOnAccept = useCallback(

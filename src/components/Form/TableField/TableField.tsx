@@ -71,7 +71,12 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
     <>
       <FieldGroupStyled key={`table-form-field-${accessor}`}>
         <legend>{labelWithAdd}</legend>
-        <ReadOnlyTable<TData> data={normalizedValue} columns={columnsWithActions} useRadius showHeader={false} />
+        <ReadOnlyTable<TData>
+          data={normalizedValue}
+          columns={columnsWithActions}
+          showHeader={false}
+          isLoading={false}
+        />
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>

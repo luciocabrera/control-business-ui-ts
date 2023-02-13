@@ -1,5 +1,6 @@
 // components
 import { Header } from 'components';
+import FormFields from '../utilities/FormFields';
 import Actions from './Actions';
 // react
 import { memo } from 'react';
@@ -7,12 +8,8 @@ import { memo } from 'react';
 import { FormStyled } from './Form.styled';
 // types
 import type { FormProps } from './Form.types';
-// utilities
-import { getFieldElements } from '../utilities/getFieldElements';
-import { FormMetaType, useFormMetaContext } from 'contexts';
-import type { FormFieldType } from 'types';
 
-const Form = <TDataType extends Record<string, unknown>>({
+const Form = <TData extends Record<string, unknown>>({
   viewMode,
   actions,
   children,
@@ -22,26 +19,20 @@ const Form = <TDataType extends Record<string, unknown>>({
   onFinish,
   width,
   height,
-}: FormProps<TDataType>) => {
-  const [initialFields] = useFormMetaContext<FormFieldType[], Pick<FormMetaType<TDataType>, 'initialFields'>>(
-    (store) => store.initialFields,
-  );
-
-  return (
-    <FormStyled noValidate width={width} height={height}>
-      <Header icon={icon} title={title} onClose={onFinish} />
-      <main>
-        <>
-          {getFieldElements(initialFields, undefined, undefined, viewMode)}
-          {children}
-        </>
-      </main>
-      <footer>
-        {onAccept && <Actions<TDataType> onAccept={onAccept} onFinish={onFinish} />}
-        {actions}
-      </footer>
-    </FormStyled>
-  );
-};
+}: FormProps<TData>) => (
+  <FormStyled noValidate width={width} height={height}>
+    <Header icon={icon} title={title} onClose={onFinish} />
+    <main>
+      <>
+        <FormFields groupId={''} viewMode={viewMode} />
+        {children}
+      </>
+    </main>
+    <footer>
+      {onAccept && <Actions<TData> onAccept={onAccept} onFinish={onFinish} />}
+      {actions}
+    </footer>
+  </FormStyled>
+);
 
 export default memo(Form) as typeof Form;

@@ -16,6 +16,7 @@ export const useStore = <TDataType extends Record<string, unknown>>(initialState
 
   const set = useCallback((value: Partial<TDataType>) => {
     store.current = { ...store.current, ...value } as TDataType;
+    console.log('useStore', { subscribers, store });
     subscribers.current.forEach((callback) => callback());
   }, []);
 
@@ -25,10 +26,15 @@ export const useStore = <TDataType extends Record<string, unknown>>(initialState
   }, []);
 
   return {
-    get: useCallback(() => get(), [get]),
-    set: useCallback((value: Partial<TDataType>) => set(value), [set]),
-    subscribe: useCallback((callback: () => void) => subscribe(callback), [subscribe]),
+    // get: useCallback(() => get(), [get]),
+    // set: useCallback((value: Partial<TDataType>) => set(value), [set]),
+    // subscribe: useCallback((callback: () => void) => subscribe(callback), [subscribe]),
+    get,
+    set,
+    subscribe,
   };
 };
 
 export type StoreReturnType = ReturnType<typeof useStore>;
+
+export type UsesStore<SelectorOutput, TDataType> = [SelectorOutput, (value: Partial<TDataType>) => void];

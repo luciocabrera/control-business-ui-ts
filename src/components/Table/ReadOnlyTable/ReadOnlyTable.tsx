@@ -1,10 +1,12 @@
 // components
 import FallBack from 'components/FallBack/FallBack';
-// import FilterSettings from '../FilterSettings/FilterSettings';
+import FormFilter from '../FormFilter/FormFilter';
+import TableHead from '../TableHead/TableHead';
+import TableWrapperHeader from '../TableWrapperHeader/TableWrapperHeader';
 // contexts
-import { useTableContext } from 'contexts/TableContext';
+import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
 // react
-import { Fragment, memo, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 // react table
 import {
   getExpandedRowModel,
@@ -13,58 +15,40 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   useReactTable,
-  FilterFn,
-  SortingState,
+  type SortingState,
 } from '@tanstack/react-table';
-// hooks
+// react virtual
 import { useVirtual } from 'react-virtual';
-// scss
-import styles from './readOnlyTable.module.css';
-import { RankingInfo, rankItem } from '@tanstack/match-sorter-utils';
 // types
-import type { ReadOnlyProps } from './ReadOnlyTable.types';
-import Header from 'components/Header/Header';
-import { TableActionsStyled } from 'styles';
-
-declare module '@tanstack/table-core' {
-  interface FilterFns {
-    fuzzy: FilterFn<unknown>;
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo;
-  }
-}
-
-const fuzzyFilter: FilterFn<unknown> = (row, columnId, value, addMeta) => {
-  // Rank the item
-  const itemRank = rankItem(row.getValue(columnId), value);
-  // Store the itemRank info
-  addMeta({
-    itemRank,
-  });
-
-  // Return if the item should be filtered in/out
-  return itemRank.passed;
-};
+import type { ReadOnlyTableType } from '../table.types';
+// styles
+import styles from '../table.module.css';
+// utilities
+import fuzzyFilter from '../utilities/fuzzyFilter';
 
 const ReadOnlyTable = <TData extends Record<string, unknown>>({
   actions,
   columns,
   height,
+  isLoading,
   renderSubComponent,
   getRowCanExpand,
-  title,
-  showHeader = true,
-  allowFiltering,
+  manualFiltering = false,
+  manualSorting = false,
+  showHeader,
+  fetchMoreOnBottomReached,
   data,
-  isLoading,
-}: ReadOnlyProps<TData>) => {
+}: ReadOnlyTableType<TData>) => {
+  const parentRef = useRef<HTMLDivElement>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
   const {
-    state: { columnFilters },
+    state: { columnFilters, showColumnFilters },
+    dispatch,
   } = useTableContext();
 
-  const parentRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    dispatch({ type: TableContextActionKind.setSorting, payload: { sorting } });
+  }, [dispatch, sorting]);
 
   const table = useReactTable({
     data,
@@ -76,8 +60,8 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
       columnFilters,
       sorting,
     },
-    manualFiltering: true,
-    // manualSorting: true,
+    manualFiltering: manualFiltering,
+    manualSorting: manualSorting,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -101,53 +85,18 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
 
   return (
     <>
-      {showHeader && (
-        <Header title={title}>
-          <TableActionsStyled>
-            {actions}
-            {/* {allowFiltering && (
-              <IconButton id="show-filters" onClick={() => setShowFilterSettings(true)} icon={<FilterIcon />} />
-            )} */}
-          </TableActionsStyled>
-        </Header>
-      )}
-      {/* <FilterSettings onFinish={() => setShowFilterSettings(false)} columns={columns} /> */}
       {isLoading && <FallBack />}
-      <div id="table-wrapper" ref={parentRef} style={{ height: height }} className={styles['table-wrapper']}>
+      {showColumnFilters && <FormFilter />}
+      {showHeader && <TableWrapperHeader actions={actions} />}
+      <div
+        id="table-wrapper"
+        ref={parentRef}
+        style={{ height: height }}
+        className={styles['table-wrapper']}
+        onScroll={() => fetchMoreOnBottomReached?.(parentRef)}
+      >
         <table>
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <th key={header.id} style={{ width: header.getSize(), maxWidth: header.getSize() }}>
-                      {header.isPlaceholder ? null : (
-                        <div onClick={header.column.getToggleSortingHandler()} className={styles['header-wrapper']}>
-                          {flexRender(header.column.columnDef.header, header.getContext())}
-                          {{
-                            asc: <span>&#8593;</span>,
-                            desc: <span>&#8595;</span>,
-                          }[header.column.getIsSorted() as string] ?? null}
-
-                          {/* {header.column.getIsFiltered() ? <FilterIcon className={cls['header-icon']} /> : null} */}
-                        </div>
-                      )}
-                      {header.column.getCanResize() && (
-                        <div
-                          onMouseDown={header.getResizeHandler()}
-                          onTouchStart={header.getResizeHandler()}
-                          className={[
-                            styles['resizer'],
-                            styles[header.column.getIsResizing() ? 'isResizing' : ''],
-                          ].join(' ')}
-                        />
-                      )}
-                    </th>
-                  );
-                })}
-              </tr>
-            ))}
-          </thead>
+          <TableHead headerGroups={table.getHeaderGroups()} />
           <tbody>
             {paddingTop > 0 && (
               <tr>
@@ -160,8 +109,13 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
                 <Fragment key={row.id}>
                   <tr key={`tr-${row.id}`} ref={virtualRow.measureRef}>
                     {row.getVisibleCells().map((cell) => {
+                      const size = cell
+                        .getContext()
+                        .table.getHeaderGroups()[0]
+                        .headers.filter((header) => header.id === cell.column.id)[0]
+                        .getSize();
                       return (
-                        <td key={cell.id} className={styles['simple-td']}>
+                        <td key={cell.id} className={styles['simple-td']} style={{ width: size, maxWidth: size }}>
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </td>
                       );

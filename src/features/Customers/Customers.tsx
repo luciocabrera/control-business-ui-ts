@@ -18,13 +18,14 @@ const CustomersBase = () => {
   const dataHook = useFetchCustomers();
   const { columns } = useCustomersConfig();
 
+  console.log('CustomersBase');
+
   return (
     <>
       <ReadOnlyHookedTable<CustomerType>
         dataHook={dataHook}
         columns={columns}
         height="calc(100vh - 120px)"
-        title={title}
         actions={
           <Link to="new" aria-label={`New customer`} state={{ backgroundLocation: location }}>
             <NewIcon />
@@ -40,7 +41,7 @@ const Customers = () => {
   const { columnMeta } = useCustomersConfig();
 
   return (
-    <TableContextProvider columnMeta={columnMeta}>
+    <TableContextProvider columnMeta={columnMeta} title={title} allowFilters={true}>
       <CustomersBase />
     </TableContextProvider>
   );

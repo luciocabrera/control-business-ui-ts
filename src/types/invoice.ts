@@ -65,6 +65,7 @@ export type InvoicesStats = {
   subtotalSum: number;
   totalSum: number;
   taxesSum: number;
+  quantitySum: number;
   subtotalMin: number;
   totalMin: number;
   taxesMin: number;
@@ -75,7 +76,7 @@ export type InvoicesStats = {
   totalAvg: number;
   taxesAvg: number;
   invoicesCount: number;
-  date?: Date;
+  date?: Date | string;
   year?: number | string;
   period?: string;
 };

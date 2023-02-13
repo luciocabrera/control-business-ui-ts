@@ -3,11 +3,11 @@ import { DateDisplay, NumberDisplay } from 'components';
 import { useMemo } from 'react';
 import { InvoicesStats } from 'types';
 
-export const getDateCell = ({
+export const getQuantitySumCell = ({
   row: {
-    original: { date },
+    original: { quantitySum },
   },
-}: CellContext<InvoicesStats, unknown>) => <DateDisplay date={date} />;
+}: CellContext<InvoicesStats, unknown>) => <NumberDisplay value={quantitySum} output={'number'} />;
 
 export const getInvoicesCell = ({
   row: {
@@ -39,13 +39,18 @@ export const useInvoicesStatsConfig = () =>
       {
         accessorKey: 'date',
         header: 'Date',
-        cell: getDateCell,
       },
       {
         accessorKey: 'invoicesCount',
         header: 'Invoices',
         cell: getInvoicesCell,
       },
+      {
+        accessorKey: 'quantitySum',
+        header: 'Nr of Hours',
+        cell: getQuantitySumCell,
+      },
+
       {
         accessorKey: 'subtotalSum',
         header: 'Subtotal',

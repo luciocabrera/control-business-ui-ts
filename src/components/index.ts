@@ -34,8 +34,8 @@ export { default as InvoiceActions } from './specific/InvoiceActions/InvoiceActi
 
 export { Routes, Route, Link, Outlet } from 'react-router-dom';
 
-export { default as Toast } from './Toast/Toast';
-export { default as Notification } from './Notification/Notification';
+export { default as Toasts } from './Toasts/Toasts';
+export { default as Notification } from './Notifications/Notifications';
 
 export { default as ErrorDisplay } from './ErrorDisplay/ErrorDisplay';
 

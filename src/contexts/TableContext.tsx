@@ -1,5 +1,5 @@
 import type { ColumnFiltersState, SortingState } from '@tanstack/react-table';
-import { type ReactNode, useContext, createContext, useReducer } from 'react';
+import { type ReactElement, useContext, createContext, useReducer } from 'react';
 
 export type ColumnMetaItem = {
   name: string;
@@ -44,7 +44,9 @@ type TableContextState = {
   filterQuery: string;
   sortingQuery: string;
   fullQuery: string;
+  title: string;
   showColumnFilters: boolean;
+  allowFilters: boolean;
 };
 
 type TableContextType = {
@@ -52,14 +54,22 @@ type TableContextType = {
   dispatch: React.Dispatch<TableContextAction>;
 };
 
+type UseStoreContextType = { columnMeta?: ColumnMetaState; title: string; allowFilters?: boolean };
+
+type TableContextProviderProps = UseStoreContextType & {
+  children: ReactElement;
+};
+
 const defaultState: TableContextState = {
   columnFilters: [],
   columnMeta: [],
   sorting: [],
+  title: '',
   filterQuery: '',
   sortingQuery: '',
   fullQuery: '',
   showColumnFilters: false,
+  allowFilters: true,
 };
 
 // Our reducer function that uses a switch statement to handle our actions
@@ -125,10 +135,12 @@ const TableContext = createContext<TableContextType>({
   dispatch: () => null,
 });
 
-const useStoreContext = (columnMeta?: ColumnMetaState) => {
+const useStoreContext = ({ columnMeta, title, allowFilters = false }: UseStoreContextType) => {
   const [state, dispatch] = useReducer(tableContextReducer, {
     ...defaultState,
     columnMeta: columnMeta ?? defaultState.columnMeta,
+    title,
+    allowFilters,
   });
 
   return { state, dispatch };
@@ -139,11 +151,6 @@ export const useTableContext = () => {
   return { ...context };
 };
 
-type TableContextProviderProps = {
-  children: ReactNode;
-  columnMeta?: ColumnMetaState;
-};
-
-export const TableContextProvider = ({ children, columnMeta }: TableContextProviderProps) => (
-  <TableContext.Provider value={useStoreContext(columnMeta)}>{children}</TableContext.Provider>
+export const TableContextProvider = ({ children, columnMeta, title, allowFilters }: TableContextProviderProps) => (
+  <TableContext.Provider value={useStoreContext({ columnMeta, title, allowFilters })}>{children}</TableContext.Provider>
 );

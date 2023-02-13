@@ -24,7 +24,6 @@ const InvoicesBase = () => {
         dataHook={dataHook}
         columns={columns}
         height="calc(100vh - 120px)"
-        title={title}
         actions={
           <Link to="new" aria-label={`New invoice`} state={{ backgroundLocation: location }}>
             <NewIcon />
@@ -40,7 +39,7 @@ const Invoices = () => {
   const { columnMeta } = useInvoicesConfig();
 
   return (
-    <TableContextProvider columnMeta={columnMeta}>
+    <TableContextProvider columnMeta={columnMeta} title={title} allowFilters={true}>
       <InvoicesBase />
     </TableContextProvider>
   );

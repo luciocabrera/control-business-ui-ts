@@ -1,7 +1,7 @@
 // components
 import { Routes, Route, FallBack, Layout } from 'components';
 // contexts
-import { NotificationContextProvider, ToastContextProvider } from 'contexts';
+import { NotificationsContextProvider, ToastsContextProvider } from 'contexts';
 // hooks
 import { useLocation } from 'hooks';
 // react
@@ -26,8 +26,8 @@ const App = () => {
   const state = location?.state as StateLocation;
 
   return (
-    <ToastContextProvider>
-      <NotificationContextProvider>
+    <ToastsContextProvider>
+      <NotificationsContextProvider>
         <Routes location={state?.backgroundLocation || location}>
           <Route path="/" element={<Layout />}>
             <Route
@@ -166,8 +166,8 @@ const App = () => {
             </Route>
           </Routes>
         )}
-      </NotificationContextProvider>
-    </ToastContextProvider>
+      </NotificationsContextProvider>
+    </ToastsContextProvider>
   );
 };
 export default App;
