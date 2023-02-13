@@ -1,5 +1,5 @@
 // components
-import { Button } from 'components';
+import { Button } from 'components/Form/components/Button';
 // contexts
 import { useAddNotification, useAddToast } from 'contexts';
 // hooks

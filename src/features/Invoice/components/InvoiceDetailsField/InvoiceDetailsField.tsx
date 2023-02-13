@@ -1,5 +1,5 @@
 // components
-import { Portal, ReadOnlyTable, IconButton, FieldGroupStyled } from 'components';
+import { Portal, ReadOnlyTable, IconButton } from 'components';
 import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 // contexts
 import { useFieldsContext } from 'contexts';
@@ -13,6 +13,7 @@ import type { InvoiceFormType, InvoicesDetails, ColumnDef, CellContext } from 't
 import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
 // styles
 import styles from './InvoiceDetailsField.module.css';
+import { FieldGroupStyled } from 'components/Form/components/FormFields/styles';
 // utilities
 import { memo } from 'utilities';
 

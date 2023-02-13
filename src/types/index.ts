@@ -14,7 +14,7 @@ export * from '../components/Notifications/Notifications';
 
 export type { ModalProps } from 'components/Modal/Modal.types';
 
-export type { FormBaseProps } from 'components/Form/Form/Form.types';
+export type { FormBaseProps } from 'components/Form/Form/types/Form.types';
 
 export type {
   ReactElement,

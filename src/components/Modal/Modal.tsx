@@ -1,4 +1,4 @@
-import { Button } from 'components';
+import { Button } from 'components/Form/components/Button';
 import { memo } from 'react';
 import Overlay from '../Overlay/Overlay';
 import Portal from '../Portal/Portal';

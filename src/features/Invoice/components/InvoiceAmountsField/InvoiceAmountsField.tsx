@@ -1,5 +1,5 @@
 // components
-import TextInput from 'components/Form/TextInput/TextInput';
+import { TextInput } from 'components/Form/components/TextInput';
 // contexts
 import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // react

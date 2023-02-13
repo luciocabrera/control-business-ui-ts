@@ -11,7 +11,7 @@ import {
   NotificationImage,
   NotificationMessage,
   NotificationTitle,
-} from './Toasts.styled';
+} from './styles';
 // types
 import { TToast, TToastProps, TToasts } from './types';
 
@@ -38,12 +38,14 @@ const Toasts = ({ position = 'bottomRight' }: TToastProps) => {
     return () => clearInterval(interval);
   }, [handleDeleteToast, toasts]);
 
+  console.log('rendering Toasts ', { toasts })
+
   return (
     <Portal>
       <NotificationContainer id="toast-container" position={position}>
-        {toasts?.map((toast, i) => (
-          <Notification key={i} backgroundColor={toast.backgroundColor} position={position}>
-            <button type="button" onClick={() => handleDeleteToast(i)} >
+        {toasts?.map((toast) => (
+          <Notification key={toast.id} backgroundColor={toast.backgroundColor} position={position}>
+            <button type="button" onClick={() => handleDeleteToast(toast.id)} >
               X
             </button>
             <NotificationImage>

@@ -1,13 +1,14 @@
 // components
 import { Header } from 'components';
-import FormFields from '../utilities/FormFields';
-import Actions from './Actions';
+import FormFields from '../components/FormFields/FormFields';
+import Actions from '../components/Actions/Actions';
 // react
 import { memo } from 'react';
 // styles
-import { FormStyled } from './Form.styled';
+import { FormStyled } from './styles';
 // types
-import type { FormProps } from './Form.types';
+import type { FormProps } from './types';
+
 
 const Form = <TData extends Record<string, unknown>>({
   viewMode,

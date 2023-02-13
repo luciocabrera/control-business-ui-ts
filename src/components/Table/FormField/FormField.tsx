@@ -1,6 +1,5 @@
 // components
-import { Select } from 'components';
-import { TextInputStyled } from 'components/Form/TextInput/TextInput.styled';
+import { Select } from 'components/Form/components/Select';
 // contexts
 import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // hooks
@@ -10,6 +9,9 @@ import type { FormFieldProps } from './FormField.types';
 import type { FieldBaseValueType } from 'types';
 // utilities
 import { getErrorField, validateField, memo } from 'utilities';
+// styles
+import { TextInputStyled } from 'components/Form/components/TextInput/styles';
+
 type RecordType = Record<string, FieldBaseValueType>;
 
 const FormField = memo(({ field, ...props }: FormFieldProps) => {

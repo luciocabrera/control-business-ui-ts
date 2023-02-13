@@ -1,5 +1,6 @@
 // components
-import { Button, Overlay, Portal } from 'components';
+import { Overlay, Portal } from 'components';
+import { Button } from 'components/Form/components/Button';
 // contexts
 import { useDeleteNotification, useNotificationsStore } from './contexts';
 // react

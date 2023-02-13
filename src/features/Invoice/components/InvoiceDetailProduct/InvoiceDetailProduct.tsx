@@ -1,5 +1,6 @@
 // components
-import { TextInput, Select } from 'components';
+import { TextInput } from 'components/Form/components/TextInput';
+import { Select } from 'components/Form/components/Select';
 // contexts
 import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // react

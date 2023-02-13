@@ -1,5 +1,5 @@
 // components
-import TextInput from 'components/Form/TextInput/TextInput';
+import { TextInput } from 'components/Form/components/TextInput';
 // contexts
 import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // react
@@ -103,7 +103,7 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
       />
       <TextInput
         key={`field-input-price-quantity`}
-        onChange={() => {}}
+        onChange={() => { }}
         textAlign="right"
         {...priceQuantityField}
         {...props}

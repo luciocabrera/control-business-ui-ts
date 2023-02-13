@@ -1,10 +1,9 @@
 // components
-
-import { TextInput } from 'components';
-import Form from 'components/Form/Form/Form';
-import { FormDataContextProvider, useAddNotification } from 'contexts';
+import { TextInput } from 'components/Form/components/TextInput';
+import { Form } from 'components/Form/Form';
 // contexts
 import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
+import { FormDataContextProvider, useAddNotification } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
 
@@ -81,7 +80,7 @@ const FormFilter = () => {
         label="Value"
         required={true}
         type={'text'}
-        // value={value}
+      // value={value}
       />
     );
     // }

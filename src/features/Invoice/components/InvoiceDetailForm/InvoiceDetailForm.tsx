@@ -1,8 +1,9 @@
 // assets
 import { detailsViewImg } from 'assets';
 // components
-import { Button, PageSpinner } from 'components';
+import { PageSpinner } from 'components';
 import Form from 'components/Form/Form/Form';
+import { Button } from 'components/Form/components/Button';
 // contexts
 import { FormDataContextProvider } from 'contexts';
 // hooks
@@ -13,6 +14,7 @@ import { memo, useCallback } from 'react';
 // types
 import type { InvoiceDetailForm as InvoiceDetailFormType, ProductType } from 'types';
 import type { InvoiceDetailFormProps } from './InvoiceDetailForm.types';
+
 
 const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDetailFormProps) => {
   const { customerId } = useParams();

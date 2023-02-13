@@ -1,5 +1,5 @@
 // react
-import { TableField } from 'components';
+import { TableField } from 'components/Form/components/TableField';
 import { InvoiceAmountsField } from 'features/Invoice/components';
 // react
 import { useMemo } from 'react';
