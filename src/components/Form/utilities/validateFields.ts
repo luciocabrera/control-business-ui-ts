@@ -1,5 +1,11 @@
-import type { FormFieldBaseType, FormFieldErrorType, FormFieldGroupType, FormFieldType } from 'types';
-import { isEmpty, validateFieldRules } from 'utilities';
+import type {
+  FormFieldBaseType,
+  FormFieldErrorType,
+  FormFieldGroupType,
+  FormFieldType,
+} from '../components/FormField/types';
+import { isEmpty } from 'utilities';
+import { validateFieldRules } from './validateFieldRules';
 
 export const validateFields = <T>(fields: FormFieldType[], data: T) => {
   let formErrors: FormFieldErrorType[] = [];

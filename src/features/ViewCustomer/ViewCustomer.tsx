@@ -2,10 +2,10 @@
 import { PageSpinner, CustomerActions } from 'components';
 import Form from 'components/Form/Form/Form';
 // contexts
-import { FormDataContextProvider } from 'contexts';
+import { FormContextProvider } from 'contexts';
 // hooks
 import { useFetchCustomer, useParams, useNavigate } from 'hooks';
-import useViewCustomerConfig from './hooks/useViewCustomerConfig';
+import { useViewCustomerConfig } from './hooks';
 // icons
 import { CustomerIcon } from 'icons';
 // react
@@ -25,7 +25,7 @@ const ViewCustomer = memo(() => {
   if (isLoadingCustomer || !fields) return <PageSpinner />;
 
   return (
-    <FormDataContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
+    <FormContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
       <Form<CustomerFormType>
         icon={<CustomerIcon />}
         title="View Customer"
@@ -34,7 +34,7 @@ const ViewCustomer = memo(() => {
         height="600px"
         width="850px"
       />
-    </FormDataContextProvider>
+    </FormContextProvider>
   );
 });
 

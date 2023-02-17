@@ -1,7 +1,8 @@
 // components
 import { PageSpinner, CustomerActions, ErrorDisplay } from 'components';
+import Form from 'components/Form/Form/Form';
 // contexts
-import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
+import { useAddNotification, useAddToast, FormContextProvider } from 'contexts';
 // hooks
 import {
   useFetchCustomer,
@@ -11,14 +12,14 @@ import {
   useNavigate,
   useParams,
 } from 'hooks';
-import useCustomerConfig from './hooks/useCustomerConfig';
+import { useCustomerConfig } from './hooks';
 // icons
 import { CustomerIcon } from 'icons';
 // react
 import { useCallback } from 'react';
 // types
 import type { APiResponseErrorType, CustomerCreateType, CustomerFormType } from 'types';
-import Form from 'components/Form/Form/Form';
+
 
 const Customer = () => {
   const { customerId } = useParams();
@@ -100,7 +101,7 @@ const Customer = () => {
   const title = `${isCreating ? 'New' : 'Edit'} Customer`;
 
   return (
-    <FormDataContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
+    <FormContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
       <Form<CustomerFormType>
         icon={<CustomerIcon />}
         title={title}
@@ -111,7 +112,7 @@ const Customer = () => {
         height="600px"
         width="850px"
       />
-    </FormDataContextProvider>
+    </FormContextProvider>
   );
 };
 

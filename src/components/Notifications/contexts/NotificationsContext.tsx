@@ -1,7 +1,7 @@
 // components
 import Notifications from '../Notifications';
 // hooks
-import { type StoreReturnType, type UsesStore, useStore } from 'contexts/useStore';
+import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
 // react
 import { createContext, useContext, useSyncExternalStore, useCallback } from 'react';
 // types
@@ -14,7 +14,7 @@ type NotificationsContextProviderProps = {
   children: ReactNode;
 };
 
-const NotificationsContext = createContext<StoreReturnType | null>(null);
+const NotificationsContext = createContext<TStoreReturn | null>(null);
 
 export const useNotificationsStore = <SelectorOutput, TDataType = TNotifications>(
   selector: (store: TDataType) => SelectorOutput,
@@ -59,13 +59,10 @@ export const useDeleteNotification = () => {
   }
 
   return useCallback((id: number) => {
-    const notifications = (store.get()?.notification ?? []) as TNotification[];
-    const index = notifications?.findIndex((e: TNotification) => e.id === id);
+    const notifications = (store.get()?.notifications ?? []) as TNotification[];
+    const newNotifications = notifications.filter(notification => notification.id !== id)
 
-    if (Number.isInteger(index)) {
-      notifications?.splice(index, 1);
-      store.set({ notifications });
-    }
+    store.set({ notifications: newNotifications });
 
   }, [store])
 };

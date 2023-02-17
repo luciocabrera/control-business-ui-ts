@@ -1,8 +1,9 @@
 // components
 import { PageSpinner, InvoiceActions, ErrorDisplay } from 'components';
 import Form from 'components/Form/Form/Form';
+import { FormContextProvider } from 'components/Form/contexts';
 // contexts
-import { useAddNotification, useAddToast, FormDataContextProvider } from 'contexts';
+import { useAddNotification, useAddToast } from 'contexts';
 // hooks
 import {
   useParams,
@@ -13,7 +14,7 @@ import {
   useRefreshInvoices,
   useFetchInvoiceRates,
 } from 'hooks';
-import useInvoiceConfig from './hooks/useInvoiceConfig';
+import { useInvoiceConfig } from './hooks';
 // icons
 import { InvoiceIcon } from 'icons';
 // react
@@ -127,7 +128,7 @@ const Invoice = () => {
   const title = `${isCreating || isCopying ? 'New' : 'Edit'} Invoice`;
 
   return (
-    <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoiceForm}>
+    <FormContextProvider<InvoiceFormType> initialFields={fields} initialData={invoiceForm}>
       <Form<InvoiceFormType>
         icon={<InvoiceIcon />}
         title={title}
@@ -138,7 +139,7 @@ const Invoice = () => {
         height="612px"
         width="1120px"
       />
-    </FormDataContextProvider>
+    </FormContextProvider>
   );
 };
 export default Invoice;

@@ -8,7 +8,8 @@ import { useCallback, useMemo } from 'react';
 import type { PriceQuantityFieldProps } from './PriceQuantityField.types';
 import type { InvoiceDetailForm } from 'types';
 // utilities
-import { getErrorField, validateField, memo, getFormattedNumber } from 'utilities';
+import { memo, getFormattedNumber } from 'utilities';
+import { getErrorField, validateField } from 'components/Form/utilities';
 
 const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
   const [quantity, setQuantity] = useFieldsContext<number, Pick<InvoiceDetailForm, 'quantity'>>(

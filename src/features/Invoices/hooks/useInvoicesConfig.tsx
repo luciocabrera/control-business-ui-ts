@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 // types
 import type { ColumnDef, InvoiceType, ColumnMetaState } from 'types';
 // utilities
-import { getActionsCell, getDateCell, getSubTotalCell, getTaxesCell, getTotalCell } from '../utils/utils';
+import { getActionsCell, getDateCell, getSubTotalCell, getTaxesCell, getTotalCell } from '../utilities';
 import { isDateBetween } from 'utilities';
 
-const useInvoicesConfig = () => {
+export const useInvoicesConfig = () => {
   const columns: ColumnDef<InvoiceType>[] = useMemo(
     () => [
       { accessorKey: 'invoice', header: 'Invoice' },
@@ -43,8 +43,7 @@ const useInvoicesConfig = () => {
         id: 'actions',
         header: '',
         enableResizing: false,
-        maxSize: 10,
-        size: 10,
+        maxSize: 62,
         cell: getActionsCell,
       },
     ],
@@ -65,5 +64,3 @@ const useInvoicesConfig = () => {
 
   return { columns, columnMeta };
 };
-
-export default useInvoicesConfig;

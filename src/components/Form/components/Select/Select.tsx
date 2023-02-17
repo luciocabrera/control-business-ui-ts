@@ -1,6 +1,6 @@
 import { memo, forwardRef } from 'react';
 // components
-import { FormFieldBase } from '../FormFieldBase';
+import { FormFieldBase } from '../FormFieldBase'
 // styles
 import { SelectStyled } from './styles';
 // types

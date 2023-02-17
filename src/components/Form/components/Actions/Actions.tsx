@@ -2,13 +2,16 @@
 import ErrorDisplay from 'components/ErrorDisplay/ErrorDisplay';
 import { Button } from '../Button';
 // contexts
-import { FormMetaType, useAddNotification, useFieldsContext, useFormMetaContext } from 'contexts';
+import { FormMetaType, useFieldsContext, useFormMetaContext } from 'components/Form/contexts';
+import { useAddNotification } from 'components/Notifications/contexts';
 // react
 import { memo, useCallback } from 'react';
 // types
-import type { MouseEvent, FormBaseProps, FormFieldType } from 'types';
+import type { MouseEvent, FormBaseProps } from 'types';
+import type { FormFieldType } from '../FormField/types';
 // utilities
-import { deepEqual, validateFields } from 'utilities';
+import { deepEqual } from 'utilities';
+import { validateFields } from 'components/Form/utilities';
 
 type ActionsProps<TDataType> = FormBaseProps<TDataType>;
 

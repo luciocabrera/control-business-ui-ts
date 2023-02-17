@@ -7,9 +7,11 @@ import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 import { useCallback, useMemo } from 'react';
 // types
 import type { InvoiceDetailProductProps } from './InvoiceDetailProduct.types';
-import type { InvoiceDetailForm, DateParameterType, FieldBaseValueType, ProductType } from 'types';
+import type { InvoiceDetailForm, DateParameterType, ProductType } from 'types';
+import type { FieldBaseValueType } from 'components/Form/components/FormField/types';
 // utilities
-import { getErrorField, validateField, memo, getDateAsString } from 'utilities';
+import { memo, getDateAsString } from 'utilities';
+import { getErrorField, validateField } from 'components/Form/utilities';
 
 const InvoiceDetailProduct = memo(({ products, ...props }: InvoiceDetailProductProps) => {
   const [productId, setProductId] = useFieldsContext<number, Pick<InvoiceDetailForm, 'productId'>>(

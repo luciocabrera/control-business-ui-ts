@@ -1,7 +1,7 @@
 // components
 import Toasts from '../Toasts';
 // hooks
-import { type StoreReturnType, type UsesStore, useStore } from 'contexts/useStore';
+import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
 // react
 import { createContext, useContext, useSyncExternalStore, useCallback } from 'react';
 // types
@@ -14,7 +14,7 @@ type ToastsContextProviderProps = {
   children: ReactNode;
 };
 
-const ToastsContext = createContext<StoreReturnType | null>(null);
+const ToastsContext = createContext<TStoreReturn | null>(null);
 
 export const useToastsStore = <SelectorOutput, TDataType = TToasts>(
   selector: (store: TDataType) => SelectorOutput,
@@ -24,8 +24,7 @@ export const useToastsStore = <SelectorOutput, TDataType = TToasts>(
     throw new Error('Store not found');
   }
 
-  const state = useSyncExternalStore(store.subscribe, () => selector(store.get() as TDataType));
-
+  const state = useSyncExternalStore(store.subscribe, useCallback(() => selector(store.get() as TDataType), [store, selector]));
   return [state, store.set];
 };
 
@@ -55,12 +54,9 @@ export const useDeleteToast = () => {
 
   return useCallback((id: number) => {
     const toasts = (store.get()?.toasts ?? []) as TToast[];
-    const index = toasts?.findIndex((e: TToast) => e.id === id);
+    const newToasts = toasts.filter(toast => toast.id !== id)
 
-    if (Number.isInteger(index)) {
-      toasts?.splice(index, 1);
-      store.set({ toasts: toasts });
-    }
+    store.set({ toasts: newToasts });
 
   }, [store])
 };

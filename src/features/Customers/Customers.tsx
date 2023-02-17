@@ -5,7 +5,7 @@ import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHo
 import { TableContextProvider } from 'contexts';
 // hooks
 import { useFetchCustomers, useLocation } from 'hooks';
-import useCustomersConfig from './hooks/useCustomersConfig';
+import { useCustomersConfig } from './hooks';
 // icons
 import { NewIcon } from 'icons';
 // types

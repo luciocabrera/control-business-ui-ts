@@ -1,4 +1,4 @@
-// react
+// components
 import { TableField } from 'components/Form/components/TableField';
 import { InvoiceAmountsField } from 'features/Invoice/components';
 // react
@@ -6,18 +6,17 @@ import { useMemo } from 'react';
 // types
 import type {
   InvoiceType,
-  FormFieldType,
   DateParameterType,
-  FieldBaseValueType,
   InvoiceDetailForm,
   InvoicesDetails,
   ColumnDef,
 } from 'types';
+import type { FieldBaseValueType, FormFieldType } from 'components/Form/components/FormField/types';
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
-import { getDateCell, getPriceQuantityCell, getPriceUnitCell, getQuantityCell } from '../utils/utils';
+import { getDateCell, getPriceQuantityCell, getPriceUnitCell, getQuantityCell } from '../utilities';
 
-const useViewInvoiceConfig = (invoice?: InvoiceType) => {
+export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
   const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       {
@@ -164,5 +163,3 @@ const useViewInvoiceConfig = (invoice?: InvoiceType) => {
 
   return { fields };
 };
-
-export default useViewInvoiceConfig;

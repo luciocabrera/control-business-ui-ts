@@ -38,7 +38,6 @@ const Toasts = ({ position = 'bottomRight' }: TToastProps) => {
     return () => clearInterval(interval);
   }, [handleDeleteToast, toasts]);
 
-  console.log('rendering Toasts ', { toasts })
 
   return (
     <Portal>

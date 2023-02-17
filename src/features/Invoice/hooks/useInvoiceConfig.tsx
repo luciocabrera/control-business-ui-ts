@@ -5,11 +5,12 @@ import { useMemo } from 'react';
 // hooks
 import { useFetchCustomers } from 'hooks';
 // types
-import type { InvoiceType, FormFieldType, DateParameterType, FieldBaseValueType } from 'types';
+import type { InvoiceType, DateParameterType } from 'types';
+import type { FieldBaseValueType, FormFieldType } from 'components/Form/components/FormField/types';
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
 
-const useInvoiceConfig = ({
+export const useInvoiceConfig = ({
   invoice,
   isCopying,
   taxesPercentage,
@@ -139,4 +140,3 @@ const useInvoiceConfig = ({
 
   return { fields };
 };
-export default useInvoiceConfig;

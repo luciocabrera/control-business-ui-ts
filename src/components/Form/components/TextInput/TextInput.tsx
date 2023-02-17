@@ -5,8 +5,8 @@ import { memo, forwardRef } from 'react';
 // styles
 import { TextInputStyled } from './styles';
 // types
-import type { FieldBaseValueType } from 'types';
 import type { TextInputProps } from './types';
+import type { FieldBaseValueType } from '../FormField/types';
 
 const TextInput = memo(
   forwardRef(({ textAlign, ...rest }: TextInputProps, ref: React.ForwardedRef<unknown>) => {

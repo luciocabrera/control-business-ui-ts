@@ -3,7 +3,8 @@ import { InvoiceDetailProduct, PriceQuantityField } from 'features/Invoice/compo
 // react
 import { useMemo } from 'react';
 // types
-import type { FormFieldType, ProductType } from 'types';
+import type { ProductType } from 'types';
+import type { FormFieldType } from 'components/Form/components/FormField/types';
 
 const useInvoiceDetailFormConfig = (products?: ProductType[]) => {
   const fields: FormFieldType[] = useMemo(

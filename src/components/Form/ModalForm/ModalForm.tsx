@@ -5,7 +5,7 @@ import { memo } from 'react';
 // types
 import type { ReactNode } from 'types';
 // styles
-import { FormWrapper } from './ModalForm.styled';
+import { FormWrapper } from './styles';
 
 type ModalWrapperProps = {
   children: ReactNode;

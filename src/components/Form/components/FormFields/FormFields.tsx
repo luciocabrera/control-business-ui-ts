@@ -1,10 +1,11 @@
 // components
-import FormField from '../FormField/FormField';
+import { FormField } from '../FormField';
+// contexts
+import { type FormMetaType, useFormMetaContext } from 'components/Form/contexts/FormContext';
 // styles
 import { CustomFieldWrapper, FieldGroupStyled, FieldRowStyled } from './styles';
 // types
-import type { FormFieldType, FormFieldGroupType, FormSimpleFieldType } from 'types';
-import { FormMetaType, useFormMetaContext } from 'components/Form/contexts/FormDataContext';
+import type { FormFieldGroupType, FormFieldType, FormSimpleFieldType } from '../FormField/types';
 
 type TFormField = {
   formFields?: FormFieldType[];

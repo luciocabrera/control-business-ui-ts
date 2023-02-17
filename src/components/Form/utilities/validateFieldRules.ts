@@ -1,4 +1,4 @@
-import type { FormFieldBaseType, FormFieldErrorType } from 'types';
+import type { FormFieldBaseType, FormFieldErrorType } from '../components/FormField/types';
 
 export const validateFieldRules = <T>(field: FormFieldBaseType, data: T) => {
   const fieldRuleErrors: FormFieldErrorType[] = [];

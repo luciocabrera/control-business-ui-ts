@@ -1,10 +1,10 @@
 // components
 import { PageSpinner, InvoiceActions } from 'components';
 // contexts
-import { FormDataContextProvider } from 'contexts';
+import { FormContextProvider } from 'contexts';
 // hooks
 import { useParams, useNavigate, useFetchInvoice, useCallback } from 'hooks';
-import useViewInvoiceConfig from './hooks/useViewInvoiceConfig';
+import { useViewInvoiceConfig } from './hooks';
 // icons
 import { InvoiceIcon } from 'icons';
 // types
@@ -24,7 +24,7 @@ const ViewInvoice = () => {
   if (isLoadingInvoice || !fields) return <PageSpinner />;
 
   return (
-    <FormDataContextProvider<InvoiceFormType> initialFields={fields} initialData={invoice}>
+    <FormContextProvider<InvoiceFormType> initialFields={fields} initialData={invoice}>
       <Form<InvoiceFormType>
         icon={<InvoiceIcon />}
         title="View invoice"
@@ -33,7 +33,7 @@ const ViewInvoice = () => {
         height="612px"
         width="1120px"
       />
-    </FormDataContextProvider>
+    </FormContextProvider>
   );
 };
 export default ViewInvoice;

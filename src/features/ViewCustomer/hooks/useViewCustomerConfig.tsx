@@ -1,9 +1,10 @@
 // react
 import { useMemo } from 'react';
 // types
-import type { CustomerType, FormFieldType } from 'types';
+import type { CustomerType } from 'types';
+import type { FormFieldType } from 'components/Form/components/FormField/types';
 
-const useViewCustomerConfig = (customer?: CustomerType) => {
+export const useViewCustomerConfig = (customer?: CustomerType) => {
   const fields: FormFieldType[] = useMemo(
     () => [
       {
@@ -161,5 +162,3 @@ const useViewCustomerConfig = (customer?: CustomerType) => {
 
   return { fields };
 };
-
-export default useViewCustomerConfig;

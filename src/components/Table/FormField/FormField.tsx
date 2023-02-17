@@ -6,9 +6,10 @@ import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 import { useCallback, useMemo } from 'hooks';
 // types
 import type { FormFieldProps } from './FormField.types';
-import type { FieldBaseValueType } from 'types';
+import type { FieldBaseValueType } from 'components/Form/components/FormField/types';
 // utilities
-import { getErrorField, validateField, memo } from 'utilities';
+import { memo } from 'utilities';
+import { getErrorField, validateField } from 'components/Form/utilities';
 // styles
 import { TextInputStyled } from 'components/Form/components/TextInput/styles';
 

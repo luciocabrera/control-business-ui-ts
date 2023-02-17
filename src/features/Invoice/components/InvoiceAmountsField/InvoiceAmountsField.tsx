@@ -8,7 +8,8 @@ import { useCallback, useMemo } from 'react';
 import type { InvoiceAmountsFieldProps } from './InvoiceAmountsField.types';
 import type { InvoiceFormType } from 'types';
 // utilities
-import { getErrorField, validateField, memo, getFormattedNumber } from 'utilities';
+import { memo, getFormattedNumber } from 'utilities';
+import { getErrorField, validateField } from 'components/Form/utilities';
 
 const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
   const [subtotal] = useFieldsContext<number, Pick<InvoiceFormType, 'subtotal'>>((store) => store.subtotal);

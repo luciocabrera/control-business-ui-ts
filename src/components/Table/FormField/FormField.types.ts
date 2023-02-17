@@ -1,4 +1,4 @@
-import type { FieldBaseValueType, FormFieldBaseType } from 'types';
+import type { FieldBaseValueType, FormFieldBaseType } from 'components/Form/components/FormField/types';
 
 export type FormFieldProps = {
   viewMode?: boolean;

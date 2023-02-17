@@ -3,9 +3,10 @@ import { useFetchDocumentTypes, useFetchTitles } from 'hooks';
 // react
 import { useMemo } from 'react';
 // types
-import type { CustomerType, FormFieldType } from 'types';
+import type { CustomerType } from 'types';
+import type { FormFieldType } from 'components/Form/components/FormField/types';
 
-const useCustomerConfig = (customer?: CustomerType) => {
+export const useCustomerConfig = (customer?: CustomerType) => {
   const { data: documentTypes, isLoading: isLoadingDocumentTypes } = useFetchDocumentTypes();
   const { data: titles, isLoading: isLoadingTitles } = useFetchTitles();
   const titlesOptions = useMemo(
@@ -266,4 +267,4 @@ const useCustomerConfig = (customer?: CustomerType) => {
 
   return { fields };
 };
-export default useCustomerConfig;
+

@@ -1,25 +1,25 @@
 import { memo, ReactElement } from 'react';
 // styles
-import { HeaderStyled } from './Header.styled';
+import { styles } from './styles';
 // types
-import type { HeaderProps } from './Header.types';
+import type { HeaderProps } from './types';
 
 const getIcon = (icon?: ReactElement | string) => (typeof icon === 'string' ? <img src={icon} alt="" /> : icon);
 
 const Header = memo(({ icon, title, subtitle, children, onClose }: HeaderProps) => (
-  <HeaderStyled>
+  <header className={styles.header}>
     {icon && getIcon(icon)}
-    <div className="title-content">
+    <div className={styles.titleContent}>
       {title && <span>{title}</span>}
       {subtitle && <span>{subtitle}</span>}
     </div>
-    {children && <div className="children-content">{children}</div>}
+    {children && <div className={styles.childrenContent}>{children}</div>}
     {onClose && (
-      <button type="button" onClick={onClose} className="close" data-dismiss="modal">
+      <button type="button" onClick={onClose} className={styles.close} data-dismiss="modal">
         &times;
       </button>
     )}
-  </HeaderStyled>
+  </header>
 ));
 
 export default Header;

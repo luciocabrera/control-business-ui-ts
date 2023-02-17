@@ -3,9 +3,9 @@ import { useMemo } from 'react';
 // types
 import type { CustomerType, ColumnDef, ColumnMetaState } from 'types';
 // utilities
-import { getActionsCell } from '../utils/utils';
+import { getActionsCell } from '../utilities';
 
-const useCustomersConfig = () => {
+export const useCustomersConfig = () => {
   const columns: ColumnDef<CustomerType>[] = useMemo(
     () => [
       { accessorKey: 'documentTypeName', header: 'ID Type' },
@@ -21,8 +21,7 @@ const useCustomersConfig = () => {
       {
         id: 'actions',
         enableResizing: false,
-        maxSize: 10,
-        size: 10,
+        maxSize: 34,
         cell: getActionsCell,
       },
     ],
@@ -41,5 +40,3 @@ const useCustomersConfig = () => {
 
   return { columns, columnMeta };
 };
-
-export default useCustomersConfig;

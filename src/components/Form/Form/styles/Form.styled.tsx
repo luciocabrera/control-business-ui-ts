@@ -21,14 +21,7 @@ export const FormStyled = styled.form`
   fieldset {
     min-width: 300px;
   }
-  header {
-    min-height: 40px;
-    max-height: 40px;
-    .close {
-      right: 1.5rem;
-      position: absolute;
-    }
-  }
+
   legend {
     font-weight: bold;
     color: var(--text-strong-color);

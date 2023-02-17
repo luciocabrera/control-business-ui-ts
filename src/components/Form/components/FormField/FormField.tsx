@@ -1,15 +1,17 @@
 // components
-
-// contexts
-import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
-// types
-import type { FormFieldProps } from './types';
-import type { FieldBaseValueType } from 'types';
-// utilities
-import { getErrorField, validateField, memo } from 'utilities';
-import { useCallback } from 'react';
 import { Select } from '../Select';
 import { TextInput } from '../TextInput';
+// contexts
+
+// types
+import type { FieldBaseValueType, FormFieldProps } from './types';
+
+// utilities
+import { memo } from 'utilities';
+import { useCallback } from 'react';
+
+import { getErrorField, validateField } from 'components/Form/utilities';
+import { type FormMetaType, useFieldsContext, useFormMetaContext } from 'components/Form/contexts';
 
 const FormField = memo(({ field, ...props }: FormFieldProps) => {
   const { options, type, label, accessor, readonly, placeholder, normalize, rules, textAlign, required } = field;

@@ -1,5 +1,5 @@
 // types
-import type { FormFieldBaseType, FormFieldGroupType, FormFieldType } from 'types';
+import type { FormFieldBaseType, FormFieldGroupType, FormFieldType } from '../components/FormField/types';
 
 export const getInitialData = <T extends Record<string, unknown>>(fields: FormFieldType[], initialData?: T) => {
   let newData: Record<string, unknown> = {} as T;

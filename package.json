@@ -6,28 +6,32 @@
   "dependencies": {
     "@tanstack/match-sorter-utils": "^8.7.6",
     "@tanstack/react-table": "^8.7.9",
+    "@vitejs/plugin-react": "^3.1.0",
     "react": "^18.2.0",
     "react-charts": "3.0.0-beta.54",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.0",
+    "react-router-dom": "^6.8.1",
     "react-virtual": "^2.10.4",
     "recharts": "^2.4.1",
     "styled-components": "^5.3.6",
-    "swr": "^2.0.3"
+    "swr": "^2.0.3",
+    "vite": "^4.1.1",
+    "vite-plugin-svgr": "^2.4.0",
+    "vite-tsconfig-paths": "^4.0.5"
   },
   "scripts": {
-    "build:ci": "vite build",
-    "dev": "vite --port 3006",
-    "start": "vite --port 3006",
+    "dev": "vite  --port 3006",
     "build": "tsc && vite build",
-    "preview": "vite preview --port 3006",
+    "preview": "vite preview  --port 3006",
+    "lint": "eslint . --ext=.jsx,.js,.tsx,.ts",
+    "lint:fix": "eslint --fix",
+    "prettier": "prettier --config .prettierrc src/**/*.{ts,tsx,json} --write",
     "typecheck": "tsc --noEmit"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn prettier && yarn lint"
+    }
   },
   "browserslist": {
     "production": [
@@ -48,11 +52,22 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-table": "^7.7.14",
     "@types/styled-components": "^5.1.26",
-    "@vitejs/plugin-react": "^3.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "eslint": "^8.34.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
+    "prettier": "^2.8.4",
     "typescript": "^4.9.5",
-    "vite": "^4.1.1",
-    "vite-plugin-svgr": "^2.4.0",
-    "vite-tsconfig-paths": "^4.0.5",
     "web-vitals": "^3.1.1"
   }
 }

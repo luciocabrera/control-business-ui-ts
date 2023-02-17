@@ -1,4 +1,4 @@
-import type { FormFieldBaseType } from 'types';
+import type { FormFieldBaseType } from '../../FormField/types';
 
 export type SelectProps = Omit<
   FormFieldBaseType,

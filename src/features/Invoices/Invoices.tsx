@@ -5,7 +5,7 @@ import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHo
 import { TableContextProvider } from 'contexts';
 // hooks
 import { useFetchInvoices, useLocation } from 'hooks';
-import useInvoicesConfig from './hooks/useInvoicesConfig';
+import { useInvoicesConfig } from './hooks';
 // icons
 import { NewIcon } from 'icons';
 // types

@@ -1,4 +1,4 @@
-import type { FormFieldErrorType, FormFieldBaseType } from 'types';
+import { FormFieldBaseType, FormFieldErrorType } from '../components/FormField/types';
 
 export const getErrorField = (field: FormFieldBaseType, errors: FormFieldErrorType[]) => {
   const defaultError = { hasErrors: false, errorMessage: '' };

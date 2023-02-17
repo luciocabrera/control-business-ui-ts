@@ -3,7 +3,7 @@ import { TextInput } from 'components/Form/components/TextInput';
 import { Form } from 'components/Form/Form';
 // contexts
 import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
-import { FormDataContextProvider, useAddNotification } from 'contexts';
+import { FormContextProvider, useAddNotification } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
 
@@ -88,7 +88,7 @@ const FormFilter = () => {
 
   if (!showColumnFilters) return null;
   return (
-    <FormDataContextProvider<Record<string, unknown>> initialFields={formFields} initialData={initialValues}>
+    <FormContextProvider<Record<string, unknown>> initialFields={formFields} initialData={initialValues}>
       <Form<Record<string, unknown>>
         // icon={<CustomerIcon />}
         title={'title'}
@@ -100,7 +100,7 @@ const FormFilter = () => {
         width="850px"
         onFinish={onSetShowFilters}
       />
-    </FormDataContextProvider>
+    </FormContextProvider>
     // <FormStyled noValidate width="701px">
     //   {/* <Header icon={<FilterIcon />} title={title} onClose={onFinish} /> */}
     //   {/* <main>{formChildren}</main> */}

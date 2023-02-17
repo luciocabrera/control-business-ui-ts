@@ -5,7 +5,7 @@ import { PageSpinner } from 'components';
 import Form from 'components/Form/Form/Form';
 import { Button } from 'components/Form/components/Button';
 // contexts
-import { FormDataContextProvider } from 'contexts';
+import { FormContextProvider } from 'contexts';
 // hooks
 import { useParams, useFetchProducts } from 'hooks';
 import useInvoiceDetailFormConfig from './hooks/useInvoiceDetailFormConfig';
@@ -48,7 +48,7 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
   const title = `${isCreating ? 'New' : 'Edit'} Detail`;
 
   return (
-    <FormDataContextProvider<InvoiceDetailFormType> initialFields={fields} initialData={detail}>
+    <FormContextProvider<InvoiceDetailFormType> initialFields={fields} initialData={detail}>
       <Form<InvoiceDetailFormType>
         icon={detailsViewImg}
         title={title}
@@ -62,7 +62,7 @@ const InvoiceDetailForm = memo(({ detail, onAcceptDetail, onFinish }: InvoiceDet
         viewMode={false}
         width="650px"
       />
-    </FormDataContextProvider>
+    </FormContextProvider>
   );
 });
 
