@@ -9,46 +9,54 @@ import type {
   DateParameterType,
   InvoiceDetailForm,
   InvoicesDetails,
-  ColumnDef,
+  ColumnDef
 } from 'types';
-import type { FieldBaseValueType, FormFieldType } from 'components/Form/components/FormField/types';
+import type {
+  FieldBaseValueType,
+  FormFieldType
+} from 'components/Form/components/FormField/types';
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
-import { getDateCell, getPriceQuantityCell, getPriceUnitCell, getQuantityCell } from '../utilities';
+import {
+  getDateCell,
+  getPriceQuantityCell,
+  getPriceUnitCell,
+  getQuantityCell
+} from '../utilities';
 
 export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
   const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       {
         accessorKey: 'productNameWithCode',
-        header: 'Product',
+        header: 'Product'
       },
       {
         accessorKey: 'date',
         header: 'Date',
-        cell: getDateCell,
+        cell: getDateCell
       },
       {
         accessorKey: 'description',
-        header: 'Description',
+        header: 'Description'
       },
       {
         accessorKey: 'quantity',
         header: 'Quantity',
-        cell: getQuantityCell,
+        cell: getQuantityCell
       },
       {
         accessorKey: 'priceUnit',
         header: 'Price Unit',
-        cell: getPriceUnitCell,
+        cell: getPriceUnitCell
       },
       {
         accessorKey: 'priceQuantity',
         header: 'Price Quantity',
-        cell: getPriceQuantityCell,
-      },
+        cell: getPriceQuantityCell
+      }
     ],
-    [],
+    []
   );
 
   const fields: FormFieldType[] = useMemo(
@@ -69,7 +77,7 @@ export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
                     label: 'Invoice',
                     type: 'text',
                     value: invoice?.invoice,
-                    readonly: true,
+                    readonly: true
                   },
                   {
                     accessor: 'date',
@@ -77,18 +85,19 @@ export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
                     type: 'text',
                     value: invoice?.date,
                     readonly: true,
-                    normalize: (value: DateParameterType | undefined) => getDateAsString(value),
-                  },
-                ],
+                    normalize: (value: DateParameterType | undefined) =>
+                      getDateAsString(value)
+                  }
+                ]
               },
               {
                 accessor: 'fullNameWithInitials',
                 label: 'Customer',
                 type: 'text',
                 value: invoice?.customer,
-                readonly: true,
-              },
-            ],
+                readonly: true
+              }
+            ]
           },
           {
             type: 'group',
@@ -98,34 +107,37 @@ export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
                 type: 'object',
                 label: 'Amounts',
                 accessor: '',
-                render: () => <InvoiceAmountsField />,
-              },
-            ],
+                render: () => <InvoiceAmountsField />
+              }
+            ]
           },
           {
             type: 'rule',
             accessor: 'taxesPercentage',
-            value: invoice?.taxesPercentage,
+            value: invoice?.taxesPercentage
           },
           {
             accessor: 'subtotal',
             type: 'rule',
             value: invoice?.subtotal,
-            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+            normalize: (value: FieldBaseValueType) =>
+              getFormattedNumber(value, 'currency')
           },
           {
             accessor: 'taxes',
             type: 'rule',
             value: invoice?.taxes,
-            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
+            normalize: (value: FieldBaseValueType) =>
+              getFormattedNumber(value, 'currency')
           },
           {
             accessor: 'total',
             type: 'rule',
             value: invoice?.total,
-            normalize: (value: FieldBaseValueType) => getFormattedNumber(value, 'currency'),
-          },
-        ],
+            normalize: (value: FieldBaseValueType) =>
+              getFormattedNumber(value, 'currency')
+          }
+        ]
       },
       {
         type: 'row',
@@ -136,17 +148,17 @@ export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
             type: 'table',
             render: () => (
               <TableField<InvoicesDetails, InvoiceDetailForm>
-                accessor="details"
-                label="Details"
+                accessor='details'
+                label='Details'
                 columns={columns}
                 data={invoice?.details as InvoicesDetails[]}
                 showHeader={false}
               />
             ),
-            readonly: true,
-          },
-        ],
-      },
+            readonly: true
+          }
+        ]
+      }
     ],
     [
       columns,
@@ -157,8 +169,8 @@ export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
       invoice?.subtotal,
       invoice?.taxes,
       invoice?.taxesPercentage,
-      invoice?.total,
-    ],
+      invoice?.total
+    ]
   );
 
   return { fields };

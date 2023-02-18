@@ -35,4 +35,6 @@ const TableActions = memo(({ invoiceId }: TableActionsProps) => {
   );
 });
 
+TableActions.displayName = 'TableActions';
+
 export default TableActions;

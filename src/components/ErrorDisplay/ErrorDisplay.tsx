@@ -9,11 +9,12 @@ const ErrorDisplay = memo(({ errors }: ErrorDisplayProps) =>
     <p>{errors}</p>
   ) : (
     <ul>
-      {errors.map((err, i) => (
-        <li key={`list-err-${i}`}>{err}</li>
+      {errors.map((err) => (
+        <li key={`list-err-${err}`}>{err}</li>
       ))}
     </ul>
-  ),
+  )
 );
+ErrorDisplay.displayName = 'ErrorDisplay';
 
 export default ErrorDisplay;

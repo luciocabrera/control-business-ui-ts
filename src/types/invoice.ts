@@ -1,6 +1,4 @@
-import type { AuditType, CustomerType } from 'types';
-
-type InvoiceCustomerType = Pick<CustomerType, 'documentId' | 'fullNameWithInitials' | 'documentTypeName' | 'titleName'>;
+import type { AuditType } from 'types';
 
 export type ProductInvoicesDetails = {
   productNameWithCode: string;
@@ -24,7 +22,11 @@ export type InvoiceDetailForm = Omit<
 
 export type InvoiceDetailCreate = Omit<
   InvoicesDetails,
-  'product' | 'productNameWithCode' | 'productDescription' | 'productPrice' | 'date'
+  | 'product'
+  | 'productNameWithCode'
+  | 'productDescription'
+  | 'productPrice'
+  | 'date'
 > & { date: Date };
 
 export type InvoiceType = AuditType & {
@@ -58,8 +60,20 @@ export type InvoiceFormType = Omit<
 
 export type InvoiceCreateType = Omit<
   InvoiceType,
-  'invoiceId' | 'updatedAt' | 'createdAt' | 'customer' | 'details' | 'date' | 'createdByAlias' | 'updatedByAlias'
-> & { date: Date; invoiceId?: number; customerId: number; details: InvoiceDetailCreate[] };
+  | 'invoiceId'
+  | 'updatedAt'
+  | 'createdAt'
+  | 'customer'
+  | 'details'
+  | 'date'
+  | 'createdByAlias'
+  | 'updatedByAlias'
+> & {
+  date: Date;
+  invoiceId?: number;
+  customerId: number;
+  details: InvoiceDetailCreate[];
+};
 
 export type InvoicesStats = {
   subtotalSum: number;

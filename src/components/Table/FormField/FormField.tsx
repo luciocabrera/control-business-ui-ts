@@ -16,21 +16,29 @@ import { TextInputStyled } from 'components/Form/components/TextInput/styles';
 type RecordType = Record<string, FieldBaseValueType>;
 
 const FormField = memo(({ field, ...props }: FormFieldProps) => {
-  const { options, type, label, accessor, readonly, placeholder, rules } = field;
+  const { options, type, label, accessor, readonly, placeholder, rules } =
+    field;
 
-  const [fieldValue, setStore] = useFieldsContext<FieldBaseValueType, RecordType>((store) => store[field.accessor]);
+  const [fieldValue, setStore] = useFieldsContext<
+    FieldBaseValueType,
+    RecordType
+  >((store) => store[field.accessor]);
 
-  const [submittedCounter] = useFormMetaContext<number, Pick<FormMetaType<RecordType>, 'submittedCounter'>>(
-    (store) => store.submittedCounter,
-  );
+  const [submittedCounter] = useFormMetaContext<
+    number,
+    Pick<FormMetaType<RecordType>, 'submittedCounter'>
+  >((store) => store.submittedCounter);
 
   console.log('submittedCounter', submittedCounter);
 
   const errorFields = useMemo(
     () => (submittedCounter > 0 ? validateField(field, fieldValue) : []),
-    [field, fieldValue, submittedCounter],
+    [field, fieldValue, submittedCounter]
   );
-  const errorField = useMemo(() => getErrorField(field, errorFields), [errorFields, field]);
+  const errorField = useMemo(
+    () => getErrorField(field, errorFields),
+    [errorFields, field]
+  );
   const maxLength = rules
     ?.filter((rule) => rule.type === 'maxLength')
     ?.map((filteredRule) => filteredRule.value)[0] as number;
@@ -40,14 +48,14 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
       const selected = event.target.options[event.target.selectedIndex]?.value;
       setStore({ [field.accessor]: selected });
     },
-    [field.accessor, setStore],
+    [field.accessor, setStore]
   );
 
   const handleOnTextInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setStore({ [field.accessor]: event.target.value });
     },
-    [field.accessor, setStore],
+    [field.accessor, setStore]
   );
 
   switch (field.type) {
@@ -77,7 +85,7 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
           type={type}
           id={accessor}
           placeholder={placeholder}
-          autoComplete="off"
+          autoComplete='off'
         />
       );
   }

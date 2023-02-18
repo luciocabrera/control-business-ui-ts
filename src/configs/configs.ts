@@ -1,6 +1,6 @@
 // Environment
 export const env = {
-  mode: process.env.NODE_ENV,
+  mode: process.env.NODE_ENV
 };
 
 // Endpoints
@@ -14,5 +14,5 @@ export const endpoints = {
   products: '/api/products',
   documentTypes: '/api/document_types',
   titles: '/api/titles',
-  auth: { login: `/auth/login` },
+  auth: { login: `/auth/login` }
 };

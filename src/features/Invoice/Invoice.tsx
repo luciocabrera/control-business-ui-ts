@@ -12,7 +12,7 @@ import {
   useFetchInvoice,
   usePostInvoice,
   useRefreshInvoices,
-  useFetchInvoiceRates,
+  useFetchInvoiceRates
 } from 'hooks';
 import { useInvoiceConfig } from './hooks';
 // icons
@@ -25,7 +25,7 @@ import type {
   InvoiceCreateType,
   APiResponseErrorType,
   InvoicesDetails,
-  InvoiceDetailCreate,
+  InvoiceDetailCreate
 } from 'types';
 
 const Invoice = () => {
@@ -35,10 +35,13 @@ const Invoice = () => {
   const isCreating = invoiceId === 'new' || !invoiceId;
   const isCopying = action === 'copy' && !isCreating;
 
-  const { data: invoice, isLoading: isLoadingInvoice } = useFetchInvoice(!isCreating ? invoiceId : undefined);
+  const { data: invoice, isLoading: isLoadingInvoice } = useFetchInvoice(
+    !isCreating ? invoiceId : undefined
+  );
 
   const invoiceForm: InvoiceFormType = useMemo(() => {
-    if (isCopying && invoice) return { ...invoice, invoiceId: undefined, invoice: '' };
+    if (isCopying && invoice)
+      return { ...invoice, invoiceId: undefined, invoice: '' };
     if (invoice) return { ...invoice };
     return {
       invoice: '',
@@ -48,7 +51,7 @@ const Invoice = () => {
       subtotal: 0,
       total: 0,
       taxes: 0,
-      taxesPercentage,
+      taxesPercentage
     };
   }, [invoice, isCopying, taxesPercentage]);
 
@@ -62,27 +65,43 @@ const Invoice = () => {
 
   const { fields } = useInvoiceConfig({ invoice, isCopying, taxesPercentage });
 
-  const sanitizeInvoiceDetails = (invoiceDetails: InvoicesDetails[]): InvoiceDetailCreate[] =>
-    invoiceDetails.map(({ date, productId, description, quantity, priceUnit, priceQuantity }) => ({
-      date: date ? new Date(date) : new Date(),
-      description,
-      quantity,
-      priceUnit,
-      priceQuantity,
-      productId: typeof productId === 'string' ? parseInt(productId, 10) : productId,
-    }));
+  const sanitizeInvoiceDetails = (
+    invoiceDetails: InvoicesDetails[]
+  ): InvoiceDetailCreate[] =>
+    invoiceDetails.map(
+      ({
+        date,
+        productId,
+        description,
+        quantity,
+        priceUnit,
+        priceQuantity
+      }) => ({
+        date: date ? new Date(date) : new Date(),
+        description,
+        quantity,
+        priceUnit,
+        priceQuantity,
+        productId:
+          typeof productId === 'string' ? parseInt(productId, 10) : productId
+      })
+    );
 
   const handleOnAccept = useCallback(
     async (payload: InvoiceFormType) => {
-      const calculatedInvoiceId = isCreating || isCopying ? undefined : parseInt(invoiceId, 10);
+      const calculatedInvoiceId =
+        isCreating || isCopying ? undefined : parseInt(invoiceId, 10);
       const { customerId, date, details, ...rest } = payload;
 
       const body: InvoiceCreateType = {
         invoiceId: calculatedInvoiceId,
         date: date ? new Date(date) : new Date(),
-        customerId: typeof customerId === 'string' ? parseInt(customerId, 10) : customerId,
+        customerId:
+          typeof customerId === 'string'
+            ? parseInt(customerId, 10)
+            : customerId,
         details: sanitizeInvoiceDetails(details),
-        ...rest,
+        ...rest
       };
 
       if (isCreating || isCopying) {
@@ -98,13 +117,17 @@ const Invoice = () => {
           addToast?.(
             'success',
             'Invoice successfully saved',
-            `The Invoice ${invoice?.invoice} has been successfully saved.`,
+            `The Invoice ${invoice?.invoice} has been successfully saved.`
           );
           navigate(`/invoices`);
         }
       } catch (err) {
         const error = err as APiResponseErrorType;
-        addNotification?.(<ErrorDisplay errors={error.cause.errors} />, 'Error Saving Invoice', 'error');
+        addNotification?.(
+          <ErrorDisplay errors={error.cause.errors} />,
+          'Error Saving Invoice',
+          'error'
+        );
       }
     },
     [
@@ -117,8 +140,8 @@ const Invoice = () => {
       navigate,
       postInvoice,
       refreshInvoice,
-      refreshInvoices,
-    ],
+      refreshInvoices
+    ]
   );
 
   const handleOnFinish = useCallback(() => navigate('/invoices'), [navigate]);
@@ -128,7 +151,10 @@ const Invoice = () => {
   const title = `${isCreating || isCopying ? 'New' : 'Edit'} Invoice`;
 
   return (
-    <FormContextProvider<InvoiceFormType> initialFields={fields} initialData={invoiceForm}>
+    <FormContextProvider<InvoiceFormType>
+      initialFields={fields}
+      initialData={invoiceForm}
+    >
       <Form<InvoiceFormType>
         icon={<InvoiceIcon />}
         title={title}
@@ -136,8 +162,8 @@ const Invoice = () => {
         actions={<InvoiceActions invoice={invoiceForm} />}
         onFinish={handleOnFinish}
         viewMode={false}
-        height="612px"
-        width="1120px"
+        height='612px'
+        width='1120px'
       />
     </FormContextProvider>
   );

@@ -2,7 +2,7 @@ import type {
   FormFieldBaseType,
   FormFieldErrorType,
   FormFieldGroupType,
-  FormFieldType,
+  FormFieldType
 } from '../components/FormField/types';
 import { isEmpty } from 'utilities';
 import { validateFieldRules } from './validateFieldRules';
@@ -11,18 +11,25 @@ export const validateFields = <T>(fields: FormFieldType[], data: T) => {
   let formErrors: FormFieldErrorType[] = [];
   fields.forEach((field) => {
     if (['group', 'row'].includes(field.type)) {
-      formErrors = [...formErrors, ...validateFields((field as FormFieldGroupType).fields || [], data)];
+      formErrors = [
+        ...formErrors,
+        ...validateFields((field as FormFieldGroupType).fields || [], data)
+      ];
     } else {
       const fieldToValidate = field as FormFieldBaseType;
       const required =
-        typeof fieldToValidate.required === 'function' ? fieldToValidate.required(data) : fieldToValidate.required;
+        typeof fieldToValidate.required === 'function'
+          ? fieldToValidate.required(data)
+          : fieldToValidate.required;
       if (fieldToValidate.accessor) {
         if (required && isEmpty(data[fieldToValidate.accessor as keyof T])) {
           formErrors.push({
             accessor: fieldToValidate.accessor,
             hasErrors: true,
             errorMessage: `The ${fieldToValidate.label} is mandatory!`,
-            value: data[fieldToValidate.accessor as keyof T] as unknown as string,
+            value: data[
+              fieldToValidate.accessor as keyof T
+            ] as unknown as string
           });
         } else {
           const fieldRuleErrors = validateFieldRules(fieldToValidate, data);
@@ -36,21 +43,25 @@ export const validateFields = <T>(fields: FormFieldType[], data: T) => {
 };
 
 export const validateField = (field: FormFieldType, value: unknown) => {
-  let formErrors: FormFieldErrorType[] = [];
+  const formErrors: FormFieldErrorType[] = [];
 
   const fieldToValidate = field as FormFieldBaseType;
   const required =
-    typeof fieldToValidate.required === 'function' ? fieldToValidate.required(value) : fieldToValidate.required;
+    typeof fieldToValidate.required === 'function'
+      ? fieldToValidate.required(value)
+      : fieldToValidate.required;
 
   if (required && isEmpty(value)) {
     formErrors.push({
       accessor: fieldToValidate.accessor,
       hasErrors: true,
       errorMessage: `The ${fieldToValidate.label} is mandatory`,
-      value: value as string,
+      value: value as string
     });
   } else {
-    const fieldRuleErrors = validateFieldRules(fieldToValidate, { [fieldToValidate.accessor]: value });
+    const fieldRuleErrors = validateFieldRules(fieldToValidate, {
+      [fieldToValidate.accessor]: value
+    });
     formErrors.push(...fieldRuleErrors);
   }
 

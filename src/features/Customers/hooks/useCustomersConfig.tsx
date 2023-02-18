@@ -16,16 +16,16 @@ export const useCustomersConfig = () => {
       {
         accessorKey: 'defaultPhone',
         header: 'Phone Number',
-        accessorFn: (row) => row.defaultPhone?.phone ?? '',
+        accessorFn: (row) => row.defaultPhone?.phone ?? ''
       },
       {
         id: 'actions',
         enableResizing: false,
         maxSize: 34,
-        cell: getActionsCell,
-      },
+        cell: getActionsCell
+      }
     ],
-    [],
+    []
   );
 
   const columnMeta: ColumnMetaState = useMemo(
@@ -33,9 +33,9 @@ export const useCustomersConfig = () => {
       { id: 'documentId', name: 'ID' },
       { id: 'initials', name: 'Initials' },
       { id: 'firstName', name: 'First Name' },
-      { id: 'lastName', name: 'Last Name' },
+      { id: 'lastName', name: 'Last Name' }
     ],
-    [],
+    []
   );
 
   return { columns, columnMeta };

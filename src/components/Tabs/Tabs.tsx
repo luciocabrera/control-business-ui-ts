@@ -21,7 +21,12 @@ const Tabs = ({ tabs, defaultSelectedTab }: TabsProps) => {
     <TabsStyled>
       <ButtonGroup>
         {tabs.map(({ title, key }) => (
-          <Tab key={key} active={active === key} onClick={() => setActive(key)} type="button">
+          <Tab
+            key={key}
+            active={active === key}
+            onClick={() => setActive(key)}
+            type='button'
+          >
             {title}
           </Tab>
         ))}

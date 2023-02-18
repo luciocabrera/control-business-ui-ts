@@ -14,7 +14,7 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
   renderSubComponent,
   getRowCanExpand,
   showHeader = true,
-  dataHook,
+  dataHook
 }: TableWithDataHook<TData>) => {
   const isInfinite = isInfiniteResponse(dataHook);
 
@@ -28,8 +28,12 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
         //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
         if (isInfinite) {
           const { isReachingEnd } = dataHook;
-          if (scrollHeight - scrollTop - clientHeight < 300 && !isLoading && !isReachingEnd) {
-            dataHook.setSize?.((prev: number) => prev + 1);
+          if (
+            scrollHeight - scrollTop - clientHeight < 300 &&
+            !isLoading &&
+            !isReachingEnd
+          ) {
+            void dataHook.setSize?.((prev: number) => prev + 1);
           }
         }
       }

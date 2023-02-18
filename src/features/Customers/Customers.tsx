@@ -25,9 +25,13 @@ const CustomersBase = () => {
       <ReadOnlyHookedTable<CustomerType>
         dataHook={dataHook}
         columns={columns}
-        height="calc(100vh - 120px)"
+        height='calc(100vh - 120px)'
         actions={
-          <Link to="new" aria-label={`New customer`} state={{ backgroundLocation: location }}>
+          <Link
+            to='new'
+            aria-label={`New customer`}
+            state={{ backgroundLocation: location }}
+          >
             <NewIcon />
           </Link>
         }
@@ -41,7 +45,11 @@ const Customers = () => {
   const { columnMeta } = useCustomersConfig();
 
   return (
-    <TableContextProvider columnMeta={columnMeta} title={title} allowFilters={true}>
+    <TableContextProvider
+      columnMeta={columnMeta}
+      title={title}
+      allowFilters={true}
+    >
       <CustomersBase />
     </TableContextProvider>
   );

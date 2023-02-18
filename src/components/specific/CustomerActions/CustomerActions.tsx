@@ -3,7 +3,13 @@ import { Button } from 'components/Form/components/Button';
 // contexts
 import { useAddNotification, useAddToast } from 'contexts';
 // hooks
-import { useDeleteCustomer, useRefreshCustomers, useParams, useLocation, useNavigate } from 'hooks';
+import {
+  useDeleteCustomer,
+  useRefreshCustomers,
+  useParams,
+  useLocation,
+  useNavigate
+} from 'hooks';
 // react
 import { memo, useCallback } from 'react';
 // types
@@ -35,13 +41,13 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
         addToast?.(
           'success',
           'Customer successfully deleted',
-          `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully removed.`,
+          `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully removed.`
         );
       } else {
         addToast?.(
           'error',
           'Error Deleting Customer',
-          `An error has ocurred when trying to delete The Customer ${customer?.firstName} ${customer?.lastName}. Please try again.`,
+          `An error has ocurred when trying to delete The Customer ${customer?.firstName} ${customer?.lastName}. Please try again.`
         );
       }
 
@@ -49,7 +55,11 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
 
       if (location.pathname !== '/customers') navigate('/customers');
     } catch (err) {
-      addToast?.('error', 'Error Deleting Customer', (err as { message: string }).message);
+      addToast?.(
+        'error',
+        'Error Deleting Customer',
+        (err as { message: string }).message
+      );
     }
   }, [
     deleteCustomer,
@@ -59,7 +69,7 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
     refreshCustomers,
     location.pathname,
     navigate,
-    addToast,
+    addToast
   ]);
 
   const onDelete = useCallback(() => {
@@ -69,7 +79,7 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
       'warning',
       undefined,
       onConfirmDelete,
-      true,
+      true
     );
   }, [addNotification, onConfirmDelete]);
 
@@ -78,7 +88,7 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
       event.preventDefault();
       navigate(`/customers`);
     },
-    [navigate],
+    [navigate]
   );
 
   const onEdit = useCallback(
@@ -86,26 +96,28 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
       event.preventDefault();
       navigate(`edit`);
     },
-    [navigate],
+    [navigate]
   );
 
   return (
     <>
       {!isCreating && !isEditing && (
-        <Button id="customer-actions-button-edit" onClick={onEdit}>
+        <Button id='customer-actions-button-edit' onClick={onEdit}>
           Edit
         </Button>
       )}
-      <Button id="customer-actions-button-cancel" inverse onClick={onCancel}>
+      <Button id='customer-actions-button-cancel' inverse onClick={onCancel}>
         Cancel
       </Button>
       {!isCreating && (
-        <Button id="customer-actions-button-delete" onClick={onDelete} warning>
+        <Button id='customer-actions-button-delete' onClick={onDelete} warning>
           Delete
         </Button>
       )}
     </>
   );
 });
+
+CustomerActions.displayName = 'CustomerActions';
 
 export default CustomerActions;

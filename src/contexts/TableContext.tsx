@@ -1,5 +1,10 @@
 import type { ColumnFiltersState, SortingState } from '@tanstack/react-table';
-import { type ReactElement, useContext, createContext, useReducer } from 'react';
+import {
+  type ReactElement,
+  useContext,
+  createContext,
+  useReducer
+} from 'react';
 
 export type ColumnMetaItem = {
   name: string;
@@ -12,28 +17,28 @@ export type ColumnMetaState = ColumnMetaItem[];
 
 // An enum with all the types of actions to use in our reducer
 export enum TableContextActionKind {
-  setColumnFilters = 'setColumnFilters',
-  setColumnMeta = 'setColumnMeta',
-  setSorting = 'setSorting',
-  toggleShowColumnFilters = 'toggleShowColumnFilters',
+  SetColumnFilters = 'setColumnFilters',
+  SetColumnMeta = 'setColumnMeta',
+  SetSorting = 'setSorting',
+  ToggleShowColumnFilters = 'toggleShowColumnFilters'
 }
 
 // A type for our actions
 type TableContextAction =
   | {
-      type: TableContextActionKind.setColumnMeta;
+      type: TableContextActionKind.SetColumnMeta;
       payload: Pick<TableContextState, 'columnMeta'>;
     }
   | {
-      type: TableContextActionKind.setColumnFilters;
+      type: TableContextActionKind.SetColumnFilters;
       payload: Pick<TableContextState, 'columnFilters'>;
     }
   | {
-      type: TableContextActionKind.setSorting;
+      type: TableContextActionKind.SetSorting;
       payload: Pick<TableContextState, 'sorting'>;
     }
   | {
-      type: TableContextActionKind.toggleShowColumnFilters;
+      type: TableContextActionKind.ToggleShowColumnFilters;
     };
 
 // A type for our state
@@ -54,7 +59,11 @@ type TableContextType = {
   dispatch: React.Dispatch<TableContextAction>;
 };
 
-type UseStoreContextType = { columnMeta?: ColumnMetaState; title: string; allowFilters?: boolean };
+type UseStoreContextType = {
+  columnMeta?: ColumnMetaState;
+  title: string;
+  allowFilters?: boolean;
+};
 
 type TableContextProviderProps = UseStoreContextType & {
   children: ReactElement;
@@ -69,36 +78,49 @@ const defaultState: TableContextState = {
   sortingQuery: '',
   fullQuery: '',
   showColumnFilters: false,
-  allowFilters: true,
+  allowFilters: true
 };
 
 // Our reducer function that uses a switch statement to handle our actions
-const tableContextReducer = (state: TableContextState, action: TableContextAction): TableContextState => {
+const tableContextReducer = (
+  state: TableContextState,
+  action: TableContextAction
+): TableContextState => {
   const { type } = action;
   switch (type) {
-    case TableContextActionKind.setColumnMeta:
+    case TableContextActionKind.SetColumnMeta:
       return {
         ...state,
-        columnMeta: action.payload.columnMeta,
+        columnMeta: action.payload.columnMeta
       };
 
-    case TableContextActionKind.setColumnFilters:
+    case TableContextActionKind.SetColumnFilters: {
       const filterQuery = action.payload.columnFilters
         .map((cf) => {
-          const currentFilterMeta = state.columnMeta.find((cm) => cm.id === cf.id);
+          const currentFilterMeta = state.columnMeta.find(
+            (cm) => cm.id === cf.id
+          );
 
           switch (currentFilterMeta?.type || '') {
             case 'date':
-            case 'datetime':
+            case 'datetime': {
               const dateVal = cf.value as Date[];
-              return `&filter=${cf.id} gt ${dateVal[0].toISOString()}&filter=${cf.id} lt ${dateVal[1].toISOString()}`;
-            case 'number':
+              return `&filter=${cf.id} gt ${dateVal[0].toISOString()}&filter=${
+                cf.id
+              } lt ${dateVal[1].toISOString()}`;
+            }
+            case 'number': {
               const numberVal = cf.value as number[];
               return `&filter=${cf.id} gt ${numberVal[0]}&filter=${cf.id} lt ${numberVal[1]} `;
-            case 'enum':
-              return `&filter=${cf.id} equals ${cf.value}`;
-            default:
-              return `&filter=${cf.id} contains ${cf.value} `;
+            }
+            case 'enum': {
+              const enumVal = cf.value as string;
+              return `&filter=${cf.id} equals ${enumVal}`;
+            }
+            default: {
+              const defaultVal = cf.value as string;
+              return `&filter=${cf.id} contains ${defaultVal} `;
+            }
           }
         })
         .join('');
@@ -108,22 +130,24 @@ const tableContextReducer = (state: TableContextState, action: TableContextActio
         showColumnFilters: false,
         columnFilters: action.payload.columnFilters,
         filterQuery,
-        fullQuery: `${filterQuery}${state.sortingQuery}`,
+        fullQuery: `${filterQuery}${state.sortingQuery}`
       };
-
-    case TableContextActionKind.setSorting:
-      const sortingQuery = action.payload.sorting.map((s) => `&orderBy=${s.id} ${s.desc ? 'desc' : 'asc'}`).join('');
+    }
+    case TableContextActionKind.SetSorting: {
+      const sortingQuery = action.payload.sorting
+        .map((s) => `&orderBy=${s.id} ${s.desc ? 'desc' : 'asc'}`)
+        .join('');
       return {
         ...state,
         sorting: action.payload.sorting,
         sortingQuery,
-        fullQuery: `${state.filterQuery}${sortingQuery}`,
+        fullQuery: `${state.filterQuery}${sortingQuery}`
       };
-
-    case TableContextActionKind.toggleShowColumnFilters:
+    }
+    case TableContextActionKind.ToggleShowColumnFilters:
       return {
         ...state,
-        showColumnFilters: !state.showColumnFilters,
+        showColumnFilters: !state.showColumnFilters
       };
     default:
       return state;
@@ -132,15 +156,19 @@ const tableContextReducer = (state: TableContextState, action: TableContextActio
 
 const TableContext = createContext<TableContextType>({
   state: defaultState,
-  dispatch: () => null,
+  dispatch: () => null
 });
 
-const useStoreContext = ({ columnMeta, title, allowFilters = false }: UseStoreContextType) => {
+const useStoreContext = ({
+  columnMeta,
+  title,
+  allowFilters = false
+}: UseStoreContextType) => {
   const [state, dispatch] = useReducer(tableContextReducer, {
     ...defaultState,
     columnMeta: columnMeta ?? defaultState.columnMeta,
     title,
-    allowFilters,
+    allowFilters
   });
 
   return { state, dispatch };
@@ -151,6 +179,15 @@ export const useTableContext = () => {
   return { ...context };
 };
 
-export const TableContextProvider = ({ children, columnMeta, title, allowFilters }: TableContextProviderProps) => (
-  <TableContext.Provider value={useStoreContext({ columnMeta, title, allowFilters })}>{children}</TableContext.Provider>
+export const TableContextProvider = ({
+  children,
+  columnMeta,
+  title,
+  allowFilters
+}: TableContextProviderProps) => (
+  <TableContext.Provider
+    value={useStoreContext({ columnMeta, title, allowFilters })}
+  >
+    {children}
+  </TableContext.Provider>
 );

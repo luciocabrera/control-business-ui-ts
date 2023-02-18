@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { AxisOptions, Chart } from 'react-charts';
 import { ResponsiveContainer } from 'recharts';
 import { ReactElement } from 'types';
 import styles from './CardChart.module.css';
@@ -15,7 +14,7 @@ const CardChart = <TData extends Record<string, unknown>>({
   data,
   title,
   subtitle,
-  children,
+  children
 }: CardChartProps<TData>) => {
   console.log('data', data);
   return (
@@ -28,7 +27,7 @@ const CardChart = <TData extends Record<string, unknown>>({
       )}
       <div className={styles['card-chart-body']}>
         {data?.length > 0 && (
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width='100%' height='100%'>
             {children}
           </ResponsiveContainer>
         )}

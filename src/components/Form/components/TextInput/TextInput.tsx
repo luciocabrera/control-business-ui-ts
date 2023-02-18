@@ -1,18 +1,32 @@
 // components
 import FormFieldBase from '../FormFieldBase/FormFieldBase';
 // react
-import { memo, forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 // styles
 import { TextInputStyled } from './styles';
 // types
 import type { TextInputProps } from './types';
 import type { FieldBaseValueType } from '../FormField/types';
 
-const TextInput = memo(
-  forwardRef(({ textAlign, ...rest }: TextInputProps, ref: React.ForwardedRef<unknown>) => {
-    const { accessor, type, readonly, placeholder, value, onChange, normalize, rules } = rest;
+const TextInput = forwardRef(
+  (
+    { textAlign, ...rest }: TextInputProps,
+    ref: React.ForwardedRef<unknown>
+  ) => {
+    const {
+      accessor,
+      type,
+      readonly,
+      placeholder,
+      value,
+      onChange,
+      normalize,
+      rules
+    } = rest;
 
-    const normalizedValue = (normalize?.(value) ?? value ?? '') as FieldBaseValueType;
+    const normalizedValue = (normalize?.(value) ??
+      value ??
+      '') as FieldBaseValueType;
 
     const maxLength = rules
       ?.filter((rule) => rule.type === 'maxLength')
@@ -29,12 +43,14 @@ const TextInput = memo(
           id={accessor}
           readOnly={readonly}
           placeholder={placeholder}
-          autoComplete="off"
+          autoComplete='off'
           textAlign={textAlign}
         />
       </FormFieldBase>
     );
-  }),
+  }
 );
 
-export default TextInput;
+TextInput.displayName = 'TextInput';
+
+export default memo(TextInput);

@@ -18,21 +18,29 @@ type TableWrapperHeaderProps = {
 const TableWrapperHeader = memo(({ actions }: TableWrapperHeaderProps) => {
   const {
     state: { allowFilters, title },
-    dispatch,
+    dispatch
   } = useTableContext();
 
   const onSetShowFilters = useCallback(() => {
-    dispatch({ type: TableContextActionKind.toggleShowColumnFilters });
+    dispatch({ type: TableContextActionKind.ToggleShowColumnFilters });
   }, [dispatch]);
 
   return (
     <Header title={title}>
       <TableActionsStyled>
         {actions}
-        {allowFilters && <IconButton id="show-filters" onClick={onSetShowFilters} icon={<FilterIcon />} />}
+        {allowFilters && (
+          <IconButton
+            id='show-filters'
+            onClick={onSetShowFilters}
+            icon={<FilterIcon />}
+          />
+        )}
       </TableActionsStyled>
     </Header>
   );
 });
+
+TableWrapperHeader.displayName = 'TableWrapperHeader';
 
 export default TableWrapperHeader;

@@ -23,7 +23,7 @@ export type {
   Dispatch,
   SetStateAction,
   MouseEvent,
-  MouseEventHandler,
+  MouseEventHandler
 } from 'react';
 
 export type { ColumnDef, CellContext } from '@tanstack/react-table';

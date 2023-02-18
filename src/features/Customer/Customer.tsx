@@ -10,7 +10,7 @@ import {
   useRefreshCustomers,
   useRefreshCustomer,
   useNavigate,
-  useParams,
+  useParams
 } from 'hooks';
 import { useCustomerConfig } from './hooks';
 // icons
@@ -18,14 +18,19 @@ import { CustomerIcon } from 'icons';
 // react
 import { useCallback } from 'react';
 // types
-import type { APiResponseErrorType, CustomerCreateType, CustomerFormType } from 'types';
-
+import type {
+  APiResponseErrorType,
+  CustomerCreateType,
+  CustomerFormType
+} from 'types';
 
 const Customer = () => {
   const { customerId } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
-  const { data: customer, isLoading: isLoadingCustomer } = useFetchCustomer(!isCreating ? customerId : undefined);
+  const { data: customer, isLoading: isLoadingCustomer } = useFetchCustomer(
+    !isCreating ? customerId : undefined
+  );
 
   const refreshCustomers = useRefreshCustomers();
   const refreshCustomer = useRefreshCustomer();
@@ -40,9 +45,19 @@ const Customer = () => {
 
   const handleOnAccept = useCallback(
     async (payload: CustomerFormType) => {
-      const { firstName, lastName, documentId, documentTypeId, titleId, initials, phone, email, ...defaultAddress } =
-        payload;
-      const calculatedCustomerId = customerId === 'new' ? undefined : customerId;
+      const {
+        firstName,
+        lastName,
+        documentId,
+        documentTypeId,
+        titleId,
+        initials,
+        phone,
+        email,
+        ...defaultAddress
+      } = payload;
+      const calculatedCustomerId =
+        customerId === 'new' ? undefined : customerId;
 
       const body: CustomerCreateType = {
         companyId: 1,
@@ -51,11 +66,14 @@ const Customer = () => {
         firstName,
         lastName,
         documentId,
-        documentTypeId: typeof documentTypeId === 'string' ? parseInt(documentTypeId, 10) : documentTypeId,
+        documentTypeId:
+          typeof documentTypeId === 'string'
+            ? parseInt(documentTypeId, 10)
+            : documentTypeId,
         titleId: typeof titleId === 'string' ? parseInt(titleId, 10) : titleId,
         addresses: [{ ...defaultAddress, main: true }],
         phones: phone ? [{ phone, main: true }] : [],
-        emails: email ? [{ email, main: true }] : [],
+        emails: email ? [{ email, main: true }] : []
       };
       if (isCreating) {
         body.createdBy = 1;
@@ -71,13 +89,17 @@ const Customer = () => {
           addToast?.(
             'success',
             'Customer successfully saved',
-            `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully saved.`,
+            `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully saved.`
           );
           navigate(`/customers`);
         }
       } catch (err) {
         const error = err as APiResponseErrorType;
-        addNotification?.(<ErrorDisplay errors={error.cause.errors} />, 'Error Saving Customer', 'error');
+        addNotification?.(
+          <ErrorDisplay errors={error.cause.errors} />,
+          'Error Saving Customer',
+          'error'
+        );
       }
     },
     [
@@ -90,8 +112,8 @@ const Customer = () => {
       navigate,
       postCustomer,
       refreshCustomer,
-      refreshCustomers,
-    ],
+      refreshCustomers
+    ]
   );
 
   const handleOnFinish = useCallback(() => navigate('/customers'), [navigate]);
@@ -101,7 +123,10 @@ const Customer = () => {
   const title = `${isCreating ? 'New' : 'Edit'} Customer`;
 
   return (
-    <FormContextProvider<CustomerFormType> initialFields={fields} initialData={customer}>
+    <FormContextProvider<CustomerFormType>
+      initialFields={fields}
+      initialData={customer}
+    >
       <Form<CustomerFormType>
         icon={<CustomerIcon />}
         title={title}
@@ -109,8 +134,8 @@ const Customer = () => {
         onFinish={handleOnFinish}
         actions={<CustomerActions customer={customer} />}
         viewMode={false}
-        height="600px"
-        width="850px"
+        height='600px'
+        width='850px'
       />
     </FormContextProvider>
   );

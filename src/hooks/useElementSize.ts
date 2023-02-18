@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 const getSize = (htmlRef: React.RefObject<HTMLElement>) => ({
   clientWidth: htmlRef?.current?.clientWidth,
-  clientHeight: htmlRef?.current?.clientHeight,
+  clientHeight: htmlRef?.current?.clientHeight
 });
 
 /**

@@ -1,5 +1,4 @@
 // components
-import { TextInput } from 'components/Form/components/TextInput';
 import { Form } from 'components/Form/Form';
 // contexts
 import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
@@ -10,18 +9,22 @@ import { useCallback, useMemo } from 'react';
 const FormFilter = () => {
   const {
     state: { columnFilters, showColumnFilters, columnMeta },
-    dispatch,
+    dispatch
   } = useTableContext();
 
   const addNotification = useAddNotification();
 
   const onSetShowFilters = useCallback(() => {
-    dispatch({ type: TableContextActionKind.toggleShowColumnFilters });
+    dispatch({ type: TableContextActionKind.ToggleShowColumnFilters });
   }, [dispatch]);
 
   const initialValues = useMemo(
-    () => columnFilters?.reduce((ac, filter) => ({ ...ac, [filter.id]: filter.value }), {}),
-    [columnFilters],
+    () =>
+      columnFilters?.reduce(
+        (ac, filter) => ({ ...ac, [filter.id]: filter.value }),
+        {}
+      ),
+    [columnFilters]
   );
   const formFields = useMemo(
     () =>
@@ -29,9 +32,9 @@ const FormFilter = () => {
         accessor: filter.id,
         label: filter.name,
         type: filter.type ?? 'text',
-        options: filter.options,
+        options: filter.options
       })),
-    [columnMeta],
+    [columnMeta]
   );
 
   const onAccept = useCallback(
@@ -40,55 +43,59 @@ const FormFilter = () => {
         const columnFilters = Object.keys(payload)
           .map((key) => ({ id: key, value: payload[key] }))
           .filter((fc) => fc.value);
-        debugger;
-        dispatch({ type: TableContextActionKind.setColumnFilters, payload: { columnFilters } });
+        dispatch({
+          type: TableContextActionKind.SetColumnFilters,
+          payload: { columnFilters }
+        });
       } catch (errorInfo) {
-        console.error(errorInfo);
         addNotification?.(
           'Fields need to be checked',
           'At least one problem has been found when validating the fields.',
-          'warning',
+          'warning'
         );
       }
     },
-    [dispatch, addNotification],
+    [dispatch, addNotification]
   );
 
-  const formChildren = columnMeta.map((cm) => {
-    // switch (cm.type) {
-    //   case 'date':
-    //     return <RangePickerField key={`form-filter-${cm.id}`} id={cm.id} name={cm.name} type={cm.type} />;
-    //   case 'datetime':
-    //     return (
-    //       <RangePickerField key={`form-filter-${cm.id}`} id={cm.id} name={cm.name} showTime={true} type={cm.type} />
-    //     );
-    //   case 'number':
-    //     return <SliderField key={`form-filter-${cm.id}`} id={cm.id} name={cm.name} type={cm.type} />;
-    //   case 'enum':
-    //     const selectOptions = cm.options?.map((option) => ({ key: option, label: option }));
-    //     return (
-    //       <SelectField key={`form-filter-${cm.id}`} id={cm.id} name={cm.name} type={cm.type} options={selectOptions} />
-    //     );
-    //   default:
-    return (
-      <TextInput
-        key={`field-input-value`}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          //   setValue(event.target.value);
-        }}
-        accessor={`field-input-value`}
-        label="Value"
-        required={true}
-        type={'text'}
-      // value={value}
-      />
-    );
-    // }
-  });
+  // const formChildren = columnMeta.map((cm) => {
+  //   // switch (cm.type) {
+  //   //   case 'date':
+  //   //     return <RangePickerField key={`form-filter-${cm.id}`} id={cm.id} name={cm.name} type={cm.type} />;
+  //   //   case 'datetime':
+  //   //     return (
+  //   //       <RangePickerField key={`form-filter-${cm.id}`} id={cm.id} name={cm.name} showTime={true} type={cm.type} />
+  //   //     );
+  //   //   case 'number':
+  //   //     return <SliderField key={`form-filter-${cm.id}`} id={cm.id} name={cm.name} type={cm.type} />;
+  //   //   case 'enum':
+  //   //     const selectOptions = cm.options?.map((option) => ({ key: option, label: option }));
+  //   //     return (
+  //   //       <SelectField key={`form-filter-${cm.id}`} id={cm.id} name={cm.name} type={cm.type} options={selectOptions} />
+  //   //     );
+  //   //   default:
+  //   return (
+  //     <TextInput
+  //       key={`field-input-value`}
+  //       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+  //         //   setValue(event.target.value);
+  //       }}
+  //       accessor={`field-input-value`}
+  //       label='Value'
+  //       required={true}
+  //       type={'text'}
+  //     // value={value}
+  //     />
+  //   );
+  //   // }
+  // });
 
   if (!showColumnFilters) return null;
   return (
-    <FormContextProvider<Record<string, unknown>> initialFields={formFields} initialData={initialValues}>
+    <FormContextProvider<Record<string, unknown>>
+      initialFields={formFields}
+      initialData={initialValues}
+    >
       <Form<Record<string, unknown>>
         // icon={<CustomerIcon />}
         title={'title'}
@@ -96,8 +103,8 @@ const FormFilter = () => {
         // onFinish={onFinish}
         // actions={<CustomerActions customer={customer} />}
         viewMode={false}
-        height="600px"
-        width="850px"
+        height='600px'
+        width='850px'
         onFinish={onSetShowFilters}
       />
     </FormContextProvider>

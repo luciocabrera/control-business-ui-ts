@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const FieldSetStyled = styled.div`
   min-width: 300px;
-  width: ${({ width }: { width?: number; viewMode?: boolean }) => width ?? 100}%;
+  width: ${({ width }: { width?: number; viewMode?: boolean }) =>
+    width ?? 100}%;
   padding: 0;
   flex: auto;
   fieldset {

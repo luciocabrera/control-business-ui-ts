@@ -23,9 +23,13 @@ const InvoicesBase = () => {
       <ReadOnlyHookedTable<InvoiceType>
         dataHook={dataHook}
         columns={columns}
-        height="calc(100vh - 120px)"
+        height='calc(100vh - 120px)'
         actions={
-          <Link to="new" aria-label={`New invoice`} state={{ backgroundLocation: location }}>
+          <Link
+            to='new'
+            aria-label={`New invoice`}
+            state={{ backgroundLocation: location }}
+          >
             <NewIcon />
           </Link>
         }
@@ -39,7 +43,11 @@ const Invoices = () => {
   const { columnMeta } = useInvoicesConfig();
 
   return (
-    <TableContextProvider columnMeta={columnMeta} title={title} allowFilters={true}>
+    <TableContextProvider
+      columnMeta={columnMeta}
+      title={title}
+      allowFilters={true}
+    >
       <InvoicesBase />
     </TableContextProvider>
   );

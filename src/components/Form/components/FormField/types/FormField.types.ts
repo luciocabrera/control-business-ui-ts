@@ -19,7 +19,7 @@ export enum FIELD_TO_RENDER_ENUM {
   'tagsField' = 'tagsField',
   'jsonField' = 'jsonField',
   'passwordField' = 'passwordField',
-  'passwordCheckerField' = 'passwordCheckerField',
+  'passwordCheckerField' = 'passwordCheckerField'
 }
 
 type FieldNumberTuple = typeof FIELD_TYPE_NUMBERS;
@@ -73,20 +73,28 @@ export type FormFieldBaseType = {
   tooltip?: string;
   normalize?: (value?: FieldValueType) => FieldValueType;
   onSelect?: (value?: FieldValueType) => void;
-  change?: <TDataType>(data: TDataType, setPartialFields: SetPartialFieldsType<TDataType>) => void;
+  change?: <TDataType>(
+    data: TDataType,
+    setPartialFields: SetPartialFieldsType<TDataType>
+  ) => void;
   disabled?: boolean;
   readonly?: boolean;
   rules?: FormRuleType[];
 };
 
-export type FormSimpleFieldType = Omit<FormFieldBaseType, 'value'> & { value?: FieldBaseValueType };
+export type FormSimpleFieldType = Omit<FormFieldBaseType, 'value'> & {
+  value?: FieldBaseValueType;
+};
 
 export type FormFieldGroupType = {
   label?: string;
   fields?: FormFieldType[];
 };
 
-export type FormFieldType = { type: string; render?: () => ReactNode } & (FormFieldGroupType | FormFieldBaseType);
+export type FormFieldType = { type: string; render?: () => ReactNode } & (
+  | FormFieldGroupType
+  | FormFieldBaseType
+);
 
 export type FormFieldStateType = {
   accessor: string;
@@ -101,13 +109,23 @@ export type FormFieldErrorType = {
 };
 
 export type FieldBaseValueType = string | number | undefined;
-export type FieldValueType = FieldBaseValueType | Record<string, unknown> | Record<string, unknown>[];
+export type FieldValueType =
+  | FieldBaseValueType
+  | Record<string, unknown>
+  | Record<string, unknown>[];
 
 export type SetFieldType = (accessor: string, value: FieldValueType) => void;
-export type VerifyFormType = () => { errorFields: FormFieldErrorType[]; hasChanged: boolean };
-export type SetFieldFromEvent = (event: React.ChangeEvent<HTMLInputElement>) => void;
+export type VerifyFormType = () => {
+  errorFields: FormFieldErrorType[];
+  hasChanged: boolean;
+};
+export type SetFieldFromEvent = (
+  event: React.ChangeEvent<HTMLInputElement>
+) => void;
 
-export type SetPartialFieldsType<TDataType> = (partialFields: Partial<TDataType>) => void;
+export type SetPartialFieldsType<TDataType> = (
+  partialFields: Partial<TDataType>
+) => void;
 
 export type FormFieldProps = {
   viewMode?: boolean;

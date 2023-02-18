@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
-import { useRef, useEffect, useLayoutEffect as useOriginalLayoutEffect } from 'react';
+import {
+  useRef,
+  useEffect,
+  useLayoutEffect as useOriginalLayoutEffect
+} from 'react';
 
 // Silence silly warning
 // https://reactjs.org/link/uselayouteffect-ssr
-export const useLayoutEffect = typeof window === 'undefined' ? useEffect : useOriginalLayoutEffect;
+export const useLayoutEffect =
+  typeof window === 'undefined' ? useEffect : useOriginalLayoutEffect;
 
 export function useFocusRef<T extends HTMLOrSVGElement>(isSelected: boolean) {
   const ref = useRef<T>(null);
@@ -16,7 +21,7 @@ export function useFocusRef<T extends HTMLOrSVGElement>(isSelected: boolean) {
 
   return {
     ref,
-    tabIndex: isSelected ? 0 : -1,
+    tabIndex: isSelected ? 0 : -1
   };
 }
 
@@ -33,13 +38,17 @@ const CellExpander = styled.div`
   }
 `;
 
-interface CellExpanderFormatterProps {
+type CellExpanderFormatterProps = {
   isCellSelected: boolean;
   expanded: boolean;
   onCellExpand: () => void;
-}
+};
 
-export function CellExpanderFormatter({ isCellSelected, expanded, onCellExpand }: CellExpanderFormatterProps) {
+export function CellExpanderFormatter({
+  isCellSelected,
+  expanded,
+  onCellExpand
+}: CellExpanderFormatterProps) {
   const { ref, tabIndex } = useFocusRef<HTMLSpanElement>(isCellSelected);
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLSpanElement>) {

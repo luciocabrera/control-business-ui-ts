@@ -19,19 +19,20 @@ export default defineConfig({
   server: {
     proxy: {
       // string shorthand
-      '/api': 'http://localhost:5500',
+      '/api': 'http://localhost:5500'
     },
-    hmr: { overlay: false },
+    hmr: { overlay: false }
   },
   build: {
     sourcemap: false,
     rollupOptions: {
+      external: ['fsevents'],
       output: {
         manualChunks: {
           vendor: ['react', 'react-router-dom', 'react-dom'],
-          ...renderChunks(dependencies),
-        },
-      },
-    },
-  },
+          ...renderChunks(dependencies)
+        }
+      }
+    }
+  }
 });

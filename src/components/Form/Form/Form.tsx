@@ -9,7 +9,6 @@ import { FormStyled } from './styles';
 // types
 import type { FormProps } from './types';
 
-
 const Form = <TData extends Record<string, unknown>>({
   viewMode,
   actions,
@@ -19,7 +18,7 @@ const Form = <TData extends Record<string, unknown>>({
   onAccept,
   onFinish,
   width,
-  height,
+  height
 }: FormProps<TData>) => (
   <FormStyled noValidate width={width} height={height}>
     <Header icon={icon} title={title} onClose={onFinish} />

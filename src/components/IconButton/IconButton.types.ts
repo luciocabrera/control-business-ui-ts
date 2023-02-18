@@ -1,4 +1,9 @@
-import type { ButtonHTMLAttributes, MouseEvent, MouseEventHandler, ReactElement } from 'types';
+import type {
+  ButtonHTMLAttributes,
+  MouseEvent,
+  MouseEventHandler,
+  ReactElement
+} from 'types';
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   id: string;

@@ -1,5 +1,4 @@
-
-import { useCallback, useMemo } from 'react';
+import { useCallback, useRef } from 'react';
 
 export type TStore<TData> = {
   get: () => TData | undefined;
@@ -7,30 +6,35 @@ export type TStore<TData> = {
   subscribe: (callback: () => void) => () => void;
 };
 
-export const useStore = <TData extends Record<string, unknown>>(initialState?: TData): TStore<TData> => {
-  let store = useMemo(() => initialState, []);
+export const useStore = <TData extends Record<string, unknown>>(
+  initialState?: TData
+): TStore<TData> => {
+  const store = useRef(initialState);
 
-  const get = useCallback(() => store, []);
+  const get = useCallback(() => store.current, []);
 
-  const listeners = new Set<() => void>();
+  const listeners = useRef(new Set<() => void>());
 
   const set = useCallback((value: Partial<TData>) => {
-    store = { ...store, ...value } as TData;
-    listeners.forEach((callback) => callback());
+    store.current = { ...store.current, ...value } as TData;
+    listeners.current.forEach((callback) => callback());
   }, []);
 
   const subscribe = useCallback((callback: () => void) => {
-    listeners.add(callback);
-    return () => listeners.delete(callback);
+    listeners.current.add(callback);
+    return () => listeners.current.delete(callback);
   }, []);
 
   return {
     get,
     set,
-    subscribe,
+    subscribe
   };
 };
 
 export type TStoreReturn = ReturnType<typeof useStore>;
 
-export type UsesStore<SelectorOutput, TData> = [SelectorOutput, (value: Partial<TData>) => void];
+export type UsesStore<SelectorOutput, TData> = [
+  SelectorOutput,
+  (value: Partial<TData>) => void
+];

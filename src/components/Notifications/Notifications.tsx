@@ -6,7 +6,7 @@ import { useDeleteNotification, useNotificationsStore } from './contexts';
 // react
 import { useCallback } from 'react';
 // styles
-import styles from './styles/Notifications.module.css'
+import styles from './styles/Notifications.module.css';
 // types
 import type { TNotification, TNotifications } from './types';
 
@@ -21,7 +21,7 @@ const Notifications = () => {
     (id: number) => {
       deleteNotification?.(id);
     },
-    [deleteNotification],
+    [deleteNotification]
   );
 
   if (!notifications || notifications?.length === 0) return null;
@@ -31,8 +31,16 @@ const Notifications = () => {
       <>
         <Overlay />
         {notifications?.map(
-          ({ id, icon, onAccept, onClose, description, title, isConfirmation = false }: TNotification, i) => (
-            <article key={id} className={styles.modalDialog} >
+          ({
+            id,
+            icon,
+            onAccept,
+            onClose,
+            description,
+            title,
+            isConfirmation = false
+          }: TNotification) => (
+            <article key={id} className={styles.modalDialog}>
               <Header
                 icon={icon}
                 title={title}
@@ -41,13 +49,13 @@ const Notifications = () => {
                   handleDeleteNotification?.(id);
                 }}
               />
-              <main className={styles.modalBody} >
+              <main className={styles.modalBody}>
                 <>{description}</>
               </main>
               <footer className={styles.modalFooter}>
                 <Button
-                  className="btn btn-default"
-                  data-dismiss="modal"
+                  className='btn btn-default'
+                  data-dismiss='modal'
                   onClick={() => {
                     onAccept?.();
                     handleDeleteNotification?.(id);
@@ -57,8 +65,8 @@ const Notifications = () => {
                 </Button>
                 {isConfirmation && (
                   <Button
-                    className="btn btn-default"
-                    data-dismiss="modal"
+                    className='btn btn-default'
+                    data-dismiss='modal'
                     inverse
                     onClick={(e) => {
                       onClose?.(e);
@@ -70,7 +78,7 @@ const Notifications = () => {
                 )}
               </footer>
             </article>
-          ),
+          )
         )}
       </>
     </Portal>

@@ -3,7 +3,7 @@ import { Spinner, Overlay } from 'components';
 
 const FallBack = () => (
   <Overlay>
-    <Spinner size="lg" />
+    <Spinner size='lg' />
   </Overlay>
 );
 

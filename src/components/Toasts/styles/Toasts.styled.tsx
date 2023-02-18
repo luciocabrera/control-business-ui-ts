@@ -104,7 +104,12 @@ export const Notification = styled.div`
   opacity: 0.9;
   background-position: 15px;
   background-repeat: no-repeat;
-  background-color: ${({ backgroundColor }: { position: string; backgroundColor: string }) => backgroundColor};
+  background-color: ${({
+    backgroundColor
+  }: {
+    position: string;
+    backgroundColor: string;
+  }) => backgroundColor};
 
   height: 50px;
   width: 365px;

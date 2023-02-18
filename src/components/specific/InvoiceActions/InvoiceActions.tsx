@@ -3,7 +3,13 @@ import { Button } from 'components/Form/components/Button';
 // contexts
 import { useAddNotification, useAddToast } from 'contexts';
 // hooks
-import { useDeleteInvoice, useRefreshInvoices, useParams, useLocation, useNavigate } from 'hooks';
+import {
+  useDeleteInvoice,
+  useRefreshInvoices,
+  useParams,
+  useLocation,
+  useNavigate
+} from 'hooks';
 // react
 import { memo, useCallback } from 'react';
 // types
@@ -30,29 +36,44 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
 
   const onConfirmDelete = useCallback(async () => {
     try {
+      if (!invoice?.invoiceId) return;
       const res = await deleteInvoice(invoice?.invoiceId);
 
       if ([200, 204].includes(res?.status || 0)) {
         addToast?.(
           'success',
           'Invoice successfully deleted',
-          `The Invoice ${invoice?.invoice} has been successfully removed.`,
+          `The Invoice ${invoice?.invoice ?? ''} has been successfully removed.`
         );
       } else {
         addToast?.(
           'error',
           'Error Deleting Invoice',
-          `An error has ocurred when trying to delete The Invoice ${invoice?.invoice}. Please try again.`,
+          `An error has ocurred when trying to delete The Invoice ${
+            invoice?.invoice ?? ''
+          }. Please try again.`
         );
       }
 
-      refreshInvoices?.();
+      await refreshInvoices?.();
 
       if (location.pathname !== '/invoices') navigate('/invoices');
     } catch (err) {
-      addToast?.('error', 'Error Deleting Invoice', (err as { message: string }).message);
+      addToast?.(
+        'error',
+        'Error Deleting Invoice',
+        (err as { message: string }).message
+      );
     }
-  }, [deleteInvoice, invoice?.invoiceId, invoice?.invoice, refreshInvoices, location.pathname, navigate, addToast]);
+  }, [
+    deleteInvoice,
+    invoice?.invoiceId,
+    invoice?.invoice,
+    refreshInvoices,
+    location.pathname,
+    navigate,
+    addToast
+  ]);
 
   const onDelete = useCallback(() => {
     addNotification?.(
@@ -61,7 +82,7 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
       'warning',
       undefined,
       onConfirmDelete,
-      true,
+      true
     );
   }, [addNotification, onConfirmDelete]);
 
@@ -70,7 +91,7 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
       event.preventDefault();
       navigate(`/invoices`);
     },
-    [navigate],
+    [navigate]
   );
 
   const onEdit = useCallback(
@@ -78,26 +99,28 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
       event.preventDefault();
       navigate(`edit`);
     },
-    [navigate],
+    [navigate]
   );
 
   return (
     <>
       {!isCreating && !isEditing && !isCopying && (
-        <Button id="invoice-actions-button-edit" onClick={onEdit}>
+        <Button id='invoice-actions-button-edit' onClick={onEdit}>
           Edit
         </Button>
       )}
-      <Button id="invoice-actions-button-cancel" inverse onClick={onCancel}>
+      <Button id='invoice-actions-button-cancel' inverse onClick={onCancel}>
         Cancel
       </Button>
       {!isCreating && !isCopying && (
-        <Button id="invoice-actions-button-delete" onClick={onDelete} warning>
+        <Button id='invoice-actions-button-delete' onClick={onDelete} warning>
           Delete
         </Button>
       )}
     </>
   );
 });
+
+InvoiceActions.displayName = 'InvoiceActions';
 
 export default InvoiceActions;

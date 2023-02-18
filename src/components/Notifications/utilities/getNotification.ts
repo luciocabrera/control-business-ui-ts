@@ -1,16 +1,16 @@
 // assets
 import { checkImg, errorImg, infoImg, warningImg } from 'assets';
 // types
-import type { Dispatch, MouseEventHandler, ReactNode, SetStateAction } from 'react';
+import type { MouseEventHandler, ReactNode } from 'react';
 import type { TNotification, TNotificationType } from '../types';
 
 export const getNotification = (
   description: ReactNode,
   title: string,
   type: TNotificationType,
-  onClose?: MouseEventHandler<HTMLButtonElement> | Dispatch<SetStateAction<{}>>,
+  onClose?: MouseEventHandler<HTMLButtonElement>,
   onAccept?: () => void,
-  isConfirmation?: boolean,
+  isConfirmation?: boolean
 ): TNotification => {
   let notificationProperties = null;
   const id = Math.floor(Math.random() * 101 + 1);
@@ -25,7 +25,7 @@ export const getNotification = (
         icon: checkImg,
         onClose,
         onAccept,
-        isConfirmation,
+        isConfirmation
       };
       break;
     case 'danger':
@@ -38,7 +38,7 @@ export const getNotification = (
         icon: errorImg,
         onClose,
         onAccept,
-        isConfirmation,
+        isConfirmation
       };
       break;
     case 'info':
@@ -50,7 +50,7 @@ export const getNotification = (
         icon: infoImg,
         onClose,
         onAccept,
-        isConfirmation,
+        isConfirmation
       };
       break;
     case 'warning':
@@ -62,7 +62,7 @@ export const getNotification = (
         icon: warningImg,
         onClose,
         onAccept,
-        isConfirmation,
+        isConfirmation
       };
       break;
     default:
@@ -73,7 +73,7 @@ export const getNotification = (
         backgroundColor: '#5bc0de',
         onClose,
         onAccept,
-        isConfirmation,
+        isConfirmation
       };
       break;
   }

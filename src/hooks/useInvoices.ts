@@ -1,19 +1,31 @@
 // configs
 import { endpoints } from '../configs/configs';
 // hooks
-import { useApiData, useApiDataList, useApiRefreshData, useApiRequest } from './useApi';
+import {
+  useApiData,
+  useApiDataList,
+  useApiRefreshData,
+  useApiRequest
+} from './useApi';
 // types
-import type { ApiResponse, DataRowChart, InvoiceCreateType, InvoicesStats, InvoiceType, OptionsType } from '../types';
+import type {
+  ApiResponse,
+  DataRowChart,
+  InvoiceCreateType,
+  InvoicesStats,
+  InvoiceType,
+  OptionsType
+} from '../types';
 // react
 import { useCallback } from 'react';
 import { getDateAsString, parseToNumber } from 'utilities';
 // utilities
 
-type IdType = string | number | undefined | null;
+type IdType = string | number;
 
 export const useFetchInvoices = () =>
   useApiDataList<InvoiceType[]>({
-    endpointUrl: endpoints.invoices,
+    endpointUrl: endpoints.invoices
   });
 
 export const useRefreshInvoices = () => {
@@ -22,15 +34,22 @@ export const useRefreshInvoices = () => {
   return useCallback(() => mutate(`${endpoints.invoices}`), [mutate]);
 };
 
-const getAxisValue = ({ type, record }: { type: string; record: InvoicesStats }) => {
-  if (type === 'daily_current_month') return new Date(record.date as unknown as string).toLocaleDateString();
+const getAxisValue = ({
+  type,
+  record
+}: {
+  type: string;
+  record: InvoicesStats;
+}) => {
+  if (type === 'daily_current_month')
+    return new Date(record.date as unknown as string).toLocaleDateString();
   if (type === 'yearly') return record.year?.toString() ?? '';
   if (type === 'monthly') return record.period?.toString() ?? '';
 
   return '';
 };
 
-export const useFetchInvoicesStatsNew = (type: string = 'daily_current_month') =>
+export const useFetchInvoicesStatsNew = (type = 'daily_current_month') =>
   useApiDataList<InvoicesStats[]>({
     endpointUrl: `${endpoints.invoices}/stats/${type}`,
     transformData: (data: InvoicesStats[]) => {
@@ -38,13 +57,13 @@ export const useFetchInvoicesStatsNew = (type: string = 'daily_current_month') =
         const { date, ...rest } = stat;
         return {
           date: getDateAsString(date),
-          ...rest,
+          ...rest
         };
       });
-    },
+    }
   });
 
-export const useFetchInvoicesStats = (type: string = 'daily_current_month') =>
+export const useFetchInvoicesStats = (type = 'daily_current_month') =>
   useApiDataList({
     endpointUrl: `${endpoints.invoices}/stats/${type}`,
     transformData: (data: InvoicesStats[]) => {
@@ -54,48 +73,52 @@ export const useFetchInvoicesStats = (type: string = 'daily_current_month') =>
       data.forEach((record: InvoicesStats) => {
         seriesInvoices.push({
           date: getAxisValue({ type, record }),
-          value: parseToNumber(record.invoicesCount),
+          value: parseToNumber(record.invoicesCount)
         });
         seriesSubTotalSum.push({
           date: getAxisValue({ type, record }),
-          value: parseToNumber(record.subtotalSum),
+          value: parseToNumber(record.subtotalSum)
         });
         seriesTaxesSum.push({
           date: getAxisValue({ type, record }),
-          value: parseToNumber(record.taxesSum),
+          value: parseToNumber(record.taxesSum)
         });
       });
       return {
         invoices: [
           {
             label: 'Invoices',
-            data: seriesInvoices,
-          },
+            data: seriesInvoices
+          }
         ],
         amounts: [
           {
             label: 'Sub Total',
-            data: seriesSubTotalSum,
+            data: seriesSubTotalSum
           },
           {
             label: 'Taxes',
-            data: seriesTaxesSum,
-          },
+            data: seriesTaxesSum
+          }
         ],
-        data,
+        data
       };
-    },
+    }
   });
 
-export const useFetchInvoice = (invoiceId: IdType) =>
+export const useFetchInvoice = (invoiceId?: IdType) =>
   useApiData<InvoiceType>({
-    endpointUrl: invoiceId ? `${endpoints.invoices}/${invoiceId}` : undefined,
+    endpointUrl: invoiceId ? `${endpoints.invoices}/${invoiceId}` : undefined
   });
 
 export const useRefreshInvoice = () => {
   const { mutate } = useApiRefreshData();
 
-  return useCallback((invoiceId: IdType) => mutate(`${endpoints.invoices}/${invoiceId}`), [mutate]);
+  return useCallback(
+    (invoiceId?: IdType) =>
+      invoiceId ? mutate(`${endpoints.invoices}/${invoiceId}`) : undefined,
+    [mutate]
+  );
 };
 
 export const usePostInvoice = () => {
@@ -105,13 +128,15 @@ export const usePostInvoice = () => {
       const { invoiceId, ...rest } = invoice;
       const requestOptions: OptionsType = {
         method: invoice.invoiceId ? 'PUT' : 'POST',
-        body: JSON.stringify(rest),
+        body: JSON.stringify(rest)
       };
-      const url = invoiceId ? `${endpoints.invoices}/${invoiceId ?? ''}` : endpoints.invoices;
+      const url = invoiceId
+        ? `${endpoints.invoices}/${invoiceId ?? ''}`
+        : endpoints.invoices;
 
       return apiRequest<InvoiceType>(url, requestOptions);
     },
-    [apiRequest],
+    [apiRequest]
   );
 };
 
@@ -120,11 +145,11 @@ export const useDeleteInvoice = () => {
   return useCallback(
     async (invoiceId: IdType): Promise<ApiResponse<unknown>> => {
       const requestOptions: OptionsType = {
-        method: 'DELETE',
+        method: 'DELETE'
       };
       return apiRequest(`${endpoints.invoices}/${invoiceId}`, requestOptions);
     },
-    [apiRequest],
+    [apiRequest]
   );
 };
 

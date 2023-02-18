@@ -9,7 +9,12 @@ import { useInvoiceDetailsConfig } from './hooks/useInvoiceDetailsConfig';
 // icons
 import { CopyIcon, NewIcon, EditIcon, DeleteIcon } from 'icons';
 // types
-import type { InvoiceFormType, InvoicesDetails, ColumnDef, CellContext } from 'types';
+import type {
+  InvoiceFormType,
+  InvoicesDetails,
+  ColumnDef,
+  CellContext
+} from 'types';
 import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
 // styles
 import styles from './InvoiceDetailsField.module.css';
@@ -21,19 +26,28 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [detail, setDetail] = useState<InvoicesDetails | undefined>();
 
-  const [invoicesDetails, setInvoicesDetails] = useFieldsContext<InvoicesDetails[], Pick<InvoiceFormType, 'details'>>(
-    (store) => store.details,
+  const [invoicesDetails, setInvoicesDetails] = useFieldsContext<
+    InvoicesDetails[],
+    Pick<InvoiceFormType, 'details'>
+  >((store) => store.details);
+  const [, setSubtotal] = useFieldsContext<
+    number,
+    Pick<InvoiceFormType, 'subtotal'>
+  >((store) => store.subtotal);
+  const [, setTaxes] = useFieldsContext<number, Pick<InvoiceFormType, 'taxes'>>(
+    (store) => store.taxes
   );
-  const [, setSubtotal] = useFieldsContext<number, Pick<InvoiceFormType, 'subtotal'>>((store) => store.subtotal);
-  const [, setTaxes] = useFieldsContext<number, Pick<InvoiceFormType, 'taxes'>>((store) => store.taxes);
-  const [taxesPercentage] = useFieldsContext<number, Pick<InvoiceFormType, 'taxesPercentage'>>(
-    (store) => store.taxesPercentage,
+  const [taxesPercentage] = useFieldsContext<
+    number,
+    Pick<InvoiceFormType, 'taxesPercentage'>
+  >((store) => store.taxesPercentage);
+  const [, setTotal] = useFieldsContext<number, Pick<InvoiceFormType, 'total'>>(
+    (store) => store.total
   );
-  const [, setTotal] = useFieldsContext<number, Pick<InvoiceFormType, 'total'>>((store) => store.total);
   const columnsDetails = useInvoiceDetailsConfig();
   const normalizedValue = useMemo(
     () => normalize?.(invoicesDetails) ?? invoicesDetails,
-    [invoicesDetails, normalize],
+    [invoicesDetails, normalize]
   ) as unknown as InvoicesDetails[];
 
   const updateAmounts = useCallback(
@@ -48,17 +62,19 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       setTaxes({ taxes: newTaxes });
       setTotal({ total: newTotal });
     },
-    [setSubtotal, setTaxes, setTotal, taxesPercentage],
+    [setSubtotal, setTaxes, setTotal, taxesPercentage]
   );
 
   const onRemoveDetail = useCallback(
     (original: InvoicesDetails) => {
-      const newDetails = invoicesDetails.filter((detail) => detail !== original);
+      const newDetails = invoicesDetails.filter(
+        (detail) => detail !== original
+      );
 
       setInvoicesDetails({ details: newDetails });
       updateAmounts(newDetails);
     },
-    [invoicesDetails, setInvoicesDetails, updateAmounts],
+    [invoicesDetails, setInvoicesDetails, updateAmounts]
   );
 
   const onEditDetail = useCallback(
@@ -67,7 +83,7 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       setDetail(original);
       setShowDetailForm(true);
     },
-    [onRemoveDetail],
+    [onRemoveDetail]
   );
 
   const onCopyDetail = useCallback((original: InvoicesDetails) => {
@@ -87,18 +103,30 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       updateAmounts(newDetails);
       setShowDetailForm(false);
     },
-    [invoicesDetails, setInvoicesDetails, updateAmounts],
+    [invoicesDetails, setInvoicesDetails, updateAmounts]
   );
 
   const getActionsCell = useCallback(
     ({ row: { original } }: CellContext<InvoicesDetails, unknown>) => (
       <div className={styles['actions-wrapper']}>
-        <IconButton id="edit-invoice-detail" icon={<EditIcon />} onClick={() => onEditDetail(original)} />
-        <IconButton id="copy-invoice-detail" icon={<CopyIcon />} onClick={() => onCopyDetail(original)} />
-        <IconButton id="delete-invoice-detail" icon={<DeleteIcon />} onClick={() => onRemoveDetail(original)} />
+        <IconButton
+          id='edit-invoice-detail'
+          icon={<EditIcon />}
+          onClick={() => onEditDetail(original)}
+        />
+        <IconButton
+          id='copy-invoice-detail'
+          icon={<CopyIcon />}
+          onClick={() => onCopyDetail(original)}
+        />
+        <IconButton
+          id='delete-invoice-detail'
+          icon={<DeleteIcon />}
+          onClick={() => onRemoveDetail(original)}
+        />
       </div>
     ),
-    [onCopyDetail, onEditDetail, onRemoveDetail],
+    [onCopyDetail, onEditDetail, onRemoveDetail]
   );
 
   const columnsWithActions = useMemo<ColumnDef<InvoicesDetails>[]>(
@@ -109,10 +137,10 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
         header: 'Actions',
         sort: false,
         enableResizing: false,
-        cell: getActionsCell,
-      },
+        cell: getActionsCell
+      }
     ],
-    [columnsDetails, getActionsCell],
+    [columnsDetails, getActionsCell]
   );
 
   const hideDetailForm = useCallback(() => setShowDetailForm(false), []);
@@ -120,15 +148,22 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const labelWithAdd = (
     <div className={styles['label-wrapper']}>
       <span>Details</span>
-      <div id="icon-button" className={styles['icon']}>
-        <IconButton id="new-invoice-detail" icon={<NewIcon />} onClick={onAddDetail} />
+      <div id='icon-button' className={styles.icon}>
+        <IconButton
+          id='new-invoice-detail'
+          icon={<NewIcon />}
+          onClick={onAddDetail}
+        />
       </div>
     </div>
   );
 
   return (
     <>
-      <FieldGroupStyled key={`table-form-field-invoice-details`} id="field-group-styled-invoice-details">
+      <FieldGroupStyled
+        key={`table-form-field-invoice-details`}
+        id='field-group-styled-invoice-details'
+      >
         <legend>{labelWithAdd}</legend>
         <ReadOnlyTable<InvoicesDetails>
           data={normalizedValue}
@@ -139,7 +174,11 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       </FieldGroupStyled>
       {showDetailForm && (
         <Portal>
-          <InvoiceDetailForm detail={detail} onAcceptDetail={onAcceptDetail} onFinish={hideDetailForm} />
+          <InvoiceDetailForm
+            detail={detail}
+            onAcceptDetail={onAcceptDetail}
+            onFinish={hideDetailForm}
+          />
         </Portal>
       )}
     </>

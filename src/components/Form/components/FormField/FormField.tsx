@@ -11,18 +11,38 @@ import { memo } from 'utilities';
 import { useCallback } from 'react';
 
 import { getErrorField, validateField } from 'components/Form/utilities';
-import { type FormMetaType, useFieldsContext, useFormMetaContext } from 'components/Form/contexts';
+import {
+  type FormMetaType,
+  useFieldsContext,
+  useFormMetaContext
+} from 'components/Form/contexts';
 
 const FormField = memo(({ field, ...props }: FormFieldProps) => {
-  const { options, type, label, accessor, readonly, placeholder, normalize, rules, textAlign, required } = field;
+  const {
+    options,
+    type,
+    label,
+    accessor,
+    readonly,
+    placeholder,
+    normalize,
+    rules,
+    textAlign,
+    required
+  } = field;
 
-  const [fieldValue, setStore] = useFieldsContext<FieldBaseValueType, any>((store) => store[field.accessor]);
+  const [fieldValue, setStore] = useFieldsContext<
+    FieldBaseValueType,
+    Record<string, unknown>
+  >((store) => store[field.accessor] as FieldBaseValueType);
 
-  const [submittedCounter] = useFormMetaContext<number, Pick<FormMetaType<any>, 'submittedCounter'>>(
-    (store) => store.submittedCounter,
-  );
+  const [submittedCounter] = useFormMetaContext<
+    number,
+    Pick<FormMetaType<Record<string, unknown>>, 'submittedCounter'>
+  >((store) => store.submittedCounter);
 
-  const errorFields = submittedCounter > 0 ? validateField(field, fieldValue) : [];
+  const errorFields =
+    submittedCounter > 0 ? validateField(field, fieldValue) : [];
   const errorField = getErrorField(field, errorFields);
 
   const handleSelectOnChange = useCallback(
@@ -30,14 +50,14 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
       const selected = event.target.options[event.target.selectedIndex]?.value;
       setStore({ [field.accessor]: selected });
     },
-    [field.accessor, setStore],
+    [field.accessor, setStore]
   );
 
   const handleTextInputOnChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setStore({ [field.accessor]: event.target.value });
     },
-    [field.accessor, setStore],
+    [field.accessor, setStore]
   );
 
   switch (field.type) {

@@ -9,6 +9,8 @@ type DateDisplayProps = {
   utc?: boolean;
 };
 
-const DateDisplay = memo(({ date, output, utc }: DateDisplayProps) => <>{getDateAsString(date, output, utc)}</>);
+const DateDisplay = memo(({ date, output, utc }: DateDisplayProps) => (
+  <>{getDateAsString(date, output, utc)}</>
+));
 
 export default DateDisplay;

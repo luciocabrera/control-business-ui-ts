@@ -1,4 +1,7 @@
-import type { FormFieldBaseType, FormFieldErrorType } from '../components/FormField/types';
+import type {
+  FormFieldBaseType,
+  FormFieldErrorType
+} from '../components/FormField/types';
 
 export const validateFieldRules = <T>(field: FormFieldBaseType, data: T) => {
   const fieldRuleErrors: FormFieldErrorType[] = [];
@@ -18,17 +21,23 @@ export const validateFieldRules = <T>(field: FormFieldBaseType, data: T) => {
     if (rule.type === 'length')
       if (fieldValue.length !== rule.value) {
         hasErrors = true;
-        errorMessage = rule.message || `The ${field.label}'s length must be exactly ${rule.value} characters!`;
+        errorMessage =
+          rule.message ||
+          `The ${field.label}'s length must be exactly ${rule.value} characters!`;
       }
     if (rule.type === 'minLength')
       if (fieldValue.length < rule.value) {
         hasErrors = true;
-        errorMessage = rule.message || `The ${field.label}'s length must be greater than ${rule.value} characters!`;
+        errorMessage =
+          rule.message ||
+          `The ${field.label}'s length must be greater than ${rule.value} characters!`;
       }
     if (rule.type === 'maxLength')
       if (fieldValue.length > rule.value) {
         hasErrors = true;
-        errorMessage = rule.message || `The ${field.label}'s length must be lower than ${rule.value} characters!`;
+        errorMessage =
+          rule.message ||
+          `The ${field.label}'s length must be lower than ${rule.value} characters!`;
       }
     if (rule.type === 'regex')
       if (rule.value && fieldValue.match(rule.value as string) === null) {
@@ -43,7 +52,7 @@ export const validateFieldRules = <T>(field: FormFieldBaseType, data: T) => {
         accessor: field.accessor,
         hasErrors: hasErrors,
         errorMessage: errorMessage,
-        value: fieldValue,
+        value: fieldValue
       });
   });
 

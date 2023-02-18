@@ -23,7 +23,9 @@ export type ReadOnlyTableType<TData> = TableCore<TData> & {
   manualSorting?: boolean;
   isLoading: boolean;
   showHeader: boolean;
-  fetchMoreOnBottomReached?: (childRef: RefObject<HTMLDivElement>) => () => void;
+  fetchMoreOnBottomReached?: (
+    childRef: RefObject<HTMLDivElement>
+  ) => () => void;
 };
 
 export type TableBaseType<TData> = TableCore<TData> & {

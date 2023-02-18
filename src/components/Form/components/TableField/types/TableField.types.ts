@@ -12,5 +12,9 @@ export type TableFieldProps<TData, DetailData> = Omit<
   data: TData[];
   showHeader?: boolean;
   columns: ColumnDef<TData, unknown>[];
-  renderDetail?: (onAccept: (detail: DetailData) => void, onFinish: () => void, detail?: TData) => ReactNode;
+  renderDetail?: (
+    onAccept: (detail: DetailData) => void,
+    onFinish: () => void,
+    detail?: TData
+  ) => ReactNode;
 };

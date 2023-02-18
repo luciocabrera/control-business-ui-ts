@@ -2,7 +2,11 @@
 import ErrorDisplay from 'components/ErrorDisplay/ErrorDisplay';
 import { Button } from '../Button';
 // contexts
-import { FormMetaType, useFieldsContext, useFormMetaContext } from 'components/Form/contexts';
+import {
+  FormMetaType,
+  useFieldsContext,
+  useFormMetaContext
+} from 'components/Form/contexts';
 import { useAddNotification } from 'components/Notifications/contexts';
 // react
 import { memo, useCallback } from 'react';
@@ -15,15 +19,20 @@ import { validateFields } from 'components/Form/utilities';
 
 type ActionsProps<TDataType> = FormBaseProps<TDataType>;
 
-const Actions = <TDataType extends Record<string, unknown>>({ onAccept, onFinish }: ActionsProps<TDataType>) => {
+const Actions = <TDataType extends Record<string, unknown>>({
+  onAccept,
+  onFinish
+}: ActionsProps<TDataType>) => {
   const addNotification = useAddNotification();
   const [data] = useFieldsContext<TDataType, TDataType>((store) => store);
-  const [initialFields] = useFormMetaContext<FormFieldType[], Pick<FormMetaType<TDataType>, 'initialFields'>>(
-    (store) => store.initialFields,
-  );
-  const [initialData] = useFormMetaContext<TDataType, Pick<FormMetaType<TDataType>, 'initialData'>>(
-    (store) => (store.initialData ?? {}) as TDataType,
-  );
+  const [initialFields] = useFormMetaContext<
+    FormFieldType[],
+    Pick<FormMetaType<TDataType>, 'initialFields'>
+  >((store) => store.initialFields);
+  const [initialData] = useFormMetaContext<
+    TDataType,
+    Pick<FormMetaType<TDataType>, 'initialData'>
+  >((store) => (store.initialData ?? {}) as TDataType);
   const [submittedCounter, incrementSubmittedCounter] = useFormMetaContext<
     number,
     Pick<FormMetaType<TDataType>, 'submittedCounter'>
@@ -40,7 +49,11 @@ const Actions = <TDataType extends Record<string, unknown>>({ onAccept, onFinish
 
       if (errorFields?.length > 0) {
         const errorMessages = errorFields.map((err) => err.errorMessage);
-        addNotification?.(<ErrorDisplay errors={errorMessages} />, 'Error Validating Customer', 'error');
+        addNotification?.(
+          <ErrorDisplay errors={errorMessages} />,
+          'Error Validating Customer',
+          'error'
+        );
         return;
       }
 
@@ -58,12 +71,12 @@ const Actions = <TDataType extends Record<string, unknown>>({ onAccept, onFinish
       initialFields,
       onAccept,
       onFinish,
-      submittedCounter,
-    ],
+      submittedCounter
+    ]
   );
 
   return (
-    <Button id="form-button-accept" onClick={onSubmit}>
+    <Button id='form-button-accept' onClick={onSubmit}>
       Accept
     </Button>
   );

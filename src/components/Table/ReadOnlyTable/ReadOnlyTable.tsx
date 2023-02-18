@@ -15,7 +15,7 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   useReactTable,
-  type SortingState,
+  type SortingState
 } from '@tanstack/react-table';
 // react virtual
 import { useVirtual } from 'react-virtual';
@@ -37,28 +37,28 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   manualSorting = false,
   showHeader,
   fetchMoreOnBottomReached,
-  data,
+  data
 }: ReadOnlyTableType<TData>) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
   const {
     state: { columnFilters, showColumnFilters },
-    dispatch,
+    dispatch
   } = useTableContext();
 
   useEffect(() => {
-    dispatch({ type: TableContextActionKind.setSorting, payload: { sorting } });
+    dispatch({ type: TableContextActionKind.SetSorting, payload: { sorting } });
   }, [dispatch, sorting]);
 
   const table = useReactTable({
     data,
     columns,
     filterFns: {
-      fuzzy: fuzzyFilter,
+      fuzzy: fuzzyFilter
     },
     state: {
       columnFilters,
-      sorting,
+      sorting
     },
     manualFiltering: manualFiltering,
     manualSorting: manualSorting,
@@ -69,7 +69,7 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
     getExpandedRowModel: getExpandedRowModel(),
     getRowCanExpand,
     enableColumnResizing: true,
-    columnResizeMode: 'onChange',
+    columnResizeMode: 'onChange'
   });
 
   const { rows } = table.getRowModel();
@@ -77,11 +77,14 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   const rowVirtualizer = useVirtual({
     parentRef: parentRef,
     size: rows.length,
-    overscan: 10,
+    overscan: 10
   });
   const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
   const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
-  const paddingBottom = virtualRows.length > 0 ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0) : 0;
+  const paddingBottom =
+    virtualRows.length > 0
+      ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
+      : 0;
 
   return (
     <>
@@ -89,7 +92,7 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
       {showColumnFilters && <FormFilter />}
       {showHeader && <TableWrapperHeader actions={actions} />}
       <div
-        id="table-wrapper"
+        id='table-wrapper'
         ref={parentRef}
         style={{ height: height }}
         className={styles['table-wrapper']}
@@ -112,18 +115,29 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
                       const size = cell
                         .getContext()
                         .table.getHeaderGroups()[0]
-                        .headers.filter((header) => header.id === cell.column.id)[0]
+                        .headers.filter(
+                          (header) => header.id === cell.column.id
+                        )[0]
                         .getSize();
                       return (
-                        <td key={cell.id} className={styles['simple-td']} style={{ width: size, maxWidth: size }}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        <td
+                          key={cell.id}
+                          className={styles['simple-td']}
+                          style={{ width: size, maxWidth: size }}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
                         </td>
                       );
                     })}
                   </tr>
                   {row.getIsExpanded() && (
                     <tr key={`expandable-tr-${row.id}`}>
-                      <td colSpan={row.getVisibleCells().length}>{renderSubComponent?.({ row })}</td>
+                      <td colSpan={row.getVisibleCells().length}>
+                        {renderSubComponent?.({ row })}
+                      </td>
                     </tr>
                   )}
                 </Fragment>

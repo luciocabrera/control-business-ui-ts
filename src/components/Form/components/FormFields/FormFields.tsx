@@ -1,11 +1,18 @@
 // components
 import { FormField } from '../FormField';
 // contexts
-import { type FormMetaType, useFormMetaContext } from 'components/Form/contexts/FormContext';
+import {
+  type FormMetaType,
+  useFormMetaContext
+} from 'components/Form/contexts/FormContext';
 // styles
 import { CustomFieldWrapper, FieldGroupStyled, FieldRowStyled } from './styles';
 // types
-import type { FormFieldGroupType, FormFieldType, FormSimpleFieldType } from '../FormField/types';
+import type {
+  FormFieldGroupType,
+  FormFieldType,
+  FormSimpleFieldType
+} from '../FormField/types';
 
 type TFormField = {
   formFields?: FormFieldType[];
@@ -14,10 +21,16 @@ type TFormField = {
   viewMode?: boolean;
 };
 
-export const FormFields = ({ formFields, fieldWidth, groupId = '', viewMode = true }: TFormField) => {
-  const [initialFields] = useFormMetaContext<FormFieldType[], Pick<FormMetaType<any>, 'initialFields'>>(
-    (store) => store.initialFields,
-  );
+export const FormFields = ({
+  formFields,
+  fieldWidth,
+  groupId = '',
+  viewMode = true
+}: TFormField) => {
+  const [initialFields] = useFormMetaContext<
+    FormFieldType[],
+    Pick<FormMetaType<Record<string, unknown>>, 'initialFields'>
+  >((store) => store.initialFields);
 
   const fields = formFields ?? initialFields;
   if (!fields) return null;
@@ -28,11 +41,11 @@ export const FormFields = ({ formFields, fieldWidth, groupId = '', viewMode = tr
         const groupKey = `form-group-${index}-${field?.label ?? ''}`;
 
         switch (calculatedType) {
-          case 'group':
+          case 'group': {
             const groupField = field as FormFieldGroupType;
             return (
               groupField?.fields && (
-                <FieldGroupStyled key={groupKey} id="field-group">
+                <FieldGroupStyled key={groupKey} id='field-group'>
                   <legend>{groupField?.label}</legend>
                   <FormFields
                     key={`field-${groupKey}`}
@@ -44,13 +57,14 @@ export const FormFields = ({ formFields, fieldWidth, groupId = '', viewMode = tr
                 </FieldGroupStyled>
               )
             );
-          case 'row':
+          }
+          case 'row': {
             const rowField = field as FormFieldGroupType;
-            const calculatedWidth = 100 / rowField?.fields?.length! || 100;
+            const calculatedWidth = 100 / (rowField?.fields?.length ?? 100);
             const rowKey = `${groupId}-form-row-${index}`;
             return (
               rowField?.fields && (
-                <FieldRowStyled key={rowKey} id="field-row">
+                <FieldRowStyled key={rowKey} id='field-row'>
                   <FormFields
                     key={`field-${rowKey}`}
                     groupId={rowKey}
@@ -61,20 +75,33 @@ export const FormFields = ({ formFields, fieldWidth, groupId = '', viewMode = tr
                 </FieldRowStyled>
               )
             );
+          }
           case 'rule':
-            return <></>;
+            return null;
           case 'field':
-          default:
+          default: {
             const simpleField = field as FormSimpleFieldType;
             const fieldKey = `${groupId}-form-field-${index}-${simpleField.accessor}`;
 
             if (field?.render)
               return (
-                <CustomFieldWrapper id="custom-field-wrapper" width={fieldWidth} key={fieldKey}>
+                <CustomFieldWrapper
+                  id='custom-field-wrapper'
+                  width={fieldWidth}
+                  key={fieldKey}
+                >
                   {field?.render()}
                 </CustomFieldWrapper>
               );
-            return <FormField key={fieldKey} field={simpleField} width={fieldWidth} viewMode={viewMode} />;
+            return (
+              <FormField
+                key={fieldKey}
+                field={simpleField}
+                width={fieldWidth}
+                viewMode={viewMode}
+              />
+            );
+          }
         }
       })}
     </>

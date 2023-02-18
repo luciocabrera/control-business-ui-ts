@@ -3,7 +3,13 @@ import { useMemo } from 'react';
 // types
 import type { ColumnDef, InvoiceType, ColumnMetaState } from 'types';
 // utilities
-import { getActionsCell, getDateCell, getSubTotalCell, getTaxesCell, getTotalCell } from '../utilities';
+import {
+  getActionsCell,
+  getDateCell,
+  getSubTotalCell,
+  getTaxesCell,
+  getTotalCell
+} from '../utilities';
 import { isDateBetween } from 'utilities';
 
 export const useInvoicesConfig = () => {
@@ -14,40 +20,40 @@ export const useInvoicesConfig = () => {
         accessorKey: 'date',
         header: 'Date',
         cell: getDateCell,
-        filterFn: (row, columnId, value, addMeta) => {
+        filterFn: (row, _columnId, value) => {
           const dateToCheck = row?.original?.date ?? '';
 
           return isDateBetween({ dateToCheck, from: value[0], to: value[1] });
-        },
+        }
       },
       {
         accessorKey: 'customer',
-        header: 'Customer',
+        header: 'Customer'
       },
       {
         accessorKey: 'subtotal',
         header: 'Subtotal',
-        cell: getSubTotalCell,
+        cell: getSubTotalCell
       },
       {
         accessorKey: 'taxes',
         header: 'Taxes',
-        cell: getTaxesCell,
+        cell: getTaxesCell
       },
       {
         accessorKey: 'total',
         header: 'Total',
-        cell: getTotalCell,
+        cell: getTotalCell
       },
       {
         id: 'actions',
         header: '',
         enableResizing: false,
         maxSize: 62,
-        cell: getActionsCell,
-      },
+        cell: getActionsCell
+      }
     ],
-    [],
+    []
   );
 
   const columnMeta: ColumnMetaState = useMemo(
@@ -57,9 +63,9 @@ export const useInvoicesConfig = () => {
       { id: 'customer', name: 'Customer' },
       { id: 'subtotal', name: 'Sub Total', type: 'number' },
       { id: 'taxes', name: 'Total', type: 'number' },
-      { id: 'total', name: 'Total', type: 'number' },
+      { id: 'total', name: 'Total', type: 'number' }
     ],
-    [],
+    []
   );
 
   return { columns, columnMeta };

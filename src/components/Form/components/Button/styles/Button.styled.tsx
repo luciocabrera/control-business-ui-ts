@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 
-const customStyles = ({ inverse, warning }: { inverse: boolean; warning: boolean }) => {
+const customStyles = ({
+  inverse,
+  warning
+}: {
+  inverse: boolean;
+  warning: boolean;
+}) => {
   if (warning) {
     return `background: rgb(157 34 34 / 77%);
     color: var(--special-text-color);

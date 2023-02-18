@@ -28,4 +28,6 @@ const TableActions = memo(({ customerId }: TableActionsProps) => {
   );
 });
 
+TableActions.displayName = 'TableActions';
+
 export default TableActions;

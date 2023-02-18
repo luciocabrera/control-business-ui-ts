@@ -2,7 +2,11 @@ import { checkImg, errorImg, infoImg, warningImg } from 'assets';
 import { ReactNode } from 'react';
 import type { TToast, TToastType } from '../types';
 
-export const getToast = (description: ReactNode, title: string, type: TToastType): TToast => {
+export const getToast = (
+  description: ReactNode,
+  title: string,
+  type: TToastType
+): TToast => {
   let toastProperties = null;
   const id = Math.floor(Math.random() * 101 + 1);
 
@@ -13,7 +17,7 @@ export const getToast = (description: ReactNode, title: string, type: TToastType
         title: title || 'Success',
         description: description,
         backgroundColor: '#5cb85c',
-        icon: checkImg,
+        icon: checkImg
       };
       break;
     case 'danger':
@@ -23,7 +27,7 @@ export const getToast = (description: ReactNode, title: string, type: TToastType
         title: title || 'Danger',
         description: description,
         backgroundColor: '#d9534f',
-        icon: errorImg,
+        icon: errorImg
       };
       break;
     case 'info':
@@ -32,7 +36,7 @@ export const getToast = (description: ReactNode, title: string, type: TToastType
         title: title || 'Info',
         description: description,
         backgroundColor: '#5bc0de',
-        icon: infoImg,
+        icon: infoImg
       };
       break;
     case 'warning':
@@ -41,7 +45,7 @@ export const getToast = (description: ReactNode, title: string, type: TToastType
         title: title || 'Warning',
         description: description,
         backgroundColor: '#f0ad4e',
-        icon: warningImg,
+        icon: warningImg
       };
       break;
     default:
@@ -50,7 +54,7 @@ export const getToast = (description: ReactNode, title: string, type: TToastType
         title: title || 'Default',
         description: description,
         backgroundColor: '#5bc0de',
-        icon: infoImg,
+        icon: infoImg
       };
       break;
   }

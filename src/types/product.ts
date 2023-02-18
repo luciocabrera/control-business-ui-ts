@@ -9,7 +9,10 @@ export type ProductType = AuditType & {
   price: number;
 };
 
-export type ProductFormType = Omit<ProductType, 'productId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'>;
+export type ProductFormType = Omit<
+  ProductType,
+  'productId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'
+>;
 
 export type ProductCreateType = Omit<
   ProductType,

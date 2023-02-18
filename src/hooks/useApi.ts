@@ -9,13 +9,18 @@ import { useCallback, useMemo } from 'react';
 import { execDownload, execRequest, fetchRequest } from 'utilities';
 
 type UseApiDataArgs<TDataType, TPreTransformDataType> = {
-  endpointUrl?: string | null | RequestInfo | URL;
-  transformData?: (data: TPreTransformDataType) => TDataType | Promise<TDataType>;
+  endpointUrl?: string | null;
+  transformData?: (
+    data: TPreTransformDataType
+  ) => TDataType | Promise<TDataType>;
   refreshInterval?: number;
   query?: string;
 };
 
-export type UseApiInfiniteDataResponse<TDataType> = Omit<SWRInfiniteResponse<TDataType>, 'data'> & {
+export type UseApiInfiniteDataResponse<TDataType> = Omit<
+  SWRInfiniteResponse<TDataType>,
+  'data'
+> & {
   isLoadingInitialData: boolean;
   isLoadingMore: boolean;
   isEmpty: boolean;
@@ -26,12 +31,17 @@ export type UseApiInfiniteDataResponse<TDataType> = Omit<SWRInfiniteResponse<TDa
 
 export type UseApiDataResponse<TDataType> = SWRResponse<TDataType>;
 
-export type UseApiDataListResponse<TDataType> = Omit<UseApiDataResponse<TDataType>, 'data'> & { data: TDataType };
+export type UseApiDataListResponse<TDataType> = Omit<
+  UseApiDataResponse<TDataType>,
+  'data'
+> & { data: TDataType };
 
-export type ValidDataHookResponse<TData> = UseApiInfiniteDataResponse<TData[]> | UseApiDataListResponse<TData[]>;
+export type ValidDataHookResponse<TData> =
+  | UseApiInfiniteDataResponse<TData[]>
+  | UseApiDataListResponse<TData[]>;
 
 export const isInfiniteResponse = <TDataType>(
-  value: ValidDataHookResponse<TDataType>,
+  value: ValidDataHookResponse<TDataType>
 ): value is UseApiInfiniteDataResponse<TDataType[]> => {
   if ((value as UseApiInfiniteDataResponse<TDataType>).size) {
     return true;
@@ -39,9 +49,13 @@ export const isInfiniteResponse = <TDataType>(
   return false;
 };
 
-const getShouldExecute = (accessToken?: string | null) => true; // (accessToken ? true : false);
+const getShouldExecute = (accessToken?: string | null) =>
+  accessToken ? true : false;
 
-const getRequestOptions = (customOptions?: OptionsType, accessToken?: string) => {
+const getRequestOptions = (
+  customOptions?: OptionsType,
+  accessToken?: string
+) => {
   const shouldAddToken = getShouldExecute(accessToken);
   let headers: Record<string, unknown> = {};
 
@@ -52,7 +66,7 @@ const getRequestOptions = (customOptions?: OptionsType, accessToken?: string) =>
   }
 
   // Always add the authorization header if there is a token
-  if (shouldAddToken) headers['Authorization'] = `Bearer ${accessToken}`;
+  if (shouldAddToken) headers['Authorization'] = `Bearer ${accessToken ?? ''}`;
 
   headers = { ...headers, ...customOptions?.headers };
 
@@ -60,8 +74,8 @@ const getRequestOptions = (customOptions?: OptionsType, accessToken?: string) =>
   delete customOptions?.omitDefaultHeaders;
 
   const requestOptions: Record<string, unknown> = {
-    headers: headers,
-    ...customOptions,
+    headers,
+    ...customOptions
   };
 
   return requestOptions;
@@ -70,40 +84,47 @@ const getRequestOptions = (customOptions?: OptionsType, accessToken?: string) =>
 export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
   endpointUrl,
   transformData,
-  refreshInterval,
-}: UseApiDataArgs<TDataType, TPreTransformDataType>): UseApiDataResponse<TDataType> => {
+  refreshInterval
+}: UseApiDataArgs<
+  TDataType,
+  TPreTransformDataType
+>): UseApiDataResponse<TDataType> => {
   const accessToken = 'token'; // useAccessToken();
   const shouldExecute = getShouldExecute(accessToken);
 
-  const { data, error, mutate, isValidating, isLoading } = useSWR<TDataType>(
+  const { data, mutate, isValidating, isLoading, ...rest } = useSWR<TDataType>(
     endpointUrl && shouldExecute ? endpointUrl : undefined,
     async (url) => {
-      try {
-        const requestOptions = getRequestOptions({}, accessToken);
-        const response = await fetchRequest<TPreTransformDataType>(url, requestOptions);
+      const requestOptions = getRequestOptions({}, accessToken);
+      const response = await fetchRequest<TPreTransformDataType>(
+        url as string,
+        requestOptions
+      );
 
-        if (transformData !== undefined) return transformData(response);
+      if (transformData !== undefined) return transformData(response);
 
-        // TDataType represents the data returned by the hook, as expected by the UI
-        // TPreTransformDataType represents the data as it is received from the API
-        // TPreTransformDataType defaults to TDataType unless explicitly set.
-        //
-        // You could set the TPreTransformDataType to another type than TDataType without
-        // specifying the optional transformData callback in order to transform
-        // TPreTransformDataType into TDataType, the compiler catches it - but it's
-        // nontrivial to make this fully typesafe, so for now it will be the caller's
-        // responsibility not to set TPreTransformDataType unless the transformData
-        // callback is used.
-        return response as unknown as TDataType;
-      } catch (err) {
-        console.error(err);
-        throw err;
-      }
+      // TDataType represents the data returned by the hook, as expected by the UI
+      // TPreTransformDataType represents the data as it is received from the API
+      // TPreTransformDataType defaults to TDataType unless explicitly set.
+      //
+      // You could set the TPreTransformDataType to another type than TDataType without
+      // specifying the optional transformData callback in order to transform
+      // TPreTransformDataType into TDataType, the compiler catches it - but it's
+      // nontrivial to make this fully typesafe, so for now it will be the caller's
+      // responsibility not to set TPreTransformDataType unless the transformData
+      // callback is used.
+      return response as unknown as TDataType;
     },
     {
       refreshInterval,
       // shouldRetryOnError: false,
-      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      onErrorRetry: (
+        error: { status: number; cause: number },
+        _key,
+        _config,
+        revalidate,
+        { retryCount }
+      ) => {
         // Never retry on 404.
         if (error.status === 404 || error.cause === 404) return;
 
@@ -111,66 +132,85 @@ export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
         if (retryCount >= 2) return;
 
         // Retry after 5 seconds.
-        setTimeout(() => revalidate({ retryCount }), 5000);
-      },
-    },
+        setTimeout(() => void revalidate({ retryCount }), 5000);
+      }
+    }
   );
 
   return {
     isLoading,
     isValidating,
     data,
-    error,
     mutate,
+    ...rest
   };
 };
 
-export const useApiInfiniteData = <TDataType, TPreTransformDataType = TDataType>({
+export const useApiInfiniteData = <
+  TDataType,
+  TPreTransformDataType = TDataType
+>({
   endpointUrl,
   transformData,
   refreshInterval,
   pageSize,
-  query,
+  query
 }: UseApiDataArgs<TDataType, TPreTransformDataType> & {
   pageSize: number;
 }): UseApiInfiniteDataResponse<TDataType> => {
   const accessToken = 'token'; // useAccessToken();
   const shouldExecute = getShouldExecute(accessToken);
-  const { data, error, size, setSize, isValidating, isLoading, ...rest }: SWRInfiniteResponse<TDataType> =
-    useSWRInfinite<TDataType>(
-      (index) =>
-        endpointUrl && shouldExecute
-          ? `${endpointUrl}?take=${pageSize}&skip=${index * pageSize}${query ?? ''}`
-          : undefined,
-      async (url) => {
-        try {
-          const requestOptions = getRequestOptions({}, accessToken);
-          const response = await fetchRequest<TPreTransformDataType>(url, requestOptions);
+  const {
+    data,
+    size,
+    setSize,
+    isValidating,
+    isLoading,
+    ...rest
+  }: SWRInfiniteResponse<TDataType> = useSWRInfinite<TDataType>(
+    (index) =>
+      endpointUrl && shouldExecute
+        ? `${endpointUrl}?take=${pageSize}&skip=${index * pageSize}${
+            query ?? ''
+          }`
+        : undefined,
+    async (url) => {
+      const requestOptions = getRequestOptions({}, accessToken);
+      const response = await fetchRequest<TPreTransformDataType>(
+        url as string,
+        requestOptions
+      );
 
-          if (transformData !== undefined) return transformData(response);
+      if (transformData !== undefined) return transformData(response);
 
-          return response as unknown as TDataType;
-        } catch (err) {
-          console.error(err);
-          throw err;
-        }
-      },
-      {
-        revalidateAll: false,
-        revalidateOnFocus: false,
-        errorRetryCount: 0,
-        shouldRetryOnError: false,
-        refreshInterval,
-      },
-    );
+      return response as unknown as TDataType;
+    },
+    {
+      revalidateAll: false,
+      revalidateOnFocus: false,
+      errorRetryCount: 0,
+      shouldRetryOnError: false,
+      refreshInterval
+    }
+  );
 
-  const isLoadingInitialData = !data && !error;
-  const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined') || false;
+  const isLoadingInitialData = !data && !rest.error;
+  const isLoadingMore =
+    isLoadingInitialData ||
+    (size > 0 && data && typeof data[size - 1] === 'undefined') ||
+    false;
   const isEmpty = ((data?.[0] as TDataType[])?.length || 0) === 0;
-  const isReachingEnd = isEmpty || (data && (data[data.length - 1] as TDataType[])?.length < pageSize) || false;
+  const isReachingEnd =
+    isEmpty ||
+    (data && (data[data.length - 1] as TDataType[])?.length < pageSize) ||
+    false;
   const isRefreshing = (isValidating && data && data.length === size) || false;
-  const loading = isLoadingMore || isLoadingInitialData || isRefreshing || false;
-  const flatData: TDataType = useMemo(() => (data ? ([] as TDataType[]).concat(...data) : []) as TDataType, [data]);
+  const loading =
+    isLoadingMore || isLoadingInitialData || isRefreshing || false;
+  const flatData: TDataType = useMemo(
+    () => (data ? ([] as TDataType[]).concat(...data) : []) as TDataType,
+    [data]
+  );
 
   return {
     isLoading: loading || isLoading,
@@ -180,21 +220,23 @@ export const useApiInfiniteData = <TDataType, TPreTransformDataType = TDataType>
     isReachingEnd,
     isRefreshing,
     data: flatData,
-    error,
     size,
     setSize,
     isValidating,
-    ...rest,
+    ...rest
   };
 };
 
 export const useApiDataList = <TDataType, TPreTransformDataType = TDataType>(
-  args: UseApiDataArgs<TDataType, TPreTransformDataType>,
+  args: UseApiDataArgs<TDataType, TPreTransformDataType>
 ): UseApiDataListResponse<TDataType> => {
   // Helper for list data, returns empty list if the data is not ready
   // instead of undefined
   const hookResult = useApiData(args);
-  return { ...hookResult, data: hookResult.data ?? ([] as unknown as TDataType) };
+  return {
+    ...hookResult,
+    data: hookResult.data ?? ([] as unknown as TDataType)
+  };
 };
 
 export const useApiRefreshData = () => useSWRConfig();
@@ -202,21 +244,25 @@ export const useApiRefreshData = () => useSWRConfig();
 export const useApiRequest = () => {
   const accessToken = 'token'; // useAccessToken();
   return useCallback(
-    async <T>(endpointUrl: RequestInfo | URL, customOptions?: OptionsType) => {
+    async <T>(endpointUrl: string, customOptions?: OptionsType) => {
       const requestOptions = getRequestOptions(customOptions, accessToken);
       return execRequest<T>(endpointUrl, requestOptions);
     },
-    [accessToken],
+    [accessToken]
   );
 };
 
 export const useApiDownload = () => {
   const accessToken = 'token'; // useAccessToken();
   return useCallback(
-    async (endpointUrl: RequestInfo | URL, fileName: string, customOptions?: OptionsType) => {
+    async (
+      endpointUrl: string,
+      fileName: string,
+      customOptions?: OptionsType
+    ) => {
       const requestOptions = getRequestOptions(customOptions, accessToken);
       return execDownload(endpointUrl, fileName, requestOptions);
     },
-    [accessToken],
+    [accessToken]
   );
 };

@@ -9,7 +9,8 @@ export const FormStyled = styled.form`
   z-index: 10;
   position: relative;
   ${({ width }: { width?: string }) => (width ? `width: ${width}` : ``)};
-  ${({ height }: { width?: string; height?: string }) => (height ? `height: ${height}` : ``)};
+  ${({ height }: { width?: string; height?: string }) =>
+    height ? `height: ${height}` : ``};
   max-width: 95%;
   max-height: 95%;
   top: 50%;
@@ -45,7 +46,12 @@ export const FormStyled = styled.form`
     align-content: center;
     align-items: center;
     flex-wrap: nowrap;
-    background: linear-gradient(135deg, white 20%, #c2e5da 0%, rgb(237 224 194) 100%);
+    background: linear-gradient(
+      135deg,
+      white 20%,
+      #c2e5da 0%,
+      rgb(237 224 194) 100%
+    );
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
   }

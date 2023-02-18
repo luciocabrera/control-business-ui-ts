@@ -60,4 +60,7 @@ export type CustomerCreateType = Omit<CustomerType, CustomerExcludes> & {
   customerId?: string | number;
 };
 
-export type CustomerFormType = Omit<CustomerType, CustomerExcludes> & AddressType & PhoneType & EmailType;
+export type CustomerFormType = Omit<CustomerType, CustomerExcludes> &
+  AddressType &
+  PhoneType &
+  EmailType;

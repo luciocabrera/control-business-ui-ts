@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 // react table
 import { FilterFn } from '@tanstack/react-table';
 
@@ -18,7 +19,7 @@ const fuzzyFilter: FilterFn<unknown> = (row, columnId, value, addMeta) => {
   const itemRank = rankItem(row.getValue(columnId), value);
   // Store the itemRank info
   addMeta({
-    itemRank,
+    itemRank
   });
 
   // Return if the item should be filtered in/out

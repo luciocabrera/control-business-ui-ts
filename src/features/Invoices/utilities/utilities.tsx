@@ -8,30 +8,31 @@ import { getFormattedNumber } from 'utilities';
 
 export const getDateCell = ({
   row: {
-    original: { date },
-  },
+    original: { date }
+  }
 }: CellContext<InvoiceType, unknown>) => <DateDisplay date={date} />;
 
 export const getTotalCell = ({
   row: {
-    original: { total },
-  },
+    original: { total }
+  }
 }: CellContext<InvoiceType, unknown>) => getFormattedNumber(total, 'currency');
 
 export const getSubTotalCell = ({
   row: {
-    original: { subtotal },
-  },
-}: CellContext<InvoiceType, unknown>) => getFormattedNumber(subtotal, 'currency');
+    original: { subtotal }
+  }
+}: CellContext<InvoiceType, unknown>) =>
+  getFormattedNumber(subtotal, 'currency');
 
 export const getTaxesCell = ({
   row: {
-    original: { taxes },
-  },
+    original: { taxes }
+  }
 }: CellContext<InvoiceType, unknown>) => getFormattedNumber(taxes, 'currency');
 
 export const getActionsCell = ({
   row: {
-    original: { invoiceId },
-  },
+    original: { invoiceId }
+  }
 }: CellContext<InvoiceType, unknown>) => <TableActions invoiceId={invoiceId} />;

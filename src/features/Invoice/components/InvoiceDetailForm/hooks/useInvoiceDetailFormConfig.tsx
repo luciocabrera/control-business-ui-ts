@@ -1,5 +1,8 @@
 // react
-import { InvoiceDetailProduct, PriceQuantityField } from 'features/Invoice/components';
+import {
+  InvoiceDetailProduct,
+  PriceQuantityField
+} from 'features/Invoice/components';
 // react
 import { useMemo } from 'react';
 // types
@@ -15,43 +18,53 @@ const useInvoiceDetailFormConfig = (products?: ProductType[]) => {
           {
             accessor: '',
             type: 'object',
-            render: () => <InvoiceDetailProduct products={products ?? []} />,
+            render: () => <InvoiceDetailProduct products={products ?? []} />
           },
           {
             accessor: '',
             type: 'object',
-            render: () => <PriceQuantityField />,
-          },
-        ],
+            render: () => <PriceQuantityField />
+          }
+        ]
       },
-      { type: 'rule', accessor: 'date', label: 'Date', rules: [{ type: 'required' }] },
-      { type: 'rule', accessor: 'productId', label: 'Product', rules: [{ type: 'required' }] },
+      {
+        type: 'rule',
+        accessor: 'date',
+        label: 'Date',
+        rules: [{ type: 'required' }]
+      },
+      {
+        type: 'rule',
+        accessor: 'productId',
+        label: 'Product',
+        rules: [{ type: 'required' }]
+      },
       {
         type: 'rule',
         accessor: 'description',
         label: 'Description',
-        rules: [{ type: 'required' }],
+        rules: [{ type: 'required' }]
       },
       {
         type: 'rule',
         accessor: 'quantity',
         label: 'Quantity',
-        rules: [{ type: 'required' }],
+        rules: [{ type: 'required' }]
       },
       {
         type: 'rule',
         accessor: 'priceUnit',
         label: 'Price',
-        rules: [{ type: 'required' }],
+        rules: [{ type: 'required' }]
       },
       {
         type: 'rule',
         accessor: 'priceQuantity',
         label: 'Price Quantity',
-        rules: [{ type: 'required' }],
-      },
+        rules: [{ type: 'required' }]
+      }
     ],
-    [products],
+    [products]
   );
 
   return { fields };

@@ -15,8 +15,8 @@ type SideNavBarProps = {
 const NavBar = memo(({ routes }: SideNavBarProps) => (
   <NavStyled>
     <ul>
-      <li key="home" id="app-home">
-        <Link to="/" aria-label={`Go Home`}>
+      <li key='home' id='app-home'>
+        <Link to='/' aria-label={`Go Home`}>
           <AppIcon />
         </Link>
       </li>
@@ -30,5 +30,7 @@ const NavBar = memo(({ routes }: SideNavBarProps) => (
     </ul>
   </NavStyled>
 ));
+
+NavBar.displayName = 'NavBar';
 
 export default NavBar;

@@ -11,31 +11,35 @@ const SummaryYearsChart = () => {
   const primaryAxis = React.useMemo(
     (): AxisOptions<DataRowChart> => ({
       getValue: (datum) => datum.date,
-      scaleType: 'band',
+      scaleType: 'band'
     }),
-    [],
+    []
   );
 
-  const amountAxes = React.useMemo<AxisOptions<typeof data.amounts[number]['data'][number]>[]>(
+  const amountAxes = React.useMemo<
+    AxisOptions<(typeof data.amounts)[number]['data'][number]>[]
+  >(
     () => [
       {
         getValue: (datum) => datum.value,
         stacked: true,
-        scaleType: 'linear',
-      },
+        scaleType: 'linear'
+      }
     ],
-    [],
+    []
   );
 
-  const invoicesAxes = React.useMemo<AxisOptions<typeof data.invoices[number]['data'][number]>[]>(
+  const invoicesAxes = React.useMemo<
+    AxisOptions<(typeof data.invoices)[number]['data'][number]>[]
+  >(
     () => [
       {
-        getValue: (datum: { value: any }) => datum.value,
+        getValue: (datum: { value: number }) => datum.value,
         elementType: 'area',
-        scaleType: 'linear',
-      },
+        scaleType: 'linear'
+      }
     ],
-    [],
+    []
   );
 
   if (isLoading) return <>Loading.................</>;

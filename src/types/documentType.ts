@@ -4,4 +4,7 @@ export type DocumentTypeType = AuditType & {
   documentTypeId: number;
   name: string;
 };
-export type DocumentTypeCreateType = Omit<DocumentTypeType, 'documentTypeId'> & { documentTypeId?: number };
+export type DocumentTypeCreateType = Omit<
+  DocumentTypeType,
+  'documentTypeId'
+> & { documentTypeId?: number };

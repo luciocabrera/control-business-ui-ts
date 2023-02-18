@@ -13,45 +13,61 @@ const CurrentMonthChart = () => {
 
   const primaryAxis = React.useMemo(
     (): AxisOptions<DataRowChart> => ({
-      getValue: (datum) => datum.date,
+      getValue: (datum) => datum.date
       // scaleType: 'band',
     }),
-    [],
+    []
   );
 
-  const amountAxes = React.useMemo<AxisOptions<typeof data.amounts[number]['data'][number]>[]>(
+  const amountAxes = React.useMemo<
+    AxisOptions<(typeof data.amounts)[number]['data'][number]>[]
+  >(
     () => [
       {
         getValue: (datum) => datum.value,
-        stacked: true,
+        stacked: true
         // scaleType: 'linear',
-      },
+      }
     ],
-    [],
+    []
   );
 
-  const invoicesAxes = React.useMemo<AxisOptions<typeof data.invoices[number]['data'][number]>[]>(
+  const invoicesAxes = React.useMemo<
+    AxisOptions<(typeof data.invoices)[number]['data'][number]>[]
+  >(
     () => [
       {
         getValue: (datum) => datum.value,
         elementType: 'area',
-        scaleType: 'linear',
-      },
+        scaleType: 'linear'
+      }
     ],
-    [],
+    []
   );
 
   if (isLoading) return <>Loading.................</>;
 
   return (
     <div className={styles['section-wrapper']}>
-      <div data-dashboard-role="table" data-parent="section-wrapper" className={styles['section-column']}>
-        <div data-parent="section-wrapper">
-          <ReadOnlyTable<InvoicesStats> data={data.data} columns={columns} showHeader={true} isLoading={isLoading} />
+      <div
+        data-dashboard-role='table'
+        data-parent='section-wrapper'
+        className={styles['section-column']}
+      >
+        <div data-parent='section-wrapper'>
+          <ReadOnlyTable<InvoicesStats>
+            data={data.data}
+            columns={columns}
+            showHeader={true}
+            isLoading={isLoading}
+          />
         </div>
       </div>
-      <div data-parent="section-wrapper" className={styles['section-column']}>
-        <div data-parent="section-wrapper" className={styles['card-chart-wrapper']}>
+      <div data-parent='section-wrapper' className={styles['section-column']}>
+        <div
+          data-parent='section-wrapper'
+          className={styles['card-chart-wrapper']}
+        >
           <CardChart
             title={'Amounts current month'}
             subtitle={'Sub total, Taxes and Total grouped by Day'}
@@ -60,7 +76,10 @@ const CurrentMonthChart = () => {
             secondaryAxes={amountAxes}
           />
         </div>
-        <div data-parent="section-wrapper" className={styles['card-chart-wrapper']}>
+        <div
+          data-parent='section-wrapper'
+          className={styles['card-chart-wrapper']}
+        >
           <CardChart
             title={'Invoices current month'}
             subtitle={'Nr of Invoices groped by Day'}

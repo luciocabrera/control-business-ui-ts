@@ -17,4 +17,7 @@ const ModalForm = memo(({ children }: ModalWrapperProps) => (
     {children}
   </FormWrapper>
 ));
+
+ModalForm.displayName = 'ModalForm';
+
 export default ModalForm;

@@ -10,4 +10,6 @@ export type OptionsType = {
   omitDefaultHeaders?: boolean;
 };
 
-export type APiResponseErrorType = { cause: { status: string | number; errors: string[] | string } };
+export type APiResponseErrorType = {
+  cause: { status: string | number; errors: string[] | string };
+};

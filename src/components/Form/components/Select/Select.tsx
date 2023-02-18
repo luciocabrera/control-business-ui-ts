@@ -1,13 +1,13 @@
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 // components
-import { FormFieldBase } from '../FormFieldBase'
+import { FormFieldBase } from '../FormFieldBase';
 // styles
 import { SelectStyled } from './styles';
 // types
 import type { SelectProps } from './types';
 
-const Select = memo(
-  forwardRef((props: SelectProps, ref: React.ForwardedRef<unknown>) => {
+const Select = forwardRef(
+  (props: SelectProps, ref: React.ForwardedRef<unknown>) => {
     const { accessor, options, value, label, onChange } = props;
 
     return (
@@ -26,18 +26,24 @@ const Select = memo(
             onChange?.(event);
           }}
         >
-          <option key="default-option" value="">
+          <option key='default-option' value=''>
             Choose {label}
           </option>
           {options?.map((option) => (
-            <option id={`item-${option.value}`} key={`item-${option.value}`} value={option.value}>
+            <option
+              id={`item-${option.value}`}
+              key={`item-${option.value}`}
+              value={option.value}
+            >
               {option.label}
             </option>
           ))}
         </SelectStyled>
       </FormFieldBase>
     );
-  }),
+  }
 );
+
+Select.displayName = 'Select';
 
 export default Select;

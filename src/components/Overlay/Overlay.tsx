@@ -7,6 +7,10 @@ type OverlayProps = {
   children?: ReactElement | ReactElement[];
 };
 
-const Overlay = memo(({ children }: OverlayProps) => <OverlayStyled>{children}</OverlayStyled>);
+const Overlay = memo(({ children }: OverlayProps) => (
+  <OverlayStyled>{children}</OverlayStyled>
+));
+
+Overlay.displayName = 'Overlay';
 
 export default Overlay;

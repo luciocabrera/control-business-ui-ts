@@ -1,12 +1,12 @@
 const routes = [
   {
     text: 'Customers',
-    path: 'customers',
+    path: 'customers'
   },
   {
     text: 'Invoices',
-    path: 'invoices',
-  },
+    path: 'invoices'
+  }
 ];
 
 export default routes;

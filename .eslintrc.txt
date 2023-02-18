@@ -1,0 +1,122 @@
+// {
+//   "root": true,
+//   // Specifying Parser
+//   "parser": "@typescript-eslint/parser",
+//   "parserOptions": {
+//     "ecmaFeatures": {
+//       "jsx": true
+//     },
+//     "ecmaVersion": "latest",
+//     "sourceType": "module",
+//     "tsconfigRootDir": ".",
+//     "project": ["./tsconfig.json"]
+//   },
+//   "plugins": ["react", "@typescript-eslint", "prettier"],
+//   "extends": [
+//     "eslint:recommended",
+//     "plugin:@typescript-eslint/eslint-recommended",
+//     "plugin:@typescript-eslint/recommended",
+//     "prettier",
+//     "react-app",
+//     "react-app/jest",
+//     // "airbnb/hooks",
+//     // "airbnb-typescript",
+//     "plugin:react/recommended",
+//     "plugin:react/jsx-runtime",
+//     "plugin:@typescript-eslint/recommended-requiring-type-checking",
+//     "plugin:prettier/recommended"
+//   ],
+//   // Resolve imports
+//   "settings": {
+//     "import/resolver": {
+//       "typescript": {
+//         "project": "./tsconfig.json"
+//       }
+//     },
+//     "react": {
+//       "version": "18.x"
+//     }
+//   },
+//   "rules": {
+//     "no-console": "error",
+//     "@typescript-eslint/no-explicit-any": "error",
+//     "@typescript-eslint/no-unused-vars": "error",
+//     // Disallow the `any` type.
+//     "@typescript-eslint/ban-types": [
+//       "error",
+//       {
+//         "extendDefaults": true,
+//         "types": {
+//           "{}": false
+//         }
+//       }
+//     ],
+//     "prettier/prettier": [
+//       "error",
+//       {
+//         "endOfLine": "auto"
+//       }
+//     ],
+//     // Enforce the use of the shorthand syntax.
+//     "object-shorthand": "error"
+//   }
+// }
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "plugin:react/jsx-runtime",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "import",
+    "jsx-a11y",
+    "react-hooks",
+    "prettier"
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+
+    "prettier/prettier": [
+      "warn", 
+      {
+        "endOfLine": "auto",
+        "singleQuote": true,
+        "tabWidth": 2,
+        // "parser": "flow"
+       
+      },
+      {
+        "fileInfoOptions": {
+          "withNodeModules": true
+        }
+      }
+    ]
+  }
+}
