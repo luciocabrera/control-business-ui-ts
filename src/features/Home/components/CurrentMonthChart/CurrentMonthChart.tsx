@@ -46,6 +46,49 @@ const CurrentMonthChart = memo(() => {
             showHeader={true}
             isLoading={isLoading}
           />
+
+        </div>
+        <div
+          data-parent='section-wrapper'
+          className={styles['card-chart-wrapper']}
+        >
+          <CardChart<InvoicesStats>
+            data={dataChart}
+            title={'Amounts current month'}
+            subtitle={'Sub total, Taxes and Total grouped by Day'}
+          >
+            <ComposedChart
+              width={500}
+              height={300}
+              data={dataChart}
+              margin={{
+                top: 20,
+                right: 30,
+                left: 20,
+                bottom: 5
+              }}
+            >
+              <CartesianGrid strokeDasharray='3 3' />
+              <XAxis dataKey='date' padding={{ left: 15, right: 15 }} />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar
+                dataKey='subtotalSum'
+                stackId='a'
+                fill='#8884d8'
+                name='Sub Total'
+              />
+              <Bar dataKey='taxesSum' stackId='a' fill='#82ca9d' name='Taxes' />
+              <Bar dataKey='totalSum' fill='#ffc658' name='Total' />
+              <Line
+                type='basis'
+                dataKey='totalAvg'
+                name='Total Avg'
+                stroke='#03542f'
+              />
+            </ComposedChart>
+          </CardChart>
         </div>
       </div>
 

@@ -34,17 +34,11 @@ export const useRefreshInvoices = () => {
   return useCallback(() => mutate(`${endpoints.invoices}`), [mutate]);
 };
 
-const getAxisValue = ({
-  type,
-  record
-}: {
-  type: string;
-  record: InvoicesStats;
-}) => {
-  if (type === 'daily_current_month')
+const getAxisValue = ({ record }: { record: InvoicesStats }) => {
+  if (record.type === 'daily_current_month')
     return new Date(record.date as unknown as string).toLocaleDateString();
-  if (type === 'yearly') return record.year?.toString() ?? '';
-  if (type === 'monthly') return record.period?.toString() ?? '';
+  if (record.type === 'yearly') return record.year?.toString() ?? '';
+  if (record.type === 'monthly') return record.period?.toString() ?? '';
 
   return '';
 };
@@ -54,7 +48,12 @@ export const useFetchInvoicesStatsNew = (type = 'daily_current_month') =>
     endpointUrl: `${endpoints.invoices}/stats/${type}`,
     transformData: (data: InvoicesStats[]) => {
       return data.map((stat) => {
-        const { date, ...rest } = stat;
+        const { type, ...rest } = stat;
+
+        const newRecord: InvoicesStats = stat;
+        if (type === 'daily_current_month') {
+          newRecord.date = getDateAsString(stat.date);
+        }
         return {
           date: getDateAsString(date),
           ...rest

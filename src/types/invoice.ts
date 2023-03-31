@@ -75,7 +75,7 @@ export type InvoiceCreateType = Omit<
   details: InvoiceDetailCreate[];
 };
 
-export type InvoicesStats = {
+export type StatsBase = {
   subtotalSum: number;
   totalSum: number;
   taxesSum: number;
@@ -90,9 +90,26 @@ export type InvoicesStats = {
   totalAvg: number;
   taxesAvg: number;
   invoicesCount: number;
-  date?: Date | string;
-  year?: number | string;
-  period?: string;
 };
+
+export type InvoicesStats = StatsBase &
+  (
+    | {
+        date?: Date | string;
+        type: 'daily_current_month';
+      }
+    | {
+        customer?: Date | string;
+        type: 'customers_current_month';
+      }
+    | {
+        year?: number | string;
+        type: 'yearly';
+      }
+    | {
+        period?: string;
+        type: 'monthly';
+      }
+  );
 
 export type DataRowChart = { date: string; value: number };
