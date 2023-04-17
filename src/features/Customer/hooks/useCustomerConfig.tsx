@@ -1,9 +1,7 @@
-// hooks
-import { useFetchDocumentTypes, useFetchTitles } from 'hooks';
-// react
 import { useMemo } from 'react';
-// types
+import { useFetchDocumentTypes, useFetchTitles } from 'hooks';
 import type { CustomerType } from 'types';
+
 import type { FormFieldType } from 'components/Form/components/FormField/types';
 
 export const useCustomerConfig = (customer?: CustomerType) => {
@@ -13,7 +11,7 @@ export const useCustomerConfig = (customer?: CustomerType) => {
     () =>
       titles?.map((title) => ({
         label: title.name,
-        value: title.titleId
+        value: title.titleId,
       })),
     [titles]
   );
@@ -22,7 +20,7 @@ export const useCustomerConfig = (customer?: CustomerType) => {
     () =>
       documentTypes?.map((documentType) => ({
         label: documentType.name,
-        value: documentType.documentTypeId
+        value: documentType.documentTypeId,
       })),
     [documentTypes]
   );
@@ -38,7 +36,7 @@ export const useCustomerConfig = (customer?: CustomerType) => {
             type: 'select',
             required: true,
             options: documentTypesOptions,
-            value: customer?.documentTypeId
+            value: customer?.documentTypeId,
           },
           {
             accessor: 'documentId',
@@ -50,15 +48,15 @@ export const useCustomerConfig = (customer?: CustomerType) => {
             rules: [
               {
                 type: 'minLength',
-                value: 4
+                value: 4,
               },
               {
                 type: 'maxLength',
-                value: 24
-              }
-            ]
-          }
-        ]
+                value: 24,
+              },
+            ],
+          },
+        ],
       },
       {
         type: 'row',
@@ -69,7 +67,7 @@ export const useCustomerConfig = (customer?: CustomerType) => {
             type: 'select',
             required: true,
             options: titlesOptions,
-            value: customer?.titleId
+            value: customer?.titleId,
           },
           {
             accessor: 'initials',
@@ -80,9 +78,9 @@ export const useCustomerConfig = (customer?: CustomerType) => {
             rules: [
               {
                 type: 'maxLength',
-                value: 10
-              }
-            ]
+                value: 10,
+              },
+            ],
           },
           {
             accessor: 'firstName',
@@ -93,9 +91,9 @@ export const useCustomerConfig = (customer?: CustomerType) => {
             rules: [
               {
                 type: 'maxLength',
-                value: 50
-              }
-            ]
+                value: 50,
+              },
+            ],
           },
           {
             accessor: 'lastName',
@@ -107,11 +105,11 @@ export const useCustomerConfig = (customer?: CustomerType) => {
             rules: [
               {
                 type: 'maxLength',
-                value: 50
-              }
-            ]
-          }
-        ]
+                value: 50,
+              },
+            ],
+          },
+        ],
       },
       {
         type: 'row',
@@ -124,9 +122,9 @@ export const useCustomerConfig = (customer?: CustomerType) => {
             rules: [
               {
                 type: 'maxLength',
-                value: 16
-              }
-            ]
+                value: 16,
+              },
+            ],
           },
           {
             accessor: 'email',
@@ -136,11 +134,11 @@ export const useCustomerConfig = (customer?: CustomerType) => {
             rules: [
               {
                 type: 'maxLength',
-                value: 120
-              }
-            ]
-          }
-        ]
+                value: 120,
+              },
+            ],
+          },
+        ],
       },
       {
         label: 'Address',
@@ -159,9 +157,9 @@ export const useCustomerConfig = (customer?: CustomerType) => {
                 rules: [
                   {
                     type: 'maxLength',
-                    value: 50
-                  }
-                ]
+                    value: 50,
+                  },
+                ],
               },
               {
                 accessor: 'line2',
@@ -172,11 +170,11 @@ export const useCustomerConfig = (customer?: CustomerType) => {
                 rules: [
                   {
                     type: 'maxLength',
-                    value: 50
-                  }
-                ]
-              }
-            ]
+                    value: 50,
+                  },
+                ],
+              },
+            ],
           },
           {
             type: 'row',
@@ -190,9 +188,9 @@ export const useCustomerConfig = (customer?: CustomerType) => {
                 rules: [
                   {
                     type: 'maxLength',
-                    value: 50
-                  }
-                ]
+                    value: 50,
+                  },
+                ],
               },
               {
                 accessor: 'region',
@@ -203,11 +201,11 @@ export const useCustomerConfig = (customer?: CustomerType) => {
                 rules: [
                   {
                     type: 'maxLength',
-                    value: 50
-                  }
-                ]
-              }
-            ]
+                    value: 50,
+                  },
+                ],
+              },
+            ],
           },
           {
             type: 'row',
@@ -221,9 +219,9 @@ export const useCustomerConfig = (customer?: CustomerType) => {
                 rules: [
                   {
                     type: 'maxLength',
-                    value: 50
-                  }
-                ]
+                    value: 50,
+                  },
+                ],
               },
               {
                 accessor: 'postalCode',
@@ -236,14 +234,14 @@ export const useCustomerConfig = (customer?: CustomerType) => {
                 rules: [
                   {
                     type: 'maxLength',
-                    value: 16
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
+                    value: 16,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
     ],
     [
       customer?.defaultAddress.city,
@@ -261,7 +259,7 @@ export const useCustomerConfig = (customer?: CustomerType) => {
       customer?.lastName,
       customer?.titleId,
       documentTypesOptions,
-      titlesOptions
+      titlesOptions,
     ]
   );
 

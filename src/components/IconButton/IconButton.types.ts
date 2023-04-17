@@ -2,7 +2,7 @@ import type {
   ButtonHTMLAttributes,
   MouseEvent,
   MouseEventHandler,
-  ReactElement
+  ReactElement,
 } from 'types';
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {

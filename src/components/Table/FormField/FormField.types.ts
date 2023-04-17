@@ -1,6 +1,6 @@
 import type {
   FieldBaseValueType,
-  FormFieldBaseType
+  FormFieldBaseType,
 } from 'components/Form/components/FormField/types';
 
 export type FormFieldProps = {

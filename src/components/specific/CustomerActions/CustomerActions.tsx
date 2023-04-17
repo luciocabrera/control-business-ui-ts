@@ -1,19 +1,20 @@
 // components
-import { Button } from 'components/Form/components/Button';
+// react
+import { memo, useCallback } from 'react';
 // contexts
 import { useAddNotification, useAddToast } from 'contexts';
 // hooks
 import {
   useDeleteCustomer,
-  useRefreshCustomers,
-  useParams,
   useLocation,
-  useNavigate
+  useNavigate,
+  useParams,
+  useRefreshCustomers,
 } from 'hooks';
-// react
-import { memo, useCallback } from 'react';
 // types
 import type { CustomerType, MouseEvent } from 'types';
+
+import { Button } from 'components/Form/components/Button';
 
 type CustomerActionsProps = {
   customer?: CustomerType;
@@ -69,7 +70,7 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
     refreshCustomers,
     location.pathname,
     navigate,
-    addToast
+    addToast,
   ]);
 
   const onDelete = useCallback(() => {
@@ -102,15 +103,26 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
   return (
     <>
       {!isCreating && !isEditing && (
-        <Button id='customer-actions-button-edit' onClick={onEdit}>
+        <Button
+          id='customer-actions-button-edit'
+          onClick={onEdit}
+        >
           Edit
         </Button>
       )}
-      <Button id='customer-actions-button-cancel' inverse onClick={onCancel}>
+      <Button
+        id='customer-actions-button-cancel'
+        inverse
+        onClick={onCancel}
+      >
         Cancel
       </Button>
       {!isCreating && (
-        <Button id='customer-actions-button-delete' onClick={onDelete} warning>
+        <Button
+          id='customer-actions-button-delete'
+          onClick={onDelete}
+          warning
+        >
           Delete
         </Button>
       )}

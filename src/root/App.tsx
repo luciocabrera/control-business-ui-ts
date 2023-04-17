@@ -1,11 +1,8 @@
-// components
-import { Routes, Route, FallBack, Layout } from 'components';
-// contexts
-import { NotificationsContextProvider, ToastsContextProvider } from 'contexts';
-// hooks
-import { useLocation } from 'hooks';
-// react
 import { lazy, Suspense } from 'react';
+import { NotificationsContextProvider, ToastsContextProvider } from 'contexts';
+import { useLocation } from 'hooks';
+
+import { FallBack, Layout, Route, Routes } from 'components';
 
 // lazy loaded
 const Customers = lazy(
@@ -50,7 +47,10 @@ const App = () => {
     <ToastsContextProvider>
       <NotificationsContextProvider>
         <Routes location={state?.backgroundLocation || location}>
-          <Route path='/' element={<Layout />}>
+          <Route
+            path='/'
+            element={<Layout />}
+          >
             <Route
               index
               element={
@@ -127,7 +127,10 @@ const App = () => {
               />
             </Route>
 
-            <Route path='*' element={<div>No Match</div>} />
+            <Route
+              path='*'
+              element={<div>No Match</div>}
+            />
           </Route>
         </Routes>
         {state?.backgroundLocation && (

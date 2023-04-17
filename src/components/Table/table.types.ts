@@ -1,6 +1,6 @@
+import type { RefObject } from 'react';
 import type { ColumnDef, Row } from '@tanstack/react-table';
 import type { ValidDataHookResponse } from 'hooks';
-import type { RefObject } from 'react';
 import type { ReactElement } from 'types';
 
 export type MetaType = {

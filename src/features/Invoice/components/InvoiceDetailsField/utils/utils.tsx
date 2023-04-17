@@ -1,32 +1,42 @@
+import type { CellContext,InvoicesDetails } from 'types';
+
 import { DateDisplay, NumberDisplay } from 'components';
-import type { InvoicesDetails, CellContext } from 'types';
 
 export const getDateCell = ({
   row: {
-    original: { date }
-  }
+    original: { date },
+  },
 }: CellContext<InvoicesDetails, unknown>) => <DateDisplay date={date} />;
 
 export const getQuantityCell = ({
   row: {
-    original: { quantity }
-  }
+    original: { quantity },
+  },
 }: CellContext<InvoicesDetails, unknown>) => (
-  <NumberDisplay value={quantity} output={'number'} />
+  <NumberDisplay
+    value={quantity}
+    output={'number'}
+  />
 );
 
 export const getPriceUnitCell = ({
   row: {
-    original: { priceUnit }
-  }
+    original: { priceUnit },
+  },
 }: CellContext<InvoicesDetails, unknown>) => (
-  <NumberDisplay value={priceUnit} output={'currency'} />
+  <NumberDisplay
+    value={priceUnit}
+    output={'currency'}
+  />
 );
 
 export const getPriceQuantityCell = ({
   row: {
-    original: { priceQuantity }
-  }
+    original: { priceQuantity },
+  },
 }: CellContext<InvoicesDetails, unknown>) => (
-  <NumberDisplay value={priceQuantity} output={'currency'} />
+  <NumberDisplay
+    value={priceQuantity}
+    output={'currency'}
+  />
 );

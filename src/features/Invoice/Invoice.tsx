@@ -1,32 +1,34 @@
 // components
-import { PageSpinner, InvoiceActions, ErrorDisplay } from 'components';
-import Form from 'components/Form/Form/Form';
-import { FormContextProvider } from 'components/Form/contexts';
+// react
+import { useCallback, useMemo } from 'react';
 // contexts
 import { useAddNotification, useAddToast } from 'contexts';
 // hooks
 import {
-  useParams,
-  useNavigate,
-  useRefreshInvoice,
   useFetchInvoice,
+  useFetchInvoiceRates,
+  useNavigate,
+  useParams,
   usePostInvoice,
+  useRefreshInvoice,
   useRefreshInvoices,
-  useFetchInvoiceRates
 } from 'hooks';
-import { useInvoiceConfig } from './hooks';
 // icons
 import { InvoiceIcon } from 'icons';
-// react
-import { useCallback, useMemo } from 'react';
 // types
 import type {
-  InvoiceFormType,
-  InvoiceCreateType,
   APiResponseErrorType,
+  InvoiceCreateType,
+  InvoiceDetailCreate,
+  InvoiceFormType,
   InvoicesDetails,
-  InvoiceDetailCreate
 } from 'types';
+
+import { ErrorDisplay,InvoiceActions, PageSpinner } from 'components';
+import { FormContextProvider } from 'components/Form/contexts';
+import Form from 'components/Form/Form/Form';
+
+import { useInvoiceConfig } from './hooks';
 
 const Invoice = () => {
   const { invoiceId, action } = useParams();
@@ -51,7 +53,7 @@ const Invoice = () => {
       subtotal: 0,
       total: 0,
       taxes: 0,
-      taxesPercentage
+      taxesPercentage,
     };
   }, [invoice, isCopying, taxesPercentage]);
 
@@ -75,7 +77,7 @@ const Invoice = () => {
         description,
         quantity,
         priceUnit,
-        priceQuantity
+        priceQuantity,
       }) => ({
         date: date ? new Date(date) : new Date(),
         description,
@@ -83,7 +85,7 @@ const Invoice = () => {
         priceUnit,
         priceQuantity,
         productId:
-          typeof productId === 'string' ? parseInt(productId, 10) : productId
+          typeof productId === 'string' ? parseInt(productId, 10) : productId,
       })
     );
 
@@ -101,7 +103,7 @@ const Invoice = () => {
             ? parseInt(customerId, 10)
             : customerId,
         details: sanitizeInvoiceDetails(details),
-        ...rest
+        ...rest,
       };
 
       if (isCreating || isCopying) {
@@ -140,7 +142,7 @@ const Invoice = () => {
       navigate,
       postInvoice,
       refreshInvoice,
-      refreshInvoices
+      refreshInvoices,
     ]
   );
 

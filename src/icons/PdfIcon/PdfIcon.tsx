@@ -1,5 +1,8 @@
 const PdfIcon = () => (
-  <span role='img' aria-label='pdf'>
+  <span
+    role='img'
+    aria-label='pdf'
+  >
     <svg
       stroke='currentColor'
       fill='currentColor'

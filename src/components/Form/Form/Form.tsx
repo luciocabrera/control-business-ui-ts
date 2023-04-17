@@ -1,9 +1,12 @@
 // components
-import { Header } from 'components';
-import FormFields from '../components/FormFields/FormFields';
-import Actions from '../components/Actions/Actions';
 // react
 import { memo } from 'react';
+
+import { Header } from 'components';
+
+import Actions from '../components/Actions/Actions';
+import FormFields from '../components/FormFields/FormFields';
+
 // styles
 import { FormStyled } from './styles';
 // types
@@ -18,18 +21,34 @@ const Form = <TData extends Record<string, unknown>>({
   onAccept,
   onFinish,
   width,
-  height
+  height,
 }: FormProps<TData>) => (
-  <FormStyled noValidate width={width} height={height}>
-    <Header icon={icon} title={title} onClose={onFinish} />
+  <FormStyled
+    noValidate
+    width={width}
+    height={height}
+  >
+    <Header
+      icon={icon}
+      title={title}
+      onClose={onFinish}
+    />
     <main>
       <>
-        <FormFields groupId={''} viewMode={viewMode} />
+        <FormFields
+          groupId={''}
+          viewMode={viewMode}
+        />
         {children}
       </>
     </main>
     <footer>
-      {onAccept && <Actions<TData> onAccept={onAccept} onFinish={onFinish} />}
+      {onAccept && (
+        <Actions<TData>
+          onAccept={onAccept}
+          onFinish={onFinish}
+        />
+      )}
       {actions}
     </footer>
   </FormStyled>

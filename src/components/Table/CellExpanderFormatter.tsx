@@ -1,10 +1,9 @@
-import styled from 'styled-components';
-
 import {
-  useRef,
   useEffect,
-  useLayoutEffect as useOriginalLayoutEffect
+  useLayoutEffect as useOriginalLayoutEffect,
+  useRef,
 } from 'react';
+import styled from 'styled-components';
 
 // Silence silly warning
 // https://reactjs.org/link/uselayouteffect-ssr
@@ -21,7 +20,7 @@ export function useFocusRef<T extends HTMLOrSVGElement>(isSelected: boolean) {
 
   return {
     ref,
-    tabIndex: isSelected ? 0 : -1
+    tabIndex: isSelected ? 0 : -1,
   };
 }
 
@@ -47,7 +46,7 @@ type CellExpanderFormatterProps = {
 export function CellExpanderFormatter({
   isCellSelected,
   expanded,
-  onCellExpand
+  onCellExpand,
 }: CellExpanderFormatterProps) {
   const { ref, tabIndex } = useFocusRef<HTMLSpanElement>(isCellSelected);
 
@@ -60,8 +59,14 @@ export function CellExpanderFormatter({
 
   return (
     <CellExpander>
-      <span onClick={onCellExpand} onKeyDown={handleKeyDown}>
-        <span ref={ref} tabIndex={tabIndex}>
+      <span
+        onClick={onCellExpand}
+        onKeyDown={handleKeyDown}
+      >
+        <span
+          ref={ref}
+          tabIndex={tabIndex}
+        >
           {expanded ? '\u25BC' : '\u25B6'}
         </span>
       </span>

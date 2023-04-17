@@ -1,7 +1,8 @@
 // react
 import { useMemo } from 'react';
 // types
-import type { CustomerType, ColumnDef, ColumnMetaState } from 'types';
+import type { ColumnDef, ColumnMetaState,CustomerType } from 'types';
+
 // utilities
 import { getActionsCell } from '../utilities';
 
@@ -16,14 +17,14 @@ export const useCustomersConfig = () => {
       {
         accessorKey: 'defaultPhone',
         header: 'Phone Number',
-        accessorFn: (row) => row.defaultPhone?.phone ?? ''
+        accessorFn: (row) => row.defaultPhone?.phone ?? '',
       },
       {
         id: 'actions',
         enableResizing: false,
         maxSize: 34,
-        cell: getActionsCell
-      }
+        cell: getActionsCell,
+      },
     ],
     []
   );
@@ -33,7 +34,7 @@ export const useCustomersConfig = () => {
       { id: 'documentId', name: 'ID' },
       { id: 'initials', name: 'Initials' },
       { id: 'firstName', name: 'First Name' },
-      { id: 'lastName', name: 'Last Name' }
+      { id: 'lastName', name: 'Last Name' },
     ],
     []
   );

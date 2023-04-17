@@ -1,4 +1,4 @@
-import type { ReactElement, ModalProps, MouseEvent, ReactNode } from 'types';
+import type { ModalProps, MouseEvent, ReactElement, ReactNode } from 'types';
 
 export type FormBaseProps<TData> = {
   width?: string;

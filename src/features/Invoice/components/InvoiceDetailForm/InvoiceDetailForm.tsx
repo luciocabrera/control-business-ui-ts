@@ -1,21 +1,23 @@
 // assets
+// react
+import { memo, useCallback } from 'react';
 import { detailsViewImg } from 'assets';
-// components
-import { PageSpinner } from 'components';
-import Form from 'components/Form/Form/Form';
-import { Button } from 'components/Form/components/Button';
 // contexts
 import { FormContextProvider } from 'contexts';
 // hooks
-import { useParams, useFetchProducts } from 'hooks';
-import useInvoiceDetailFormConfig from './hooks/useInvoiceDetailFormConfig';
-// react
-import { memo, useCallback } from 'react';
+import { useFetchProducts,useParams } from 'hooks';
 // types
 import type {
   InvoiceDetailForm as InvoiceDetailFormType,
-  ProductType
+  ProductType,
 } from 'types';
+
+// components
+import { PageSpinner } from 'components';
+import { Button } from 'components/Form/components/Button';
+import Form from 'components/Form/Form/Form';
+
+import useInvoiceDetailFormConfig from './hooks/useInvoiceDetailFormConfig';
 import type { InvoiceDetailFormProps } from './InvoiceDetailForm.types';
 
 const InvoiceDetailForm = memo(
@@ -42,8 +44,8 @@ const InvoiceDetailForm = memo(
           ...{
             productNameWithCode: selectedProduct?.nameWithCode ?? '',
             productDescription: selectedProduct?.description ?? '',
-            productPrice: selectedProduct?.price ?? 0
-          }
+            productPrice: selectedProduct?.price ?? 0,
+          },
         });
       },
       [onAcceptDetail, products]

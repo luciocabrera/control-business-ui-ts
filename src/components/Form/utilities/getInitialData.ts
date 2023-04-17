@@ -2,7 +2,7 @@
 import type {
   FormFieldBaseType,
   FormFieldGroupType,
-  FormFieldType
+  FormFieldType,
 } from '../components/FormField/types';
 
 export const getInitialData = <T extends Record<string, unknown>>(
@@ -17,7 +17,7 @@ export const getInitialData = <T extends Record<string, unknown>>(
         ...getInitialData(
           (field as FormFieldGroupType).fields || [],
           initialData
-        )
+        ),
       };
     } else {
       const newField = field as FormFieldBaseType;

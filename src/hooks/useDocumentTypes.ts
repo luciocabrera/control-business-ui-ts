@@ -1,28 +1,30 @@
 // configs
-import { endpoints } from '../configs/configs';
-// hooks
-import {
-  useApiData,
-  useApiDataList,
-  useApiRefreshData,
-  useApiRequest
-} from './useApi';
+// react
+import { useCallback } from 'react';
 // types
 import type {
   ApiResponse,
   DocumentTypeCreateType,
   DocumentTypeType,
-  OptionsType
+  OptionsType,
 } from 'types';
-// react
-import { useCallback } from 'react';
+
+import { endpoints } from '../configs/configs';
+
+// hooks
+import {
+  useApiData,
+  useApiDataList,
+  useApiRefreshData,
+  useApiRequest,
+} from './useApi';
 // utilities
 
 type IdType = string | number;
 
 export const useFetchDocumentTypes = () =>
   useApiDataList<DocumentTypeType[]>({
-    endpointUrl: endpoints.documentTypes
+    endpointUrl: endpoints.documentTypes,
   });
 
 export const useRefreshDocumentTypes = () => {
@@ -35,7 +37,7 @@ export const useFetchDocumentType = (documentTypeId: IdType) =>
   useApiData<DocumentTypeType>({
     endpointUrl: documentTypeId
       ? `${endpoints.documentTypes}/${documentTypeId}`
-      : undefined
+      : undefined,
   });
 
 export const useRefreshDocumentType = (documentTypeId: IdType) => {
@@ -55,7 +57,7 @@ export const usePostDocumentType = () => {
     ): Promise<ApiResponse<DocumentTypeType>> => {
       const requestOptions: OptionsType = {
         method: documentType.documentTypeId ? 'POST' : 'PATCH',
-        body: JSON.stringify(DocumentType)
+        body: JSON.stringify(DocumentType),
       };
       const url = documentType.documentTypeId
         ? endpoints.documentTypes

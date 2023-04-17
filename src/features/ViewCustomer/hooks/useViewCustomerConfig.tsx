@@ -2,6 +2,7 @@
 import { useMemo } from 'react';
 // types
 import type { CustomerType } from 'types';
+
 import type { FormFieldType } from 'components/Form/components/FormField/types';
 
 export const useViewCustomerConfig = (customer?: CustomerType) => {
@@ -15,16 +16,16 @@ export const useViewCustomerConfig = (customer?: CustomerType) => {
             label: 'Id Type',
             type: 'text',
             value: customer?.documentTypeName,
-            readonly: true
+            readonly: true,
           },
           {
             accessor: 'documentId',
             label: 'ID',
             type: 'text',
             value: customer?.documentId,
-            readonly: true
-          }
-        ]
+            readonly: true,
+          },
+        ],
       },
       {
         type: 'row',
@@ -34,30 +35,30 @@ export const useViewCustomerConfig = (customer?: CustomerType) => {
             label: 'Title',
             type: 'text',
             value: customer?.titleName,
-            readonly: true
+            readonly: true,
           },
           {
             accessor: 'initials',
             label: 'Initials',
             type: 'text',
             value: customer?.initials,
-            readonly: true
+            readonly: true,
           },
           {
             accessor: 'firstName',
             label: 'First Name',
             type: 'text',
             value: customer?.firstName,
-            readonly: true
+            readonly: true,
           },
           {
             accessor: 'lastName',
             label: 'Last Name',
             type: 'text',
             value: customer?.lastName,
-            readonly: true
-          }
-        ]
+            readonly: true,
+          },
+        ],
       },
       {
         type: 'row',
@@ -67,16 +68,16 @@ export const useViewCustomerConfig = (customer?: CustomerType) => {
             label: 'Phone Number',
             type: 'text',
             value: customer?.defaultPhone?.phone,
-            readonly: true
+            readonly: true,
           },
           {
             accessor: 'email',
             label: 'Email',
             type: 'text',
             value: customer?.defaultEmail?.email,
-            readonly: true
-          }
-        ]
+            readonly: true,
+          },
+        ],
       },
       {
         label: 'Address',
@@ -90,16 +91,16 @@ export const useViewCustomerConfig = (customer?: CustomerType) => {
                 label: 'Line 1',
                 type: 'text',
                 value: customer?.defaultAddress.line1,
-                readonly: true
+                readonly: true,
               },
               {
                 accessor: 'line2',
                 label: 'Line 2',
                 type: 'text',
                 value: customer?.defaultAddress.line2,
-                readonly: true
-              }
-            ]
+                readonly: true,
+              },
+            ],
           },
           {
             type: 'row',
@@ -109,16 +110,16 @@ export const useViewCustomerConfig = (customer?: CustomerType) => {
                 label: 'Country',
                 type: 'text',
                 value: customer?.defaultAddress.country,
-                readonly: true
+                readonly: true,
               },
               {
                 accessor: 'state',
                 label: 'State / Province',
                 type: 'text',
                 value: customer?.defaultAddress.region,
-                readonly: true
-              }
-            ]
+                readonly: true,
+              },
+            ],
           },
           {
             type: 'row',
@@ -128,19 +129,19 @@ export const useViewCustomerConfig = (customer?: CustomerType) => {
                 label: 'City / Town',
                 type: 'text',
                 value: customer?.defaultAddress.city,
-                readonly: true
+                readonly: true,
               },
               {
                 accessor: 'postalCode',
                 label: 'ZIP / Postal code',
                 type: 'text',
                 value: customer?.defaultAddress.postalCode,
-                readonly: true
-              }
-            ]
-          }
-        ]
-      }
+                readonly: true,
+              },
+            ],
+          },
+        ],
+      },
     ],
     [
       customer?.defaultAddress.city,
@@ -156,7 +157,7 @@ export const useViewCustomerConfig = (customer?: CustomerType) => {
       customer?.firstName,
       customer?.initials,
       customer?.lastName,
-      customer?.titleName
+      customer?.titleName,
     ]
   );
 

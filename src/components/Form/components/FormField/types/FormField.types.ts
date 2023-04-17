@@ -19,7 +19,7 @@ export enum FIELD_TO_RENDER_ENUM {
   'tagsField' = 'tagsField',
   'jsonField' = 'jsonField',
   'passwordField' = 'passwordField',
-  'passwordCheckerField' = 'passwordCheckerField'
+  'passwordCheckerField' = 'passwordCheckerField',
 }
 
 type FieldNumberTuple = typeof FIELD_TYPE_NUMBERS;

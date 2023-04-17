@@ -1,7 +1,8 @@
 // Styles
-import { SpinnerStyled } from './Spinner.styled';
 // react
 import { memo } from 'react';
+
+import { SpinnerStyled } from './Spinner.styled';
 
 type SpinnerProps = {
   size?: 'md' | 'lg' | 'sm';

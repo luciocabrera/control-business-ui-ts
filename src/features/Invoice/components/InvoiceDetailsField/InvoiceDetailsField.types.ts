@@ -1,5 +1,6 @@
-import type { FormFieldBaseType } from 'components/Form/components/FormField/types';
 import type { InvoicesDetails } from 'types';
+
+import type { FormFieldBaseType } from 'components/Form/components/FormField/types';
 
 export type InvoiceDetailsFieldProps = Omit<
   FormFieldBaseType,

@@ -1,27 +1,25 @@
-// configs
+import { useCallback } from 'react';
+
 import { endpoints } from '../configs/configs';
-// hooks
-import {
-  useApiData,
-  useApiDataList,
-  useApiRefreshData,
-  useApiRequest
-} from './useApi';
-// types
 import type {
   ApiResponse,
   CustomerCreateType,
   CustomerType,
-  OptionsType
+  OptionsType,
 } from '../types';
-// react
-import { useCallback } from 'react';
+
+import {
+  useApiData,
+  useApiDataList,
+  useApiRefreshData,
+  useApiRequest,
+} from './useApi';
 
 type IdType = string | number | undefined | null;
 
 export const useFetchCustomers = () =>
   useApiDataList<CustomerType[]>({
-    endpointUrl: endpoints.customers
+    endpointUrl: endpoints.customers,
   });
 
 export const useRefreshCustomers = () => {
@@ -32,7 +30,9 @@ export const useRefreshCustomers = () => {
 
 export const useFetchCustomer = (customerId: IdType) =>
   useApiData<CustomerType>({
-    endpointUrl: customerId ? `${endpoints.customers}/${customerId}` : undefined
+    endpointUrl: customerId
+      ? `${endpoints.customers}/${customerId}`
+      : undefined,
   });
 
 export const useRefreshCustomer = () => {
@@ -53,7 +53,7 @@ export const usePostCustomer = () => {
       const { customerId, ...rest } = customer;
       const requestOptions: OptionsType = {
         method: customerId ? 'PUT' : 'POST',
-        body: JSON.stringify(rest)
+        body: JSON.stringify(rest),
       };
       const url = customerId
         ? `${endpoints.customers}/${customerId ?? ''}`
@@ -70,7 +70,7 @@ export const useDeleteCustomer = () => {
   return useCallback(
     async (customerId: IdType): Promise<ApiResponse<unknown>> => {
       const requestOptions: OptionsType = {
-        method: 'DELETE'
+        method: 'DELETE',
       };
       return apiRequest(`${endpoints.customers}/${customerId}`, requestOptions);
     },

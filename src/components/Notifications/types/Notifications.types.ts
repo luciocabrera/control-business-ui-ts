@@ -1,4 +1,4 @@
-import type { ReactNode, MouseEventHandler } from 'react';
+import type { MouseEventHandler,ReactNode } from 'react';
 
 export type TNotification = {
   id: number;

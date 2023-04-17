@@ -34,7 +34,7 @@ export const getDateAsString = (
 export const isDateBetween = ({
   dateToCheck,
   from,
-  to
+  to,
 }: {
   dateToCheck: string | Date;
   from: Date;

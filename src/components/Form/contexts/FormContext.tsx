@@ -1,22 +1,24 @@
 // components
-import { Overlay } from 'components';
-import { FormFieldType } from '../components/FormField/types';
-// hooks
-import { useStore, type TStoreReturn } from '../../../hooks/useStore';
 // react
 import {
   createContext,
-  useContext,
   useCallback,
-  useSyncExternalStore,
-  useState,
+  useContext,
+  useEffect,
   useMemo,
-  useEffect
+  useState,
+  useSyncExternalStore,
 } from 'react';
 // styles
 import { FormWrapper } from 'styles';
 // types
 import type { ReactElement } from 'types';
+
+import { Overlay } from 'components';
+
+// hooks
+import { type TStoreReturn,useStore } from '../../../hooks/useStore';
+import { FormFieldType } from '../components/FormField/types';
 // utilities
 import { getInitialData } from '../utilities';
 
@@ -35,18 +37,18 @@ type FormContextProviderType<TDataType extends Record<string, unknown>> = {
 const initialData = {
   get: () => undefined,
   set: () => undefined,
-  subscribe: (callback: () => void) => callback
+  subscribe: (callback: () => void) => callback,
 };
 
 const initialMetaData = {
   formMetaData: {
     submittedCounter: 0,
     initialData: undefined,
-    initialFields: []
+    initialFields: [],
   },
   handleSetFormMetaData: () => {
     /* placeholder function */
-  }
+  },
 };
 
 type MetaDataReturnType = {
@@ -61,7 +63,7 @@ export const FormContext = createContext<{
   metaData: MetaDataReturnType;
 }>({
   data: initialData,
-  metaData: initialMetaData
+  metaData: initialMetaData,
 });
 
 type UsesStore<SelectorOutput, TDataType> = [
@@ -113,12 +115,12 @@ export const useFormMetaContext = <
 export const FormContextProvider = <TDataType extends Record<string, unknown>>({
   children,
   initialData,
-  initialFields
+  initialFields,
 }: FormContextProviderType<TDataType>) => {
   const [formMetaData, setFormMetaData] = useState<FormMetaType<TDataType>>({
     submittedCounter: 0,
     initialData: {} as TDataType,
-    initialFields: []
+    initialFields: [],
   });
   const initialFormData = useMemo(
     () => getInitialData<TDataType>(initialFields, initialData),

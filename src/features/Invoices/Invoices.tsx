@@ -1,15 +1,17 @@
 // components
-import { Link, Outlet } from 'components';
-import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
 // contexts
 import { TableContextProvider } from 'contexts';
 // hooks
 import { useFetchInvoices, useLocation } from 'hooks';
-import { useInvoicesConfig } from './hooks';
 // icons
 import { NewIcon } from 'icons';
 // types
 import type { InvoiceType } from 'types';
+
+import { Link, Outlet } from 'components';
+import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
+
+import { useInvoicesConfig } from './hooks';
 
 const title = 'Invoices';
 

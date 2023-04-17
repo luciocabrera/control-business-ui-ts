@@ -1,5 +1,6 @@
 // utilities
 import { getFormattedNumber, memo } from 'utilities';
+
 import { NumberDisplayStyled } from './NumberDisplay.styles';
 
 type NumberDisplayProps = {

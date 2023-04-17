@@ -1,6 +1,6 @@
 import type {
   FormFieldBaseType,
-  FormFieldErrorType
+  FormFieldErrorType,
 } from '../components/FormField/types';
 
 export const validateFieldRules = <T>(field: FormFieldBaseType, data: T) => {
@@ -52,7 +52,7 @@ export const validateFieldRules = <T>(field: FormFieldBaseType, data: T) => {
         accessor: field.accessor,
         hasErrors: hasErrors,
         errorMessage: errorMessage,
-        value: fieldValue
+        value: fieldValue,
       });
   });
 

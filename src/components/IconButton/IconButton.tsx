@@ -1,9 +1,10 @@
 // styles
+// react
+import { memo } from 'react';
+
 import { ButtonStyled } from './IconButton.styled';
 // types
 import { ButtonProps } from './IconButton.types';
-// react
-import { memo } from 'react';
 
 export const IconButton = memo(
   ({ onClick, icon, disabled = false, id, title = 'button' }: ButtonProps) => (

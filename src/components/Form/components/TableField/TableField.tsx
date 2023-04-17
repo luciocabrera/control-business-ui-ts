@@ -1,16 +1,18 @@
 //assets
+// react
+import { useCallback, useMemo, useState } from 'react';
 import { detailsViewImg } from 'assets';
-// components
-import { Portal, ReadOnlyTable } from 'components';
 // contexts
 import { useFieldsContext } from 'contexts';
-// react
-import { useMemo, useCallback, useState } from 'react';
 // styles
-
 // types
 import type { CellContext, ColumnDef } from 'types';
+
+// components
+import { Portal, ReadOnlyTable } from 'components';
+
 import { FieldGroupStyled } from '../FormFields/styles';
+
 import type { TableFieldProps } from './types';
 
 const TableField = <TData extends Record<string, unknown>, DetailData>({
@@ -20,7 +22,7 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
   accessor,
   label,
   readonly,
-  renderDetail
+  renderDetail,
 }: TableFieldProps<TData, DetailData>) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [fieldValue, setStore] = useFieldsContext<
@@ -42,7 +44,7 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
   const onAcceptDetail = useCallback(
     (detail: DetailData) => {
       const newDetails = [
-        ...new Set([...data, detail as Record<string, unknown>])
+        ...new Set([...data, detail as Record<string, unknown>]),
       ];
       setStore({ [accessor]: newDetails });
     },
@@ -68,7 +70,7 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
       calculatedColumns.push({
         accessorKey: 'actions',
         header: '',
-        cell: getActionsCell
+        cell: getActionsCell,
       });
 
     return calculatedColumns;
@@ -78,7 +80,10 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
     <>
       {label}
       {readonly && (
-        <button type='button' onClick={() => setShowDetailForm(true)}>
+        <button
+          type='button'
+          onClick={() => setShowDetailForm(true)}
+        >
           Add
         </button>
       )}

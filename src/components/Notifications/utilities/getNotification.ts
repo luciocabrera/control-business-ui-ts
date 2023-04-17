@@ -1,7 +1,8 @@
 // assets
-import { checkImg, errorImg, infoImg, warningImg } from 'assets';
 // types
 import type { MouseEventHandler, ReactNode } from 'react';
+import { checkImg, errorImg, infoImg, warningImg } from 'assets';
+
 import type { TNotification, TNotificationType } from '../types';
 
 export const getNotification = (
@@ -25,7 +26,7 @@ export const getNotification = (
         icon: checkImg,
         onClose,
         onAccept,
-        isConfirmation
+        isConfirmation,
       };
       break;
     case 'danger':
@@ -38,7 +39,7 @@ export const getNotification = (
         icon: errorImg,
         onClose,
         onAccept,
-        isConfirmation
+        isConfirmation,
       };
       break;
     case 'info':
@@ -50,7 +51,7 @@ export const getNotification = (
         icon: infoImg,
         onClose,
         onAccept,
-        isConfirmation
+        isConfirmation,
       };
       break;
     case 'warning':
@@ -62,7 +63,7 @@ export const getNotification = (
         icon: warningImg,
         onClose,
         onAccept,
-        isConfirmation
+        isConfirmation,
       };
       break;
     default:
@@ -73,7 +74,7 @@ export const getNotification = (
         backgroundColor: '#5bc0de',
         onClose,
         onAccept,
-        isConfirmation
+        isConfirmation,
       };
       break;
   }

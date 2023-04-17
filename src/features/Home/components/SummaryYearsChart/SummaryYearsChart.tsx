@@ -1,8 +1,10 @@
-import CardChart from 'components/CardChart/CardChart';
-import { useFetchInvoicesStats } from 'hooks';
 import React from 'react';
 import type { AxisOptions } from 'react-charts';
+import { useFetchInvoicesStats } from 'hooks';
 import type { DataRowChart } from 'types';
+
+import CardChart from 'components/CardChart/CardChart';
+
 import styles from './SummaryYearsChart.module.css';
 
 const SummaryYearsChart = () => {
@@ -11,7 +13,7 @@ const SummaryYearsChart = () => {
   const primaryAxis = React.useMemo(
     (): AxisOptions<DataRowChart> => ({
       getValue: (datum) => datum.date,
-      scaleType: 'band'
+      scaleType: 'band',
     }),
     []
   );
@@ -23,8 +25,8 @@ const SummaryYearsChart = () => {
       {
         getValue: (datum) => datum.value,
         stacked: true,
-        scaleType: 'linear'
-      }
+        scaleType: 'linear',
+      },
     ],
     []
   );
@@ -36,8 +38,8 @@ const SummaryYearsChart = () => {
       {
         getValue: (datum: { value: number }) => datum.value,
         elementType: 'area',
-        scaleType: 'linear'
-      }
+        scaleType: 'linear',
+      },
     ],
     []
   );

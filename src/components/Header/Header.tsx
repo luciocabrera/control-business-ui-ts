@@ -1,11 +1,19 @@
 import { memo, ReactElement } from 'react';
+
 // styles
 import { styles } from './styles';
 // types
 import type { HeaderProps } from './types';
 
 const getIcon = (icon?: ReactElement | string) =>
-  typeof icon === 'string' ? <img src={icon} alt='' /> : icon;
+  typeof icon === 'string' ? (
+    <img
+      src={icon}
+      alt=''
+    />
+  ) : (
+    icon
+  );
 
 const Header = memo(
   ({ icon, title, subtitle, children, onClose }: HeaderProps) => (

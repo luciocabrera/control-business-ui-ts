@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const customStyles = ({
   inverse,
-  warning
+  warning,
 }: {
   inverse: boolean;
   warning: boolean;

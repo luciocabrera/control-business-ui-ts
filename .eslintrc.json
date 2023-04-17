@@ -6,9 +6,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/jsx-runtime",
-    "prettier"
+    "plugin:@typescript-eslint/recommended"
   ],
   "overrides": [],
   "parser": "@typescript-eslint/parser",
@@ -16,12 +14,36 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "react-hooks"],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "react-hooks",
+    "simple-import-sort"
+  ],
   "rules": {
+    "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unused-vars": "error",
-    // to enforce using type for object type definitions, can be type or interface
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          // Packages `react` related packages come first.
+          ["^react", "^@?\\w"],
+          // Internal packages.
+          ["^(@|components)(/.*|$)"],
+          // Side effect imports.
+          ["^\\u0000"],
+          // Parent imports. Put `..` last.
+          ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+          // Other relative imports. Put same-folder imports and `.` last.
+          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+          // Style imports.
+          ["^.+\\.?(css)$"]
+        ]
+      }
+    ]
   }
 }

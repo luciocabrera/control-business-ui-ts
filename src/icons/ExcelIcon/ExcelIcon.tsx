@@ -1,5 +1,8 @@
 const ExcelIcon = () => (
-  <span role='img' aria-label='excel'>
+  <span
+    role='img'
+    aria-label='excel'
+  >
     <svg
       stroke='currentColor'
       fill='currentColor'

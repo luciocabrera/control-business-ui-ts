@@ -1,9 +1,10 @@
 // styles
+// react
+import { memo } from 'react';
+
 import { ButtonStyled } from './styles';
 // types
 import type { ButtonProps } from './types';
-// react
-import { memo } from 'react';
 
 export const Button = memo(
   ({
@@ -11,7 +12,7 @@ export const Button = memo(
     onClick,
     inverse = false,
     warning = false,
-    id
+    id,
   }: ButtonProps) => (
     <ButtonStyled
       id={id}

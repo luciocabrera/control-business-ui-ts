@@ -1,15 +1,17 @@
 // components
-import { Link, Outlet } from 'components';
-import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
 // contexts
 import { TableContextProvider } from 'contexts';
 // hooks
 import { useFetchCustomers, useLocation } from 'hooks';
-import { useCustomersConfig } from './hooks';
 // icons
 import { NewIcon } from 'icons';
 // types
 import type { CustomerType } from 'types';
+
+import { Link, Outlet } from 'components';
+import ReadOnlyHookedTable from 'components/Table/ReadOnlyHookedTable/ReadOnlyHookedTable';
+
+import { useCustomersConfig } from './hooks';
 
 const title = 'Customers';
 

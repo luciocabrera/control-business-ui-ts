@@ -1,27 +1,25 @@
-// configs
+import { useCallback } from 'react';
+import type {
+  ApiResponse,
+  OptionsType,
+  ProductCreateType,
+  ProductType,
+} from 'types';
+
 import { endpoints } from '../configs/configs';
-// hooks
+
 import {
   useApiData,
   useApiDataList,
   useApiRefreshData,
-  useApiRequest
+  useApiRequest,
 } from './useApi';
-// types
-import type {
-  ApiResponse,
-  ProductCreateType,
-  ProductType,
-  OptionsType
-} from 'types';
-// react
-import { useCallback } from 'react';
 
 type IdType = string | number;
 
 export const useFetchProducts = () =>
   useApiDataList<ProductType[]>({
-    endpointUrl: endpoints.products
+    endpointUrl: endpoints.products,
   });
 
 export const useRefreshProducts = () => {
@@ -32,7 +30,7 @@ export const useRefreshProducts = () => {
 
 export const useFetchProduct = (productId: IdType) =>
   useApiData<ProductType>({
-    endpointUrl: productId ? `${endpoints.products}/${productId}` : undefined
+    endpointUrl: productId ? `${endpoints.products}/${productId}` : undefined,
   });
 
 export const useRefreshProduct = (productId: IdType) => {
@@ -50,7 +48,7 @@ export const usePostProduct = () => {
     async (product: ProductCreateType): Promise<ApiResponse<ProductType>> => {
       const requestOptions: OptionsType = {
         method: product.productId ? 'POST' : 'PATCH',
-        body: JSON.stringify(product)
+        body: JSON.stringify(product),
       };
       const url = product.productId
         ? endpoints.products

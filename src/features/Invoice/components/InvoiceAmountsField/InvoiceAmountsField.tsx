@@ -1,15 +1,17 @@
 // components
-import { TextInput } from 'components/Form/components/TextInput';
-// contexts
-import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
-// types
-import type { InvoiceAmountsFieldProps } from './InvoiceAmountsField.types';
+// contexts
+import { FormMetaType,useFieldsContext, useFormMetaContext } from 'contexts';
 import type { InvoiceFormType } from 'types';
 // utilities
-import { memo, getFormattedNumber } from 'utilities';
+import { getFormattedNumber,memo } from 'utilities';
+
+import { TextInput } from 'components/Form/components/TextInput';
 import { getErrorField, validateField } from 'components/Form/utilities';
+
+// types
+import type { InvoiceAmountsFieldProps } from './InvoiceAmountsField.types';
 
 const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
   const [subtotal] = useFieldsContext<
@@ -63,7 +65,7 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
     () => ({
       accessor: 'taxesPercentage',
       label: 'Taxes Percentage',
-      type: 'text'
+      type: 'text',
     }),
     []
   );
@@ -74,7 +76,7 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
       label: 'Total',
       type: 'text',
       required: true,
-      readonly: true
+      readonly: true,
     }),
     []
   );

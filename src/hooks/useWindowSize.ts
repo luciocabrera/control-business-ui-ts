@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const getSize = (isClient: boolean) => ({
   width: isClient ? window.innerWidth : undefined,
-  height: isClient ? window.innerHeight : undefined
+  height: isClient ? window.innerHeight : undefined,
 });
 
 export const useWindowSize = () => {

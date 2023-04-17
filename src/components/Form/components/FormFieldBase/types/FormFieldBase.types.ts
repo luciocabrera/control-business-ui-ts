@@ -1,4 +1,5 @@
-import type { ReactElement, ForwardedRef } from 'types';
+import type { ForwardedRef,ReactElement } from 'types';
+
 import type { FormFieldBaseType } from '../../FormField/types';
 
 export type FormFieldBaseProps = Omit<

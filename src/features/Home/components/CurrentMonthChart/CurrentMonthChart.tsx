@@ -1,21 +1,24 @@
-import { ReadOnlyTable } from 'components';
-import CardChart from 'components/CardChart/CardChartNew';
-import { useFetchInvoicesStatsNew } from 'hooks';
 import { memo, useMemo } from 'react';
-import type { InvoicesStats } from 'types';
-import styles from './CurrentMonthChart.module.css';
-import { useInvoicesStatsConfig } from './useInvoicesStatsConfig';
+import { useFetchInvoicesStatsNew } from 'hooks';
 import {
-  LineChart,
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Legend,
   Line,
+  LineChart,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Bar,
-  ComposedChart
 } from 'recharts';
+import type { InvoicesStats } from 'types';
+
+import { ReadOnlyTable } from 'components';
+import CardChart from 'components/CardChart/CardChartNew';
+
+import { useInvoicesStatsConfig } from './useInvoicesStatsConfig';
+
+import styles from './CurrentMonthChart.module.css';
 
 const CurrentMonthChart = memo(() => {
   const { data, isLoading } = useFetchInvoicesStatsNew();
@@ -46,7 +49,6 @@ const CurrentMonthChart = memo(() => {
             showHeader={true}
             isLoading={isLoading}
           />
-
         </div>
         <div
           data-parent='section-wrapper'
@@ -65,11 +67,14 @@ const CurrentMonthChart = memo(() => {
                 top: 20,
                 right: 30,
                 left: 20,
-                bottom: 5
+                bottom: 5,
               }}
             >
               <CartesianGrid strokeDasharray='3 3' />
-              <XAxis dataKey='date' padding={{ left: 15, right: 15 }} />
+              <XAxis
+                dataKey='date'
+                padding={{ left: 15, right: 15 }}
+              />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -79,8 +84,17 @@ const CurrentMonthChart = memo(() => {
                 fill='#8884d8'
                 name='Sub Total'
               />
-              <Bar dataKey='taxesSum' stackId='a' fill='#82ca9d' name='Taxes' />
-              <Bar dataKey='totalSum' fill='#ffc658' name='Total' />
+              <Bar
+                dataKey='taxesSum'
+                stackId='a'
+                fill='#82ca9d'
+                name='Taxes'
+              />
+              <Bar
+                dataKey='totalSum'
+                fill='#ffc658'
+                name='Total'
+              />
               <Line
                 type='basis'
                 dataKey='totalAvg'
@@ -92,7 +106,10 @@ const CurrentMonthChart = memo(() => {
         </div>
       </div>
 
-      <div data-parent='section-wrapper' className={styles['section-column']}>
+      <div
+        data-parent='section-wrapper'
+        className={styles['section-column']}
+      >
         <div
           data-parent='section-wrapper'
           className={styles['card-chart-wrapper']}
@@ -110,11 +127,14 @@ const CurrentMonthChart = memo(() => {
                 top: 20,
                 right: 30,
                 left: 20,
-                bottom: 5
+                bottom: 5,
               }}
             >
               <CartesianGrid strokeDasharray='3 3' />
-              <XAxis dataKey='date' padding={{ left: 15, right: 15 }} />
+              <XAxis
+                dataKey='date'
+                padding={{ left: 15, right: 15 }}
+              />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -124,8 +144,17 @@ const CurrentMonthChart = memo(() => {
                 fill='#8884d8'
                 name='Sub Total'
               />
-              <Bar dataKey='taxesSum' stackId='a' fill='#82ca9d' name='Taxes' />
-              <Bar dataKey='totalSum' fill='#ffc658' name='Total' />
+              <Bar
+                dataKey='taxesSum'
+                stackId='a'
+                fill='#82ca9d'
+                name='Taxes'
+              />
+              <Bar
+                dataKey='totalSum'
+                fill='#ffc658'
+                name='Total'
+              />
               <Line
                 type='basis'
                 dataKey='totalAvg'
@@ -150,11 +179,14 @@ const CurrentMonthChart = memo(() => {
                 top: 5,
                 right: 30,
                 left: 20,
-                bottom: 5
+                bottom: 5,
               }}
             >
               <CartesianGrid strokeDasharray='3 3' />
-              <XAxis dataKey='date' padding={{ left: 15, right: 15 }} />
+              <XAxis
+                dataKey='date'
+                padding={{ left: 15, right: 15 }}
+              />
               <YAxis allowDecimals={false} />
               <Tooltip />
               <Legend />

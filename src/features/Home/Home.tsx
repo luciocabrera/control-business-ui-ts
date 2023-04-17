@@ -1,6 +1,7 @@
 import { Tabs } from 'components';
+
 import CurrentMonthChart from './components/CurrentMonthChart/CurrentMonthChart';
-import SummaryLastMonthsChart from './components/SummaryLastMonthsChart/SummaryLastMonthsChart';
+
 import styles from './Home.module.css';
 
 const tabs = [
@@ -13,19 +14,8 @@ const tabs = [
         {/* <SummaryLastMonthsChart />
       <SummaryYearsChart /> */}
       </div>
-    )
+    ),
   },
-  {
-    key: 'summary-last-months',
-    title: 'Last Year',
-    children: (
-      <div className={styles['home-wrapper']}>
-        <SummaryLastMonthsChart />
-        {/* <SummaryLastMonthsChart />
-      <SummaryYearsChart /> */}
-      </div>
-    )
-  }
 ];
 
 const Home = () => {

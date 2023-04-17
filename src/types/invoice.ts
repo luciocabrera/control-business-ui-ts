@@ -76,6 +76,7 @@ export type InvoiceCreateType = Omit<
 };
 
 export type StatsBase = {
+  date?: Date | string;
   subtotalSum: number;
   totalSum: number;
   taxesSum: number;
@@ -95,11 +96,10 @@ export type StatsBase = {
 export type InvoicesStats = StatsBase &
   (
     | {
-        date?: Date | string;
         type: 'daily_current_month';
       }
     | {
-        customer?: Date | string;
+        customer?: string;
         type: 'customers_current_month';
       }
     | {

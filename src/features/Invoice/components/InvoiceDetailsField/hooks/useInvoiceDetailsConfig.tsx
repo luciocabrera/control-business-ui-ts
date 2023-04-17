@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 // types
-import type { InvoicesDetails, ColumnDef } from 'types';
+import type { ColumnDef,InvoicesDetails } from 'types';
+
 // utils
 import {
   getDateCell,
   getPriceQuantityCell,
   getPriceUnitCell,
-  getQuantityCell
+  getQuantityCell,
 } from '../utils/utils';
 
 export const useInvoiceDetailsConfig = () => {
@@ -14,32 +15,32 @@ export const useInvoiceDetailsConfig = () => {
     () => [
       {
         accessorKey: 'productNameWithCode',
-        header: 'Product'
+        header: 'Product',
       },
       {
         accessorKey: 'date',
         header: 'Date',
-        cell: getDateCell
+        cell: getDateCell,
       },
       {
         accessorKey: 'description',
-        header: 'Description'
+        header: 'Description',
       },
       {
         accessorKey: 'quantity',
         header: 'Quantity',
-        cell: getQuantityCell
+        cell: getQuantityCell,
       },
       {
         accessorKey: 'priceUnit',
         header: 'Price Unit',
-        cell: getPriceUnitCell
+        cell: getPriceUnitCell,
       },
       {
         accessorKey: 'priceQuantity',
         header: 'Price Quantity',
-        cell: getPriceQuantityCell
-      }
+        cell: getPriceQuantityCell,
+      },
     ],
     []
   );

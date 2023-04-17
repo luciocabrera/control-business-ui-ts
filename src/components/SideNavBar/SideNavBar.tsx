@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
-import { NavStyled } from './SideNavBar.styled';
 import { Link } from 'react-router-dom';
+
+import { NavStyled } from './SideNavBar.styled';
 
 type SideNavBarProps = {
   routes: {

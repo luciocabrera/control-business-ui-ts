@@ -1,12 +1,14 @@
 // components
-import FormFieldBase from '../FormFieldBase/FormFieldBase';
 // react
 import { forwardRef, memo } from 'react';
+
+import type { FieldBaseValueType } from '../FormField/types';
+import FormFieldBase from '../FormFieldBase/FormFieldBase';
+
 // styles
 import { TextInputStyled } from './styles';
 // types
 import type { TextInputProps } from './types';
-import type { FieldBaseValueType } from '../FormField/types';
 
 const TextInput = forwardRef(
   (
@@ -21,7 +23,7 @@ const TextInput = forwardRef(
       value,
       onChange,
       normalize,
-      rules
+      rules,
     } = rest;
 
     const normalizedValue = (normalize?.(value) ??
@@ -33,7 +35,11 @@ const TextInput = forwardRef(
       ?.map((filteredRule) => filteredRule.value)[0] as number;
 
     return (
-      <FormFieldBase maxLength={maxLength} ref={ref} {...rest}>
+      <FormFieldBase
+        maxLength={maxLength}
+        ref={ref}
+        {...rest}
+      >
         <TextInputStyled
           name={accessor}
           value={normalizedValue}

@@ -1,30 +1,33 @@
 // components
-import FallBack from 'components/FallBack/FallBack';
-import FormFilter from '../FormFilter/FormFilter';
-import TableHead from '../TableHead/TableHead';
-import TableWrapperHeader from '../TableWrapperHeader/TableWrapperHeader';
-// contexts
-import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
 // react
 import { Fragment, useEffect, useRef, useState } from 'react';
-// react table
-import {
-  getExpandedRowModel,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  useReactTable,
-  type SortingState
-} from '@tanstack/react-table';
 // react virtual
 import { useVirtual } from 'react-virtual';
+// react table
+import {
+  flexRender,
+  getCoreRowModel,
+  getExpandedRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  type SortingState,
+  useReactTable,
+} from '@tanstack/react-table';
+// contexts
+import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
+
+import FallBack from 'components/FallBack/FallBack';
+
+import FormFilter from '../FormFilter/FormFilter';
 // types
 import type { ReadOnlyTableType } from '../table.types';
-// styles
-import styles from '../table.module.css';
+import TableHead from '../TableHead/TableHead';
+import TableWrapperHeader from '../TableWrapperHeader/TableWrapperHeader';
 // utilities
 import fuzzyFilter from '../utilities/fuzzyFilter';
+
+// styles
+import styles from '../table.module.css';
 
 const ReadOnlyTable = <TData extends Record<string, unknown>>({
   actions,
@@ -37,13 +40,13 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   manualSorting = false,
   showHeader,
   fetchMoreOnBottomReached,
-  data
+  data,
 }: ReadOnlyTableType<TData>) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
   const {
     state: { columnFilters, showColumnFilters },
-    dispatch
+    dispatch,
   } = useTableContext();
 
   useEffect(() => {
@@ -54,11 +57,11 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
     data,
     columns,
     filterFns: {
-      fuzzy: fuzzyFilter
+      fuzzy: fuzzyFilter,
     },
     state: {
       columnFilters,
-      sorting
+      sorting,
     },
     manualFiltering: manualFiltering,
     manualSorting: manualSorting,
@@ -69,7 +72,7 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
     getExpandedRowModel: getExpandedRowModel(),
     getRowCanExpand,
     enableColumnResizing: true,
-    columnResizeMode: 'onChange'
+    columnResizeMode: 'onChange',
   });
 
   const { rows } = table.getRowModel();
@@ -77,7 +80,7 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   const rowVirtualizer = useVirtual({
     parentRef: parentRef,
     size: rows.length,
-    overscan: 10
+    overscan: 10,
   });
   const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
   const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
@@ -110,7 +113,10 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
               const row = rows[virtualRow.index];
               return (
                 <Fragment key={row.id}>
-                  <tr key={`tr-${row.id}`} ref={virtualRow.measureRef}>
+                  <tr
+                    key={`tr-${row.id}`}
+                    ref={virtualRow.measureRef}
+                  >
                     {row.getVisibleCells().map((cell) => {
                       const size = cell
                         .getContext()

@@ -1,17 +1,19 @@
 // components
-import { TextInput } from 'components/Form/components/TextInput';
-import { Select } from 'components/Form/components/Select';
-// contexts
-import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
+// contexts
+import { FormMetaType,useFieldsContext, useFormMetaContext } from 'contexts';
+import type { DateParameterType, InvoiceDetailForm, ProductType } from 'types';
+// utilities
+import { getDateAsString,memo } from 'utilities';
+
+import type { FieldBaseValueType } from 'components/Form/components/FormField/types';
+import { Select } from 'components/Form/components/Select';
+import { TextInput } from 'components/Form/components/TextInput';
+import { getErrorField, validateField } from 'components/Form/utilities';
+
 // types
 import type { InvoiceDetailProductProps } from './InvoiceDetailProduct.types';
-import type { InvoiceDetailForm, DateParameterType, ProductType } from 'types';
-import type { FieldBaseValueType } from 'components/Form/components/FormField/types';
-// utilities
-import { memo, getDateAsString } from 'utilities';
-import { getErrorField, validateField } from 'components/Form/utilities';
 
 const InvoiceDetailProduct = memo(
   ({ products, ...props }: InvoiceDetailProductProps) => {
@@ -46,7 +48,7 @@ const InvoiceDetailProduct = memo(
       () =>
         products?.map((product) => ({
           label: product.nameWithCode,
-          value: product.productId
+          value: product.productId,
         })),
       [products]
     );
@@ -64,7 +66,7 @@ const InvoiceDetailProduct = memo(
         label: 'Product',
         type: 'select',
         required: true,
-        options: productsOptions
+        options: productsOptions,
       }),
       [productsOptions]
     );
@@ -87,7 +89,7 @@ const InvoiceDetailProduct = memo(
         accessor: 'description',
         label: 'Description',
         type: 'text',
-        required: true
+        required: true,
       }),
       []
     );
@@ -136,7 +138,7 @@ const InvoiceDetailProduct = memo(
         setProductId({ productId: selected });
         setPriceUnit({ priceUnit: selectedProduct?.price });
         setPriceQuantity({
-          priceQuantity: quantity * (selectedProduct?.price || 0)
+          priceQuantity: quantity * (selectedProduct?.price || 0),
         });
         if (!description)
           setDescription({ description: selectedProduct?.description });
@@ -148,7 +150,7 @@ const InvoiceDetailProduct = memo(
         setDescription,
         setPriceQuantity,
         setPriceUnit,
-        setProductId
+        setProductId,
       ]
     );
 

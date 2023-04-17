@@ -1,22 +1,24 @@
 // components
-import { InvoiceAmountsField, InvoiceDetailsField } from '../components';
 // react
 import { useMemo } from 'react';
 // hooks
 import { useFetchCustomers } from 'hooks';
 // types
-import type { InvoiceType, DateParameterType } from 'types';
-import type {
-  FieldBaseValueType,
-  FormFieldType
-} from 'components/Form/components/FormField/types';
+import type { DateParameterType,InvoiceType } from 'types';
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
+
+import type {
+  FieldBaseValueType,
+  FormFieldType,
+} from 'components/Form/components/FormField/types';
+
+import { InvoiceAmountsField, InvoiceDetailsField } from '../components';
 
 export const useInvoiceConfig = ({
   invoice,
   isCopying,
-  taxesPercentage
+  taxesPercentage,
 }: {
   invoice?: InvoiceType;
   isCopying: boolean;
@@ -28,7 +30,7 @@ export const useInvoiceConfig = ({
     () =>
       customers?.map((customer) => ({
         label: `${customer.fullNameWithInitials}`,
-        value: customer.peopleId
+        value: customer.peopleId,
       })),
     [customers]
   );
@@ -54,9 +56,9 @@ export const useInvoiceConfig = ({
                     rules: [
                       {
                         type: 'length',
-                        value: 6
-                      }
-                    ]
+                        value: 6,
+                      },
+                    ],
                   },
                   {
                     accessor: 'date',
@@ -65,9 +67,9 @@ export const useInvoiceConfig = ({
                     value: invoice?.date,
                     required: true,
                     normalize: (value: DateParameterType | undefined) =>
-                      getDateAsString(value, 'date', true)
-                  }
-                ]
+                      getDateAsString(value, 'date', true),
+                  },
+                ],
               },
               {
                 accessor: 'customerId',
@@ -75,9 +77,9 @@ export const useInvoiceConfig = ({
                 type: 'select',
                 value: invoice?.customerId,
                 options: customersOptions,
-                required: true
-              }
-            ]
+                required: true,
+              },
+            ],
           },
           {
             type: 'group',
@@ -87,37 +89,37 @@ export const useInvoiceConfig = ({
                 type: 'object',
                 label: 'Amounts',
                 accessor: '',
-                render: () => <InvoiceAmountsField />
-              }
-            ]
+                render: () => <InvoiceAmountsField />,
+              },
+            ],
           },
           {
             type: 'rule',
             accessor: 'taxesPercentage',
-            value: taxesPercentage
+            value: taxesPercentage,
           },
           {
             accessor: 'subtotal',
             type: 'rule',
             value: invoice?.subtotal,
             normalize: (value: FieldBaseValueType) =>
-              getFormattedNumber(value, 'currency')
+              getFormattedNumber(value, 'currency'),
           },
           {
             accessor: 'taxes',
             type: 'rule',
             value: invoice?.taxes,
             normalize: (value: FieldBaseValueType) =>
-              getFormattedNumber(value, 'currency')
+              getFormattedNumber(value, 'currency'),
           },
           {
             accessor: 'total',
             type: 'rule',
             value: invoice?.total,
             normalize: (value: FieldBaseValueType) =>
-              getFormattedNumber(value, 'currency')
-          }
-        ]
+              getFormattedNumber(value, 'currency'),
+          },
+        ],
       },
       {
         type: 'row',
@@ -127,10 +129,10 @@ export const useInvoiceConfig = ({
             label: 'details',
             type: 'table',
             render: () => <InvoiceDetailsField />,
-            readonly: true
-          }
-        ]
-      }
+            readonly: true,
+          },
+        ],
+      },
     ],
     [
       customersOptions,
@@ -141,7 +143,7 @@ export const useInvoiceConfig = ({
       invoice?.taxes,
       invoice?.total,
       isCopying,
-      taxesPercentage
+      taxesPercentage,
     ]
   );
 

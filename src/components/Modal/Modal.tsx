@@ -1,7 +1,10 @@
-import { Button } from 'components/Form/components/Button';
 import { memo } from 'react';
+
+import { Button } from 'components/Form/components/Button';
+
 import Overlay from '../Overlay/Overlay';
 import Portal from '../Portal/Portal';
+
 // types
 import type { ModalProps } from './Modal.types';
 
@@ -11,13 +14,20 @@ const Modal = memo(
     onClose,
     message,
     title,
-    isConfirmation = false
+    isConfirmation = false,
   }: ModalProps) => {
     return (
       <Portal data-testid='modal-portal'>
         <Overlay />
-        <div className='fade' id='myModal' role='dialog'>
-          <div className='modal-dialog' style={{ zIndex: '100' }}>
+        <div
+          className='fade'
+          id='myModal'
+          role='dialog'
+        >
+          <div
+            className='modal-dialog'
+            style={{ zIndex: '100' }}
+          >
             <div className='modal-content'>
               <div className='modal-header'>
                 <button

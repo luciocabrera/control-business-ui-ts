@@ -1,13 +1,14 @@
 // components
-import { Link } from 'components';
+// react
+import { memo } from 'react';
 // hooks
 import { useLocation } from 'hooks';
 // icons
 import { CopyIcon, ViewIcon } from 'icons';
-// react
-import { memo } from 'react';
 // styles
 import { TableActionsStyled } from 'styles';
+
+import { Link } from 'components';
 
 type TableActionsProps = {
   invoiceId: number;

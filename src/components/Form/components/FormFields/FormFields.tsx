@@ -1,18 +1,16 @@
-// components
-import { FormField } from '../FormField';
-// contexts
 import {
   type FormMetaType,
-  useFormMetaContext
+  useFormMetaContext,
 } from 'components/Form/contexts/FormContext';
-// styles
-import { CustomFieldWrapper, FieldGroupStyled, FieldRowStyled } from './styles';
-// types
+
+import { FormField } from '../FormField';
 import type {
   FormFieldGroupType,
   FormFieldType,
-  FormSimpleFieldType
+  FormSimpleFieldType,
 } from '../FormField/types';
+
+import { CustomFieldWrapper, FieldGroupStyled, FieldRowStyled } from './styles';
 
 type TFormField = {
   formFields?: FormFieldType[];
@@ -25,7 +23,7 @@ export const FormFields = ({
   formFields,
   fieldWidth,
   groupId = '',
-  viewMode = true
+  viewMode = true,
 }: TFormField) => {
   const [initialFields] = useFormMetaContext<
     FormFieldType[],
@@ -45,7 +43,10 @@ export const FormFields = ({
             const groupField = field as FormFieldGroupType;
             return (
               groupField?.fields && (
-                <FieldGroupStyled key={groupKey} id='field-group'>
+                <FieldGroupStyled
+                  key={groupKey}
+                  id='field-group'
+                >
                   <legend>{groupField?.label}</legend>
                   <FormFields
                     key={`field-${groupKey}`}
@@ -64,7 +65,10 @@ export const FormFields = ({
             const rowKey = `${groupId}-form-row-${index}`;
             return (
               rowField?.fields && (
-                <FieldRowStyled key={rowKey} id='field-row'>
+                <FieldRowStyled
+                  key={rowKey}
+                  id='field-row'
+                >
                   <FormFields
                     key={`field-${rowKey}`}
                     groupId={rowKey}

@@ -1,15 +1,17 @@
 // components
-import { TextInput } from 'components/Form/components/TextInput';
-// contexts
-import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
-// types
-import type { PriceQuantityFieldProps } from './PriceQuantityField.types';
+// contexts
+import { FormMetaType,useFieldsContext, useFormMetaContext } from 'contexts';
 import type { InvoiceDetailForm } from 'types';
 // utilities
-import { memo, getFormattedNumber } from 'utilities';
+import { getFormattedNumber,memo } from 'utilities';
+
+import { TextInput } from 'components/Form/components/TextInput';
 import { getErrorField, validateField } from 'components/Form/utilities';
+
+// types
+import type { PriceQuantityFieldProps } from './PriceQuantityField.types';
 
 const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
   const [quantity, setQuantity] = useFieldsContext<
@@ -35,7 +37,7 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
       accessor: 'quantity',
       label: 'Quantity',
       type: 'number',
-      required: true
+      required: true,
     }),
     []
   );
@@ -55,7 +57,7 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
       accessor: 'priceUnit',
       label: 'Price Unit',
       type: 'number',
-      required: true
+      required: true,
     }),
     []
   );
@@ -77,7 +79,7 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
       label: 'Price Quantity',
       type: 'text',
       required: true,
-      readonly: true
+      readonly: true,
     }),
     []
   );
@@ -99,7 +101,7 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setQuantity({ quantity: event.target.value as unknown as number });
       setPriceQuantity({
-        priceQuantity: ((event.target.value || 0) as number) * priceUnit
+        priceQuantity: ((event.target.value || 0) as number) * priceUnit,
       });
     },
     [priceUnit, setPriceQuantity, setQuantity]
@@ -121,7 +123,7 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           setPriceUnit({ priceUnit: event.target.value as unknown as number });
           setPriceQuantity({
-            priceQuantity: quantity * ((event.target.value || 0) as number)
+            priceQuantity: quantity * ((event.target.value || 0) as number),
           });
         }}
         textAlign='right'

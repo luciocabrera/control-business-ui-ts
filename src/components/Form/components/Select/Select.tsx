@@ -1,6 +1,8 @@
 import { forwardRef } from 'react';
+
 // components
 import { FormFieldBase } from '../FormFieldBase';
+
 // styles
 import { SelectStyled } from './styles';
 // types
@@ -11,7 +13,10 @@ const Select = forwardRef(
     const { accessor, options, value, label, onChange } = props;
 
     return (
-      <FormFieldBase {...props} ref={ref}>
+      <FormFieldBase
+        {...props}
+        ref={ref}
+      >
         <SelectStyled
           name={accessor}
           select-name={accessor}
@@ -26,7 +31,10 @@ const Select = forwardRef(
             onChange?.(event);
           }}
         >
-          <option key='default-option' value=''>
+          <option
+            key='default-option'
+            value=''
+          >
             Choose {label}
           </option>
           {options?.map((option) => (

@@ -1,14 +1,17 @@
 // components
-import { Header, Overlay, Portal } from 'components';
-import { Button } from 'components/Form/components/Button';
-// contexts
-import { useDeleteNotification, useNotificationsStore } from './contexts';
 // react
 import { useCallback } from 'react';
-// styles
-import styles from './styles/Notifications.module.css';
+
+import { Header, Overlay, Portal } from 'components';
+import { Button } from 'components/Form/components/Button';
+
+// contexts
+import { useDeleteNotification, useNotificationsStore } from './contexts';
 // types
 import type { TNotification, TNotifications } from './types';
+
+// styles
+import styles from './styles/Notifications.module.css';
 
 const Notifications = () => {
   const [notifications] = useNotificationsStore<
@@ -38,9 +41,12 @@ const Notifications = () => {
             onClose,
             description,
             title,
-            isConfirmation = false
+            isConfirmation = false,
           }: TNotification) => (
-            <article key={id} className={styles.modalDialog}>
+            <article
+              key={id}
+              className={styles.modalDialog}
+            >
               <Header
                 icon={icon}
                 title={title}

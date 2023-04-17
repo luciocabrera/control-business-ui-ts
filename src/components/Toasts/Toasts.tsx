@@ -1,16 +1,18 @@
 // components
-import { Portal } from 'components';
-// contexts
-import { useDeleteToast, useToastsStore } from './contexts';
 // react
 import { useCallback, useEffect } from 'react';
+
+import { Portal } from 'components';
+
+// contexts
+import { useDeleteToast, useToastsStore } from './contexts';
 // styles
 import {
   Notification,
   NotificationContainer,
   NotificationImage,
   NotificationMessage,
-  NotificationTitle
+  NotificationTitle,
 } from './styles';
 // types
 import { TToast, TToastProps, TToasts } from './types';
@@ -39,18 +41,27 @@ const Toasts = ({ position = 'bottomRight' }: TToastProps) => {
 
   return (
     <Portal>
-      <NotificationContainer id='toast-container' position={position}>
+      <NotificationContainer
+        id='toast-container'
+        position={position}
+      >
         {toasts?.map((toast) => (
           <Notification
             key={toast.id}
             backgroundColor={toast.backgroundColor}
             position={position}
           >
-            <button type='button' onClick={() => handleDeleteToast(toast.id)}>
+            <button
+              type='button'
+              onClick={() => handleDeleteToast(toast.id)}
+            >
               X
             </button>
             <NotificationImage>
-              <img src={toast.icon} alt='' />
+              <img
+                src={toast.icon}
+                alt=''
+              />
             </NotificationImage>
             <>
               <NotificationTitle>{toast.title}</NotificationTitle>

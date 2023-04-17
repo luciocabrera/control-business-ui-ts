@@ -1,4 +1,5 @@
-import type { ReactNode, ColumnDef } from 'types';
+import type { ColumnDef, ReactNode } from 'types';
+
 import type { FormFieldBaseType } from '../../FormField/types';
 type TableFieldValueType = (Record<string, unknown> | string | number)[];
 

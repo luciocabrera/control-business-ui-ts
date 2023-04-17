@@ -1,20 +1,21 @@
 // components
-import Notifications from '../Notifications';
-// hooks
-import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
+// types
+import type { MouseEventHandler, ReactNode } from 'react';
 // react
 import {
   createContext,
+  useCallback,
   useContext,
   useSyncExternalStore,
-  useCallback
 } from 'react';
-// types
-import type { MouseEventHandler, ReactNode } from 'react';
+// hooks
+import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
+
+import Notifications from '../Notifications';
 import type {
   TNotification,
+  TNotifications,
   TNotificationType,
-  TNotifications
 } from '../types';
 // utilities
 import { getNotification } from '../utilities';
@@ -96,7 +97,7 @@ export const useDeleteNotification = () => {
 };
 
 export const NotificationsContextProvider = ({
-  children
+  children,
 }: NotificationsContextProviderProps) => (
   <NotificationsContext.Provider value={useStore<TNotifications>()}>
     {children}

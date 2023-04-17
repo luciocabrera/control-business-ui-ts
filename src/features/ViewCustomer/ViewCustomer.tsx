@@ -1,17 +1,19 @@
 // components
-import { PageSpinner, CustomerActions } from 'components';
-import Form from 'components/Form/Form/Form';
+// react
+import { useCallback } from 'react';
 // contexts
 import { FormContextProvider } from 'contexts';
 // hooks
-import { useFetchCustomer, useParams, useNavigate } from 'hooks';
-import { useViewCustomerConfig } from './hooks';
+import { useFetchCustomer, useNavigate,useParams } from 'hooks';
 // icons
 import { CustomerIcon } from 'icons';
-// react
-import { useCallback } from 'react';
 // types
 import type { CustomerFormType } from 'types';
+
+import { CustomerActions,PageSpinner } from 'components';
+import Form from 'components/Form/Form/Form';
+
+import { useViewCustomerConfig } from './hooks';
 
 const ViewCustomer = () => {
   const { customerId } = useParams();

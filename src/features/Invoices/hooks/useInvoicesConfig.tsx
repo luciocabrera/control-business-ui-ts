@@ -1,16 +1,17 @@
 // react
 import { useMemo } from 'react';
 // types
-import type { ColumnDef, InvoiceType, ColumnMetaState } from 'types';
+import type { ColumnDef, ColumnMetaState,InvoiceType } from 'types';
+import { isDateBetween } from 'utilities';
+
 // utilities
 import {
   getActionsCell,
   getDateCell,
   getSubTotalCell,
   getTaxesCell,
-  getTotalCell
+  getTotalCell,
 } from '../utilities';
-import { isDateBetween } from 'utilities';
 
 export const useInvoicesConfig = () => {
   const columns: ColumnDef<InvoiceType>[] = useMemo(
@@ -24,34 +25,34 @@ export const useInvoicesConfig = () => {
           const dateToCheck = row?.original?.date ?? '';
 
           return isDateBetween({ dateToCheck, from: value[0], to: value[1] });
-        }
+        },
       },
       {
         accessorKey: 'customer',
-        header: 'Customer'
+        header: 'Customer',
       },
       {
         accessorKey: 'subtotal',
         header: 'Subtotal',
-        cell: getSubTotalCell
+        cell: getSubTotalCell,
       },
       {
         accessorKey: 'taxes',
         header: 'Taxes',
-        cell: getTaxesCell
+        cell: getTaxesCell,
       },
       {
         accessorKey: 'total',
         header: 'Total',
-        cell: getTotalCell
+        cell: getTotalCell,
       },
       {
         id: 'actions',
         header: '',
         enableResizing: false,
         maxSize: 62,
-        cell: getActionsCell
-      }
+        cell: getActionsCell,
+      },
     ],
     []
   );
@@ -63,7 +64,7 @@ export const useInvoicesConfig = () => {
       { id: 'customer', name: 'Customer' },
       { id: 'subtotal', name: 'Sub Total', type: 'number' },
       { id: 'taxes', name: 'Total', type: 'number' },
-      { id: 'total', name: 'Total', type: 'number' }
+      { id: 'total', name: 'Total', type: 'number' },
     ],
     []
   );

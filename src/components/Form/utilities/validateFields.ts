@@ -1,10 +1,12 @@
+import { isEmpty } from 'utilities';
+
 import type {
   FormFieldBaseType,
   FormFieldErrorType,
   FormFieldGroupType,
-  FormFieldType
+  FormFieldType,
 } from '../components/FormField/types';
-import { isEmpty } from 'utilities';
+
 import { validateFieldRules } from './validateFieldRules';
 
 export const validateFields = <T>(fields: FormFieldType[], data: T) => {
@@ -13,7 +15,7 @@ export const validateFields = <T>(fields: FormFieldType[], data: T) => {
     if (['group', 'row'].includes(field.type)) {
       formErrors = [
         ...formErrors,
-        ...validateFields((field as FormFieldGroupType).fields || [], data)
+        ...validateFields((field as FormFieldGroupType).fields || [], data),
       ];
     } else {
       const fieldToValidate = field as FormFieldBaseType;
@@ -29,7 +31,7 @@ export const validateFields = <T>(fields: FormFieldType[], data: T) => {
             errorMessage: `The ${fieldToValidate.label} is mandatory!`,
             value: data[
               fieldToValidate.accessor as keyof T
-            ] as unknown as string
+            ] as unknown as string,
           });
         } else {
           const fieldRuleErrors = validateFieldRules(fieldToValidate, data);
@@ -56,11 +58,11 @@ export const validateField = (field: FormFieldType, value: unknown) => {
       accessor: fieldToValidate.accessor,
       hasErrors: true,
       errorMessage: `The ${fieldToValidate.label} is mandatory`,
-      value: value as string
+      value: value as string,
     });
   } else {
     const fieldRuleErrors = validateFieldRules(fieldToValidate, {
-      [fieldToValidate.accessor]: value
+      [fieldToValidate.accessor]: value,
     });
     formErrors.push(...fieldRuleErrors);
   }

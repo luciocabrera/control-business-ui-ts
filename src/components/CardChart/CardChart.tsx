@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { AxisOptions, Chart } from 'react-charts';
+
 import styles from './CardChart.module.css';
 
 type Series<TData> = {
@@ -20,7 +21,7 @@ const CardChart = <TData extends Record<string, unknown>>({
   title,
   subtitle,
   primaryAxis,
-  secondaryAxes
+  secondaryAxes,
 }: CardChartProps<TData>) => {
   console.log('data', data);
   return (
@@ -37,7 +38,7 @@ const CardChart = <TData extends Record<string, unknown>>({
             options={{
               data,
               primaryAxis,
-              secondaryAxes
+              secondaryAxes,
             }}
           />
         )}

@@ -1,10 +1,10 @@
 // hooks
+// react
+import { useCallback, useMemo } from 'react';
 import useSWR, { SWRResponse, useSWRConfig } from 'swr';
 import useSWRInfinite, { type SWRInfiniteResponse } from 'swr/infinite';
 // types
 import type { OptionsType } from 'types';
-// react
-import { useCallback, useMemo } from 'react';
 // utilities
 import { execDownload, execRequest, fetchRequest } from 'utilities';
 
@@ -75,7 +75,7 @@ const getRequestOptions = (
 
   const requestOptions: Record<string, unknown> = {
     headers,
-    ...customOptions
+    ...customOptions,
   };
 
   return requestOptions;
@@ -84,7 +84,7 @@ const getRequestOptions = (
 export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
   endpointUrl,
   transformData,
-  refreshInterval
+  refreshInterval,
 }: UseApiDataArgs<
   TDataType,
   TPreTransformDataType
@@ -133,7 +133,7 @@ export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
 
         // Retry after 5 seconds.
         setTimeout(() => void revalidate({ retryCount }), 5000);
-      }
+      },
     }
   );
 
@@ -142,7 +142,7 @@ export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
     isValidating,
     data,
     mutate,
-    ...rest
+    ...rest,
   };
 };
 
@@ -154,7 +154,7 @@ export const useApiInfiniteData = <
   transformData,
   refreshInterval,
   pageSize,
-  query
+  query,
 }: UseApiDataArgs<TDataType, TPreTransformDataType> & {
   pageSize: number;
 }): UseApiInfiniteDataResponse<TDataType> => {
@@ -190,7 +190,7 @@ export const useApiInfiniteData = <
       revalidateOnFocus: false,
       errorRetryCount: 0,
       shouldRetryOnError: false,
-      refreshInterval
+      refreshInterval,
     }
   );
 
@@ -223,7 +223,7 @@ export const useApiInfiniteData = <
     size,
     setSize,
     isValidating,
-    ...rest
+    ...rest,
   };
 };
 
@@ -235,7 +235,7 @@ export const useApiDataList = <TDataType, TPreTransformDataType = TDataType>(
   const hookResult = useApiData(args);
   return {
     ...hookResult,
-    data: hookResult.data ?? ([] as unknown as TDataType)
+    data: hookResult.data ?? ([] as unknown as TDataType),
   };
 };
 

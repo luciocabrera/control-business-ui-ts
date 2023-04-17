@@ -1,5 +1,6 @@
 // react
 import { memo, ReactElement } from 'react';
+
 // styles
 import { OverlayStyled } from './Overlay.styled';
 

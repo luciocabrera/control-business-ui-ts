@@ -1,46 +1,62 @@
-import { CellContext, ColumnDef } from '@tanstack/react-table';
-import { NumberDisplay } from 'components';
 import { useMemo } from 'react';
+import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { InvoicesStats } from 'types';
+
+import { NumberDisplay } from 'components';
 
 export const getQuantitySumCell = ({
   row: {
-    original: { quantitySum }
-  }
+    original: { quantitySum },
+  },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay value={quantitySum} output={'number'} />
+  <NumberDisplay
+    value={quantitySum}
+    output={'number'}
+  />
 );
 
 export const getInvoicesCell = ({
   row: {
-    original: { invoicesCount }
-  }
+    original: { invoicesCount },
+  },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay value={invoicesCount} output={'number'} />
+  <NumberDisplay
+    value={invoicesCount}
+    output={'number'}
+  />
 );
 
 export const getSubtotalCell = ({
   row: {
-    original: { subtotalSum }
-  }
+    original: { subtotalSum },
+  },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay value={subtotalSum} output={'currency'} />
+  <NumberDisplay
+    value={subtotalSum}
+    output={'currency'}
+  />
 );
 
 export const getTaxesSumCell = ({
   row: {
-    original: { taxesSum }
-  }
+    original: { taxesSum },
+  },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay value={taxesSum} output={'currency'} />
+  <NumberDisplay
+    value={taxesSum}
+    output={'currency'}
+  />
 );
 
 export const getTotalSumCell = ({
   row: {
-    original: { totalSum }
-  }
+    original: { totalSum },
+  },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay value={totalSum} output={'currency'} />
+  <NumberDisplay
+    value={totalSum}
+    output={'currency'}
+  />
 );
 
 export const useInvoicesStatsConfig = () =>
@@ -48,34 +64,34 @@ export const useInvoicesStatsConfig = () =>
     () => [
       {
         accessorKey: 'date',
-        header: 'Date'
+        header: 'Date',
       },
       {
         accessorKey: 'invoicesCount',
         header: 'Invoices',
-        cell: getInvoicesCell
+        cell: getInvoicesCell,
       },
       {
         accessorKey: 'quantitySum',
         header: 'Nr of Hours',
-        cell: getQuantitySumCell
+        cell: getQuantitySumCell,
       },
 
       {
         accessorKey: 'subtotalSum',
         header: 'Subtotal',
-        cell: getSubtotalCell
+        cell: getSubtotalCell,
       },
       {
         accessorKey: 'taxesSum',
         header: 'Taxes',
-        cell: getTaxesSumCell
+        cell: getTaxesSumCell,
       },
       {
         accessorKey: 'totalSum',
         header: 'Total',
-        cell: getTotalSumCell
-      }
+        cell: getTotalSumCell,
+      },
     ],
     []
   );

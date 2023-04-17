@@ -1,13 +1,9 @@
-// components
-import { Link } from 'components';
-// hooks
-import { useLocation } from 'hooks';
-// icons
-import { ViewIcon } from 'icons';
-// react
 import { memo } from 'react';
-// styles
+import { useLocation } from 'hooks';
+import { ViewIcon } from 'icons';
 import { TableActionsStyled } from 'styles';
+
+import { Link } from 'components';
 
 type TableActionsProps = {
   customerId: number;

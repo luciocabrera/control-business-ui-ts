@@ -1,5 +1,8 @@
 const CsvIcon = () => (
-  <span role='img' aria-label='csv'>
+  <span
+    role='img'
+    aria-label='csv'
+  >
     <svg
       stroke='currentColor'
       fill='currentColor'

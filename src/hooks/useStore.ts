@@ -28,7 +28,7 @@ export const useStore = <TData extends Record<string, unknown>>(
   return {
     get,
     set,
-    subscribe
+    subscribe,
   };
 };
 

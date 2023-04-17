@@ -1,7 +1,8 @@
 import type { ChangeEvent } from 'types';
+
 import type {
   FieldBaseValueType,
-  FormFieldBaseType
+  FormFieldBaseType,
 } from '../../FormField/types';
 
 export type TextInputProps = Omit<

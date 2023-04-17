@@ -1,11 +1,14 @@
-import { ReadOnlyTable } from 'components';
-import CardChart from 'components/CardChart/CardChart';
-import { useFetchInvoicesStats } from 'hooks';
 import React from 'react';
 import type { AxisOptions } from 'react-charts';
+import { useFetchInvoicesStats } from 'hooks';
 import type { DataRowChart, InvoicesStats } from 'types';
-import styles from './CurrentMonthChart.module.css';
+
+import { ReadOnlyTable } from 'components';
+import CardChart from 'components/CardChart/CardChart';
+
 import { useInvoicesStatsConfig } from './useInvoicesStatsConfig';
+
+import styles from './CurrentMonthChart.module.css';
 
 const CurrentMonthChart = () => {
   const { data, isLoading } = useFetchInvoicesStats();
@@ -13,7 +16,7 @@ const CurrentMonthChart = () => {
 
   const primaryAxis = React.useMemo(
     (): AxisOptions<DataRowChart> => ({
-      getValue: (datum) => datum.date
+      getValue: (datum) => datum.date,
       // scaleType: 'band',
     }),
     []
@@ -25,9 +28,9 @@ const CurrentMonthChart = () => {
     () => [
       {
         getValue: (datum) => datum.value,
-        stacked: true
+        stacked: true,
         // scaleType: 'linear',
-      }
+      },
     ],
     []
   );
@@ -39,8 +42,8 @@ const CurrentMonthChart = () => {
       {
         getValue: (datum) => datum.value,
         elementType: 'area',
-        scaleType: 'linear'
-      }
+        scaleType: 'linear',
+      },
     ],
     []
   );
@@ -63,7 +66,10 @@ const CurrentMonthChart = () => {
           />
         </div>
       </div>
-      <div data-parent='section-wrapper' className={styles['section-column']}>
+      <div
+        data-parent='section-wrapper'
+        className={styles['section-column']}
+      >
         <div
           data-parent='section-wrapper'
           className={styles['card-chart-wrapper']}

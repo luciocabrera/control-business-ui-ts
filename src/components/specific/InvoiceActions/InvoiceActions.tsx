@@ -1,19 +1,20 @@
 // components
-import { Button } from 'components/Form/components/Button';
+// react
+import { memo, useCallback } from 'react';
 // contexts
 import { useAddNotification, useAddToast } from 'contexts';
 // hooks
 import {
   useDeleteInvoice,
-  useRefreshInvoices,
-  useParams,
   useLocation,
-  useNavigate
+  useNavigate,
+  useParams,
+  useRefreshInvoices,
 } from 'hooks';
-// react
-import { memo, useCallback } from 'react';
 // types
 import type { InvoiceFormType, MouseEvent } from 'types';
+
+import { Button } from 'components/Form/components/Button';
 
 type InvoiceActionsProps = {
   invoice?: InvoiceFormType;
@@ -72,7 +73,7 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
     refreshInvoices,
     location.pathname,
     navigate,
-    addToast
+    addToast,
   ]);
 
   const onDelete = useCallback(() => {
@@ -105,15 +106,26 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
   return (
     <>
       {!isCreating && !isEditing && !isCopying && (
-        <Button id='invoice-actions-button-edit' onClick={onEdit}>
+        <Button
+          id='invoice-actions-button-edit'
+          onClick={onEdit}
+        >
           Edit
         </Button>
       )}
-      <Button id='invoice-actions-button-cancel' inverse onClick={onCancel}>
+      <Button
+        id='invoice-actions-button-cancel'
+        inverse
+        onClick={onCancel}
+      >
         Cancel
       </Button>
       {!isCreating && !isCopying && (
-        <Button id='invoice-actions-button-delete' onClick={onDelete} warning>
+        <Button
+          id='invoice-actions-button-delete'
+          onClick={onDelete}
+          warning
+        >
           Delete
         </Button>
       )}

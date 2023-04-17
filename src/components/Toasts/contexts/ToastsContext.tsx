@@ -1,16 +1,17 @@
 // components
-import Toasts from '../Toasts';
-// hooks
-import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
+// types
+import type { ReactNode } from 'react';
 // react
 import {
   createContext,
+  useCallback,
   useContext,
   useSyncExternalStore,
-  useCallback
 } from 'react';
-// types
-import type { ReactNode } from 'react';
+// hooks
+import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
+
+import Toasts from '../Toasts';
 import type { TToast, TToasts, TToastType } from '../types';
 // utilities
 import { getToast } from '../utilities/getToast';
@@ -70,7 +71,7 @@ export const useDeleteToast = () => {
 };
 
 export const ToastsContextProvider = ({
-  children
+  children,
 }: ToastsContextProviderProps) => (
   <ToastsContext.Provider value={useStore<TToasts>()}>
     {children}

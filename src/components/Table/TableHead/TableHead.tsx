@@ -1,11 +1,12 @@
 import { flexRender, type HeaderGroup } from '@tanstack/react-table';
 import { FilterIcon } from 'icons';
+
 import cls from '../table.module.css';
 
 type TableHeadType<TData> = { headerGroups: HeaderGroup<TData>[] };
 
 const TableHead = <TData extends Record<string, unknown>>({
-  headerGroups
+  headerGroups,
 }: TableHeadType<TData>) => (
   <thead>
     {headerGroups.map((headerGroup) => (
@@ -27,7 +28,7 @@ const TableHead = <TData extends Record<string, unknown>>({
                   )}
                   {{
                     asc: <span>&#8593;</span>,
-                    desc: <span>&#8595;</span>
+                    desc: <span>&#8595;</span>,
                   }[header.column.getIsSorted() as string] ?? null}
 
                   {header.column.getIsFiltered() ? (
@@ -41,7 +42,7 @@ const TableHead = <TData extends Record<string, unknown>>({
                   onTouchStart={header.getResizeHandler()}
                   className={[
                     cls['resizer'],
-                    cls[header.column.getIsResizing() ? 'isResizing' : '']
+                    cls[header.column.getIsResizing() ? 'isResizing' : ''],
                   ].join(' ')}
                 />
               )}

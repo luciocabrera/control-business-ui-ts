@@ -1,10 +1,9 @@
-// components
+import type { CellContext, CustomerType } from 'types';
+
 import TableActions from '../components/TableActions';
-// types
-import type { CustomerType, CellContext } from 'types';
 
 export const getActionsCell = ({
-  row: { original }
+  row: { original },
 }: CellContext<CustomerType, unknown>) => (
   <TableActions customerId={original.peopleId} />
 );

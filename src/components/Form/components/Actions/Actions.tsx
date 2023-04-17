@@ -1,27 +1,29 @@
 // components
+// react
+import { memo, useCallback } from 'react';
+// types
+import type { FormBaseProps,MouseEvent } from 'types';
+// utilities
+import { deepEqual } from 'utilities';
+
 import ErrorDisplay from 'components/ErrorDisplay/ErrorDisplay';
-import { Button } from '../Button';
 // contexts
 import {
   FormMetaType,
   useFieldsContext,
-  useFormMetaContext
+  useFormMetaContext,
 } from 'components/Form/contexts';
-import { useAddNotification } from 'components/Notifications/contexts';
-// react
-import { memo, useCallback } from 'react';
-// types
-import type { MouseEvent, FormBaseProps } from 'types';
-import type { FormFieldType } from '../FormField/types';
-// utilities
-import { deepEqual } from 'utilities';
 import { validateFields } from 'components/Form/utilities';
+import { useAddNotification } from 'components/Notifications/contexts';
+
+import { Button } from '../Button';
+import type { FormFieldType } from '../FormField/types';
 
 type ActionsProps<TDataType> = FormBaseProps<TDataType>;
 
 const Actions = <TDataType extends Record<string, unknown>>({
   onAccept,
-  onFinish
+  onFinish,
 }: ActionsProps<TDataType>) => {
   const addNotification = useAddNotification();
   const [data] = useFieldsContext<TDataType, TDataType>((store) => store);
@@ -71,12 +73,15 @@ const Actions = <TDataType extends Record<string, unknown>>({
       initialFields,
       onAccept,
       onFinish,
-      submittedCounter
+      submittedCounter,
     ]
   );
 
   return (
-    <Button id='form-button-accept' onClick={onSubmit}>
+    <Button
+      id='form-button-accept'
+      onClick={onSubmit}
+    >
       Accept
     </Button>
   );

@@ -1,17 +1,19 @@
 // components
-import { Select } from 'components/Form/components/Select';
 // contexts
-import { useFormMetaContext, useFieldsContext, FormMetaType } from 'contexts';
+import { FormMetaType,useFieldsContext, useFormMetaContext } from 'contexts';
 // hooks
 import { useCallback, useMemo } from 'hooks';
-// types
-import type { FormFieldProps } from './FormField.types';
-import type { FieldBaseValueType } from 'components/Form/components/FormField/types';
 // utilities
 import { memo } from 'utilities';
-import { getErrorField, validateField } from 'components/Form/utilities';
+
+import type { FieldBaseValueType } from 'components/Form/components/FormField/types';
+import { Select } from 'components/Form/components/Select';
 // styles
 import { TextInputStyled } from 'components/Form/components/TextInput/styles';
+import { getErrorField, validateField } from 'components/Form/utilities';
+
+// types
+import type { FormFieldProps } from './FormField.types';
 
 type RecordType = Record<string, FieldBaseValueType>;
 

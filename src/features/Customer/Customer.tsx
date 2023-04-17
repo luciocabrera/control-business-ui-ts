@@ -1,28 +1,30 @@
 // components
-import { PageSpinner, CustomerActions, ErrorDisplay } from 'components';
-import Form from 'components/Form/Form/Form';
+// react
+import { useCallback } from 'react';
 // contexts
-import { useAddNotification, useAddToast, FormContextProvider } from 'contexts';
+import { FormContextProvider,useAddNotification, useAddToast } from 'contexts';
 // hooks
 import {
   useFetchCustomer,
-  usePostCustomer,
-  useRefreshCustomers,
-  useRefreshCustomer,
   useNavigate,
-  useParams
+  useParams,
+  usePostCustomer,
+  useRefreshCustomer,
+  useRefreshCustomers,
 } from 'hooks';
-import { useCustomerConfig } from './hooks';
 // icons
 import { CustomerIcon } from 'icons';
-// react
-import { useCallback } from 'react';
 // types
 import type {
   APiResponseErrorType,
   CustomerCreateType,
-  CustomerFormType
+  CustomerFormType,
 } from 'types';
+
+import { CustomerActions, ErrorDisplay,PageSpinner } from 'components';
+import Form from 'components/Form/Form/Form';
+
+import { useCustomerConfig } from './hooks';
 
 const Customer = () => {
   const { customerId } = useParams();
@@ -73,7 +75,7 @@ const Customer = () => {
         titleId: typeof titleId === 'string' ? parseInt(titleId, 10) : titleId,
         addresses: [{ ...defaultAddress, main: true }],
         phones: phone ? [{ phone, main: true }] : [],
-        emails: email ? [{ email, main: true }] : []
+        emails: email ? [{ email, main: true }] : [],
       };
       if (isCreating) {
         body.createdBy = 1;
@@ -112,7 +114,7 @@ const Customer = () => {
       navigate,
       postCustomer,
       refreshCustomer,
-      refreshCustomers
+      refreshCustomers,
     ]
   );
 

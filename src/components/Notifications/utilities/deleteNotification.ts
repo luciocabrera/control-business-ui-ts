@@ -3,7 +3,7 @@ import type { TNotification } from '../types';
 
 export const deleteNotification = ({
   id,
-  notifications
+  notifications,
 }: {
   id: number;
   notifications: TNotification[];

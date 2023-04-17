@@ -32,7 +32,7 @@ export const groupByArrayToDataList = <T>(
       } else {
         previous.push({
           groupName: currentItem[group as keyof T] as unknown as string,
-          children: [currentItem]
+          children: [currentItem],
         });
       }
       return previous;

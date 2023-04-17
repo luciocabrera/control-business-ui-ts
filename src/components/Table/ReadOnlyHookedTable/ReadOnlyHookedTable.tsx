@@ -1,10 +1,7 @@
-// components
-import ReadOnlyTable from '../ReadOnlyTable/ReadOnlyTable';
-// react
 import { memo, type RefObject } from 'react';
-// hooks
 import { isInfiniteResponse, useDebounce } from 'hooks';
-// types
+
+import ReadOnlyTable from '../ReadOnlyTable/ReadOnlyTable';
 import type { TableWithDataHook } from '../table.types';
 
 const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
@@ -14,7 +11,7 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
   renderSubComponent,
   getRowCanExpand,
   showHeader = true,
-  dataHook
+  dataHook,
 }: TableWithDataHook<TData>) => {
   const isInfinite = isInfiniteResponse(dataHook);
 

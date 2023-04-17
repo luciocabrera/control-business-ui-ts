@@ -1,21 +1,21 @@
 // components
-import { Select } from '../Select';
-import { TextInput } from '../TextInput';
-// contexts
-
-// types
-import type { FieldBaseValueType, FormFieldProps } from './types';
-
+import { useCallback } from 'react';
 // utilities
 import { memo } from 'utilities';
-import { useCallback } from 'react';
 
-import { getErrorField, validateField } from 'components/Form/utilities';
 import {
   type FormMetaType,
   useFieldsContext,
-  useFormMetaContext
+  useFormMetaContext,
 } from 'components/Form/contexts';
+import { getErrorField, validateField } from 'components/Form/utilities';
+
+import { Select } from '../Select';
+import { TextInput } from '../TextInput';
+
+// contexts
+// types
+import type { FieldBaseValueType, FormFieldProps } from './types';
 
 const FormField = memo(({ field, ...props }: FormFieldProps) => {
   const {
@@ -28,7 +28,7 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
     normalize,
     rules,
     textAlign,
-    required
+    required,
   } = field;
 
   const [fieldValue, setStore] = useFieldsContext<

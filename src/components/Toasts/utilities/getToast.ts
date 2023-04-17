@@ -1,5 +1,6 @@
-import { checkImg, errorImg, infoImg, warningImg } from 'assets';
 import { ReactNode } from 'react';
+import { checkImg, errorImg, infoImg, warningImg } from 'assets';
+
 import type { TToast, TToastType } from '../types';
 
 export const getToast = (
@@ -17,7 +18,7 @@ export const getToast = (
         title: title || 'Success',
         description: description,
         backgroundColor: '#5cb85c',
-        icon: checkImg
+        icon: checkImg,
       };
       break;
     case 'danger':
@@ -27,7 +28,7 @@ export const getToast = (
         title: title || 'Danger',
         description: description,
         backgroundColor: '#d9534f',
-        icon: errorImg
+        icon: errorImg,
       };
       break;
     case 'info':
@@ -36,7 +37,7 @@ export const getToast = (
         title: title || 'Info',
         description: description,
         backgroundColor: '#5bc0de',
-        icon: infoImg
+        icon: infoImg,
       };
       break;
     case 'warning':
@@ -45,7 +46,7 @@ export const getToast = (
         title: title || 'Warning',
         description: description,
         backgroundColor: '#f0ad4e',
-        icon: warningImg
+        icon: warningImg,
       };
       break;
     default:
@@ -54,7 +55,7 @@ export const getToast = (
         title: title || 'Default',
         description: description,
         backgroundColor: '#5bc0de',
-        icon: infoImg
+        icon: infoImg,
       };
       break;
   }

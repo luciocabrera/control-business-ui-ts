@@ -12,7 +12,7 @@ export const getFormattedNumber = (
     case 'currency':
       return new Intl.NumberFormat(locale, {
         style: 'currency',
-        currency: 'EUR'
+        currency: 'EUR',
       }).format(sanitizedValue);
     case 'number':
     default:

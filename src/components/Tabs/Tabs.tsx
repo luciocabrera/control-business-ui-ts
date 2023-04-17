@@ -1,4 +1,5 @@
 import { ReactNode, useState } from 'react';
+
 import { ButtonGroup, Tab, TabsStyled } from './Tabs.styles';
 
 export type TabType = {

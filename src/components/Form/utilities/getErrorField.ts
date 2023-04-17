@@ -1,6 +1,6 @@
 import {
   FormFieldBaseType,
-  FormFieldErrorType
+  FormFieldErrorType,
 } from '../components/FormField/types';
 
 export const getErrorField = (
@@ -15,7 +15,7 @@ export const getErrorField = (
       .map((errorFiltered) => {
         return {
           hasErrors: errorFiltered.hasErrors,
-          errorMessage: errorFiltered.errorMessage
+          errorMessage: errorFiltered.errorMessage,
         };
       })[0] || defaultError
   );

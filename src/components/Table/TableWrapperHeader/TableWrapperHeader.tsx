@@ -1,15 +1,16 @@
 // components
-import Header from 'components/Header/Header';
-import IconButton from 'components/IconButton/IconButton';
-import { FilterIcon } from 'icons';
-// contexts
-import { TableContextActionKind, useTableContext } from 'contexts';
 // react
 import { memo, useCallback } from 'react';
+// contexts
+import { TableContextActionKind, useTableContext } from 'contexts';
+import { FilterIcon } from 'icons';
 // styles
 import { TableActionsStyled } from 'styles';
 // types
 import type { ReactElement } from 'types';
+
+import Header from 'components/Header/Header';
+import IconButton from 'components/IconButton/IconButton';
 
 type TableWrapperHeaderProps = {
   actions?: ReactElement;
@@ -18,7 +19,7 @@ type TableWrapperHeaderProps = {
 const TableWrapperHeader = memo(({ actions }: TableWrapperHeaderProps) => {
   const {
     state: { allowFilters, title },
-    dispatch
+    dispatch,
   } = useTableContext();
 
   const onSetShowFilters = useCallback(() => {

@@ -1,26 +1,30 @@
 // components
-import { Portal, ReadOnlyTable, IconButton } from 'components';
-import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 // contexts
 import { useFieldsContext } from 'contexts';
 // hooks
 import { useCallback, useMemo, useState } from 'hooks';
-import { useInvoiceDetailsConfig } from './hooks/useInvoiceDetailsConfig';
 // icons
-import { CopyIcon, NewIcon, EditIcon, DeleteIcon } from 'icons';
+import { CopyIcon, DeleteIcon,EditIcon, NewIcon } from 'icons';
 // types
 import type {
+  CellContext,
+  ColumnDef,
   InvoiceFormType,
   InvoicesDetails,
-  ColumnDef,
-  CellContext
 } from 'types';
-import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
-// styles
-import styles from './InvoiceDetailsField.module.css';
-import { FieldGroupStyled } from 'components/Form/components/FormFields/styles';
 // utilities
 import { memo } from 'utilities';
+
+import { IconButton,Portal, ReadOnlyTable } from 'components';
+import { FieldGroupStyled } from 'components/Form/components/FormFields/styles';
+
+import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
+
+import { useInvoiceDetailsConfig } from './hooks/useInvoiceDetailsConfig';
+import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
+
+// styles
+import styles from './InvoiceDetailsField.module.css';
 
 const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
@@ -137,8 +141,8 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
         header: 'Actions',
         sort: false,
         enableResizing: false,
-        cell: getActionsCell
-      }
+        cell: getActionsCell,
+      },
     ],
     [columnsDetails, getActionsCell]
   );
@@ -148,7 +152,10 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
   const labelWithAdd = (
     <div className={styles['label-wrapper']}>
       <span>Details</span>
-      <div id='icon-button' className={styles.icon}>
+      <div
+        id='icon-button'
+        className={styles.icon}
+      >
         <IconButton
           id='new-invoice-detail'
           icon={<NewIcon />}

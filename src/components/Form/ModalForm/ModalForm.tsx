@@ -1,10 +1,8 @@
-// components
-import { Overlay } from 'components';
-// react
 import { memo } from 'react';
-// types
 import type { ReactNode } from 'types';
-// styles
+
+import { Overlay } from 'components';
+
 import { FormWrapper } from './styles';
 
 type ModalWrapperProps = {

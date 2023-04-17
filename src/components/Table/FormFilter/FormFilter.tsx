@@ -1,15 +1,16 @@
 // components
-import { Form } from 'components/Form/Form';
-// contexts
-import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
-import { FormContextProvider, useAddNotification } from 'contexts';
 // react
 import { useCallback, useMemo } from 'react';
+import { FormContextProvider, useAddNotification } from 'contexts';
+// contexts
+import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
+
+import { Form } from 'components/Form/Form';
 
 const FormFilter = () => {
   const {
     state: { columnFilters, showColumnFilters, columnMeta },
-    dispatch
+    dispatch,
   } = useTableContext();
 
   const addNotification = useAddNotification();
@@ -32,7 +33,7 @@ const FormFilter = () => {
         accessor: filter.id,
         label: filter.name,
         type: filter.type ?? 'text',
-        options: filter.options
+        options: filter.options,
       })),
     [columnMeta]
   );
@@ -45,7 +46,7 @@ const FormFilter = () => {
           .filter((fc) => fc.value);
         dispatch({
           type: TableContextActionKind.SetColumnFilters,
-          payload: { columnFilters }
+          payload: { columnFilters },
         });
       } catch (errorInfo) {
         addNotification?.(
