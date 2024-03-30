@@ -1,4 +1,4 @@
-import type { ForwardedRef,ReactElement } from 'types';
+import type { ForwardedRef, ReactElement } from 'types';
 
 import type { FormFieldBaseType } from '../../FormField/types';
 

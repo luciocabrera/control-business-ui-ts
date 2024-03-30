@@ -2,7 +2,7 @@
 // react
 import { useCallback } from 'react';
 // contexts
-import { FormContextProvider,useAddNotification, useAddToast } from 'contexts';
+import { FormContextProvider, useAddNotification, useAddToast } from 'contexts';
 // hooks
 import {
   useFetchCustomer,
@@ -21,7 +21,7 @@ import type {
   CustomerFormType,
 } from 'types';
 
-import { CustomerActions, ErrorDisplay,PageSpinner } from 'components';
+import { CustomerActions, ErrorDisplay, PageSpinner } from 'components';
 import Form from 'components/Form/Form/Form';
 
 import { useCustomerConfig } from './hooks';

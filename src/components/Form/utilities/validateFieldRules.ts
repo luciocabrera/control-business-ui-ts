@@ -26,14 +26,14 @@ export const validateFieldRules = <T>(field: FormFieldBaseType, data: T) => {
           `The ${field.label}'s length must be exactly ${rule.value} characters!`;
       }
     if (rule.type === 'minLength')
-      if (fieldValue.length < rule.value) {
+      if (fieldValue.length < (rule.value as unknown as number)) {
         hasErrors = true;
         errorMessage =
           rule.message ||
           `The ${field.label}'s length must be greater than ${rule.value} characters!`;
       }
     if (rule.type === 'maxLength')
-      if (fieldValue.length > rule.value) {
+      if (fieldValue.length > (rule.value as unknown as number)) {
         hasErrors = true;
         errorMessage =
           rule.message ||

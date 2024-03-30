@@ -28,7 +28,7 @@ const NotificationsContext = createContext<TStoreReturn | null>(null);
 
 export const useNotificationsStore = <
   SelectorOutput,
-  TDataType = TNotifications
+  TDataType = TNotifications,
 >(
   selector: (store: TDataType) => SelectorOutput
 ): UsesStore<SelectorOutput, TDataType> => {

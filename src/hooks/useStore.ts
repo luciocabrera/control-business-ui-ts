@@ -36,5 +36,5 @@ export type TStoreReturn = ReturnType<typeof useStore>;
 
 export type UsesStore<SelectorOutput, TData> = [
   SelectorOutput,
-  (value: Partial<TData>) => void
+  (value: Partial<TData>) => void,
 ];

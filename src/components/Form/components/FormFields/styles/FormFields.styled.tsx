@@ -29,7 +29,7 @@ export const FieldGroupStyled = styled.fieldset`
   }
 `;
 
-export const CustomFieldWrapper = styled.div`
+export const CustomFieldWrapper = styled.div<{ width?: number }>`
   container-type: inline-size;
   background: var(--form-bg-color);
   padding: 0;
@@ -37,7 +37,7 @@ export const CustomFieldWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: ${({ width }: { width?: number }) => width || '100'}%;
+  width: ${({ width }) => width || '100'}%;
   align-content: flex-start;
   align-items: flex-start;
 `;

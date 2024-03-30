@@ -1,5 +1,5 @@
 // components
-import { Overlay,Spinner } from 'components';
+import { Overlay, Spinner } from 'components';
 
 const FallBack = () => (
   <Overlay>

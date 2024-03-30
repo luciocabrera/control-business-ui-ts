@@ -2,7 +2,7 @@
 // utilities
 import { memo } from 'utilities';
 
-import { NavBar,Outlet } from 'components';
+import { NavBar, Outlet } from 'components';
 
 // routes
 import routes from '../../root/routes';

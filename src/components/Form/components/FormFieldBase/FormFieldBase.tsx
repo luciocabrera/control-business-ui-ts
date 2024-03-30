@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 // styles
-import { ErrorContainer,FieldSetStyled, HelperTextContainer } from './styles';
+import { ErrorContainer, FieldSetStyled, HelperTextContainer } from './styles';
 // types
 import type { FormFieldBaseProps } from './types';
 

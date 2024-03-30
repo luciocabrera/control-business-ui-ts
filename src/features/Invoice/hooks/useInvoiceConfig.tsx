@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 // hooks
 import { useFetchCustomers } from 'hooks';
 // types
-import type { DateParameterType,InvoiceType } from 'types';
+import type { DateParameterType, InvoiceType } from 'types';
 // utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
 

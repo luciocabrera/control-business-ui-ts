@@ -1,9 +1,6 @@
-// styles
-// react
 import { memo } from 'react';
 
 import { ButtonStyled } from './styles';
-// types
 import type { ButtonProps } from './types';
 
 export const Button = memo(

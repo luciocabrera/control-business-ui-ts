@@ -23,7 +23,10 @@ const customStyles = ({
   }
 };
 
-export const ButtonStyled = styled.button`
+export const ButtonStyled = styled.button<{
+  inverse: boolean;
+  warning: boolean;
+}>`
   border-radius: var(--border-radius);
   padding: 0.5rem 1rem;
   cursor: pointer;

@@ -5,7 +5,7 @@ import { detailsViewImg } from 'assets';
 // contexts
 import { FormContextProvider } from 'contexts';
 // hooks
-import { useFetchProducts,useParams } from 'hooks';
+import { useFetchProducts, useParams } from 'hooks';
 // types
 import type {
   InvoiceDetailForm as InvoiceDetailFormType,

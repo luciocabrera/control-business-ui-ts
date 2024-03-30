@@ -1,18 +1,13 @@
-// components
-// react
 import { useCallback, useMemo } from 'react';
-// contexts
-import { FormMetaType,useFieldsContext, useFormMetaContext } from 'contexts';
+import { FormMetaType, useFieldsContext, useFormMetaContext } from 'contexts';
 import type { DateParameterType, InvoiceDetailForm, ProductType } from 'types';
-// utilities
-import { getDateAsString,memo } from 'utilities';
+import { getDateAsString, memo } from 'utilities';
 
 import type { FieldBaseValueType } from 'components/Form/components/FormField/types';
 import { Select } from 'components/Form/components/Select';
 import { TextInput } from 'components/Form/components/TextInput';
 import { getErrorField, validateField } from 'components/Form/utilities';
 
-// types
 import type { InvoiceDetailProductProps } from './InvoiceDetailProduct.types';
 
 const InvoiceDetailProduct = memo(

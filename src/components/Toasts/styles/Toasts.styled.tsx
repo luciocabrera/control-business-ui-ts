@@ -59,7 +59,7 @@ const complexMixin = ({ position }: { position: string }) => {
   }
 };
 
-export const NotificationContainer = styled.div`
+export const NotificationContainer = styled.div<{ position: string }>`
   font-size: 14px;
   box-sizing: border-box;
   position: fixed;
@@ -87,7 +87,10 @@ export const NotificationContainer = styled.div`
   ${complexMixin}
 `;
 
-export const Notification = styled.div`
+export const Notification = styled.div<{
+  position: string;
+  backgroundColor: string;
+}>`
   background: #fff;
   transition: 0.3s ease;
   position: relative;
@@ -104,12 +107,7 @@ export const Notification = styled.div`
   opacity: 0.9;
   background-position: 15px;
   background-repeat: no-repeat;
-  background-color: ${({
-    backgroundColor,
-  }: {
-    position: string;
-    backgroundColor: string;
-  }) => backgroundColor};
+  background-color: ${({ backgroundColor }) => backgroundColor};
 
   height: 50px;
   width: 365px;

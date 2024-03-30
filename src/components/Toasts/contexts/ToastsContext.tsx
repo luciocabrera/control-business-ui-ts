@@ -1,19 +1,14 @@
-// components
-// types
 import type { ReactNode } from 'react';
-// react
 import {
   createContext,
   useCallback,
   useContext,
   useSyncExternalStore,
 } from 'react';
-// hooks
 import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
 
 import Toasts from '../Toasts';
 import type { TToast, TToasts, TToastType } from '../types';
-// utilities
 import { getToast } from '../utilities/getToast';
 
 type ToastsContextProviderProps = {

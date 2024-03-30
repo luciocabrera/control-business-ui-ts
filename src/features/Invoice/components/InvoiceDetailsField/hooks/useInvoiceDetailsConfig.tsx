@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 // types
-import type { ColumnDef,InvoicesDetails } from 'types';
+import type { ColumnDef, InvoicesDetails } from 'types';
 
 // utils
 import {

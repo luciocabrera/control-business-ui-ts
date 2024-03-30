@@ -1,4 +1,4 @@
-import type { MouseEventHandler,ReactNode } from 'types';
+import type { MouseEventHandler, ReactNode } from 'types';
 export type ModalProps = {
   title?: string;
   message?: ReactNode;

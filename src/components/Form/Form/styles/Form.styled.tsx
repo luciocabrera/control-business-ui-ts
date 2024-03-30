@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const FormStyled = styled.form`
+export const FormStyled = styled.form<{ width?: string; height?: string }>`
   container-type: inline-size;
   container-name: form-container;
   border-radius: 12px;
@@ -8,9 +8,8 @@ export const FormStyled = styled.form`
   box-shadow: 6px 6px 22px 1px rgba(0, 0, 0, 0.4);
   z-index: 10;
   position: relative;
-  ${({ width }: { width?: string }) => (width ? `width: ${width}` : ``)};
-  ${({ height }: { width?: string; height?: string }) =>
-    height ? `height: ${height}` : ``};
+  ${({ width }) => (width ? `width: ${width}` : ``)};
+  ${({ height }) => (height ? `height: ${height}` : ``)};
   max-width: 95%;
   max-height: 95%;
   top: 50%;
@@ -42,7 +41,9 @@ export const FormStyled = styled.form`
     padding: 0.25rem 2rem;
     display: flex;
     gap: 1rem;
-    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 46%), 0 2px 10px 0 rgb(0 0 0 / 42%);
+    box-shadow:
+      0 2px 5px 0 rgb(0 0 0 / 46%),
+      0 2px 10px 0 rgb(0 0 0 / 42%);
     align-content: center;
     align-items: center;
     flex-wrap: nowrap;

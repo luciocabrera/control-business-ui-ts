@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-export const Tab = styled.button`
+export const Tab = styled.button<{ active: boolean }>`
   font-size: 20px;
   padding: 10px 60px;
   cursor: pointer;
@@ -7,7 +7,7 @@ export const Tab = styled.button`
   background: white;
   border: 0;
   outline: 0;
-  ${({ active }: { active: boolean }) =>
+  ${({ active }) =>
     active &&
     `
     border-bottom: 2px solid black;

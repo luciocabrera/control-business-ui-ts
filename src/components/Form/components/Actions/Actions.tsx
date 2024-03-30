@@ -2,7 +2,7 @@
 // react
 import { memo, useCallback } from 'react';
 // types
-import type { FormBaseProps,MouseEvent } from 'types';
+import type { FormBaseProps, MouseEvent } from 'types';
 // utilities
 import { deepEqual } from 'utilities';
 

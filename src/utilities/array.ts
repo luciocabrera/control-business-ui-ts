@@ -2,15 +2,18 @@ export const groupBy = <T>(
   array: T[],
   groupingKey: ((item: T) => string) | string
 ) =>
-  array.reduce((previous, currentItem) => {
-    const group =
-      typeof groupingKey === 'function'
-        ? groupingKey(currentItem)
-        : groupingKey;
-    if (!previous[group]) previous[group] = [];
-    previous[group].push(currentItem);
-    return previous;
-  }, {} as Record<string, T[]>);
+  array.reduce(
+    (previous, currentItem) => {
+      const group =
+        typeof groupingKey === 'function'
+          ? groupingKey(currentItem)
+          : groupingKey;
+      if (!previous[group]) previous[group] = [];
+      previous[group].push(currentItem);
+      return previous;
+    },
+    {} as Record<string, T[]>
+  );
 
 export const groupByArrayToDataList = <T>(
   array: T[],

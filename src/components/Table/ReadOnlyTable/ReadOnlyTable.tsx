@@ -1,9 +1,5 @@
-// components
-// react
 import { Fragment, useEffect, useRef, useState } from 'react';
-// react virtual
 import { useVirtual } from 'react-virtual';
-// react table
 import {
   flexRender,
   getCoreRowModel,
@@ -13,20 +9,16 @@ import {
   type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-// contexts
 import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
 
 import FallBack from 'components/FallBack/FallBack';
 
 import FormFilter from '../FormFilter/FormFilter';
-// types
 import type { ReadOnlyTableType } from '../table.types';
 import TableHead from '../TableHead/TableHead';
 import TableWrapperHeader from '../TableWrapperHeader/TableWrapperHeader';
-// utilities
 import fuzzyFilter from '../utilities/fuzzyFilter';
 
-// styles
 import styles from '../table.module.css';
 
 const ReadOnlyTable = <TData extends Record<string, unknown>>({

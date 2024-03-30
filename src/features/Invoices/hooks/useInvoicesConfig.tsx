@@ -1,7 +1,7 @@
 // react
 import { useMemo } from 'react';
 // types
-import type { ColumnDef, ColumnMetaState,InvoiceType } from 'types';
+import type { ColumnDef, ColumnMetaState, InvoiceType } from 'types';
 import { isDateBetween } from 'utilities';
 
 // utilities

@@ -4,7 +4,7 @@ import { useFieldsContext } from 'contexts';
 // hooks
 import { useCallback, useMemo, useState } from 'hooks';
 // icons
-import { CopyIcon, DeleteIcon,EditIcon, NewIcon } from 'icons';
+import { CopyIcon, DeleteIcon, EditIcon, NewIcon } from 'icons';
 // types
 import type {
   CellContext,
@@ -15,7 +15,7 @@ import type {
 // utilities
 import { memo } from 'utilities';
 
-import { IconButton,Portal, ReadOnlyTable } from 'components';
+import { IconButton, Portal, ReadOnlyTable } from 'components';
 import { FieldGroupStyled } from 'components/Form/components/FormFields/styles';
 
 import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';

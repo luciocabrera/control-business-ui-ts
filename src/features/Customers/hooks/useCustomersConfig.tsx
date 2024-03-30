@@ -1,7 +1,7 @@
 // react
 import { useMemo } from 'react';
 // types
-import type { ColumnDef, ColumnMetaState,CustomerType } from 'types';
+import type { ColumnDef, ColumnMetaState, CustomerType } from 'types';
 
 // utilities
 import { getActionsCell } from '../utilities';

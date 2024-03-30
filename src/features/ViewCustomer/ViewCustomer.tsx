@@ -4,13 +4,13 @@ import { useCallback } from 'react';
 // contexts
 import { FormContextProvider } from 'contexts';
 // hooks
-import { useFetchCustomer, useNavigate,useParams } from 'hooks';
+import { useFetchCustomer, useNavigate, useParams } from 'hooks';
 // icons
 import { CustomerIcon } from 'icons';
 // types
 import type { CustomerFormType } from 'types';
 
-import { CustomerActions,PageSpinner } from 'components';
+import { CustomerActions, PageSpinner } from 'components';
 import Form from 'components/Form/Form/Form';
 
 import { useViewCustomerConfig } from './hooks';

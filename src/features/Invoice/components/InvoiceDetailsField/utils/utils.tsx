@@ -1,4 +1,4 @@
-import type { CellContext,InvoicesDetails } from 'types';
+import type { CellContext, InvoicesDetails } from 'types';
 
 import { DateDisplay, NumberDisplay } from 'components';
 

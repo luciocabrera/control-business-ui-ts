@@ -2,10 +2,10 @@
 // react
 import { useCallback, useMemo } from 'react';
 // contexts
-import { FormMetaType,useFieldsContext, useFormMetaContext } from 'contexts';
+import { FormMetaType, useFieldsContext, useFormMetaContext } from 'contexts';
 import type { InvoiceFormType } from 'types';
 // utilities
-import { getFormattedNumber,memo } from 'utilities';
+import { getFormattedNumber, memo } from 'utilities';
 
 import { TextInput } from 'components/Form/components/TextInput';
 import { getErrorField, validateField } from 'components/Form/utilities';

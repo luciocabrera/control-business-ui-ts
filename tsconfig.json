@@ -37,7 +37,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "noImplicitAny": true,
     "resolveJsonModule": true,
     "isolatedModules": true,

@@ -23,7 +23,7 @@ const spinner = keyframes`
   }
 `;
 
-export const SpinnerStyled = styled.div`
+export const SpinnerStyled = styled.div<{ size: string }>`
   ${sizeSpinner}
   border-radius: 50%;
   border-top: 2px solid #03ade0;

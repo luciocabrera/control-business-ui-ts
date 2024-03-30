@@ -1,12 +1,8 @@
-// components
-// react
 import { useCallback, useEffect } from 'react';
 
 import { Portal } from 'components';
 
-// contexts
 import { useDeleteToast, useToastsStore } from './contexts';
-// styles
 import {
   Notification,
   NotificationContainer,
@@ -14,7 +10,6 @@ import {
   NotificationMessage,
   NotificationTitle,
 } from './styles';
-// types
 import { TToast, TToastProps, TToasts } from './types';
 
 const Toasts = ({ position = 'bottomRight' }: TToastProps) => {

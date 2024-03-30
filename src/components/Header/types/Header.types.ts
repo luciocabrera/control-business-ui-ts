@@ -1,4 +1,4 @@
-import type { MouseEvent, ReactElement,ReactNode } from 'types';
+import type { MouseEvent, ReactElement, ReactNode } from 'types';
 
 export type HeaderProps = {
   icon?: ReactElement | string;

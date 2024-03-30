@@ -148,7 +148,7 @@ export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
 
 export const useApiInfiniteData = <
   TDataType,
-  TPreTransformDataType = TDataType
+  TPreTransformDataType = TDataType,
 >({
   endpointUrl,
   transformData,

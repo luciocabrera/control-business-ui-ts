@@ -1,6 +1,6 @@
 import React from 'react';
 import type { AxisOptions } from 'react-charts';
-import { useFetchInvoicesStats } from 'hooks';
+import {  useFetchInvoicesStatsNew } from 'hooks';
 import type { DataRowChart } from 'types';
 
 import CardChart from 'components/CardChart/CardChart';
@@ -8,7 +8,7 @@ import CardChart from 'components/CardChart/CardChart';
 import styles from './SummaryYearsChart.module.css';
 
 const SummaryYearsChart = () => {
-  const { data, isLoading } = useFetchInvoicesStats('yearly');
+  const { data, isLoading } = useFetchInvoicesStatsNew('yearly');
 
   const primaryAxis = React.useMemo(
     (): AxisOptions<DataRowChart> => ({
@@ -19,7 +19,7 @@ const SummaryYearsChart = () => {
   );
 
   const amountAxes = React.useMemo<
-    AxisOptions<(typeof data.amounts)[number]['data'][number]>[]
+    AxisOptions<(typeof data)[number]['data'][number]>[]
   >(
     () => [
       {

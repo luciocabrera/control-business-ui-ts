@@ -1,5 +1,3 @@
-// components
-// react
 import { memo } from 'react';
 
 import { Header } from 'components';
@@ -7,9 +5,7 @@ import { Header } from 'components';
 import Actions from '../components/Actions/Actions';
 import FormFields from '../components/FormFields/FormFields';
 
-// styles
 import { FormStyled } from './styles';
-// types
 import type { FormProps } from './types';
 
 const Form = <TData extends Record<string, unknown>>({

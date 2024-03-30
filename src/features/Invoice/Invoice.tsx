@@ -24,7 +24,7 @@ import type {
   InvoicesDetails,
 } from 'types';
 
-import { ErrorDisplay,InvoiceActions, PageSpinner } from 'components';
+import { ErrorDisplay, InvoiceActions, PageSpinner } from 'components';
 import { FormContextProvider } from 'components/Form/contexts';
 import Form from 'components/Form/Form/Form';
 

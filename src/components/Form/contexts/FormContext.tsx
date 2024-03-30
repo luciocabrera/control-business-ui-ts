@@ -17,7 +17,7 @@ import type { ReactElement } from 'types';
 import { Overlay } from 'components';
 
 // hooks
-import { type TStoreReturn,useStore } from '../../../hooks/useStore';
+import { type TStoreReturn, useStore } from '../../../hooks/useStore';
 import { FormFieldType } from '../components/FormField/types';
 // utilities
 import { getInitialData } from '../utilities';
@@ -68,7 +68,7 @@ export const FormContext = createContext<{
 
 type UsesStore<SelectorOutput, TDataType> = [
   SelectorOutput,
-  (value: Partial<TDataType>) => void
+  (value: Partial<TDataType>) => void,
 ];
 
 export const useFieldsContext = <SelectorOutput, TDataType>(
@@ -88,7 +88,7 @@ export const useFieldsContext = <SelectorOutput, TDataType>(
 
 export const useFormMetaContext = <
   SelectorOutput,
-  TDataType extends Record<string, unknown>
+  TDataType extends Record<string, unknown>,
 >(
   selector: (store: TDataType) => SelectorOutput
 ): UsesStore<SelectorOutput, TDataType> => {
