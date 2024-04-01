@@ -1,5 +1,9 @@
 import { memo, useMemo } from 'react';
-import { useFetchInvoicesStatsNew } from 'hooks';
+import {
+  useFetchInvoicesStatsNew,
+  // useFetchInvoicesStatsNewCallback,
+  useState,
+} from 'hooks';
 import {
   Bar,
   CartesianGrid,
@@ -11,7 +15,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import type { InvoicesStats } from 'types';
+import type { ChangeEvent, InvoicesStats } from 'types';
 
 import { ReadOnlyTable } from 'components';
 import CardChart from 'components/CardChart/CardChartNew';
@@ -21,36 +25,76 @@ import { useInvoicesStatsConfig } from './useInvoicesStatsConfig';
 import styles from './CurrentMonthChart.module.css';
 
 const CurrentMonthChart = memo(() => {
-  const { data, isLoading } = useFetchInvoicesStatsNew();
-  const { data: customers } = useFetchInvoicesStatsNew(
-    'customers_current_month'
-  );
+  const [type, setType] = useState('quarter');
+  // const fetchInvoicesStatsNewCallback = useFetchInvoicesStatsNewCallback();
+  const { data, isLoading } = useFetchInvoicesStatsNew(type ?? 'quarter');
+
+  // export const useFetchInvoicesStatsNew = (type = 'daily_current_month') =>
+  //   useApiDataList<InvoicesStats[]>({
+  //     endpointUrl: `${endpoints.invoices}/stats/${type}`,
+  //   });
+
+  // const { data, isLoading } = fetchInvoicesStatsNew(type) as InvoicesStats[];
+  console.log('CurrentMonthChart', { data, type });
   const columns = useInvoicesStatsConfig();
   const dataChart = useMemo(
-    () => data?.filter((stat) => stat.date !== '') || [],
+    () => data?.filter((stat) => stat.period !== '') || [],
     [data]
   );
 
-  console.log('dataChart', { dataChart, data, customers });
+  console.log('dataChart', { dataChart });
+
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { id } = e.target;
+    setType(id);
+  };
 
   if (isLoading) return <>Loading.................</>;
 
   return (
     <div className={styles['section-wrapper']}>
+      <div>
+        <label htmlFor='monthly'>Monthly</label>
+        <input
+          id='monthly'
+          name='analysisType'
+          type='radio'
+          value={type === 'monthly' ? 'monthly' : ''}
+          onChange={onInputChange}
+        />
+        <label htmlFor='quarter'>Quarter</label>
+        <input
+          id='quarter'
+          name='analysisType'
+          type='radio'
+          value={type === 'quarter' || type.length === 0 ? 'quarter' : ''}
+          onChange={onInputChange}
+        />
+
+        <label htmlFor='yearly'>Yearly</label>
+        <input
+          id='yearly'
+          name='analysisType'
+          type='radio'
+          value={type === 'yearly' ? 'yearly' : ''}
+          onChange={onInputChange}
+        />
+      </div>
       <div
+        className={styles['section-column']}
         data-dashboard-role='table'
         data-parent='section-wrapper'
-        className={styles['section-column']}
       >
         <div data-parent='section-wrapper'>
           <ReadOnlyTable<InvoicesStats>
-            data={data}
             columns={columns}
-            showHeader={true}
+            data={data}
+            height='calc(100vh - 120px)'
             isLoading={isLoading}
+            showHeader={true}
           />
         </div>
-        <div
+        {/* <div
           data-parent='section-wrapper'
           className={styles['card-chart-wrapper']}
         >
@@ -72,7 +116,7 @@ const CurrentMonthChart = memo(() => {
             >
               <CartesianGrid strokeDasharray='3 3' />
               <XAxis
-                dataKey='date'
+                dataKey='year'
                 padding={{ left: 15, right: 15 }}
               />
               <YAxis />
@@ -90,49 +134,33 @@ const CurrentMonthChart = memo(() => {
                 fill='#82ca9d'
                 name='Taxes'
               />
-              <Bar
-                dataKey='totalSum'
-                fill='#ffc658'
-                name='Total'
-              />
-              <Line
-                type='basis'
-                dataKey='totalAvg'
-                name='Total Avg'
-                stroke='#03542f'
-              />
             </ComposedChart>
           </CardChart>
-        </div>
+        </div> */}
       </div>
 
       <div
-        data-parent='section-wrapper'
         className={styles['section-column']}
+        data-parent='section-wrapper'
       >
         <div
-          data-parent='section-wrapper'
           className={styles['card-chart-wrapper']}
+          data-parent='section-wrapper'
         >
           <CardChart<InvoicesStats>
             data={dataChart}
-            title={'Amounts current month'}
             subtitle={'Sub total, Taxes and Total grouped by Day'}
+            title={'Amounts current month'}
           >
             <ComposedChart
-              width={500}
-              height={300}
               data={dataChart}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
+              height={300}
+              margin={{ bottom: 5, left: 20, right: 30, top: 20 }}
+              width={500}
             >
               <CartesianGrid strokeDasharray='3 3' />
               <XAxis
-                dataKey='date'
+                dataKey='year'
                 padding={{ left: 15, right: 15 }}
               />
               <YAxis />
@@ -140,67 +168,51 @@ const CurrentMonthChart = memo(() => {
               <Legend />
               <Bar
                 dataKey='subtotalSum'
-                stackId='a'
                 fill='#8884d8'
                 name='Sub Total'
+                stackId='a'
               />
               <Bar
                 dataKey='taxesSum'
-                stackId='a'
                 fill='#82ca9d'
                 name='Taxes'
-              />
-              <Bar
-                dataKey='totalSum'
-                fill='#ffc658'
-                name='Total'
-              />
-              <Line
-                type='basis'
-                dataKey='totalAvg'
-                name='Total Avg'
-                stroke='#03542f'
+                stackId='a'
               />
             </ComposedChart>
           </CardChart>
         </div>
         <div
-          data-parent='section-wrapper'
           className={styles['card-chart-wrapper']}
+          data-parent='section-wrapper'
         >
           <CardChart
-            title={'Invoices current month'}
-            subtitle={'Nr of Invoices grouped by Day'}
             data={dataChart}
+            subtitle={'Nr of Invoices grouped by Day'}
+            title={'Invoices current month'}
           >
             <LineChart
               data={dataChart}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
+              margin={{ bottom: 5, left: 20, right: 30, top: 5 }}
             >
               <CartesianGrid strokeDasharray='3 3' />
               <XAxis
-                dataKey='date'
+                dataKey='year'
                 padding={{ left: 15, right: 15 }}
               />
               <YAxis allowDecimals={false} />
               <Tooltip />
               <Legend />
               <Line
-                type='basis'
                 dataKey='invoicesCount'
                 name='Nr of Invoices'
                 stroke='#8884d8'
+                type='basis'
               />
               <Line
-                type='basis'
                 dataKey='quantitySum'
                 name='Nr of Hours'
                 stroke='#82ca9d'
+                type='basis'
               />
             </LineChart>
           </CardChart>

@@ -18,14 +18,43 @@
     "react",
     "@typescript-eslint",
     "react-hooks",
-    "simple-import-sort"
+    "simple-import-sort",
+    "sort-destructure-keys"
   ],
   "rules": {
-    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/array-type": "error",
+    "@typescript-eslint/member-ordering": [
+      "error",
+      { "default": ["signature", "method", "constructor", "field"] }
+    ],
+    "@typescript-eslint/method-signature-style": "error",
     "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/sort-type-constituents": "error",
+    "react/react-in-jsx-scope": "off",
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-handler-names": [
+      "error",
+      {
+        "checkInlineFunction": true,
+        "checkLocalVariables": true,
+        "eventHandlerPrefix": "on"
+      }
+    ],
+    "react/jsx-pascal-case": ["error", {}],
+    "react/jsx-sort-props": [
+      "error",
+      {
+        "callbacksLast": true,
+        "ignoreCase": false,
+        "noSortAlphabetically": false,
+        "reservedFirst": true,
+        "shorthandFirst": true,
+        "shorthandLast": false
+      }
+    ],
+    "react/no-multi-comp": ["error", { "ignoreStateless": true }],
     "simple-import-sort/imports": [
       "error",
       {
@@ -44,6 +73,15 @@
           ["^.+\\.?(css)$"]
         ]
       }
+    ],
+    "sort-destructure-keys/sort-destructure-keys": [
+      2,
+      { "caseSensitive": false }
+    ],
+    "sort-keys": [
+      "error",
+      "asc",
+      { "caseSensitive": true, "minKeys": 2, "natural": false }
     ]
   }
 }

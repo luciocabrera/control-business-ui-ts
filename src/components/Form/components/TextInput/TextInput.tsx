@@ -1,13 +1,9 @@
-// components
-// react
 import { forwardRef, memo } from 'react';
 
 import type { FieldBaseValueType } from '../FormField/types';
 import FormFieldBase from '../FormFieldBase/FormFieldBase';
 
-// styles
 import { TextInputStyled } from './styles';
-// types
 import type { TextInputProps } from './types';
 
 const TextInput = forwardRef(
@@ -17,13 +13,13 @@ const TextInput = forwardRef(
   ) => {
     const {
       accessor,
-      type,
-      readonly,
-      placeholder,
-      value,
-      onChange,
       normalize,
+      onChange,
+      placeholder,
+      readonly,
       rules,
+      type,
+      value,
     } = rest;
 
     const normalizedValue = (normalize?.(value) ??
@@ -36,21 +32,21 @@ const TextInput = forwardRef(
 
     return (
       <FormFieldBase
-        maxLength={maxLength}
         ref={ref}
+        maxLength={maxLength}
         {...rest}
       >
         <TextInputStyled
+          autoComplete='off'
+          id={accessor}
+          maxLength={maxLength}
           name={accessor}
+          placeholder={placeholder}
+          readOnly={readonly}
+          textAlign={textAlign}
+          type={type}
           value={normalizedValue}
           onChange={onChange}
-          maxLength={maxLength}
-          type={type}
-          id={accessor}
-          readOnly={readonly}
-          placeholder={placeholder}
-          autoComplete='off'
-          textAlign={textAlign}
         />
       </FormFieldBase>
     );

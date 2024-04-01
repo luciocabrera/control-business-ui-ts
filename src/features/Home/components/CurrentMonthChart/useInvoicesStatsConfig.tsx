@@ -10,8 +10,8 @@ export const getQuantitySumCell = ({
   },
 }: CellContext<InvoicesStats, unknown>) => (
   <NumberDisplay
-    value={quantitySum}
     output={'number'}
+    value={quantitySum}
   />
 );
 
@@ -21,8 +21,8 @@ export const getInvoicesCell = ({
   },
 }: CellContext<InvoicesStats, unknown>) => (
   <NumberDisplay
-    value={invoicesCount}
     output={'number'}
+    value={invoicesCount}
   />
 );
 
@@ -32,8 +32,8 @@ export const getSubtotalCell = ({
   },
 }: CellContext<InvoicesStats, unknown>) => (
   <NumberDisplay
-    value={subtotalSum}
     output={'currency'}
+    value={subtotalSum}
   />
 );
 
@@ -43,8 +43,8 @@ export const getTaxesSumCell = ({
   },
 }: CellContext<InvoicesStats, unknown>) => (
   <NumberDisplay
-    value={taxesSum}
     output={'currency'}
+    value={taxesSum}
   />
 );
 
@@ -54,8 +54,8 @@ export const getTotalSumCell = ({
   },
 }: CellContext<InvoicesStats, unknown>) => (
   <NumberDisplay
-    value={totalSum}
     output={'currency'}
+    value={totalSum}
   />
 );
 
@@ -63,34 +63,42 @@ export const useInvoicesStatsConfig = () =>
   useMemo<ColumnDef<InvoicesStats>[]>(
     () => [
       {
-        accessorKey: 'date',
-        header: 'Date',
+        accessorKey: 'period',
+        header: 'Period',
       },
       {
         accessorKey: 'invoicesCount',
-        header: 'Invoices',
         cell: getInvoicesCell,
+        header: 'Invoices',
+      },
+      {
+        accessorKey: 'invoicesMin',
+        header: 'First Invoice',
+      },
+      {
+        accessorKey: 'invoicesMax',
+        header: 'Last Invoice',
       },
       {
         accessorKey: 'quantitySum',
-        header: 'Nr of Hours',
         cell: getQuantitySumCell,
+        header: 'Nr of Hours',
       },
 
       {
         accessorKey: 'subtotalSum',
-        header: 'Subtotal',
         cell: getSubtotalCell,
+        header: 'Subtotal',
       },
       {
         accessorKey: 'taxesSum',
-        header: 'Taxes',
         cell: getTaxesSumCell,
+        header: 'Taxes',
       },
       {
         accessorKey: 'totalSum',
-        header: 'Total',
         cell: getTotalSumCell,
+        header: 'Total',
       },
     ],
     []

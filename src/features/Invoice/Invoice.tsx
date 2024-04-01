@@ -1,9 +1,5 @@
-// components
-// react
 import { useCallback, useMemo } from 'react';
-// contexts
 import { useAddNotification, useAddToast } from 'contexts';
-// hooks
 import {
   useFetchInvoice,
   useFetchInvoiceRates,
@@ -13,9 +9,7 @@ import {
   useRefreshInvoice,
   useRefreshInvoices,
 } from 'hooks';
-// icons
 import { InvoiceIcon } from 'icons';
-// types
 import type {
   APiResponseErrorType,
   InvoiceCreateType,
@@ -31,7 +25,7 @@ import Form from 'components/Form/Form/Form';
 import { useInvoiceConfig } from './hooks';
 
 const Invoice = () => {
-  const { invoiceId, action } = useParams();
+  const { action, invoiceId } = useParams();
   const taxesPercentage = useFetchInvoiceRates();
 
   const isCreating = invoiceId === 'new' || !invoiceId;
@@ -43,17 +37,17 @@ const Invoice = () => {
 
   const invoiceForm: InvoiceFormType = useMemo(() => {
     if (isCopying && invoice)
-      return { ...invoice, invoiceId: undefined, invoice: '' };
+      return { ...invoice, invoice: '', invoiceId: undefined };
     if (invoice) return { ...invoice };
     return {
-      invoice: '',
-      date: undefined,
       customerId: 0,
+      date: undefined,
       details: [],
+      invoice: '',
       subtotal: 0,
-      total: 0,
       taxes: 0,
       taxesPercentage,
+      total: 0,
     };
   }, [invoice, isCopying, taxesPercentage]);
 
@@ -73,36 +67,37 @@ const Invoice = () => {
     invoiceDetails.map(
       ({
         date,
-        productId,
         description,
-        quantity,
-        priceUnit,
         priceQuantity,
+        priceUnit,
+        productId,
+        quantity,
       }) => ({
         date: date ? new Date(date) : new Date(),
         description,
-        quantity,
-        priceUnit,
         priceQuantity,
+        priceUnit,
+
         productId:
           typeof productId === 'string' ? parseInt(productId, 10) : productId,
+        quantity,
       })
     );
 
-  const handleOnAccept = useCallback(
+  const onAccept = useCallback(
     async (payload: InvoiceFormType) => {
       const calculatedInvoiceId =
         isCreating || isCopying ? undefined : parseInt(invoiceId, 10);
       const { customerId, date, details, ...rest } = payload;
 
       const body: InvoiceCreateType = {
-        invoiceId: calculatedInvoiceId,
-        date: date ? new Date(date) : new Date(),
         customerId:
           typeof customerId === 'string'
             ? parseInt(customerId, 10)
             : customerId,
+        date: date ? new Date(date) : new Date(),
         details: sanitizeInvoiceDetails(details),
+        invoiceId: calculatedInvoiceId,
         ...rest,
       };
 
@@ -146,7 +141,7 @@ const Invoice = () => {
     ]
   );
 
-  const handleOnFinish = useCallback(() => navigate('/invoices'), [navigate]);
+  const onFinish = useCallback(() => navigate('/invoices'), [navigate]);
 
   if ((isLoadingInvoice || !fields) && !isCreating) return <PageSpinner />;
 
@@ -154,18 +149,18 @@ const Invoice = () => {
 
   return (
     <FormContextProvider<InvoiceFormType>
-      initialFields={fields}
       initialData={invoiceForm}
+      initialFields={fields}
     >
       <Form<InvoiceFormType>
+        actions={<InvoiceActions invoice={invoiceForm} />}
+        height='612px'
         icon={<InvoiceIcon />}
         title={title}
-        onAccept={handleOnAccept}
-        actions={<InvoiceActions invoice={invoiceForm} />}
-        onFinish={handleOnFinish}
         viewMode={false}
-        height='612px'
         width='1120px'
+        onAccept={onAccept}
+        onFinish={onFinish}
       />
     </FormContextProvider>
   );

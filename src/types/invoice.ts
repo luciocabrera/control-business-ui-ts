@@ -6,27 +6,27 @@ export type ProductInvoicesDetails = {
   productPrice: number;
 };
 
-export type InvoicesDetails = {
+export type InvoicesDetails = ProductInvoicesDetails & {
   date: string;
   productId: number;
   description: string;
   quantity: number;
   priceUnit: number;
   priceQuantity: number;
-} & ProductInvoicesDetails;
+};
 
 export type InvoiceDetailForm = Omit<
   InvoicesDetails,
-  'product' | 'productNameWithCode' | 'productDescription' | 'productPrice'
+  'product' | 'productDescription' | 'productNameWithCode' | 'productPrice'
 >;
 
 export type InvoiceDetailCreate = Omit<
   InvoicesDetails,
-  | 'product'
-  | 'productNameWithCode'
-  | 'productDescription'
-  | 'productPrice'
   | 'date'
+  | 'product'
+  | 'productDescription'
+  | 'productNameWithCode'
+  | 'productPrice'
 > & { date: Date };
 
 export type InvoiceType = AuditType & {
@@ -44,15 +44,15 @@ export type InvoiceType = AuditType & {
 
 export type InvoiceFormType = Omit<
   InvoiceType,
+  | 'createdAt'
+  | 'createdBy'
+  | 'createdByAlias'
+  | 'customer'
   | 'date'
   | 'invoiceId'
   | 'updatedAt'
-  | 'createdAt'
-  | 'createdBy'
   | 'updatedBy'
-  | 'createdByAlias'
   | 'updatedByAlias'
-  | 'customer'
 > & {
   invoiceId?: number;
   date?: string;
@@ -60,13 +60,13 @@ export type InvoiceFormType = Omit<
 
 export type InvoiceCreateType = Omit<
   InvoiceType,
+  | 'createdAt'
+  | 'createdByAlias'
+  | 'customer'
+  | 'date'
+  | 'details'
   | 'invoiceId'
   | 'updatedAt'
-  | 'createdAt'
-  | 'customer'
-  | 'details'
-  | 'date'
-  | 'createdByAlias'
   | 'updatedByAlias'
 > & {
   date: Date;
@@ -76,6 +76,7 @@ export type InvoiceCreateType = Omit<
 };
 
 export type StatsBase = {
+  period?: string;
   date?: Date | string;
   subtotalSum: number;
   totalSum: number;
@@ -91,25 +92,16 @@ export type StatsBase = {
   totalAvg: number;
   taxesAvg: number;
   invoicesCount: number;
+  invoicesMin: number;
+  invoicesMax: number;
+  type:
+    | 'customers_current_month'
+    | 'daily_current_month'
+    | 'monthly'
+    | 'quarter'
+    | 'yearly';
 };
 
-export type InvoicesStats = StatsBase &
-  (
-    | {
-        type: 'daily_current_month';
-      }
-    | {
-        customer?: string;
-        type: 'customers_current_month';
-      }
-    | {
-        year?: number | string;
-        type: 'yearly';
-      }
-    | {
-        period?: string;
-        type: 'monthly';
-      }
-  );
+export type InvoicesStats = StatsBase;
 
 export type DataRowChart = { date: string; value: number };

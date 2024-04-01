@@ -1,11 +1,6 @@
-// components
-// contexts
 import { TableContextProvider } from 'contexts';
-// hooks
 import { useFetchCustomers, useLocation } from 'hooks';
-// icons
 import { NewIcon } from 'icons';
-// types
 import type { CustomerType } from 'types';
 
 import { Link, Outlet } from 'components';
@@ -25,18 +20,18 @@ const CustomersBase = () => {
   return (
     <>
       <ReadOnlyHookedTable<CustomerType>
-        dataHook={dataHook}
-        columns={columns}
-        height='calc(100vh - 120px)'
         actions={
           <Link
-            to='new'
             aria-label={`New customer`}
             state={{ backgroundLocation: location }}
+            to='new'
           >
             <NewIcon />
           </Link>
         }
+        columns={columns}
+        dataHook={dataHook}
+        height='calc(100vh - 120px)'
       />
       <Outlet />
     </>
@@ -48,9 +43,9 @@ const Customers = () => {
 
   return (
     <TableContextProvider
+      allowFilters={true}
       columnMeta={columnMeta}
       title={title}
-      allowFilters={true}
     >
       <CustomersBase />
     </TableContextProvider>

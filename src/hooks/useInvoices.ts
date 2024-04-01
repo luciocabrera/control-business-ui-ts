@@ -16,7 +16,7 @@ import {
   useApiRequest,
 } from './useApi';
 
-type IdType = string | number;
+type IdType = number | string;
 
 export const useFetchInvoices = () =>
   useApiDataList<InvoiceType[]>({
@@ -29,10 +29,23 @@ export const useRefreshInvoices = () => {
   return useCallback(() => mutate(`${endpoints.invoices}`), [mutate]);
 };
 
-export const useFetchInvoicesStatsNew = (type = 'daily_current_month') =>
-  useApiDataList<InvoicesStats[]>({
+export const useFetchInvoicesStatsNew = (type = 'daily_current_month') => {
+  console.log('useFetchInvoicesStatsNew', { type });
+
+  return useApiDataList<InvoicesStats[]>({
     endpointUrl: `${endpoints.invoices}/stats/${type}`,
   });
+};
+
+export const useFetchInvoicesStatsNewCallback = () => {
+  const { mutate } = useApiRefreshData();
+
+  return useCallback(
+    (type = 'daily_current_month') =>
+      mutate(`${endpoints.invoices}/stats/${type}`),
+    [mutate]
+  );
+};
 
 export const useFetchInvoice = (invoiceId?: IdType) =>
   useApiData<InvoiceType>({
@@ -55,8 +68,8 @@ export const usePostInvoice = () => {
     async (invoice: InvoiceCreateType): Promise<ApiResponse<InvoiceType>> => {
       const { invoiceId, ...rest } = invoice;
       const requestOptions: OptionsType = {
-        method: invoice.invoiceId ? 'PUT' : 'POST',
         body: JSON.stringify(rest),
+        method: invoice.invoiceId ? 'PUT' : 'POST',
       };
       const url = invoiceId
         ? `${endpoints.invoices}/${invoiceId ?? ''}`

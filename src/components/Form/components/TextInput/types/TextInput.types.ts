@@ -7,7 +7,7 @@ import type {
 
 export type TextInputProps = Omit<
   FormFieldBaseType,
-  'options' | 'display' | 'tooltip' | 'value'
+  'display' | 'options' | 'tooltip' | 'value'
 > & {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   textAlign?: string;
