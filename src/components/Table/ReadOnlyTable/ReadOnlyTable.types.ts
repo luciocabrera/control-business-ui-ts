@@ -19,6 +19,7 @@ export type TReadOnlyTable<TData> = {
     size: number | ((_size: number) => number)
   ) => Promise<TData[][] | undefined>;
   showColumns?: boolean;
+  showHeader?: boolean;
   showFilters?: boolean;
   showSorting?: boolean;
   tableHeight?: string;

@@ -53,9 +53,12 @@ export type InvoiceFormType = Omit<
   | 'customer'
   | 'date'
   | 'invoiceId'
+  | 'month'
+  | 'quarter'
   | 'updatedAt'
   | 'updatedBy'
   | 'updatedByAlias'
+  | 'year'
 > & {
   invoiceId?: number;
   date?: string;
@@ -69,8 +72,11 @@ export type InvoiceCreateType = Omit<
   | 'date'
   | 'details'
   | 'invoiceId'
+  | 'month'
+  | 'quarter'
   | 'updatedAt'
   | 'updatedByAlias'
+  | 'year'
 > & {
   date: Date;
   invoiceId?: number;

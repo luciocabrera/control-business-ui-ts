@@ -50,7 +50,6 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   title,
   topRadius,
   visible,
-  visibleRows,
 }: TReadOnlyTable<TData>) => {
   const [grouping, setGrouping] = useState<GroupingState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);

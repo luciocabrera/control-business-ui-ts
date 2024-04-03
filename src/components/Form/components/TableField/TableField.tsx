@@ -70,13 +70,15 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
     return calculatedColumns;
   }, [columns, getActionsCell, readonly]);
 
+  const onLabelWithAddClick = () => setShowDetailForm(true);
+
   const labelWithAdd = (
     <>
       {label}
       {readonly && (
         <button
           type='button'
-          onClick={() => setShowDetailForm(true)}
+          onClick={onLabelWithAddClick}
         >
           Add
         </button>
@@ -91,8 +93,11 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
         <ReadOnlyTable<TData>
           columns={columnsWithActions}
           data={normalizedValue}
+          defaultColumnOrder={[]}
+          hidden={[]}
           isLoading={false}
           showHeader={false}
+          visible={[]}
         />
       </FieldGroupStyled>
       {showDetailForm && (

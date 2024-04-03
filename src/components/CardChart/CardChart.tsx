@@ -17,10 +17,8 @@ type CardChartProps<TData> = {
 
 const CardChart = <TData extends Record<string, unknown>>({
   data,
-  title,
   subtitle,
-  primaryAxis,
-  secondaryAxes,
+  title,
 }: CardChartProps<TData>) => {
   console.log('data', data);
   return (
