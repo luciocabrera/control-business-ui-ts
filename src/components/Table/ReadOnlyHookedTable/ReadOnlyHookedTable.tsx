@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { isInfiniteResponse } from 'hooks';
 
-import ReadOnlyTable from '../new/ReadOnlyTable/ReadOnlyTable';
+import ReadOnlyTable from '../ReadOnlyTable/ReadOnlyTable';
 import type { TableWithDataHook } from '../table.types';
 
 const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({

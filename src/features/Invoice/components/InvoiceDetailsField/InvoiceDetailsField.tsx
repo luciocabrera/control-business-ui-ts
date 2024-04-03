@@ -140,7 +140,7 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     [columnsDetails, getActionsCell]
   );
 
-  const hideDetailForm = useCallback(() => setShowDetailForm(false), []);
+  const onFinish = useCallback(() => setShowDetailForm(false), []);
 
   const labelWithAdd = (
     <div className={styles['label-wrapper']}>
@@ -179,7 +179,7 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
           <InvoiceDetailForm
             detail={detail}
             onAcceptDetail={onAcceptDetail}
-            onFinish={hideDetailForm}
+            onFinish={onFinish}
           />
         </Portal>
       )}
