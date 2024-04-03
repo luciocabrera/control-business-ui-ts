@@ -1,6 +1,5 @@
-import type { RefObject } from 'react';
 import type { ColumnDef, Row } from '@tanstack/react-table';
-import type { ValidDataHookResponse } from 'hooks';
+import type { UseApiDataListResponse, UseApiInfiniteDataResponse } from 'hooks';
 import type { ReactElement } from 'types';
 
 export type MetaType = {
@@ -21,11 +20,13 @@ type TableCore<TData> = {
 export type ReadOnlyTableType<TData> = TableCore<TData> & {
   manualFiltering?: boolean;
   manualSorting?: boolean;
+  isInfinite?: boolean;
   isLoading: boolean;
+  isReachingEnd?: boolean;
   showHeader: boolean;
-  fetchMoreOnBottomReached?: (
-    childRef: RefObject<HTMLDivElement>
-  ) => () => void;
+  setSize?: (
+    size: number | ((_size: number) => number)
+  ) => Promise<TData[][] | undefined>;
 };
 
 export type TableBaseType<TData> = TableCore<TData> & {
@@ -33,7 +34,9 @@ export type TableBaseType<TData> = TableCore<TData> & {
 };
 
 export type TableWithDataHook<TData> = Omit<TableBaseType<TData>, 'data'> & {
-  dataHook: ValidDataHookResponse<TData>;
+  dataHook:
+    | UseApiDataListResponse<TData[]>
+    | UseApiInfiniteDataResponse<TData[]>;
 };
 
 export type TableWithRawData<TData> = TableBaseType<TData>;

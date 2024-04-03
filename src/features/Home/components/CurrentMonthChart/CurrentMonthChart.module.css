@@ -17,10 +17,10 @@
 .section-column {
   width: calc(50% - 0.5rem);
   min-width: 300px;
-  height: 100%;
-  display: grid;
+  display: flex;
   gap: 1rem;
   justify-items: center;
+  flex-wrap: wrap;
 }
 
 .section-wrapper {

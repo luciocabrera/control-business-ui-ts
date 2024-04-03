@@ -1,14 +1,8 @@
-//assets
-// react
 import { useCallback, useMemo, useState } from 'react';
 import { detailsViewImg } from 'assets';
-// contexts
 import { useFieldsContext } from 'contexts';
-// styles
-// types
 import type { CellContext, ColumnDef } from 'types';
 
-// components
 import { Portal, ReadOnlyTable } from 'components';
 
 import { FieldGroupStyled } from '../FormFields/styles';
@@ -16,11 +10,11 @@ import { FieldGroupStyled } from '../FormFields/styles';
 import type { TableFieldProps } from './types';
 
 const TableField = <TData extends Record<string, unknown>, DetailData>({
-  data,
-  normalize,
-  columns,
   accessor,
+  columns,
+  data,
   label,
+  normalize,
   readonly,
   renderDetail,
 }: TableFieldProps<TData, DetailData>) => {
@@ -54,9 +48,9 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
   const getActionsCell = useCallback(
     ({ row: { original } }: CellContext<TData, unknown>) => (
       <img
-        src={detailsViewImg}
         alt=''
         height='18'
+        src={detailsViewImg}
         onClick={() => onRemoveDetail(original)}
       />
     ),
@@ -69,8 +63,8 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
     if (readonly)
       calculatedColumns.push({
         accessorKey: 'actions',
-        header: '',
         cell: getActionsCell,
+        header: '',
       });
 
     return calculatedColumns;
@@ -95,10 +89,10 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
       <FieldGroupStyled key={`table-form-field-${accessor}`}>
         <legend>{labelWithAdd}</legend>
         <ReadOnlyTable<TData>
-          data={normalizedValue}
           columns={columnsWithActions}
-          showHeader={false}
+          data={normalizedValue}
           isLoading={false}
+          showHeader={false}
         />
       </FieldGroupStyled>
       {showDetailForm && (

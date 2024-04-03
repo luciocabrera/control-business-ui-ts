@@ -1,0 +1,35 @@
+.trWrapper {
+  display: flex;
+  position: absolute;
+  width: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.bodyForNotAvailable {
+  height: 300px !important;
+
+  & tr {
+    height: -webkit-fill-available !important;
+    border-bottom: none !important;
+
+    & td {
+      align-content: center !important;
+      align-items: center !important;
+      display: flex !important;
+      height: 100% !important;
+      justify-content: center !important;
+      width: min(100vw, 100%) !important;
+    }
+  }
+}
+
+.isExpanded {
+  background-color: var(--background-color-10) !important;
+  color: white;
+  &:hover {
+    color: white !important;
+  }
+}

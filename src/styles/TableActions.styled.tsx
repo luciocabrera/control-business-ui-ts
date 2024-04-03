@@ -6,12 +6,13 @@ export const TableActionsStyled = styled.div`
   flex-wrap: nowrap;
   align-content: center;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 0;
   margin: 0;
   gap: 1rem;
-  margin-left: 0.2rem;
+  margin-left: 1rem;
   border: none;
+  width: 100%;
 
   a {
     background: transparent;

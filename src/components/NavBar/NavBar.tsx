@@ -2,7 +2,7 @@ import { memo, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import AppIcon from 'icons/AppIcon/AppIcon';
 
-import { NavStyled } from './NavBar.styled';
+import styles from './NavBar.module.css';
 
 type SideNavBarProps = {
   routes: {
@@ -14,15 +14,15 @@ type SideNavBarProps = {
 };
 
 const NavBar = memo(({ routes }: SideNavBarProps) => (
-  <NavStyled>
+  <nav className={styles.container}>
     <ul>
       <li
         key='home'
         id='app-home'
       >
         <Link
-          to='/'
           aria-label={`Go Home`}
+          to='/'
         >
           <AppIcon />
         </Link>
@@ -30,15 +30,15 @@ const NavBar = memo(({ routes }: SideNavBarProps) => (
       {routes.map((route) => (
         <li key={route.text}>
           <Link
-            to={route.path}
             aria-label={`Go to ${route.text}`}
+            to={route.path}
           >
             {route.icon} {route.text}
           </Link>
         </li>
       ))}
     </ul>
-  </NavStyled>
+  </nav>
 ));
 
 NavBar.displayName = 'NavBar';

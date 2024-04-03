@@ -2,14 +2,14 @@ import { useMemo } from 'react';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { InvoicesStats } from 'types';
 
-import { NumberDisplay } from 'components';
+import { NumericDisplay } from 'components';
 
 export const getQuantitySumCell = ({
   row: {
     original: { quantitySum },
   },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay
+  <NumericDisplay
     output={'number'}
     value={quantitySum}
   />
@@ -20,7 +20,7 @@ export const getInvoicesCell = ({
     original: { invoicesCount },
   },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay
+  <NumericDisplay
     output={'number'}
     value={invoicesCount}
   />
@@ -31,7 +31,7 @@ export const getSubtotalCell = ({
     original: { subtotalSum },
   },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay
+  <NumericDisplay
     output={'currency'}
     value={subtotalSum}
   />
@@ -42,7 +42,7 @@ export const getTaxesSumCell = ({
     original: { taxesSum },
   },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay
+  <NumericDisplay
     output={'currency'}
     value={taxesSum}
   />
@@ -53,7 +53,7 @@ export const getTotalSumCell = ({
     original: { totalSum },
   },
 }: CellContext<InvoicesStats, unknown>) => (
-  <NumberDisplay
+  <NumericDisplay
     output={'currency'}
     value={totalSum}
   />
@@ -64,40 +64,51 @@ export const useInvoicesStatsConfig = () =>
     () => [
       {
         accessorKey: 'period',
+        enableGrouping: false,
         header: 'Period',
       },
       {
         accessorKey: 'invoicesCount',
         cell: getInvoicesCell,
+        enableGrouping: false,
         header: 'Invoices',
       },
       {
         accessorKey: 'invoicesMin',
+        enableGrouping: false,
         header: 'First Invoice',
       },
       {
         accessorKey: 'invoicesMax',
+        enableGrouping: false,
         header: 'Last Invoice',
       },
       {
         accessorKey: 'quantitySum',
         cell: getQuantitySumCell,
+        enableGrouping: false,
         header: 'Nr of Hours',
       },
 
       {
         accessorKey: 'subtotalSum',
+        aggregationFn: 'sum',
         cell: getSubtotalCell,
+        enableGrouping: false,
         header: 'Subtotal',
       },
       {
         accessorKey: 'taxesSum',
+        aggregationFn: 'sum',
         cell: getTaxesSumCell,
+        enableGrouping: false,
         header: 'Taxes',
       },
       {
         accessorKey: 'totalSum',
+        aggregationFn: 'sum',
         cell: getTotalSumCell,
+        enableGrouping: false,
         header: 'Total',
       },
     ],

@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { AxisOptions, Chart } from 'react-charts';
 
 import styles from './CardChart.module.css';
 
@@ -12,8 +11,8 @@ type CardChartProps<TData> = {
   title: string;
   subtitle: string;
   data: Series<TData>[];
-  primaryAxis: AxisOptions<TData>;
-  secondaryAxes: AxisOptions<TData>[];
+  // primaryAxis: AxisOptions<TData>;
+  // secondaryAxes: AxisOptions<TData>[];
 };
 
 const CardChart = <TData extends Record<string, unknown>>({
@@ -33,15 +32,15 @@ const CardChart = <TData extends Record<string, unknown>>({
         </div>
       )}
       <div className={styles['card-chart-body']}>
-        {data?.length > 0 && (
-          <Chart
-            options={{
-              data,
-              primaryAxis,
-              secondaryAxes,
-            }}
-          />
-        )}
+        {/* {data?.length > 0 && (
+          // <Chart
+          //   options={{
+          //     data,
+          //     primaryAxis,
+          //     secondaryAxes,
+          //   }}
+          // />
+        )} */}
       </div>
     </div>
   );

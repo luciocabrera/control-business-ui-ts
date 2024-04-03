@@ -1,11 +1,6 @@
-// components
-// contexts
 import { TableContextProvider } from 'contexts';
-// hooks
 import { useFetchInvoices, useLocation } from 'hooks';
-// icons
 import { NewIcon } from 'icons';
-// types
 import type { InvoiceType } from 'types';
 
 import { Link, Outlet } from 'components';
@@ -23,18 +18,18 @@ const InvoicesBase = () => {
   return (
     <>
       <ReadOnlyHookedTable<InvoiceType>
-        dataHook={dataHook}
-        columns={columns}
-        height='calc(100vh - 120px)'
         actions={
           <Link
-            to='new'
             aria-label={`New invoice`}
             state={{ backgroundLocation: location }}
+            to='new'
           >
             <NewIcon />
           </Link>
         }
+        columns={columns}
+        dataHook={dataHook}
+        height='calc(100vh - 120px)'
       />
       <Outlet />
     </>
@@ -46,9 +41,9 @@ const Invoices = () => {
 
   return (
     <TableContextProvider
+      allowFilters={true}
       columnMeta={columnMeta}
       title={title}
-      allowFilters={true}
     >
       <InvoicesBase />
     </TableContextProvider>

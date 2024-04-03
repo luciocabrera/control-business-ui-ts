@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 export const NumberDisplayStyled = styled.div`
-  margin: 0;
-  padding: 0;
+  margin-right: 6px;
+  overflow: hidden;
   text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 `;

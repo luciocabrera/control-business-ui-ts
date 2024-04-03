@@ -1,6 +1,6 @@
 import type { CellContext, InvoicesDetails } from 'types';
 
-import { DateDisplay, NumberDisplay } from 'components';
+import { DateDisplay, NumericDisplay } from 'components';
 
 export const getDateCell = ({
   row: {
@@ -13,7 +13,7 @@ export const getQuantityCell = ({
     original: { quantity },
   },
 }: CellContext<InvoicesDetails, unknown>) => (
-  <NumberDisplay
+  <NumericDisplay
     value={quantity}
     output='number'
   />
@@ -24,7 +24,7 @@ export const getPriceUnitCell = ({
     original: { priceUnit },
   },
 }: CellContext<InvoicesDetails, unknown>) => (
-  <NumberDisplay
+  <NumericDisplay
     value={priceUnit}
     output='currency'
   />
@@ -35,7 +35,7 @@ export const getPriceQuantityCell = ({
     original: { priceQuantity },
   },
 }: CellContext<InvoicesDetails, unknown>) => (
-  <NumberDisplay
+  <NumericDisplay
     value={priceQuantity}
     output='currency'
   />

@@ -1,5 +1,6 @@
+import { DateOutputType } from 'types';
+
 export type DateParameterType = Date | string;
-export type DateOutputType = 'date' | 'datetime';
 
 export const getDiffInSeconds = (
   dt2: DateParameterType,
@@ -36,7 +37,7 @@ export const isDateBetween = ({
   from,
   to,
 }: {
-  dateToCheck: string | Date;
+  dateToCheck: Date | string;
   from: Date;
   to: Date;
 }) => {

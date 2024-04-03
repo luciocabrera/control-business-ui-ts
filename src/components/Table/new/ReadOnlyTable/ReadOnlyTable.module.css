@@ -1,0 +1,119 @@
+.tableWrapper {
+  border-radius: var(--border-radius-lg);
+  box-shadow: 6px 5px 5px 0px rgba(31, 69, 46, 0.57);
+}
+
+.defaultTableHeight {
+  height: calc(100vh - 38px - 58px);
+}
+
+.defaultTableWrapperHeight {
+  height: 100%;
+}
+
+.virtualWrapper {
+  /*needed for sticky header*/
+  max-width: 100%;
+  border: 1px solid rgb(85 107 47 / 25%);
+  border-bottom-left-radius: var(--border-radius-lg);
+  border-bottom-right-radius: var(--border-radius-lg);
+  display: block;
+  overflow: auto;
+  position: relative;
+  width: 100%;
+
+  & table {
+    border-collapse: collapse;
+    font-weight: 400;
+    overflow-x: scroll;
+    position: relative;
+    table-layout: fixed;
+    width: max-content;
+  }
+
+  & tbody {
+    box-sizing: border-box;
+    color: var(--color-2);
+    display: grid;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    /* width: max-content; */
+
+    & tr {
+      border-bottom: 1px solid var(--color-border-2);
+      height: 28px;
+      width: 100%;
+    }
+
+    & tr:nth-child(even) {
+      background-color: var(--background-color-6);
+    }
+
+    & tr:hover {
+      border-bottom: 1px solid var(--color-3);
+      color: var(--color-3);
+    }
+  }
+
+  & thead {
+    background: var(--background-color-5);
+    box-shadow:
+      0 1px 5px 0 rgb(0 0 0 / 40%),
+      0 2px 10px 0 rgb(0 0 0 / 38%);
+    color: var(--color-1);
+    cursor: pointer;
+    display: grid;
+    font-weight: 400;
+    margin: 0;
+    min-height: 28px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  & thead tr {
+    background: linear-gradient(
+      260deg,
+      var(--background-color-5) 0%,
+      var(--background-color-10) 100%
+    );
+    color: white;
+    display: flex;
+    width: 100%;
+  }
+
+  & th {
+    align-items: center;
+    border-bottom: 1px solid var(--color-border-2);
+    border-right: 1px solid var(--color-border-2);
+    display: flex;
+    font-size: 15px;
+    font-weight: 500;
+    height: 28px;
+    letter-spacing: 1px;
+    position: relative;
+    text-align: left;
+    text-shadow: 2px 2px 2px var(--shadow-color-1);
+  }
+
+  & td {
+    align-items: center;
+    display: flex;
+    height: 28px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-top-left-radius: 0%;
+    border-top-right-radius: 0%;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-top-left-radius: 0%;
+    border-top-right-radius: 0%;
+  }
+}

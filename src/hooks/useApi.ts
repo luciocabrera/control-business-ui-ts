@@ -1,18 +1,14 @@
-// hooks
-// react
 import { useCallback, useMemo } from 'react';
 import useSWR, { SWRResponse, useSWRConfig } from 'swr';
 import useSWRInfinite, { type SWRInfiniteResponse } from 'swr/infinite';
-// types
 import type { OptionsType } from 'types';
-// utilities
 import { execDownload, execRequest, fetchRequest } from 'utilities';
 
 type UseApiDataArgs<TDataType, TPreTransformDataType> = {
   endpointUrl?: string | null;
   transformData?: (
     data: TPreTransformDataType
-  ) => TDataType | Promise<TDataType>;
+  ) => Promise<TDataType> | TDataType;
   refreshInterval?: number;
   query?: string;
 };
@@ -37,8 +33,8 @@ export type UseApiDataListResponse<TDataType> = Omit<
 > & { data: TDataType };
 
 export type ValidDataHookResponse<TData> =
-  | UseApiInfiniteDataResponse<TData[]>
-  | UseApiDataListResponse<TData[]>;
+  | UseApiDataListResponse<TData[]>
+  | UseApiInfiniteDataResponse<TData[]>;
 
 export const isInfiniteResponse = <TDataType>(
   value: ValidDataHookResponse<TDataType>
@@ -83,8 +79,8 @@ const getRequestOptions = (
 
 export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
   endpointUrl,
-  transformData,
   refreshInterval,
+  transformData,
 }: UseApiDataArgs<
   TDataType,
   TPreTransformDataType
@@ -92,7 +88,7 @@ export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
   const accessToken = 'token'; // useAccessToken();
   const shouldExecute = getShouldExecute(accessToken);
 
-  const { data, mutate, isValidating, isLoading, ...rest } = useSWR<TDataType>(
+  const { data, isLoading, isValidating, mutate, ...rest } = useSWR<TDataType>(
     endpointUrl && shouldExecute ? endpointUrl : undefined,
     async (url) => {
       const requestOptions = getRequestOptions({}, accessToken);
@@ -116,7 +112,6 @@ export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
       return response as unknown as TDataType;
     },
     {
-      refreshInterval,
       // shouldRetryOnError: false,
       onErrorRetry: (
         error: { status: number; cause: number },
@@ -134,13 +129,14 @@ export const useApiData = <TDataType, TPreTransformDataType = TDataType>({
         // Retry after 5 seconds.
         setTimeout(() => void revalidate({ retryCount }), 5000);
       },
+      refreshInterval,
     }
   );
 
   return {
+    data,
     isLoading,
     isValidating,
-    data,
     mutate,
     ...rest,
   };
@@ -151,10 +147,10 @@ export const useApiInfiniteData = <
   TPreTransformDataType = TDataType,
 >({
   endpointUrl,
-  transformData,
-  refreshInterval,
   pageSize,
   query,
+  refreshInterval,
+  transformData,
 }: UseApiDataArgs<TDataType, TPreTransformDataType> & {
   pageSize: number;
 }): UseApiInfiniteDataResponse<TDataType> => {
@@ -162,10 +158,10 @@ export const useApiInfiniteData = <
   const shouldExecute = getShouldExecute(accessToken);
   const {
     data,
-    size,
-    setSize,
-    isValidating,
     isLoading,
+    isValidating,
+    setSize,
+    size,
     ...rest
   }: SWRInfiniteResponse<TDataType> = useSWRInfinite<TDataType>(
     (index) =>
@@ -186,11 +182,11 @@ export const useApiInfiniteData = <
       return response as unknown as TDataType;
     },
     {
+      errorRetryCount: 0,
+      refreshInterval,
       revalidateAll: false,
       revalidateOnFocus: false,
-      errorRetryCount: 0,
       shouldRetryOnError: false,
-      refreshInterval,
     }
   );
 
@@ -213,16 +209,16 @@ export const useApiInfiniteData = <
   );
 
   return {
+    data: flatData,
+    isEmpty,
     isLoading: loading || isLoading,
     isLoadingInitialData,
     isLoadingMore,
-    isEmpty,
     isReachingEnd,
     isRefreshing,
-    data: flatData,
-    size,
-    setSize,
     isValidating,
+    setSize,
+    size,
     ...rest,
   };
 };

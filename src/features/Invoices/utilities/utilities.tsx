@@ -1,7 +1,4 @@
-// components
-// types
 import type { CellContext, InvoiceType } from 'types';
-// utilities
 import { getFormattedNumber } from 'utilities';
 
 import { DateDisplay } from 'components';

@@ -52,6 +52,6 @@
       "~/*": ["src/*"]
     }
   },
-  "include": ["vite.config.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["vite.config.ts", "react-table.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

@@ -30,10 +30,24 @@ const TableHead = <TData extends Record<string, unknown>>({
                     asc: <span>&#8593;</span>,
                     desc: <span>&#8595;</span>,
                   }[header.column.getIsSorted() as string] ?? null}
-
                   {header.column.getIsFiltered() ? (
                     <FilterIcon className={cls['header-icon']} />
                   ) : null}
+                  {header.column.getCanGroup() ? (
+                    // If the header can be grouped, let's add a toggle
+                    <button
+                      {...{
+                        onClick: header.column.getToggleGroupingHandler(),
+                        style: {
+                          cursor: 'pointer',
+                        },
+                      }}
+                    >
+                      {header.column.getIsGrouped()
+                        ? `🛑(${header.column.getGroupedIndex()}) `
+                        : `👊 `}
+                    </button>
+                  ) : null}{' '}
                 </div>
               )}
               {header.column.getCanResize() && (

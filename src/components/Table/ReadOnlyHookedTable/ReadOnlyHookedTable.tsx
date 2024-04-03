@@ -1,54 +1,40 @@
-import { memo, type RefObject } from 'react';
-import { isInfiniteResponse, useDebounce } from 'hooks';
+import { memo } from 'react';
+import { isInfiniteResponse } from 'hooks';
 
-import ReadOnlyTable from '../ReadOnlyTable/ReadOnlyTable';
+import ReadOnlyTable from '../new/ReadOnlyTable/ReadOnlyTable';
 import type { TableWithDataHook } from '../table.types';
 
 const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
-  actions,
+  // actions,
   columns,
-  height,
-  renderSubComponent,
-  getRowCanExpand,
-  showHeader = true,
   dataHook,
+  getRowCanExpand,
+  // height,
+  // renderSubComponent,
+  // showHeader = true,
 }: TableWithDataHook<TData>) => {
   const isInfinite = isInfiniteResponse(dataHook);
 
-  // TODO: Implement error handling
   const { data, isLoading } = dataHook;
-
-  const useFetchMoreOnBottomReached = (childRef: RefObject<HTMLDivElement>) =>
-    useDebounce(() => {
-      if (childRef.current) {
-        const { scrollHeight, scrollTop, clientHeight } = childRef.current;
-        //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
-        if (isInfinite) {
-          const { isReachingEnd } = dataHook;
-          if (
-            scrollHeight - scrollTop - clientHeight < 300 &&
-            !isLoading &&
-            !isReachingEnd
-          ) {
-            void dataHook.setSize?.((prev: number) => prev + 1);
-          }
-        }
-      }
-    }, 500);
 
   return (
     <ReadOnlyTable<TData>
-      actions={actions}
-      data={data}
+      // actions={actions}
       columns={columns}
+      data={data}
+      defaultColumnOrder={[]}
+      getRowCanExpand={getRowCanExpand}
+      hidden={[]}
+      isInfinite={isInfinite}
+      isLoading={isLoading}
+      isReachingEnd={isInfinite ? dataHook.isReachingEnd : undefined}
       manualFiltering={isInfinite}
       manualSorting={isInfinite}
-      isLoading={isLoading}
-      showHeader={showHeader}
-      height={height}
-      renderSubComponent={renderSubComponent}
-      getRowCanExpand={getRowCanExpand}
-      fetchMoreOnBottomReached={useFetchMoreOnBottomReached}
+      setSize={isInfinite ? dataHook.setSize : undefined}
+      visible={[]} // showHeader={showHeader}
+      // height={height}
+
+      // renderSubComponent={renderSubComponent}
     />
   );
 };

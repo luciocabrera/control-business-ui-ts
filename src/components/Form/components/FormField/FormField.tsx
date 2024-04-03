@@ -1,6 +1,4 @@
-// components
 import { useCallback } from 'react';
-// utilities
 import { memo } from 'utilities';
 
 import {
@@ -13,22 +11,20 @@ import { getErrorField, validateField } from 'components/Form/utilities';
 import { Select } from '../Select';
 import { TextInput } from '../TextInput';
 
-// contexts
-// types
 import type { FieldBaseValueType, FormFieldProps } from './types';
 
 const FormField = memo(({ field, ...props }: FormFieldProps) => {
   const {
-    options,
-    type,
-    label,
     accessor,
-    readonly,
-    placeholder,
+    label,
     normalize,
+    options,
+    placeholder,
+    readonly,
+    required,
     rules,
     textAlign,
-    required,
+    type,
   } = field;
 
   const [fieldValue, setStore] = useFieldsContext<
@@ -65,14 +61,14 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
       return (
         <Select
           key={`field-select-${field.accessor}`}
-          onChange={handleSelectOnChange}
-          value={fieldValue}
           accessor={accessor}
-          options={options}
           label={label}
+          options={options}
           readonly={readonly}
           required={required}
           type={type}
+          value={fieldValue}
+          onChange={handleSelectOnChange}
           {...props}
           {...errorField}
         />
@@ -82,16 +78,16 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
       return (
         <TextInput
           key={`field-input-${field.accessor}`}
-          onChange={handleTextInputOnChange}
           accessor={accessor}
-          readonly={readonly}
           label={label}
-          required={required}
-          type={type}
           normalize={normalize}
-          rules={rules}
           placeholder={placeholder}
+          readonly={readonly}
+          required={required}
+          rules={rules}
           textAlign={textAlign}
+          type={type}
+          onChange={handleTextInputOnChange}
           {...props}
           {...errorField}
           value={fieldValue}

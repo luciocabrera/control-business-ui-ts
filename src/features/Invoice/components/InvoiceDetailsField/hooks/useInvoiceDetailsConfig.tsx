@@ -1,45 +1,44 @@
 import { useMemo } from 'react';
-// types
 import type { ColumnDef, InvoicesDetails } from 'types';
 
-// utils
-import {
-  getDateCell,
-  getPriceQuantityCell,
-  getPriceUnitCell,
-  getQuantityCell,
-} from '../utils/utils';
+import { getDateCell } from '../utils/utils';
 
 export const useInvoiceDetailsConfig = () => {
   const columnsDetails = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       {
         accessorKey: 'productNameWithCode',
+        enableGrouping: false,
         header: 'Product',
       },
       {
         accessorKey: 'date',
-        header: 'Date',
         cell: getDateCell,
+        enableGrouping: false,
+        header: 'Date',
       },
       {
         accessorKey: 'description',
+        enableGrouping: false,
         header: 'Description',
       },
       {
         accessorKey: 'quantity',
+        enableGrouping: false,
         header: 'Quantity',
-        cell: getQuantityCell,
+        meta: { type: 'number' },
       },
       {
         accessorKey: 'priceUnit',
+        enableGrouping: false,
         header: 'Price Unit',
-        cell: getPriceUnitCell,
+        meta: { type: 'currency' },
       },
       {
         accessorKey: 'priceQuantity',
+        enableGrouping: false,
         header: 'Price Quantity',
-        cell: getPriceQuantityCell,
+        meta: { type: 'currency' },
       },
     ],
     []

@@ -28,12 +28,7 @@ const CardChart = <TData extends Record<string, unknown>>({
       )}
       <div className={styles['card-chart-body']}>
         {data?.length > 0 && (
-          <ResponsiveContainer
-            width='100%'
-            height='100%'
-          >
-            {children}
-          </ResponsiveContainer>
+          <ResponsiveContainer>{children}</ResponsiveContainer>
         )}
       </div>
     </div>

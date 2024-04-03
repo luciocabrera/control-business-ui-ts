@@ -1,8 +1,5 @@
-// components
-// react
 import { useMemo } from 'react';
 import { InvoiceAmountsField } from 'features/Invoice/components';
-// types
 import type {
   ColumnDef,
   DateParameterType,
@@ -10,7 +7,6 @@ import type {
   InvoicesDetails,
   InvoiceType,
 } from 'types';
-// utilities
 import { getDateAsString, getFormattedNumber } from 'utilities';
 
 import type {
@@ -19,43 +15,44 @@ import type {
 } from 'components/Form/components/FormField/types';
 import { TableField } from 'components/Form/components/TableField';
 
-import {
-  getDateCell,
-  getPriceQuantityCell,
-  getPriceUnitCell,
-  getQuantityCell,
-} from '../utilities';
+import { getDateCell } from '../utilities';
 
 export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
   const columns = useMemo<ColumnDef<InvoicesDetails>[]>(
     () => [
       {
         accessorKey: 'productNameWithCode',
+        enableGrouping: false,
         header: 'Product',
       },
       {
         accessorKey: 'date',
-        header: 'Date',
         cell: getDateCell,
+        enableGrouping: false,
+        header: 'Date',
       },
       {
         accessorKey: 'description',
+        enableGrouping: false,
         header: 'Description',
       },
       {
         accessorKey: 'quantity',
+        enableGrouping: false,
         header: 'Quantity',
-        cell: getQuantityCell,
+        meta: { type: 'number' },
       },
       {
         accessorKey: 'priceUnit',
+        enableGrouping: false,
         header: 'Price Unit',
-        cell: getPriceUnitCell,
+        meta: { type: 'currency' },
       },
       {
         accessorKey: 'priceQuantity',
+        enableGrouping: false,
         header: 'Price Quantity',
-        cell: getPriceQuantityCell,
+        meta: { type: 'currency' },
       },
     ],
     []
@@ -64,102 +61,107 @@ export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
   const fields: FormFieldType[] = useMemo(
     () => [
       {
-        type: 'row',
-        label: 'General',
         fields: [
           {
-            type: 'group',
-            label: 'General',
             fields: [
               {
-                type: 'row',
                 fields: [
                   {
                     accessor: 'invoice',
                     label: 'Invoice',
+                    readonly: true,
                     type: 'text',
                     value: invoice?.invoice,
-                    readonly: true,
                   },
                   {
                     accessor: 'date',
                     label: 'Date',
-                    type: 'text',
-                    value: invoice?.date,
-                    readonly: true,
                     normalize: (value: DateParameterType | undefined) =>
                       getDateAsString(value),
+                    readonly: true,
+                    type: 'text',
+                    value: invoice?.date,
                   },
                 ],
+                label: 'General',
+                type: 'row',
               },
               {
                 accessor: 'fullNameWithInitials',
                 label: 'Customer',
+                readonly: true,
                 type: 'text',
                 value: invoice?.customer,
-                readonly: true,
               },
             ],
+            type: 'group',
           },
           {
-            type: 'group',
-            label: 'Amounts',
             fields: [
               {
-                type: 'object',
-                label: 'Amounts',
                 accessor: '',
+
+                label: 'Amounts',
                 render: () => <InvoiceAmountsField />,
+                type: 'object',
               },
             ],
+            label: 'Amounts',
+            type: 'group',
           },
           {
-            type: 'rule',
             accessor: 'taxesPercentage',
+            type: 'rule',
+
             value: invoice?.taxesPercentage,
           },
           {
             accessor: 'subtotal',
-            type: 'rule',
-            value: invoice?.subtotal,
             normalize: (value: FieldBaseValueType) =>
               getFormattedNumber(value, 'currency'),
+            type: 'rule',
+            value: invoice?.subtotal,
           },
           {
             accessor: 'taxes',
-            type: 'rule',
-            value: invoice?.taxes,
+
             normalize: (value: FieldBaseValueType) =>
               getFormattedNumber(value, 'currency'),
+            type: 'rule',
+            value: invoice?.taxes,
           },
           {
             accessor: 'total',
-            type: 'rule',
-            value: invoice?.total,
+
             normalize: (value: FieldBaseValueType) =>
               getFormattedNumber(value, 'currency'),
+            type: 'rule',
+            value: invoice?.total,
           },
         ],
+        label: 'General',
+        type: 'row',
       },
       {
-        type: 'row',
         fields: [
           {
             accessor: 'details',
             label: 'details',
-            type: 'table',
+            readonly: true,
             render: () => (
               <TableField<InvoicesDetails, InvoiceDetailForm>
                 accessor='details'
-                label='Details'
                 columns={columns}
                 data={invoice?.details as InvoicesDetails[]}
+                label='Details'
                 showHeader={false}
               />
             ),
-            readonly: true,
+
+            type: 'table',
           },
         ],
+        type: 'row',
       },
     ],
     [

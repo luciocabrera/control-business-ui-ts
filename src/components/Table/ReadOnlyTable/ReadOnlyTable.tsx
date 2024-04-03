@@ -1,15 +1,17 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
+import type { GroupingState, SortingState } from '@tanstack/react-table';
 import {
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   getFilteredRowModel,
+  getGroupedRowModel,
   getSortedRowModel,
-  type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
+import { useDebounce } from 'hooks';
 
 import FallBack from 'components/FallBack/FallBack';
 
@@ -24,62 +26,85 @@ import styles from '../table.module.css';
 const ReadOnlyTable = <TData extends Record<string, unknown>>({
   actions,
   columns,
-  height,
-  isLoading,
-  renderSubComponent,
+  data,
   getRowCanExpand,
+  height,
+  isInfinite,
+  isLoading,
+  isReachingEnd,
   manualFiltering = false,
   manualSorting = false,
+  renderSubComponent,
+  setSize,
   showHeader,
-  fetchMoreOnBottomReached,
-  data,
 }: ReadOnlyTableType<TData>) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [grouping, setGrouping] = useState<GroupingState>([]);
   const {
-    state: { columnFilters, showColumnFilters },
     dispatch,
+    state: { columnFilters, showColumnFilters },
   } = useTableContext();
 
   useEffect(() => {
-    dispatch({ type: TableContextActionKind.SetSorting, payload: { sorting } });
+    dispatch({ payload: { sorting }, type: TableContextActionKind.SetSorting });
   }, [dispatch, sorting]);
 
   const table = useReactTable({
-    data,
+    columnResizeMode: 'onChange',
     columns,
+    data,
+    enableColumnResizing: true,
     filterFns: {
       fuzzy: fuzzyFilter,
     },
-    state: {
-      columnFilters,
-      sorting,
-    },
+    getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getGroupedRowModel: getGroupedRowModel(),
+
+    getRowCanExpand,
+    getSortedRowModel: getSortedRowModel(),
     manualFiltering: manualFiltering,
     manualSorting: manualSorting,
+    onGroupingChange: setGrouping,
     onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
-    getRowCanExpand,
-    enableColumnResizing: true,
-    columnResizeMode: 'onChange',
+    state: {
+      columnFilters,
+      grouping,
+      sorting,
+    },
   });
 
   const { rows } = table.getRowModel();
 
   const rowVirtualizer = useVirtual({
+    overscan: 10,
     parentRef: parentRef,
     size: rows.length,
-    overscan: 10,
   });
-  const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
+  const { totalSize, virtualItems: virtualRows } = rowVirtualizer;
   const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
   const paddingBottom =
     virtualRows.length > 0
       ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
       : 0;
+
+  const onScroll = useDebounce(() => {
+    if (parentRef.current) {
+      const { clientHeight, scrollHeight, scrollTop } = parentRef.current;
+      //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
+      if (isInfinite) {
+        if (
+          scrollHeight - scrollTop - clientHeight < 300 &&
+          !isLoading &&
+          !isReachingEnd
+        ) {
+          void setSize?.((prev: number) => prev + 1);
+        }
+      }
+    }
+  }, 500);
 
   return (
     <>
@@ -87,11 +112,11 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
       {showColumnFilters && <FormFilter />}
       {showHeader && <TableWrapperHeader actions={actions} />}
       <div
-        id='table-wrapper'
         ref={parentRef}
-        style={{ height: height }}
         className={styles['table-wrapper']}
-        onScroll={() => fetchMoreOnBottomReached?.(parentRef)}
+        id='table-wrapper'
+        style={{ height: height }}
+        onScroll={onScroll}
       >
         <table>
           <TableHead headerGroups={table.getHeaderGroups()} />
@@ -118,14 +143,66 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
                         )[0]
                         .getSize();
                       return (
+                        // <td
+                        //   key={cell.id}
+                        //   className={styles['simple-td']}
+                        //   style={{ maxWidth: size, width: size }}
+                        // >
+                        //   {flexRender(
+                        //     cell.column.columnDef.cell,
+                        //     cell.getContext()
+                        //   )}
+                        // </td>
                         <td
                           key={cell.id}
                           className={styles['simple-td']}
-                          style={{ width: size, maxWidth: size }}
+                          style={{
+                            background: cell.getIsGrouped()
+                              ? '#0aff0082'
+                              : cell.getIsAggregated()
+                                ? '#ffa50078'
+                                : cell.getIsPlaceholder()
+                                  ? '#ff000042'
+                                  : 'white',
+                            maxWidth: size,
+                            width: size,
+                          }}
                         >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
+                          {cell.getIsGrouped() ? (
+                            // If it's a grouped cell, add an expander and row count
+                            <>
+                              <button
+                                {...{
+                                  onClick: row.getToggleExpandedHandler(),
+                                  style: {
+                                    cursor: row.getCanExpand()
+                                      ? 'pointer'
+                                      : 'normal',
+                                  },
+                                }}
+                              >
+                                {row.getIsExpanded() ? '👇' : '👉'}{' '}
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}{' '}
+                                ({row.subRows.length})
+                              </button>
+                            </>
+                          ) : cell.getIsAggregated() ? (
+                            // If the cell is aggregated, use the Aggregated
+                            // renderer for cell
+                            flexRender(
+                              cell.column.columnDef.aggregatedCell ??
+                                cell.column.columnDef.cell,
+                              cell.getContext()
+                            )
+                          ) : cell.getIsPlaceholder() ? null : ( // For cells with repeated values, render null
+                            // Otherwise, just render the regular cell
+                            flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )
                           )}
                         </td>
                       );

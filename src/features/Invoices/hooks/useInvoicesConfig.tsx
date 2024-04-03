@@ -1,61 +1,102 @@
-// react
 import { useMemo } from 'react';
-// types
-import type { ColumnDef, ColumnMetaState, InvoiceType } from 'types';
+import type {
+  CellContext,
+  ColumnDef,
+  ColumnMetaState,
+  InvoiceType,
+} from 'types';
 import { isDateBetween } from 'utilities';
 
-// utilities
-import {
-  getActionsCell,
-  getDateCell,
-  getSubTotalCell,
-  getTaxesCell,
-  getTotalCell,
-} from '../utilities';
+import { NumericDisplay } from 'components';
+import { MonthDisplay } from 'components/MonthDisplay';
+import { QuarterDisplay } from 'components/QuarterDisplay';
+
+import { getActionsCell } from '../utilities';
 
 export const useInvoicesConfig = () => {
-  const columns: ColumnDef<InvoiceType>[] = useMemo(
-    () => [
-      { accessorKey: 'invoice', header: 'Invoice' },
-      {
-        accessorKey: 'date',
-        header: 'Date',
-        cell: getDateCell,
-        filterFn: (row, _columnId, value) => {
-          const dateToCheck = row?.original?.date ?? '';
-
-          return isDateBetween({ dateToCheck, from: value[0], to: value[1] });
+  const columns: ColumnDef<InvoiceType, unknown>[] = [
+    {
+      accessorKey: 'year',
+      cell: ({
+        row: {
+          original: { year },
         },
+      }: CellContext<InvoiceType, unknown>) => (
+        <NumericDisplay value={year as number} />
+      ),
+      header: 'Year',
+      maxSize: 100,
+      meta: { shouldUseDefaultCell: true, type: 'number' },
+    },
+    {
+      accessorKey: 'quarter',
+      cell: ({
+        row: {
+          original: { quarter },
+        },
+      }: CellContext<InvoiceType, unknown>) => (
+        <QuarterDisplay value={quarter as number} />
+      ),
+      header: 'Quarter',
+      maxSize: 120,
+      meta: { shouldUseDefaultCell: true },
+    },
+    {
+      accessorKey: 'month',
+      cell: ({
+        row: {
+          original: { month },
+        },
+      }: CellContext<InvoiceType, unknown>) => (
+        <MonthDisplay value={month as number} />
+      ),
+      header: 'Month',
+      maxSize: 120,
+      meta: { shouldUseDefaultCell: true },
+    },
+    {
+      accessorKey: 'date',
+      filterFn: (row, _columnId, value) => {
+        const dateToCheck = row?.original?.date ?? '';
+
+        return isDateBetween({ dateToCheck, from: value[0], to: value[1] });
       },
-      {
-        accessorKey: 'customer',
-        header: 'Customer',
-      },
-      {
-        accessorKey: 'subtotal',
-        header: 'Subtotal',
-        cell: getSubTotalCell,
-      },
-      {
-        accessorKey: 'taxes',
-        header: 'Taxes',
-        cell: getTaxesCell,
-      },
-      {
-        accessorKey: 'total',
-        header: 'Total',
-        cell: getTotalCell,
-      },
-      {
-        id: 'actions',
-        header: '',
-        enableResizing: false,
-        maxSize: 62,
-        cell: getActionsCell,
-      },
-    ],
-    []
-  );
+      header: 'Date',
+      meta: { type: 'date' },
+    },
+    { accessorKey: 'invoice', header: 'Invoice' },
+
+    {
+      accessorKey: 'customer',
+      header: 'Customer',
+    },
+    {
+      accessorKey: 'subtotal',
+      aggregationFn: 'sum',
+      header: 'Subtotal',
+      meta: { type: 'currency' },
+    },
+    {
+      accessorKey: 'taxes',
+      aggregationFn: 'sum',
+      header: 'Taxes',
+      meta: { type: 'currency' },
+    },
+    {
+      accessorKey: 'total',
+      aggregationFn: 'sum',
+      header: 'Total',
+      meta: { type: 'currency' },
+    },
+    {
+      cell: getActionsCell,
+      enableGrouping: false,
+      enableResizing: false,
+      header: '',
+      id: 'actions',
+      meta: { shouldUseDefaultCell: true },
+    },
+  ];
 
   const columnMeta: ColumnMetaState = useMemo(
     () => [
@@ -69,5 +110,5 @@ export const useInvoicesConfig = () => {
     []
   );
 
-  return { columns, columnMeta };
+  return { columnMeta, columns };
 };

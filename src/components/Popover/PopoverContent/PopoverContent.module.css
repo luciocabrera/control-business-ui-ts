@@ -1,0 +1,32 @@
+.container {
+  -moz-background-clip: padding-box;
+  -webkit-backdrop-filter: blur(1px);
+  -webkit-background-clip: padding-box;
+  backdrop-filter: blur(1px);
+  background: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  color: var(--color-2);
+  font-size: 1rem;
+  margin-top: 18px;
+  outline: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.containerAbsolute {
+  position: absolute;
+}
+
+.containerFixed {
+  position: fixed;
+}
+
+.childrenContainer {
+  min-width: 150px;
+  padding: 10px 15px;
+  text-align: center;
+  white-space: pre-wrap;
+}

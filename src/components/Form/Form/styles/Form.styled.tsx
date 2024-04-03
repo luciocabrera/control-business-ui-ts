@@ -4,7 +4,7 @@ export const FormStyled = styled.form<{ width?: string; height?: string }>`
   container-type: inline-size;
   container-name: form-container;
   border-radius: 12px;
-  background: var(--form-bg-color);
+  background: var(--color-1);
   box-shadow: 6px 6px 22px 1px rgba(0, 0, 0, 0.4);
   z-index: 10;
   position: relative;
@@ -24,7 +24,7 @@ export const FormStyled = styled.form<{ width?: string; height?: string }>`
 
   legend {
     font-weight: bold;
-    color: var(--text-strong-color);
+    color: var(--color-2);
     margin-left: 8px;
     padding-left: 6px;
     padding-right: 6px;

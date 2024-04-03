@@ -1,7 +1,7 @@
-// types
 import type { DateOutputType, DateParameterType } from 'types';
-// utilities
 import { getDateAsString, memo } from 'utilities';
+
+import styles from './DateDisplay.module.css';
 
 type DateDisplayProps = {
   date?: DateParameterType;
@@ -10,7 +10,7 @@ type DateDisplayProps = {
 };
 
 const DateDisplay = memo(({ date, output, utc }: DateDisplayProps) => (
-  <>{getDateAsString(date, output, utc)}</>
+  <span className={styles.container}>{getDateAsString(date, output, utc)}</span>
 ));
 
 export default DateDisplay;

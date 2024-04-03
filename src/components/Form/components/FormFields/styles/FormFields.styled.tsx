@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const FieldRowStyled = styled.fieldset`
-  background: var(--form-bg-color);
   padding: 0;
   border: none;
   display: flex;
@@ -13,10 +12,10 @@ export const FieldRowStyled = styled.fieldset`
 `;
 
 export const FieldGroupStyled = styled.fieldset`
-  background:var(--form-bg-color);
+
   padding: 0.5rem;
-  border-radius: var(--border-radius);
-  border-color: var(--border-color);
+  border-radius: var(--border-radius-lg);
+  color: var(--color-2);
   border: 1px solid;
   display: flex;
   flex-direction: row;
@@ -31,7 +30,6 @@ export const FieldGroupStyled = styled.fieldset`
 
 export const CustomFieldWrapper = styled.div<{ width?: number }>`
   container-type: inline-size;
-  background: var(--form-bg-color);
   padding: 0;
   border: none;
   display: flex;

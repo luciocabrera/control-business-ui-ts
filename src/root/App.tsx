@@ -4,7 +4,6 @@ import { useLocation } from 'hooks';
 
 import { FallBack, Layout, Route, Routes } from 'components';
 
-// lazy loaded
 const Customers = lazy(
   () =>
     import(/* webpackChunkName: "Customers" */ 'features/Customers/Customers')
@@ -48,8 +47,8 @@ const App = () => {
       <NotificationsContextProvider>
         <Routes location={state?.backgroundLocation || location}>
           <Route
-            path='/'
             element={<Layout />}
+            path='/'
           >
             <Route
               index
@@ -60,76 +59,75 @@ const App = () => {
               }
             />
             <Route
-              path='customers'
               element={
                 <Suspense fallback={<FallBack />}>
                   <Customers />
                 </Suspense>
               }
+              path='customers'
             >
               <Route
+                element={
+                  <Suspense fallback={<FallBack />}>
+                    <Customer />
+                  </Suspense>
+                }
                 path='new'
+              />
+              <Route
                 element={
                   <Suspense fallback={<FallBack />}>
                     <Customer />
                   </Suspense>
                 }
-              />
-              <Route
                 path=':customerId/:action'
-                element={
-                  <Suspense fallback={<FallBack />}>
-                    <Customer />
-                  </Suspense>
-                }
               />
               <Route
-                path=':customerId'
                 element={
                   <Suspense fallback={<FallBack />}>
                     <ViewCustomer />
                   </Suspense>
                 }
+                path=':customerId'
               />
             </Route>
-
             <Route
-              path='invoices'
               element={
                 <Suspense fallback={<FallBack />}>
                   <Invoices />
                 </Suspense>
               }
+              path='invoices'
             >
               <Route
+                element={
+                  <Suspense fallback={<FallBack />}>
+                    <Invoice />
+                  </Suspense>
+                }
                 path='new'
+              />
+              <Route
                 element={
                   <Suspense fallback={<FallBack />}>
                     <Invoice />
                   </Suspense>
                 }
-              />
-              <Route
                 path=':invoiceId/:action'
-                element={
-                  <Suspense fallback={<FallBack />}>
-                    <Invoice />
-                  </Suspense>
-                }
               />
               <Route
-                path=':invoiceId'
                 element={
                   <Suspense fallback={<FallBack />}>
                     <ViewInvoice />
                   </Suspense>
                 }
+                path=':invoiceId'
               />
             </Route>
 
             <Route
-              path='*'
               element={<div>No Match</div>}
+              path='*'
             />
           </Route>
         </Routes>
@@ -137,55 +135,55 @@ const App = () => {
           <Routes>
             <Route path='customers'>
               <Route
+                element={
+                  <Suspense fallback={<FallBack />}>
+                    <Customer />
+                  </Suspense>
+                }
                 path='new'
+              />
+              <Route
                 element={
                   <Suspense fallback={<FallBack />}>
                     <Customer />
                   </Suspense>
                 }
-              />
-              <Route
                 path=':customerId/:action'
-                element={
-                  <Suspense fallback={<FallBack />}>
-                    <Customer />
-                  </Suspense>
-                }
               />
               <Route
-                path=':customerId'
                 element={
                   <Suspense fallback={<FallBack />}>
                     <ViewCustomer />
                   </Suspense>
                 }
+                path=':customerId'
               />
             </Route>
 
             <Route path='invoices'>
               <Route
+                element={
+                  <Suspense fallback={<FallBack />}>
+                    <Invoice />
+                  </Suspense>
+                }
                 path='new'
+              />
+              <Route
                 element={
                   <Suspense fallback={<FallBack />}>
                     <Invoice />
                   </Suspense>
                 }
-              />
-              <Route
                 path=':invoiceId/:action'
-                element={
-                  <Suspense fallback={<FallBack />}>
-                    <Invoice />
-                  </Suspense>
-                }
               />
               <Route
-                path=':invoiceId'
                 element={
                   <Suspense fallback={<FallBack />}>
                     <ViewInvoice />
                   </Suspense>
                 }
+                path=':invoiceId'
               />
             </Route>
           </Routes>

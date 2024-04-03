@@ -1,18 +1,12 @@
-// components
-// contexts
 import { useFieldsContext } from 'contexts';
-// hooks
 import { useCallback, useMemo, useState } from 'hooks';
-// icons
 import { CopyIcon, DeleteIcon, EditIcon, NewIcon } from 'icons';
-// types
 import type {
   CellContext,
   ColumnDef,
   InvoiceFormType,
   InvoicesDetails,
 } from 'types';
-// utilities
 import { memo } from 'utilities';
 
 import { IconButton, Portal, ReadOnlyTable } from 'components';
@@ -23,7 +17,6 @@ import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 import { useInvoiceDetailsConfig } from './hooks/useInvoiceDetailsConfig';
 import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
 
-// styles
 import styles from './InvoiceDetailsField.module.css';
 
 const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
@@ -114,18 +107,18 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     ({ row: { original } }: CellContext<InvoicesDetails, unknown>) => (
       <div className={styles['actions-wrapper']}>
         <IconButton
-          id='edit-invoice-detail'
           icon={<EditIcon />}
+          id='edit-invoice-detail'
           onClick={() => onEditDetail(original)}
         />
         <IconButton
-          id='copy-invoice-detail'
           icon={<CopyIcon />}
+          id='copy-invoice-detail'
           onClick={() => onCopyDetail(original)}
         />
         <IconButton
-          id='delete-invoice-detail'
           icon={<DeleteIcon />}
+          id='delete-invoice-detail'
           onClick={() => onRemoveDetail(original)}
         />
       </div>
@@ -138,10 +131,10 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       ...columnsDetails,
       {
         accessorKey: '',
+        cell: getActionsCell,
+        enableResizing: false,
         header: 'Actions',
         sort: false,
-        enableResizing: false,
-        cell: getActionsCell,
       },
     ],
     [columnsDetails, getActionsCell]
@@ -153,12 +146,12 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     <div className={styles['label-wrapper']}>
       <span>Details</span>
       <div
-        id='icon-button'
         className={styles.icon}
+        id='icon-button'
       >
         <IconButton
-          id='new-invoice-detail'
           icon={<NewIcon />}
+          id='new-invoice-detail'
           onClick={onAddDetail}
         />
       </div>
@@ -173,10 +166,12 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       >
         <legend>{labelWithAdd}</legend>
         <ReadOnlyTable<InvoicesDetails>
-          data={normalizedValue}
           columns={columnsWithActions}
-          showHeader={false}
+          data={normalizedValue}
+          defaultColumnOrder={[]}
+          hidden={[]}
           isLoading={false}
+          visible={[]} // showHeader={false}
         />
       </FieldGroupStyled>
       {showDetailForm && (

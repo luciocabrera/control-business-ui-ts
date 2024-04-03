@@ -10,10 +10,9 @@ export const FieldSetStyled = styled.div<{
   flex: auto;
   fieldset {
     align-content: stretch;
-    background: var(--form-bg-color);
     padding: 0;
     border-radius: var(--border-radius);
-    border-color: var(--border-color);
+    color: var(--color-2);
     border: 1px solid;
     display: flex;
     :focus-within {
@@ -23,6 +22,16 @@ export const FieldSetStyled = styled.div<{
       legend {
         color: var(--special-shadow-color);
       }
+    }
+
+    & select:focus-visible,
+    input:focus-visible {
+      outline: none;
+    }
+
+    & select:focus,
+    input:focus {
+      outline: none;
     }
   }
 `;

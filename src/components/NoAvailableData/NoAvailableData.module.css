@@ -1,0 +1,12 @@
+.noDataAvailable {
+  align-content: center;
+  align-items: center;
+  color: var(--color-2);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100%;
+  justify-content: center;
+  line-height: 1.6;
+  text-align: center;
+}

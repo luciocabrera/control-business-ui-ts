@@ -40,6 +40,9 @@ export type InvoiceType = AuditType & {
   total: number;
   taxes: number;
   taxesPercentage: number;
+  year: number;
+  quarter: number;
+  month: number;
 };
 
 export type InvoiceFormType = Omit<

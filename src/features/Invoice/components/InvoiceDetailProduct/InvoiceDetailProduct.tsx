@@ -59,9 +59,9 @@ const InvoiceDetailProduct = memo(
       () => ({
         accessor: 'productId',
         label: 'Product',
-        type: 'select',
-        required: true,
         options: productsOptions,
+        required: true,
+        type: 'select',
       }),
       [productsOptions]
     );
@@ -83,8 +83,9 @@ const InvoiceDetailProduct = memo(
       () => ({
         accessor: 'description',
         label: 'Description',
-        type: 'text',
+
         required: true,
+        type: 'text',
       }),
       []
     );
@@ -105,7 +106,7 @@ const InvoiceDetailProduct = memo(
     // Date - Carried out
     // ---------------------------------------------------------------------------------------------------
     const dateField = useMemo(
-      () => ({ accessor: 'date', label: 'Date', type: 'date', required: true }),
+      () => ({ accessor: 'date', label: 'Date', required: true, type: 'date' }),
       []
     );
 
@@ -149,14 +150,14 @@ const InvoiceDetailProduct = memo(
       ]
     );
 
-    const handleOnDescriptionChange = useCallback(
+    const onDescriptionChange = useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         setDescription({ description: event.target.value });
       },
       [setDescription]
     );
 
-    const handleOnDateChange = useCallback(
+    const onDateChange = useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         setDate({ date: event.target.value });
       },
@@ -167,15 +168,15 @@ const InvoiceDetailProduct = memo(
       <>
         <Select
           key={`field-select-product-id`}
-          onChange={onSelectProduct}
           value={productId}
+          onChange={onSelectProduct}
           {...productField}
           {...props}
           {...errorFieldProductId}
         />
         <TextInput
           key={`field-input-description`}
-          onChange={handleOnDescriptionChange}
+          onChange={onDescriptionChange}
           {...descriptionField}
           {...props}
           {...errorDescriptionField}
@@ -183,7 +184,7 @@ const InvoiceDetailProduct = memo(
         />
         <TextInput
           key={`field-input-carried-out`}
-          onChange={handleOnDateChange}
+          onChange={onDateChange}
           {...dateField}
           {...props}
           {...errorDateField}

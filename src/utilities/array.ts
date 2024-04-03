@@ -1,6 +1,6 @@
 export const groupBy = <T>(
   array: T[],
-  groupingKey: ((item: T) => string) | string
+  groupingKey: string | ((item: T) => string)
 ) =>
   array.reduce(
     (previous, currentItem) => {
@@ -17,7 +17,7 @@ export const groupBy = <T>(
 
 export const groupByArrayToDataList = <T>(
   array: T[],
-  groupingKey: ((item: T) => string) | string
+  groupingKey: string | ((item: T) => string)
 ) => {
   return array.reduce(
     (previous, currentItem: T) => {
@@ -34,8 +34,8 @@ export const groupByArrayToDataList = <T>(
         groupInPrevious.children.push(currentItem);
       } else {
         previous.push({
-          groupName: currentItem[group as keyof T] as unknown as string,
           children: [currentItem],
+          groupName: currentItem[group as keyof T] as unknown as string,
         });
       }
       return previous;
@@ -75,7 +75,7 @@ export const sortArrayBy = <T extends Record<string, unknown>>(
  * ```
  */
 export const sortBy =
-  (key: string | number, order: 'asc' | 'desc' = 'asc') =>
+  (key: number | string, order: 'asc' | 'desc' = 'asc') =>
   (a: Record<string, unknown>, b: Record<string, unknown>) => {
     const valueA =
       typeof a[key] === 'number'
@@ -89,9 +89,9 @@ export const sortBy =
     return compareValues(valueA, valueB, order);
   };
 export const compareValues = (
-  valueA: string | number,
-  valueB: string | number,
-  order: 'asc' | 'desc' | 'descend' | 'ascend' = 'asc'
+  valueA: number | string,
+  valueB: number | string,
+  order: 'asc' | 'ascend' | 'desc' | 'descend' = 'asc'
 ) => {
   let comparison = 0;
 
@@ -104,7 +104,7 @@ export const compareValues = (
   return order.startsWith('desc') ? comparison * -1 : comparison;
 };
 
-export const onSort = (a: string | number, b: string | number) => {
+export const onSort = (a: number | string, b: number | string) => {
   // force null and undefined to the bottom
   a = a === null || a === undefined ? '' : a;
   b = b === null || b === undefined ? '' : b;
@@ -137,7 +137,7 @@ export const onSort = (a: string | number, b: string | number) => {
   return 0;
 };
 
-export const getNumberDate = (value: Date | string | number) => {
+export const getNumberDate = (value: Date | number | string) => {
   const jsDate = value ? new Date(value) : undefined;
 
   if (!jsDate) return 0;
@@ -153,11 +153,14 @@ export const isNumber = (value: string) => {
 };
 
 export const filter = (
-  value: string | number | boolean,
-  recordValue: string | number
+  value: boolean | number | string,
+  recordValue: number | string
 ) => {
   const searchValue = String(value).toLowerCase().trim();
   if (!recordValue) return false;
 
   return String(recordValue).toLowerCase().includes(searchValue);
 };
+
+export const joinArray = (array: string[], separator?: string) =>
+  array.join(separator ?? ' ');

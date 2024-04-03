@@ -1,0 +1,60 @@
+.customCheck {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  height: 28px;
+  justify-content: flex-start;
+  position: relative;
+
+  & input[type='radio'],
+  input[type='checkbox'] {
+    margin: 0;
+    padding: 0;
+    visibility: hidden;
+    width: 0;
+  }
+
+  & input:checked ~ .mark:after {
+    display: block;
+  }
+
+  & input[type='checkbox'] ~ .mark:after {
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    border: solid var(--color-1);
+    border-width: 0 2px 1px 0;
+    height: 8px;
+    transform: rotate(45deg);
+    width: 6px;
+  }
+
+  & input:checked ~ .mark {
+    background-color: var(--background-color-5);
+  }
+}
+
+/* Creating a custom checkbox
+        based on demand */
+.mark {
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid var(--color-border-2);
+  border-radius: 6px;
+  display: flex;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+
+  &:after {
+    content: '';
+    display: none;
+    position: absolute;
+  }
+}
+
+input[type='radio'] ~ .mark {
+  border-radius: 50%;
+}

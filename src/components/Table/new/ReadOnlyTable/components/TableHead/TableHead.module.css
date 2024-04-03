@@ -1,0 +1,44 @@
+.headerWrapper {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.expander {
+  border-radius: var(--border-radius-sm);
+  border: 1px solid darkgray;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+@media (hover: hover) {
+  .resizer {
+    opacity: 0;
+  }
+
+  *:hover > .resizer {
+    opacity: 1;
+  }
+}
+
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: col-resize;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+
+  &.isResizing {
+    background: blue;
+    opacity: 1;
+  }
+}
+
+.sortingSpan {
+  font-size: medium;
+}

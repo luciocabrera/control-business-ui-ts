@@ -1,0 +1,58 @@
+.container {
+  align-content: center;
+  align-items: center;
+  background: var(--background-color-1);
+  box-shadow: 0px 5px 5px #1f452e91;
+  display: flex;
+  height: 47px;
+  justify-content: flex-start;
+  padding-left: 2rem;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  & li {
+    text-align: center;
+    & a {
+      color: inherit;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-content: center;
+      align-items: center;
+      column-gap: 0.5rem;
+      text-decoration: none;
+    }
+  }
+  & ul {
+    list-style-type: none;
+
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    column-gap: 1.8rem;
+    color: var(--nav-text-color);
+  }
+}
+
+.appLink {
+  align-content: center;
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 2rem;
+  gap: 1rem;
+  text-decoration: none;
+}
+
+.version {
+  margin-right: 2rem;
+  position: fixed;
+  right: 0;
+}

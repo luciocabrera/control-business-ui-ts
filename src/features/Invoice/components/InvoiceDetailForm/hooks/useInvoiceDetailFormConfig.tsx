@@ -1,11 +1,8 @@
-// react
-// react
 import { useMemo } from 'react';
 import {
   InvoiceDetailProduct,
   PriceQuantityField,
 } from 'features/Invoice/components';
-// types
 import type { ProductType } from 'types';
 
 import type { FormFieldType } from 'components/Form/components/FormField/types';
@@ -14,55 +11,56 @@ const useInvoiceDetailFormConfig = (products?: ProductType[]) => {
   const fields: FormFieldType[] = useMemo(
     () => [
       {
-        type: 'row',
         fields: [
           {
             accessor: '',
-            type: 'object',
             render: () => <InvoiceDetailProduct products={products ?? []} />,
+            type: 'object',
           },
           {
             accessor: '',
-            type: 'object',
             render: () => <PriceQuantityField />,
+            type: 'object',
           },
         ],
+        type: 'row',
       },
       {
-        type: 'rule',
         accessor: 'date',
         label: 'Date',
         rules: [{ type: 'required' }],
+        type: 'rule',
       },
       {
-        type: 'rule',
         accessor: 'productId',
         label: 'Product',
         rules: [{ type: 'required' }],
+        type: 'rule',
       },
       {
-        type: 'rule',
         accessor: 'description',
+
         label: 'Description',
         rules: [{ type: 'required' }],
+        type: 'rule',
       },
       {
-        type: 'rule',
         accessor: 'quantity',
         label: 'Quantity',
         rules: [{ type: 'required' }],
+        type: 'rule',
       },
       {
-        type: 'rule',
         accessor: 'priceUnit',
         label: 'Price',
         rules: [{ type: 'required' }],
+        type: 'rule',
       },
       {
-        type: 'rule',
         accessor: 'priceQuantity',
         label: 'Price Quantity',
         rules: [{ type: 'required' }],
+        type: 'rule',
       },
     ],
     [products]
