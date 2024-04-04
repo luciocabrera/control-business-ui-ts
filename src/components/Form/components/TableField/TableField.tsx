@@ -3,7 +3,8 @@ import { detailsViewImg } from 'assets';
 import { useFieldsContext } from 'contexts';
 import type { CellContext, ColumnDef } from 'types';
 
-import { Portal, ReadOnlyTable } from 'components';
+import { Portal } from 'components';
+import { ReadOnlyTable } from 'components/Table/ReadOnlyTable';
 
 import { FieldGroupStyled } from '../FormFields/styles';
 

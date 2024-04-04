@@ -1,9 +1,5 @@
 import { memo, useMemo } from 'react';
-import {
-  useFetchInvoicesStatsNew,
-  // useFetchInvoicesStatsNewCallback,
-  useState,
-} from 'hooks';
+import { useFetchInvoicesStatsNew, useState } from 'hooks';
 import {
   Bar,
   CartesianGrid,
@@ -17,8 +13,8 @@ import {
 } from 'recharts';
 import type { ChangeEvent, InvoicesStats } from 'types';
 
-import { ReadOnlyTable } from 'components';
 import CardChart from 'components/CardChart/CardChartNew';
+import { ReadOnlyTable } from 'components/Table/ReadOnlyTable';
 
 import { useInvoicesStatsConfig } from './useInvoicesStatsConfig';
 

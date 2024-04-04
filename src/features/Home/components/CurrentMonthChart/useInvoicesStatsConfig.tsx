@@ -69,9 +69,9 @@ export const useInvoicesStatsConfig = () =>
       },
       {
         accessorKey: 'invoicesCount',
-        cell: getInvoicesCell,
         enableGrouping: false,
         header: 'Invoices',
+        meta: { type: 'number' },
       },
       {
         accessorKey: 'invoicesMin',
@@ -85,31 +85,31 @@ export const useInvoicesStatsConfig = () =>
       },
       {
         accessorKey: 'quantitySum',
-        cell: getQuantitySumCell,
         enableGrouping: false,
         header: 'Nr of Hours',
+        meta: { type: 'number' },
       },
 
       {
         accessorKey: 'subtotalSum',
         aggregationFn: 'sum',
-        cell: getSubtotalCell,
         enableGrouping: false,
         header: 'Subtotal',
+        meta: { type: 'currency' },
       },
       {
         accessorKey: 'taxesSum',
         aggregationFn: 'sum',
-        cell: getTaxesSumCell,
         enableGrouping: false,
         header: 'Taxes',
+        meta: { type: 'currency' },
       },
       {
         accessorKey: 'totalSum',
         aggregationFn: 'sum',
-        cell: getTotalSumCell,
         enableGrouping: false,
         header: 'Total',
+        meta: { type: 'currency' },
       },
     ],
     []

@@ -29,6 +29,7 @@ import type { TReadOnlyTable } from './ReadOnlyTable.types';
 import styles from './ReadOnlyTable.module.css';
 
 const ReadOnlyTable = <TData extends Record<string, unknown>>({
+  actions,
   columns,
   data,
   defaultColumnOrder,
@@ -44,11 +45,12 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   setSize,
   showColumns,
   showFilters,
+  showHeader = true,
   showSorting,
+  showTopRadius,
   tableHeight,
   tableWrapperHeight,
   title,
-  topRadius,
   visible,
 }: TReadOnlyTable<TData>) => {
   const [grouping, setGrouping] = useState<GroupingState>([]);
@@ -208,16 +210,19 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
           tableWrapperHeight ?? styles.defaultTableWrapperHeight,
         ])}
       >
-        <TableHeaderSection
-          isPivot={isPivot}
-          showColumns={showColumns}
-          showFilters={showFilters}
-          showSorting={showSorting}
-          title={title}
-          topRadius={topRadius}
-          onClickExportToExcel={onClickExportToExcel}
-          onToggleExpandGroupedRows={onToggleExpandGroupedRows}
-        />
+        {showHeader && (
+          <TableHeaderSection
+            actions={actions}
+            isPivot={isPivot}
+            showColumns={showColumns}
+            showFilters={showFilters}
+            showSorting={showSorting}
+            showTopRadius={showTopRadius}
+            title={title}
+            onClickExportToExcel={onClickExportToExcel}
+            onToggleExpandGroupedRows={onToggleExpandGroupedRows}
+          />
+        )}
         <div
           ref={parentRef}
           className={joinArray([
@@ -230,6 +235,7 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
             <TableHead
               headerGroups={table.getHeaderGroups()}
               parentRef={parentRef}
+              showTopRadius={showTopRadius}
             />
             <TableBody
               columnVirtualizer={columnVirtualizer}

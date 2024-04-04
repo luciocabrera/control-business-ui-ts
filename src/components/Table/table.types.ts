@@ -17,20 +17,21 @@ type TableCore<TData> = {
   height?: string;
 };
 
-export type ReadOnlyTableType<TData> = TableCore<TData> & {
-  manualFiltering?: boolean;
-  manualSorting?: boolean;
-  isInfinite?: boolean;
-  isLoading: boolean;
-  isReachingEnd?: boolean;
-  showHeader: boolean;
-  setSize?: (
-    size: number | ((_size: number) => number)
-  ) => Promise<TData[][] | undefined>;
-};
+// export type ReadOnlyTableType<TData> = TableCore<TData> & {
+//   manualFiltering?: boolean;
+//   manualSorting?: boolean;
+//   isInfinite?: boolean;
+//   isLoading: boolean;
+//   isReachingEnd?: boolean;
+//   showHeader: boolean;
+//   setSize?: (
+//     size: number | ((_size: number) => number)
+//   ) => Promise<TData[][] | undefined>;
+// };
 
 export type TableBaseType<TData> = TableCore<TData> & {
   showHeader?: boolean;
+  title?: string;
 };
 
 export type TableWithDataHook<TData> = Omit<TableBaseType<TData>, 'data'> & {

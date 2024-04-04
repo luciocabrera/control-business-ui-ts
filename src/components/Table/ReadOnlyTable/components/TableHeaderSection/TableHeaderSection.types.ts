@@ -1,4 +1,7 @@
+import { ReactElement } from 'react';
+
 export type TTableHeaderSectionProps = {
+  actions?: ReactElement;
   isPivot?: boolean;
   onClickExportToExcel?: () => void;
   onToggleExpandGroupedRows?: () => void;
@@ -6,5 +9,5 @@ export type TTableHeaderSectionProps = {
   showFilters?: boolean;
   showSorting?: boolean;
   title?: string;
-  topRadius?: boolean;
+  showTopRadius?: boolean;
 };

@@ -1,8 +1,10 @@
+import { ReactElement } from 'react';
 import type { ColumnDef, Row } from '@tanstack/react-table';
 
 export type TColumnConfigBase = { id: string; label: string };
 
 export type TReadOnlyTable<TData> = {
+  actions?: ReactElement;
   columns: ColumnDef<TData, unknown>[];
   data: TData[];
   defaultColumnOrder: string[];
@@ -25,7 +27,7 @@ export type TReadOnlyTable<TData> = {
   tableHeight?: string;
   tableWrapperHeight?: string;
   title?: string;
-  topRadius?: boolean;
+  showTopRadius?: boolean;
   visible: TColumnConfigBase[];
   visibleRows?: TColumnConfigBase[];
 };

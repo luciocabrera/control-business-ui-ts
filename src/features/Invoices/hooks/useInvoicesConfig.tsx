@@ -25,7 +25,7 @@ export const useInvoicesConfig = () => {
         <NumericDisplay value={year as number} />
       ),
       header: 'Year',
-      maxSize: 100,
+      maxSize: 150,
       meta: { shouldUseDefaultCell: true, type: 'number' },
     },
     {
@@ -38,7 +38,7 @@ export const useInvoicesConfig = () => {
         <QuarterDisplay value={quarter as number} />
       ),
       header: 'Quarter',
-      maxSize: 120,
+      maxSize: 150,
       meta: { shouldUseDefaultCell: true },
     },
     {
@@ -51,7 +51,7 @@ export const useInvoicesConfig = () => {
         <MonthDisplay value={month as number} />
       ),
       header: 'Month',
-      maxSize: 120,
+      maxSize: 150,
       meta: { shouldUseDefaultCell: true },
     },
     {

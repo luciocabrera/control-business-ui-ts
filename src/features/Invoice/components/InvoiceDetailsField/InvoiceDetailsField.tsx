@@ -9,8 +9,9 @@ import type {
 } from 'types';
 import { memo } from 'utilities';
 
-import { IconButton, Portal, ReadOnlyTable } from 'components';
+import { IconButton, Portal } from 'components';
 import { FieldGroupStyled } from 'components/Form/components/FormFields/styles';
+import { ReadOnlyTable } from 'components/Table/ReadOnlyTable';
 
 import InvoiceDetailForm from '../InvoiceDetailForm/InvoiceDetailForm';
 
@@ -171,6 +172,8 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
           defaultColumnOrder={[]}
           hidden={[]}
           isLoading={false}
+          showHeader={false}
+          showTopRadius={true}
           visible={[]} // showHeader={false}
         />
       </FieldGroupStyled>

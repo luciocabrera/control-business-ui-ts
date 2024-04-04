@@ -5,13 +5,12 @@ import ReadOnlyTable from '../ReadOnlyTable/ReadOnlyTable';
 import type { TableWithDataHook } from '../table.types';
 
 const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
-  // actions,
+  actions,
   columns,
   dataHook,
   getRowCanExpand,
-  // height,
-  // renderSubComponent,
-  // showHeader = true,
+  showHeader = true,
+  title,
 }: TableWithDataHook<TData>) => {
   const isInfinite = isInfiniteResponse(dataHook);
 
@@ -19,7 +18,7 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
 
   return (
     <ReadOnlyTable<TData>
-      // actions={actions}
+      actions={actions}
       columns={columns}
       data={data}
       defaultColumnOrder={[]}
@@ -31,10 +30,9 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
       manualFiltering={isInfinite}
       manualSorting={isInfinite}
       setSize={isInfinite ? dataHook.setSize : undefined}
-      visible={[]} // showHeader={showHeader}
-      // height={height}
-
-      // renderSubComponent={renderSubComponent}
+      showHeader={showHeader}
+      title={title}
+      visible={[]} //
     />
   );
 };

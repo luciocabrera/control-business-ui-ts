@@ -1,18 +1,12 @@
-// assets
-// react
 import { memo, useCallback } from 'react';
 import { detailsViewImg } from 'assets';
-// contexts
 import { FormContextProvider } from 'contexts';
-// hooks
 import { useFetchProducts, useParams } from 'hooks';
-// types
 import type {
   InvoiceDetailForm as InvoiceDetailFormType,
   ProductType,
 } from 'types';
 
-// components
 import { PageSpinner } from 'components';
 import { Button } from 'components/Form/components/Button';
 import Form from 'components/Form/Form/Form';
@@ -42,8 +36,8 @@ const InvoiceDetailForm = memo(
         onAcceptDetail?.({
           ...detail,
           ...{
-            productNameWithCode: selectedProduct?.nameWithCode ?? '',
             productDescription: selectedProduct?.description ?? '',
+            productNameWithCode: selectedProduct?.nameWithCode ?? '',
             productPrice: selectedProduct?.price ?? 0,
           },
         });
@@ -57,25 +51,25 @@ const InvoiceDetailForm = memo(
 
     return (
       <FormContextProvider<InvoiceDetailFormType>
-        initialFields={fields}
         initialData={detail}
+        initialFields={fields}
       >
         <Form<InvoiceDetailFormType>
-          icon={detailsViewImg}
-          title={title}
-          onAccept={onAccept}
           actions={
             <Button
-              id='invoice-details-actions-button-cancel'
               inverse
+              id='invoice-details-actions-button-cancel'
               onClick={onFinish}
             >
               Cancel
             </Button>
           }
-          onFinish={onFinish}
+          icon={detailsViewImg}
+          title={title}
           viewMode={false}
           width='650px'
+          onAccept={onAccept}
+          onFinish={onFinish}
         />
       </FormContextProvider>
     );

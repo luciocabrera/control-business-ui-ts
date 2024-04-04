@@ -8,9 +8,6 @@ export { default as Portal } from './Portal/Portal';
 // headers
 export { default as Header } from './Header/Header';
 
-// table
-export { default as ReadOnlyTable } from './Table/ReadOnlyTable/ReadOnlyTable';
-
 export { default as Modal } from './Modal/Modal';
 
 export { default as Layout } from './Layout/Layout';

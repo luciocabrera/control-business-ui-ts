@@ -8,6 +8,7 @@
   );
   border-bottom: 1px solid;
   border-top: 1px solid;
+  color: var(--color-1);
   display: flex;
   flex-wrap: nowrap;
   font-size: 15px;
@@ -25,12 +26,22 @@
     display: flex;
     margin: 0;
     padding: 4px;
-
-    & svg {
-      font-size: large;
-    }
   }
-
+  & a {
+    color: var(--color-1);
+    text-decoration: none;
+    font-size: large;
+    border: 1px solid;
+    border-radius: 50%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+  }
+  & svg {
+    fill: var(--color-1);
+    font-size: large;
+  }
   & .toolbar {
     display: flex;
     gap: 1rem;
@@ -49,4 +60,9 @@
   border: none;
   border-top-left-radius: var(--border-radius-lg);
   border-top-right-radius: var(--border-radius-lg);
+}
+
+.titleContainer {
+  display: flex;
+  gap: 1rem;
 }

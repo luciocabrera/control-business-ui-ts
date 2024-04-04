@@ -5,18 +5,20 @@ import { TableSettingsMenuButton } from '../TableSettingsMenuButton';
 import type { TTableHeaderSectionProps } from './TableHeaderSection.types';
 
 const TableHeaderSection = ({
+  actions,
   isPivot,
   onClickExportToExcel,
   onToggleExpandGroupedRows,
   showColumns,
   showFilters,
   showSorting,
+  showTopRadius,
   title,
-  topRadius,
 }: TTableHeaderSectionProps) => (
   <MainHeader
+    actions={actions}
+    showTopRadius={showTopRadius}
     title={title}
-    topRadius={topRadius}
   >
     <TableSettingsMenuButton
       isPivot={isPivot}

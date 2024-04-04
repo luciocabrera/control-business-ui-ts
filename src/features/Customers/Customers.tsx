@@ -32,6 +32,7 @@ const CustomersBase = () => {
         columns={columns}
         dataHook={dataHook}
         height='calc(100vh - 120px)'
+        title={title}
       />
       <Outlet />
     </>

@@ -3,17 +3,21 @@ import type { TMainHeaderProps } from './MainHeader.types';
 import styles from './MainHeader.module.css';
 
 const MainHeader = ({
+  actions,
   children,
   className,
+  showTopRadius = false,
   title,
-  topRadius = false,
 }: TMainHeaderProps) => (
   <section
     className={`${styles.container} ${className ?? ''} ${
-      topRadius ? styles.radius : ''
+      showTopRadius ? styles.radius : ''
     }`}
   >
-    <div>{title && <span>{title}</span>}</div>
+    <div className={styles.titleContainer}>
+      {title && <span>{title}</span>}
+      {actions}
+    </div>
     {children && <section className={styles.toolbar}>{children}</section>}
   </section>
 );

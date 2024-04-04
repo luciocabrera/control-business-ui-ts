@@ -1,16 +1,11 @@
-// components
-// react
 import { useCallback, useMemo } from 'react';
-// contexts
 import { FormMetaType, useFieldsContext, useFormMetaContext } from 'contexts';
 import type { InvoiceFormType } from 'types';
-// utilities
 import { getFormattedNumber, memo } from 'utilities';
 
 import { TextInput } from 'components/Form/components/TextInput';
 import { getErrorField, validateField } from 'components/Form/utilities';
 
-// types
 import type { InvoiceAmountsFieldProps } from './InvoiceAmountsField.types';
 
 const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
@@ -48,7 +43,7 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
   );
 
   const taxesField = useMemo(
-    () => ({ accessor: 'taxes', label: 'Taxes', type: 'text', required: true }),
+    () => ({ accessor: 'taxes', label: 'Taxes', required: true, type: 'text' }),
     []
   );
 
@@ -74,9 +69,9 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
     () => ({
       accessor: 'total',
       label: 'Total',
-      type: 'text',
-      required: true,
       readonly: true,
+      required: true,
+      type: 'text',
     }),
     []
   );
@@ -90,14 +85,14 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
     [errorsTotal, totalField]
   );
 
-  const handleDisplayFieldOnChange = useCallback(() => null, []);
+  const onDisplayFieldChange = useCallback(() => null, []);
 
   return (
     <>
       <TextInput
         key={`field-input-subtotal`}
-        onChange={handleDisplayFieldOnChange}
         textAlign='right'
+        onChange={onDisplayFieldChange}
         {...subtotalField}
         {...props}
         {...errorFieldSubtotal}
@@ -105,15 +100,15 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
       />
       <TextInput
         key={`field-input-taxes-percentage`}
-        onChange={handleDisplayFieldOnChange}
         textAlign='right'
+        onChange={onDisplayFieldChange}
         {...taxesPercentageField}
         value={`${taxesPercentage}%`}
       />
       <TextInput
         key={`field-input-taxes`}
-        onChange={handleDisplayFieldOnChange}
         textAlign='right'
+        onChange={onDisplayFieldChange}
         {...taxesField}
         {...props}
         {...errorTaxesField}
@@ -121,8 +116,8 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
       />
       <TextInput
         key={`field-input-total`}
-        onChange={handleDisplayFieldOnChange}
         textAlign='right'
+        onChange={onDisplayFieldChange}
         {...totalField}
         {...props}
         {...errorTotalField}
