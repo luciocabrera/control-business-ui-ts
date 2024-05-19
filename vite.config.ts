@@ -15,13 +15,22 @@ function renderChunks(deps: Record<string, string>) {
 }
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
+  plugins: [
+    react(),
+    // react({
+    //   babel: {
+    //     plugins: [['babel-plugin-react-compiler']],
+    //   },
+    // }),
+    viteTsconfigPaths(),
+    svgrPlugin(),
+  ],
   server: {
     proxy: {
       // string shorthand
-      '/api': 'http://localhost:5500'
+      '/api': 'http://localhost:5500',
     },
-    hmr: { overlay: false }
+    hmr: { overlay: false },
   },
   build: {
     sourcemap: false,
@@ -30,9 +39,9 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-router-dom', 'react-dom'],
-          ...renderChunks(dependencies)
-        }
-      }
-    }
-  }
+          ...renderChunks(dependencies),
+        },
+      },
+    },
+  },
 });

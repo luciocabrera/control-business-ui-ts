@@ -1,9 +1,6 @@
-import { memo, useMemo } from 'react';
 import { useFetchInvoicesStatsNew, useState } from 'hooks';
 import {
-  Bar,
   CartesianGrid,
-  ComposedChart,
   Legend,
   Line,
   LineChart,
@@ -20,23 +17,14 @@ import { useInvoicesStatsConfig } from './useInvoicesStatsConfig';
 
 import styles from './CurrentMonthChart.module.css';
 
-const CurrentMonthChart = memo(() => {
+const CurrentMonthChart = () => {
   const [type, setType] = useState('quarter');
   // const fetchInvoicesStatsNewCallback = useFetchInvoicesStatsNewCallback();
   const { data, isLoading } = useFetchInvoicesStatsNew(type ?? 'quarter');
 
-  // export const useFetchInvoicesStatsNew = (type = 'daily_current_month') =>
-  //   useApiDataList<InvoicesStats[]>({
-  //     endpointUrl: `${endpoints.invoices}/stats/${type}`,
-  //   });
-
-  // const { data, isLoading } = fetchInvoicesStatsNew(type) as InvoicesStats[];
   console.log('CurrentMonthChart', { data, type });
   const columns = useInvoicesStatsConfig();
-  const dataChart = useMemo(
-    () => data?.filter((stat) => stat?.period) || [],
-    [data]
-  );
+  const dataChart = data?.filter((stat) => stat?.period) || [];
 
   console.log('dataChart', { dataChart });
 
@@ -80,7 +68,7 @@ const CurrentMonthChart = memo(() => {
           />{' '}
           <label htmlFor='yearly'>Yearly</label>
         </div>
-        <div
+        {/* <div
           className={styles['card-chart-wrapper']}
           data-parent='section-wrapper'
         >
@@ -117,7 +105,7 @@ const CurrentMonthChart = memo(() => {
               />
             </ComposedChart>
           </CardChart>
-        </div>
+        </div> */}
         <div
           className={styles['card-chart-wrapper']}
           data-parent='section-wrapper'
@@ -145,74 +133,17 @@ const CurrentMonthChart = memo(() => {
                 stroke='#8884d8'
                 type='basis'
               />
-              <Line
+              {/* <Line
                 dataKey='quantitySum'
                 name='Nr of Hours'
                 stroke='#82ca9d'
                 type='basis'
-              />
+              /> */}
             </LineChart>
           </CardChart>
         </div>
       </div>
-      {/* <div
-        className={styles['section-column']}
-        data-dashboard-role='table'
-        data-parent='section-wrapper'
-      > */}
-      {/* <div data-parent='section-wrapper'>
-          <ReadOnlyTable<InvoicesStats>
-            columns={columns}
-            data={data}
-            height='calc(100vh - 120px)'
-            isLoading={isLoading}
-            showHeader={true}
-          />
-        </div> */}
-      {/* <div
-          data-parent='section-wrapper'
-          className={styles['card-chart-wrapper']}
-        >
-          <CardChart<InvoicesStats>
-            data={dataChart}
-            title={'Amounts current month'}
-            subtitle={'Sub total, Taxes and Total grouped by Day'}
-          >
-            <ComposedChart
-              width={500}
-              height={300}
-              data={dataChart}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray='3 3' />
-              <XAxis
-                dataKey='year'
-                padding={{ left: 15, right: 15 }}
-              />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar
-                dataKey='subtotalSum'
-                stackId='a'
-                fill='#8884d8'
-                name='Sub Total'
-              />
-              <Bar
-                dataKey='taxesSum'
-                stackId='a'
-                fill='#82ca9d'
-                name='Taxes'
-              />
-            </ComposedChart>
-          </CardChart>
-        </div> */}
-      {/* </div> */}
+
       <div
         className={styles['section-column']}
         data-dashboard-role='table'
@@ -226,57 +157,12 @@ const CurrentMonthChart = memo(() => {
             hidden={[]}
             isLoading={isLoading}
             visible={[]} // showHeader={true}
-
-            // height='calc(100vh - 120px)'
           />
         </div>
-        {/* <div
-          data-parent='section-wrapper'
-          className={styles['card-chart-wrapper']}
-        >
-          <CardChart<InvoicesStats>
-            data={dataChart}
-            title={'Amounts current month'}
-            subtitle={'Sub total, Taxes and Total grouped by Day'}
-          >
-            <ComposedChart
-              width={500}
-              height={300}
-              data={dataChart}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray='3 3' />
-              <XAxis
-                dataKey='year'
-                padding={{ left: 15, right: 15 }}
-              />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar
-                dataKey='subtotalSum'
-                stackId='a'
-                fill='#8884d8'
-                name='Sub Total'
-              />
-              <Bar
-                dataKey='taxesSum'
-                stackId='a'
-                fill='#82ca9d'
-                name='Taxes'
-              />
-            </ComposedChart>
-          </CardChart>
-        </div> */}
       </div>
     </div>
   );
-});
+};
 
 CurrentMonthChart.displayName = 'CurrentMonthChart';
 

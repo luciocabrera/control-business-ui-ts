@@ -43,13 +43,13 @@ export type FieldStringType = FieldStringTuple[number];
 export type FieldProps = FormFieldType & { rules?: Record<string, unknown>[] };
 
 export type FormOptionType = {
-  value: string | number;
+  value: number | string;
   label: string;
 };
 
 export type FormRuleType = {
   type: string;
-  value: string | number;
+  value: number | string;
   message: string;
 };
 
@@ -92,23 +92,23 @@ export type FormFieldGroupType = {
 };
 
 export type FormFieldType = { type: string; render?: () => ReactNode } & (
-  | FormFieldGroupType
   | FormFieldBaseType
+  | FormFieldGroupType
 );
 
 export type FormFieldStateType = {
   accessor: string;
-  value?: string | number;
+  value?: number | string;
 };
 
 export type FormFieldErrorType = {
   accessor: string;
   hasErrors: boolean;
   errorMessage: string;
-  value?: string | number;
+  value?: number | string;
 };
 
-export type FieldBaseValueType = string | number | undefined;
+export type FieldBaseValueType = number | string | undefined;
 export type FieldValueType =
   | FieldBaseValueType
   | Record<string, unknown>

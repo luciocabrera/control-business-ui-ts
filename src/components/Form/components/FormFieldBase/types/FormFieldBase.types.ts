@@ -4,7 +4,7 @@ import type { FormFieldBaseType } from '../../FormField/types';
 
 export type FormFieldBaseProps = Omit<
   FormFieldBaseType,
-  'options' | 'display' | 'default' | 'tooltip' | 'normalize' | 'rules'
+  'default' | 'display' | 'normalize' | 'options' | 'rules' | 'tooltip'
 > & {
   width?: number;
   helperText?: string;

@@ -1,14 +1,10 @@
-// components
-// types
 import type { MouseEventHandler, ReactNode } from 'react';
-// react
 import {
   createContext,
   useCallback,
   useContext,
   useSyncExternalStore,
 } from 'react';
-// hooks
 import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
 
 import Notifications from '../Notifications';
@@ -17,7 +13,6 @@ import type {
   TNotifications,
   TNotificationType,
 } from '../types';
-// utilities
 import { getNotification } from '../utilities';
 
 type NotificationsContextProviderProps = {
@@ -56,7 +51,7 @@ export const useAddNotification = () => {
       title: string,
       type: TNotificationType,
       onClose?: MouseEventHandler<HTMLButtonElement>,
-      onAccept?: (() => void) | (() => Promise<void>),
+      onAccept?: (() => Promise<void>) | (() => void),
       isConfirmation?: boolean
     ) => {
       const notification = getNotification(

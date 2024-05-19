@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { ResponsiveContainer } from 'recharts';
 import { ReactElement } from 'types';
 
@@ -12,10 +11,10 @@ type CardChartProps<TData> = {
 };
 
 const CardChart = <TData extends Record<string, unknown>>({
-  data,
-  title,
-  subtitle,
   children,
+  data,
+  subtitle,
+  title,
 }: CardChartProps<TData>) => {
   console.log('data', data);
   return (
@@ -35,4 +34,4 @@ const CardChart = <TData extends Record<string, unknown>>({
   );
 };
 
-export default memo(CardChart) as typeof CardChart;
+export default CardChart;

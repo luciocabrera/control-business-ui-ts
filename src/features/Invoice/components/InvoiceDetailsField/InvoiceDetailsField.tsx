@@ -1,13 +1,7 @@
 import { useFieldsContext } from 'contexts';
-import { useCallback, useMemo, useState } from 'hooks';
+import { useState } from 'hooks';
 import { CopyIcon, DeleteIcon, EditIcon, NewIcon } from 'icons';
-import type {
-  CellContext,
-  ColumnDef,
-  InvoiceFormType,
-  InvoicesDetails,
-} from 'types';
-import { memo } from 'utilities';
+import type { CellContext, InvoiceFormType, InvoicesDetails } from 'types';
 
 import { IconButton, Portal } from 'components';
 import { FieldGroupStyled } from 'components/Form/components/FormFields/styles';
@@ -20,7 +14,7 @@ import type { InvoiceDetailsFieldProps } from './InvoiceDetailsField.types';
 
 import styles from './InvoiceDetailsField.module.css';
 
-const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
+const InvoiceDetailsField = ({ normalize }: InvoiceDetailsFieldProps) => {
   const [showDetailForm, setShowDetailForm] = useState(false);
   const [detail, setDetail] = useState<InvoicesDetails | undefined>();
 
@@ -43,105 +37,82 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
     (store) => store.total
   );
   const columnsDetails = useInvoiceDetailsConfig();
-  const normalizedValue = useMemo(
-    () => normalize?.(invoicesDetails) ?? invoicesDetails,
-    [invoicesDetails, normalize]
-  ) as unknown as InvoicesDetails[];
+  const normalizedValue = normalize?.(invoicesDetails) ?? invoicesDetails;
 
-  const updateAmounts = useCallback(
-    (newDetails: InvoicesDetails[]) => {
-      const newSubtotal = newDetails?.reduce((previousValue, detail) => {
-        return previousValue + detail.priceQuantity;
-      }, 0);
-      const newTaxes = ((newSubtotal || 0) * taxesPercentage) / 100;
-      const newTotal = (newSubtotal || 0) + newTaxes;
+  const updateAmounts = (newDetails: InvoicesDetails[]) => {
+    const newSubtotal = newDetails?.reduce((previousValue, detail) => {
+      return previousValue + detail.priceQuantity;
+    }, 0);
+    const newTaxes = ((newSubtotal || 0) * taxesPercentage) / 100;
+    const newTotal = (newSubtotal || 0) + newTaxes;
 
-      setSubtotal({ subtotal: newSubtotal });
-      setTaxes({ taxes: newTaxes });
-      setTotal({ total: newTotal });
-    },
-    [setSubtotal, setTaxes, setTotal, taxesPercentage]
-  );
+    setSubtotal({ subtotal: newSubtotal });
+    setTaxes({ taxes: newTaxes });
+    setTotal({ total: newTotal });
+  };
 
-  const onRemoveDetail = useCallback(
-    (original: InvoicesDetails) => {
-      const newDetails = invoicesDetails.filter(
-        (detail) => detail !== original
-      );
+  const onRemoveDetail = (original: InvoicesDetails) => {
+    const newDetails = invoicesDetails.filter((detail) => detail !== original);
 
-      setInvoicesDetails({ details: newDetails });
-      updateAmounts(newDetails);
-    },
-    [invoicesDetails, setInvoicesDetails, updateAmounts]
-  );
+    setInvoicesDetails({ details: newDetails });
+    updateAmounts(newDetails);
+  };
 
-  const onEditDetail = useCallback(
-    (original: InvoicesDetails) => {
-      onRemoveDetail(original);
-      setDetail(original);
-      setShowDetailForm(true);
-    },
-    [onRemoveDetail]
-  );
-
-  const onCopyDetail = useCallback((original: InvoicesDetails) => {
+  const onEditDetail = (original: InvoicesDetails) => {
+    onRemoveDetail(original);
     setDetail(original);
     setShowDetailForm(true);
-  }, []);
+  };
 
-  const onAddDetail = useCallback(() => {
+  const onCopyDetail = (original: InvoicesDetails) => {
+    setDetail(original);
+    setShowDetailForm(true);
+  };
+
+  const onAddDetail = () => {
     setDetail(undefined);
     setShowDetailForm(true);
-  }, []);
+  };
 
-  const onAcceptDetail = useCallback(
-    (detail: InvoicesDetails) => {
-      const newDetails = [...new Set([...invoicesDetails, detail])];
-      setInvoicesDetails({ details: newDetails });
-      updateAmounts(newDetails);
-      setShowDetailForm(false);
+  const onAcceptDetail = (detail: InvoicesDetails) => {
+    const newDetails = [...new Set([...invoicesDetails, detail])];
+    setInvoicesDetails({ details: newDetails });
+    updateAmounts(newDetails);
+    setShowDetailForm(false);
+  };
+  const getActionsCell = ({
+    row: { original },
+  }: CellContext<InvoicesDetails, unknown>) => (
+    <div className={styles['actions-wrapper']}>
+      <IconButton
+        icon={<EditIcon />}
+        id='edit-invoice-detail'
+        onClick={() => onEditDetail(original)}
+      />
+      <IconButton
+        icon={<CopyIcon />}
+        id='copy-invoice-detail'
+        onClick={() => onCopyDetail(original)}
+      />
+      <IconButton
+        icon={<DeleteIcon />}
+        id='delete-invoice-detail'
+        onClick={() => onRemoveDetail(original)}
+      />
+    </div>
+  );
+  const columnsWithActions = [
+    ...columnsDetails,
+    {
+      accessorKey: '',
+      cell: getActionsCell,
+      enableResizing: false,
+      header: 'Actions',
+      meta: { shouldUseDefaultCell: true },
+      sort: false,
     },
-    [invoicesDetails, setInvoicesDetails, updateAmounts]
-  );
-
-  const getActionsCell = useCallback(
-    ({ row: { original } }: CellContext<InvoicesDetails, unknown>) => (
-      <div className={styles['actions-wrapper']}>
-        <IconButton
-          icon={<EditIcon />}
-          id='edit-invoice-detail'
-          onClick={() => onEditDetail(original)}
-        />
-        <IconButton
-          icon={<CopyIcon />}
-          id='copy-invoice-detail'
-          onClick={() => onCopyDetail(original)}
-        />
-        <IconButton
-          icon={<DeleteIcon />}
-          id='delete-invoice-detail'
-          onClick={() => onRemoveDetail(original)}
-        />
-      </div>
-    ),
-    [onCopyDetail, onEditDetail, onRemoveDetail]
-  );
-
-  const columnsWithActions = useMemo<ColumnDef<InvoicesDetails>[]>(
-    () => [
-      ...columnsDetails,
-      {
-        accessorKey: '',
-        cell: getActionsCell,
-        enableResizing: false,
-        header: 'Actions',
-        sort: false,
-      },
-    ],
-    [columnsDetails, getActionsCell]
-  );
-
-  const onFinish = useCallback(() => setShowDetailForm(false), []);
+  ];
+  const onFinish = () => setShowDetailForm(false);
 
   const labelWithAdd = (
     <div className={styles['label-wrapper']}>
@@ -188,6 +159,6 @@ const InvoiceDetailsField = memo(({ normalize }: InvoiceDetailsFieldProps) => {
       )}
     </>
   );
-});
+};
 
 export default InvoiceDetailsField;

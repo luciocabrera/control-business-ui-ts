@@ -1,16 +1,9 @@
-// components
-// react
-import { useCallback } from 'react';
-
 import { Header, Overlay, Portal } from 'components';
 import { Button } from 'components/Form/components/Button';
 
-// contexts
 import { useDeleteNotification, useNotificationsStore } from './contexts';
-// types
 import type { TNotification, TNotifications } from './types';
 
-// styles
 import styles from './styles/Notifications.module.css';
 
 const Notifications = () => {
@@ -20,12 +13,9 @@ const Notifications = () => {
   >((store) => store?.notifications);
   const deleteNotification = useDeleteNotification();
 
-  const handleDeleteNotification = useCallback(
-    (id: number) => {
-      deleteNotification?.(id);
-    },
-    [deleteNotification]
-  );
+  const handleDeleteNotification = (id: number) => {
+    deleteNotification?.(id);
+  };
 
   if (!notifications || notifications?.length === 0) return null;
 
@@ -35,13 +25,13 @@ const Notifications = () => {
         <Overlay />
         {notifications?.map(
           ({
-            id,
+            description,
             icon,
+            id,
+            isConfirmation = false,
             onAccept,
             onClose,
-            description,
             title,
-            isConfirmation = false,
           }: TNotification) => (
             <article
               key={id}
@@ -71,9 +61,9 @@ const Notifications = () => {
                 </Button>
                 {isConfirmation && (
                   <Button
+                    inverse
                     className='btn btn-default'
                     data-dismiss='modal'
-                    inverse
                     onClick={(e) => {
                       onClose?.(e);
                       handleDeleteNotification?.(id);

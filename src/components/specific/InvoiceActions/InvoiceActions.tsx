@@ -1,9 +1,4 @@
-// components
-// react
-import { memo, useCallback } from 'react';
-// contexts
 import { useAddNotification, useAddToast } from 'contexts';
-// hooks
 import {
   useDeleteInvoice,
   useLocation,
@@ -11,7 +6,6 @@ import {
   useParams,
   useRefreshInvoices,
 } from 'hooks';
-// types
 import type { InvoiceFormType, MouseEvent } from 'types';
 
 import { Button } from 'components/Form/components/Button';
@@ -20,8 +14,8 @@ type InvoiceActionsProps = {
   invoice?: InvoiceFormType;
 };
 
-const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
-  const { invoiceId, action } = useParams();
+const InvoiceActions = ({ invoice }: InvoiceActionsProps) => {
+  const { action, invoiceId } = useParams();
 
   const isCreating = invoiceId === 'new' || !invoiceId;
   const isEditing = action === 'edit' && !isCreating;
@@ -35,7 +29,7 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
   const refreshInvoices = useRefreshInvoices();
   const navigate = useNavigate();
 
-  const onConfirmDelete = useCallback(async () => {
+  const onConfirmDelete = async () => {
     try {
       if (!invoice?.invoiceId) return;
       const res = await deleteInvoice(invoice?.invoiceId);
@@ -66,17 +60,9 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
         (err as { message: string }).message
       );
     }
-  }, [
-    deleteInvoice,
-    invoice?.invoiceId,
-    invoice?.invoice,
-    refreshInvoices,
-    location.pathname,
-    navigate,
-    addToast,
-  ]);
+  };
 
-  const onDelete = useCallback(() => {
+  const onDelete = () => {
     addNotification?.(
       'Are you sure you want to delete the current Invoice?',
       'Confirm Deletion',
@@ -85,23 +71,17 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
       onConfirmDelete,
       true
     );
-  }, [addNotification, onConfirmDelete]);
+  };
 
-  const onCancel = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-      navigate(`/invoices`);
-    },
-    [navigate]
-  );
+  const onCancel = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    navigate(`/invoices`);
+  };
 
-  const onEdit = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-      navigate(`edit`);
-    },
-    [navigate]
-  );
+  const onEdit = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    navigate(`edit`);
+  };
 
   return (
     <>
@@ -114,24 +94,24 @@ const InvoiceActions = memo(({ invoice }: InvoiceActionsProps) => {
         </Button>
       )}
       <Button
-        id='invoice-actions-button-cancel'
         inverse
+        id='invoice-actions-button-cancel'
         onClick={onCancel}
       >
         Cancel
       </Button>
       {!isCreating && !isCopying && (
         <Button
+          warning
           id='invoice-actions-button-delete'
           onClick={onDelete}
-          warning
         >
           Delete
         </Button>
       )}
     </>
   );
-});
+};
 
 InvoiceActions.displayName = 'InvoiceActions';
 

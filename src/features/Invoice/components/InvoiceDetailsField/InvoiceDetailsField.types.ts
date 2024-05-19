@@ -4,17 +4,17 @@ import type { FormFieldBaseType } from 'components/Form/components/FormField/typ
 
 export type InvoiceDetailsFieldProps = Omit<
   FormFieldBaseType,
-  | 'display'
+  | 'accessor'
+  | 'columns'
+  | 'data'
   | 'default'
-  | 'tooltip'
+  | 'display'
+  | 'label'
   | 'normalize'
   | 'rules'
-  | 'value'
+  | 'tooltip'
   | 'type'
-  | 'label'
-  | 'accessor'
-  | 'data'
-  | 'columns'
+  | 'value'
 > & {
   normalize?: (value?: InvoicesDetails[]) => InvoicesDetails[];
 };

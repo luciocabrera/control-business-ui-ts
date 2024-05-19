@@ -1,8 +1,6 @@
 import { memo } from 'react';
 
-// styles
 import { ErrorContainer, FieldSetStyled, HelperTextContainer } from './styles';
-// types
 import type { FormFieldBaseProps } from './types';
 
 const FormFieldBase = memo(
@@ -12,8 +10,8 @@ const FormFieldBase = memo(
     const msg = props.helperText || '';
     return (
       <FieldSetStyled
-        width={props.width}
         viewMode={viewMode}
+        width={props.width}
       >
         <fieldset key={`field-${props.accessor}`}>
           <legend>
