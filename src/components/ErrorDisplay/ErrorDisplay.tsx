@@ -1,10 +1,8 @@
-import { memo } from 'react';
-
 type ErrorDisplayProps = {
   errors: string | string[];
 };
 
-const ErrorDisplay = memo(({ errors }: ErrorDisplayProps) =>
+const ErrorDisplay = ({ errors }: ErrorDisplayProps) =>
   typeof errors === 'string' ? (
     <p>{errors}</p>
   ) : (
@@ -13,8 +11,8 @@ const ErrorDisplay = memo(({ errors }: ErrorDisplayProps) =>
         <li key={`list-err-${err}`}>{err}</li>
       ))}
     </ul>
-  )
-);
+  );
+
 ErrorDisplay.displayName = 'ErrorDisplay';
 
 export default ErrorDisplay;

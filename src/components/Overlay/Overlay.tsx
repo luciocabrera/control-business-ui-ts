@@ -1,16 +1,14 @@
-// react
-import { memo, ReactElement } from 'react';
+import { ReactElement } from 'react';
 
-// styles
 import { OverlayStyled } from './Overlay.styled';
 
 type OverlayProps = {
   children?: ReactElement | ReactElement[];
 };
 
-const Overlay = memo(({ children }: OverlayProps) => (
+const Overlay = ({ children }: OverlayProps) => (
   <OverlayStyled>{children}</OverlayStyled>
-));
+);
 
 Overlay.displayName = 'Overlay';
 

@@ -1,18 +1,10 @@
-import { memo } from 'react';
-
 import type { FieldBaseValueType } from '../FormField/types';
 import FormFieldBase from '../FormFieldBase/FormFieldBase';
 
 import { TextInputStyled } from './styles';
 import type { TextInputProps } from './types';
 
-const TextInput = ({
-  ref,
-  textAlign,
-  ...rest
-}: TextInputProps & {
-  ref: React.RefObject<unknown>;
-}) => {
+const TextInput = ({ ref, textAlign, ...rest }: TextInputProps) => {
   const {
     accessor,
     normalize,
@@ -34,13 +26,13 @@ const TextInput = ({
 
   return (
     <FormFieldBase
-      ref={ref}
       maxLength={maxLength}
       {...rest}
     >
       <TextInputStyled
         autoComplete='off'
         id={accessor}
+        ref={ref}
         maxLength={maxLength}
         name={accessor}
         placeholder={placeholder}
@@ -56,4 +48,4 @@ const TextInput = ({
 
 TextInput.displayName = 'TextInput';
 
-export default memo(TextInput);
+export default TextInput;

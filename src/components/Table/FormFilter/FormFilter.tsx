@@ -1,8 +1,5 @@
-// components
-// react
-import { useCallback, useMemo } from 'react';
 import { FormContextProvider, useAddNotification } from 'contexts';
-// contexts
+
 import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
 
 import { Form } from 'components/Form/Form';
@@ -15,49 +12,39 @@ const FormFilter = () => {
 
   const addNotification = useAddNotification();
 
-  const onSetShowFilters = useCallback(() => {
+  const onSetShowFilters = () => {
     dispatch({ type: TableContextActionKind.ToggleShowColumnFilters });
-  }, [dispatch]);
+  };
 
-  const initialValues = useMemo(
-    () =>
-      columnFilters?.reduce(
-        (ac, filter) => ({ ...ac, [filter.id]: filter.value }),
-        {}
-      ),
-    [columnFilters]
-  );
-  const formFields = useMemo(
-    () =>
-      columnMeta?.map((filter) => ({
-        accessor: filter.id,
-        label: filter.name,
-        type: filter.type ?? 'text',
-        options: filter.options,
-      })),
-    [columnMeta]
+  const initialValues = columnFilters?.reduce(
+    (ac, filter) => ({ ...ac, [filter.id]: filter.value }),
+    {}
   );
 
-  const onAccept = useCallback(
-    async (payload: Record<string, unknown>) => {
-      try {
-        const columnFilters = Object.keys(payload)
-          .map((key) => ({ id: key, value: payload[key] }))
-          .filter((fc) => fc.value);
-        dispatch({
-          type: TableContextActionKind.SetColumnFilters,
-          payload: { columnFilters },
-        });
-      } catch (errorInfo) {
-        addNotification?.(
-          'Fields need to be checked',
-          'At least one problem has been found when validating the fields.',
-          'warning'
-        );
-      }
-    },
-    [dispatch, addNotification]
-  );
+  const formFields = columnMeta?.map((filter) => ({
+    accessor: filter.id,
+    label: filter.name,
+    type: filter.type ?? 'text',
+    options: filter.options,
+  }));
+
+  const onAccept = async (payload: Record<string, unknown>) => {
+    try {
+      const columnFilters = Object.keys(payload)
+        .map((key) => ({ id: key, value: payload[key] }))
+        .filter((fc) => fc.value);
+      dispatch({
+        type: TableContextActionKind.SetColumnFilters,
+        payload: { columnFilters },
+      });
+    } catch (errorInfo) {
+      addNotification?.(
+        'Fields need to be checked',
+        'At least one problem has been found when validating the fields.',
+        'warning'
+      );
+    }
+  };
 
   // const formChildren = columnMeta.map((cm) => {
   //   // switch (cm.type) {

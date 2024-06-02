@@ -1,30 +1,21 @@
-// components
 import { FormFieldBase } from '../FormFieldBase';
 
-// styles
 import { SelectStyled } from './styles';
-// types
+
 import type { SelectProps } from './types';
 
-const Select = ({
-  ref,
-  ...props
-}: SelectProps & {
-  ref: React.RefObject<unknown>;
-}) => {
+const Select = ({ ref, ...props }: SelectProps) => {
   const { accessor, options, value, label, onChange } = props;
 
   return (
-    <FormFieldBase
-      {...props}
-      ref={ref}
-    >
+    <FormFieldBase {...props}>
       <SelectStyled
         name={accessor}
         select-name={accessor}
         title={accessor}
         aria-label={accessor}
         aria-labelledby={accessor}
+        ref={ref}
         id={accessor}
         value={value}
         disabled={props.readonly}

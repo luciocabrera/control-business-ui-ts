@@ -1,5 +1,3 @@
-import { memo } from 'react';
-
 import styles from './CardChart.module.css';
 
 type Series<TData> = {
@@ -44,4 +42,4 @@ const CardChart = <TData extends Record<string, unknown>>({
   );
 };
 
-export default memo(CardChart) as typeof CardChart;
+export default CardChart;

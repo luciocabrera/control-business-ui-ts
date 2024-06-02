@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { detailsViewImg } from 'assets';
 import { useFieldsContext } from 'contexts';
-import type { CellContext, ColumnDef } from 'types';
+import type { CellContext } from 'types';
 
 import { Portal } from 'components';
 import { ReadOnlyTable } from 'components/Table/ReadOnlyTable';
@@ -28,48 +28,36 @@ const TableField = <TData extends Record<string, unknown>, DetailData>({
   const normalizedValue = (normalize?.(data) ??
     fieldValue) as unknown as TData[];
 
-  const onRemoveDetail = useCallback(
-    (original: TData) => {
-      const newDetails = data.filter((detail) => detail !== original);
-      setStore({ [accessor]: newDetails });
-    },
-    [accessor, data, setStore]
+  const onRemoveDetail = (original: TData) => {
+    const newDetails = data.filter((detail) => detail !== original);
+    setStore({ [accessor]: newDetails });
+  };
+  const onAcceptDetail = (detail: DetailData) => {
+    const newDetails = [
+      ...new Set([...data, detail as Record<string, unknown>]),
+    ];
+    setStore({ [accessor]: newDetails });
+  };
+
+  const getActionsCell = ({
+    row: { original },
+  }: CellContext<TData, unknown>) => (
+    <img
+      alt=''
+      height='18'
+      src={detailsViewImg}
+      onClick={() => onRemoveDetail(original)}
+    />
   );
 
-  const onAcceptDetail = useCallback(
-    (detail: DetailData) => {
-      const newDetails = [
-        ...new Set([...data, detail as Record<string, unknown>]),
-      ];
-      setStore({ [accessor]: newDetails });
-    },
-    [accessor, data, setStore]
-  );
+  const columnsWithActions = [...columns];
 
-  const getActionsCell = useCallback(
-    ({ row: { original } }: CellContext<TData, unknown>) => (
-      <img
-        alt=''
-        height='18'
-        src={detailsViewImg}
-        onClick={() => onRemoveDetail(original)}
-      />
-    ),
-    [onRemoveDetail]
-  );
-
-  const columnsWithActions = useMemo<ColumnDef<TData>[]>(() => {
-    const calculatedColumns = [...columns];
-
-    if (readonly)
-      calculatedColumns.push({
-        accessorKey: 'actions',
-        cell: getActionsCell,
-        header: '',
-      });
-
-    return calculatedColumns;
-  }, [columns, getActionsCell, readonly]);
+  if (readonly)
+    columnsWithActions.push({
+      accessorKey: 'actions',
+      cell: getActionsCell,
+      header: '',
+    });
 
   const onLabelWithAddClick = () => setShowDetailForm(true);
 

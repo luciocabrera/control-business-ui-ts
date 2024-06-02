@@ -1,9 +1,5 @@
-// components
-// react
-import { memo, useCallback } from 'react';
-// contexts
 import { useAddNotification, useAddToast } from 'contexts';
-// hooks
+
 import {
   useDeleteCustomer,
   useLocation,
@@ -11,7 +7,7 @@ import {
   useParams,
   useRefreshCustomers,
 } from 'hooks';
-// types
+
 import type { CustomerType, MouseEvent } from 'types';
 
 import { Button } from 'components/Form/components/Button';
@@ -20,7 +16,7 @@ type CustomerActionsProps = {
   customer?: CustomerType;
 };
 
-const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
+const CustomerActions = ({ customer }: CustomerActionsProps) => {
   const { customerId, action } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
@@ -34,7 +30,7 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
   const refreshCustomers = useRefreshCustomers();
   const navigate = useNavigate();
 
-  const onConfirmDelete = useCallback(async () => {
+  const onConfirmDelete = async () => {
     try {
       const res = await deleteCustomer(customer?.peopleId);
 
@@ -62,18 +58,9 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
         (err as { message: string }).message
       );
     }
-  }, [
-    deleteCustomer,
-    customer?.peopleId,
-    customer?.firstName,
-    customer?.lastName,
-    refreshCustomers,
-    location.pathname,
-    navigate,
-    addToast,
-  ]);
+  };
 
-  const onDelete = useCallback(() => {
+  const onDelete = () => {
     addNotification?.(
       'Are you sure you want to delete the current Customer?',
       'Confirm Deletion',
@@ -82,53 +69,47 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
       onConfirmDelete,
       true
     );
-  }, [addNotification, onConfirmDelete]);
 
-  const onCancel = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
+    const onCancel = (event: MouseEvent<HTMLElement>) => {
       event.preventDefault();
       navigate(`/customers`);
-    },
-    [navigate]
-  );
+    };
 
-  const onEdit = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
+    const onEdit = (event: MouseEvent<HTMLElement>) => {
       event.preventDefault();
       navigate(`edit`);
-    },
-    [navigate]
-  );
+    };
 
-  return (
-    <>
-      {!isCreating && !isEditing && (
+    return (
+      <>
+        {!isCreating && !isEditing && (
+          <Button
+            id='customer-actions-button-edit'
+            onClick={onEdit}
+          >
+            Edit
+          </Button>
+        )}
         <Button
-          id='customer-actions-button-edit'
-          onClick={onEdit}
+          id='customer-actions-button-cancel'
+          inverse
+          onClick={onCancel}
         >
-          Edit
+          Cancel
         </Button>
-      )}
-      <Button
-        id='customer-actions-button-cancel'
-        inverse
-        onClick={onCancel}
-      >
-        Cancel
-      </Button>
-      {!isCreating && (
-        <Button
-          id='customer-actions-button-delete'
-          onClick={onDelete}
-          warning
-        >
-          Delete
-        </Button>
-      )}
-    </>
-  );
-});
+        {!isCreating && (
+          <Button
+            id='customer-actions-button-delete'
+            onClick={onDelete}
+            warning
+          >
+            Delete
+          </Button>
+        )}
+      </>
+    );
+  };
+};
 
 CustomerActions.displayName = 'CustomerActions';
 

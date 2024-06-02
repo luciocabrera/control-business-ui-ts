@@ -50,7 +50,7 @@ export type FormOptionType = {
 export type FormRuleType = {
   type: string;
   value: number | string;
-  message: string;
+  message?: string;
 };
 
 export type FormTableSettingsFieldType = {

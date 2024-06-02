@@ -1,13 +1,9 @@
-// components
-// react
-import { memo, useCallback } from 'react';
-// types
 import type { FormBaseProps, MouseEvent } from 'types';
-// utilities
+
 import { deepEqual } from 'utilities';
 
 import ErrorDisplay from 'components/ErrorDisplay/ErrorDisplay';
-// contexts
+
 import {
   FormMetaType,
   useFieldsContext,
@@ -41,41 +37,29 @@ const Actions = <TDataType extends Record<string, unknown>>({
   >((store) => store.submittedCounter);
   console.log('Actions');
 
-  const onSubmit = useCallback(
-    async (event: MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      incrementSubmittedCounter?.({ submittedCounter: submittedCounter + 1 });
+  const onSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    incrementSubmittedCounter?.({ submittedCounter: submittedCounter + 1 });
 
-      const errorFields = validateFields<TDataType>(initialFields, data);
-      const hasChanged = !deepEqual<TDataType>(initialData, data);
+    const errorFields = validateFields<TDataType>(initialFields, data);
+    const hasChanged = !deepEqual<TDataType>(initialData, data);
 
-      if (errorFields?.length > 0) {
-        const errorMessages = errorFields.map((err) => err.errorMessage);
-        addNotification?.(
-          <ErrorDisplay errors={errorMessages} />,
-          'Error Validating Customer',
-          'error'
-        );
-        return;
-      }
+    if (errorFields?.length > 0) {
+      const errorMessages = errorFields.map((err) => err.errorMessage);
+      addNotification?.(
+        <ErrorDisplay errors={errorMessages} />,
+        'Error Validating Customer',
+        'error'
+      );
+      return;
+    }
 
-      if (typeof onAccept === 'function' && hasChanged) {
-        onAccept(data);
-      } else {
-        onFinish?.(event);
-      }
-    },
-    [
-      addNotification,
-      data,
-      incrementSubmittedCounter,
-      initialData,
-      initialFields,
-      onAccept,
-      onFinish,
-      submittedCounter,
-    ]
-  );
+    if (typeof onAccept === 'function' && hasChanged) {
+      onAccept(data);
+    } else {
+      onFinish?.(event);
+    }
+  };
 
   return (
     <Button
@@ -87,4 +71,4 @@ const Actions = <TDataType extends Record<string, unknown>>({
   );
 };
 
-export default memo(Actions) as typeof Actions;
+export default Actions;

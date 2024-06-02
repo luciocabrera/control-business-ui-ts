@@ -1,5 +1,3 @@
-import { memo } from 'react';
-
 import { Header } from 'components';
 
 import Actions from '../components/Actions/Actions';
@@ -50,4 +48,4 @@ const Form = <TData extends Record<string, unknown>>({
   </FormStyled>
 );
 
-export default memo(Form) as typeof Form;
+export default Form;

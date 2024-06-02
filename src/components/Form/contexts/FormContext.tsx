@@ -1,25 +1,20 @@
-// components
-// react
 import {
   createContext,
-  useCallback,
   use,
   useEffect,
-  useMemo,
   useState,
   useSyncExternalStore,
 } from 'react';
-// styles
+
 import { FormWrapper } from 'styles';
-// types
+
 import type { ReactElement } from 'types';
 
 import { Overlay } from 'components';
 
-// hooks
 import { type TStoreReturn, useStore } from '../../../hooks/useStore';
 import { FormFieldType } from '../components/FormField/types';
-// utilities
+
 import { getInitialData } from '../utilities';
 
 export type FormMetaType<TDataType extends Record<string, unknown>> = {
@@ -97,18 +92,11 @@ export const useFormMetaContext = <
     throw new Error('Store not found');
   }
 
-  const state = useMemo(
-    () => selector(store.metaData.formMetaData as unknown as TDataType),
-    [selector, store.metaData.formMetaData]
-  );
+  const state = selector(store.metaData.formMetaData as unknown as TDataType);
 
-  const set = useCallback(
-    (metaData: Partial<TDataType>) => {
-      store.metaData.handleSetFormMetaData(metaData);
-    },
-    [store.metaData]
-  );
-
+  const set = (metaData: Partial<TDataType>) => {
+    store.metaData.handleSetFormMetaData(metaData);
+  };
   return [state, set];
 };
 
@@ -122,27 +110,21 @@ export const FormContextProvider = <TDataType extends Record<string, unknown>>({
     initialData: {} as TDataType,
     initialFields: [],
   });
-  const initialFormData = useMemo(
-    () => getInitialData<TDataType>(initialFields, initialData),
-    [initialData, initialFields]
-  );
+  const initialFormData = getInitialData<TDataType>(initialFields, initialData);
+
   const data = useStore<TDataType>(initialFormData) as TStoreReturn;
 
-  const handleSetFormMetaData = useCallback(
-    (metaData: Partial<FormMetaType<Record<string, unknown>>>) => {
-      setFormMetaData((prev) => ({ ...prev, ...(metaData as TDataType) }));
-    },
-    []
-  );
+  const handleSetFormMetaData = (
+    metaData: Partial<FormMetaType<Record<string, unknown>>>
+  ) => {
+    setFormMetaData((prev) => ({ ...prev, ...(metaData as TDataType) }));
+  };
 
   useEffect(() => {
     setFormMetaData((prev) => ({ ...prev, initialData, initialFields }));
   }, [initialData, initialFields]);
 
-  const value = useMemo(
-    () => ({ data, metaData: { formMetaData, handleSetFormMetaData } }),
-    [data, formMetaData, handleSetFormMetaData]
-  );
+  const value = { data, metaData: { formMetaData, handleSetFormMetaData } };
 
   return (
     <FormContext value={value}>

@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useLocation } from 'hooks';
 import { ViewIcon } from 'icons';
 import { TableActionsStyled } from 'styles';
@@ -9,7 +8,7 @@ type TableActionsProps = {
   customerId: number;
 };
 
-const TableActions = memo(({ customerId }: TableActionsProps) => {
+const TableActions = ({ customerId }: TableActionsProps) => {
   const location = useLocation();
   return (
     <TableActionsStyled>
@@ -22,7 +21,7 @@ const TableActions = memo(({ customerId }: TableActionsProps) => {
       </Link>
     </TableActionsStyled>
   );
-});
+};
 
 TableActions.displayName = 'TableActions';
 
