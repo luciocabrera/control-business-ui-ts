@@ -45,7 +45,7 @@ const App = () => {
   return (
     <ToastsContextProvider>
       <NotificationsContextProvider>
-        <Routes location={state?.backgroundLocation || location}>
+        <Routes location={state?.backgroundLocation ?? location}>
           <Route
             element={<Layout />}
             path='/'
