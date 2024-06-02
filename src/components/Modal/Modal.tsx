@@ -28,10 +28,10 @@ const Modal = ({
             <div className='modal-content'>
               <div className='modal-header'>
                 <button
-                  type='button'
-                  onClick={onClose}
                   className='close'
                   data-dismiss='modal'
+                  type='button'
+                  onClick={onClose}
                 >
                   &times;
                 </button>

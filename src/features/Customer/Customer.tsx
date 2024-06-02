@@ -104,18 +104,18 @@ const Customer = () => {
 
   return (
     <FormContextProvider<CustomerFormType>
-      initialFields={fields}
       initialData={customer}
+      initialFields={fields}
     >
       <Form<CustomerFormType>
+        actions={<CustomerActions customer={customer} />}
+        height='600px'
         icon={<CustomerIcon />}
         title={title}
+        viewMode={false}
+        width='850px'
         onAccept={handleOnAccept}
         onFinish={handleOnFinish}
-        actions={<CustomerActions customer={customer} />}
-        viewMode={false}
-        height='600px'
-        width='850px'
       />
     </FormContextProvider>
   );

@@ -19,8 +19,8 @@ const Form = <TData extends Record<string, unknown>>({
 }: FormProps<TData>) => (
   <FormStyled
     noValidate
-    width={width}
     height={height}
+    width={width}
   >
     <Header
       icon={icon}

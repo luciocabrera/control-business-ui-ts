@@ -6,8 +6,8 @@ import type { HeaderProps } from './types';
 const getIcon = (icon?: ReactElement | string) =>
   typeof icon === 'string' ? (
     <img
-      src={icon}
       alt=''
+      src={icon}
     />
   ) : (
     icon
@@ -23,10 +23,10 @@ const Header = ({ children, icon, onClose, subtitle, title }: HeaderProps) => (
     {children && <div className={styles.childrenContent}>{children}</div>}
     {onClose && (
       <button
-        type='button'
-        onClick={onClose}
         className={styles.close}
         data-dismiss='modal'
+        type='button'
+        onClick={onClose}
       >
         &times;
       </button>

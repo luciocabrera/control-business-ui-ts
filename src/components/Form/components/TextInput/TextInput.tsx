@@ -30,9 +30,9 @@ const TextInput = ({ ref, textAlign, ...rest }: TextInputProps) => {
       {...rest}
     >
       <TextInputStyled
+        ref={ref}
         autoComplete='off'
         id={accessor}
-        ref={ref}
         maxLength={maxLength}
         name={accessor}
         placeholder={placeholder}

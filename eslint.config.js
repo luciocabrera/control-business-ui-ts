@@ -111,7 +111,7 @@ export default [
         'asc',
         { caseSensitive: true, minKeys: 2, natural: false },
       ],
-      'sort-keys-fix/sort-keys-fix': 'warn',
+      'sort-keys-fix/sort-keys-fix': 'error',
     },
   },
   {

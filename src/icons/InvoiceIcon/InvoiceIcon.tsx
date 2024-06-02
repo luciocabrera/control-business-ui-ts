@@ -1,10 +1,10 @@
 const InvoiceIcon = ({ color = '#03542f' }: { color?: string }) => (
   <svg
-    stroke={color}
     fill={color}
+    height='1em'
+    stroke={color}
     strokeWidth='0'
     viewBox='0 0 384 512'
-    height='1em'
     width='1em'
     xmlns='http://www.w3.org/2000/svg'
   >

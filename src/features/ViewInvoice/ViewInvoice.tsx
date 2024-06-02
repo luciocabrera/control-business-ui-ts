@@ -28,16 +28,16 @@ const ViewInvoice = () => {
 
   return (
     <FormContextProvider<InvoiceFormType>
-      initialFields={fields}
       initialData={invoice}
+      initialFields={fields}
     >
       <Form<InvoiceFormType>
+        actions={<InvoiceActions invoice={invoice} />}
+        height='612px'
         icon={<InvoiceIcon />}
         title='View invoice'
-        actions={<InvoiceActions invoice={invoice} />}
-        onFinish={onFinish}
-        height='612px'
         width='1120px'
+        onFinish={onFinish}
       />
     </FormContextProvider>
   );

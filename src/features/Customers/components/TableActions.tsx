@@ -13,9 +13,9 @@ const TableActions = ({ customerId }: TableActionsProps) => {
   return (
     <TableActionsStyled>
       <Link
-        to={`${customerId?.toString() ?? ''}`}
         aria-label={`View customer ${customerId?.toString() ?? ''}`}
         state={{ backgroundLocation: location }}
+        to={`${customerId?.toString() ?? ''}`}
       >
         <ViewIcon />
       </Link>

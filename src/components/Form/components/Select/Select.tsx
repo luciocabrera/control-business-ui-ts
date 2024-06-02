@@ -9,15 +9,15 @@ const Select = ({ ref, ...props }: SelectProps) => {
   return (
     <FormFieldBase {...props}>
       <SelectStyled
+        ref={ref}
+        aria-label={accessor}
+        aria-labelledby={accessor}
+        disabled={props.readonly}
+        id={accessor}
         name={accessor}
         select-name={accessor}
         title={accessor}
-        aria-label={accessor}
-        aria-labelledby={accessor}
-        ref={ref}
-        id={accessor}
         value={value}
-        disabled={props.readonly}
         onChange={(event) => {
           event.preventDefault();
           onChange?.(event);
@@ -31,8 +31,8 @@ const Select = ({ ref, ...props }: SelectProps) => {
         </option>
         {options?.map((option) => (
           <option
-            id={`item-${option.value}`}
             key={`item-${option.value}`}
+            id={`item-${option.value}`}
             value={option.value}
           >
             {option.label}

@@ -9,11 +9,11 @@ export const IconButton = ({
   title = 'button',
 }: ButtonProps) => (
   <ButtonStyled
-    id={id}
-    onClick={onClick}
-    type='button'
-    title={title}
     disabled={disabled}
+    id={id}
+    title={title}
+    type='button'
+    onClick={onClick}
   >
     {icon}
   </ButtonStyled>

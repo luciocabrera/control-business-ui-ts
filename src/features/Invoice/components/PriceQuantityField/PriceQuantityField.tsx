@@ -80,8 +80,8 @@ const PriceQuantityField = ({ ...props }: PriceQuantityFieldProps) => {
     <>
       <TextInput
         key={`field-input-quantity`}
-        onChange={onQuantityChange}
         textAlign='right'
+        onChange={onQuantityChange}
         {...quantityField}
         {...props}
         {...errorFieldQuantity}
@@ -89,13 +89,13 @@ const PriceQuantityField = ({ ...props }: PriceQuantityFieldProps) => {
       />
       <TextInput
         key={`field-input-price-unit`}
+        textAlign='right'
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           setPriceUnit({ priceUnit: event.target.value as unknown as number });
           setPriceQuantity({
             priceQuantity: quantity * ((event.target.value || 0) as number),
           });
         }}
-        textAlign='right'
         {...priceUnitField}
         {...props}
         {...errorPriceUnitField}
@@ -103,10 +103,10 @@ const PriceQuantityField = ({ ...props }: PriceQuantityFieldProps) => {
       />
       <TextInput
         key={`field-input-price-quantity`}
+        textAlign='right'
         onChange={() => {
           /* placeholder function */
         }}
-        textAlign='right'
         {...priceQuantityField}
         {...props}
         {...errorPriceQuantityField}

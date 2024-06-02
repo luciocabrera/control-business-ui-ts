@@ -58,7 +58,7 @@ const CustomerActions = ({ customer }: CustomerActionsProps) => {
     }
   };
 
-  const onDelete = () =>
+  const handleDelete = () =>
     addNotification?.(
       'Are you sure you want to delete the current Customer?',
       'Confirm Deletion',
@@ -68,12 +68,12 @@ const CustomerActions = ({ customer }: CustomerActionsProps) => {
       true
     );
 
-  const onCancel = (event: MouseEvent<HTMLElement>) => {
+  const handleCancel = (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     navigate(`/customers`);
   };
 
-  const onEdit = (event: MouseEvent<HTMLElement>) => {
+  const handleEdit = (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     navigate(`edit`);
   };
@@ -83,23 +83,23 @@ const CustomerActions = ({ customer }: CustomerActionsProps) => {
       {!isCreating && !isEditing && (
         <Button
           id='customer-actions-button-edit'
-          onClick={onEdit}
+          onClick={handleEdit}
         >
           Edit
         </Button>
       )}
       <Button
-        id='customer-actions-button-cancel'
         inverse
-        onClick={onCancel}
+        id='customer-actions-button-cancel'
+        onClick={handleCancel}
       >
         Cancel
       </Button>
       {!isCreating && (
         <Button
-          id='customer-actions-button-delete'
-          onClick={onDelete}
           warning
+          id='customer-actions-button-delete'
+          onClick={handleDelete}
         >
           Delete
         </Button>

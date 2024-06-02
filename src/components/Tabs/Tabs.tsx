@@ -25,8 +25,8 @@ const Tabs = ({ defaultSelectedTab, tabs }: TabsProps) => {
           <Tab
             key={key}
             active={active === key}
-            onClick={() => setActive(key)}
             type='button'
+            onClick={() => setActive(key)}
           >
             {title}
           </Tab>

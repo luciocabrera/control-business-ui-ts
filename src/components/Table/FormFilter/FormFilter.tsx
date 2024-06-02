@@ -80,17 +80,17 @@ const FormFilter = () => {
   if (!showColumnFilters) return null;
   return (
     <FormContextProvider<Record<string, unknown>>
-      initialFields={formFields}
       initialData={initialValues}
+      initialFields={formFields}
     >
       <Form<Record<string, unknown>>
         // icon={<CustomerIcon />}
-        title={'title'}
+        height='600px'
         onAccept={onAccept}
         // onFinish={onFinish}
         // actions={<CustomerActions customer={customer} />}
+        title={'title'}
         viewMode={false}
-        height='600px'
         width='850px'
         onFinish={onSetShowFilters}
       />

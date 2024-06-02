@@ -52,13 +52,13 @@ const FormField = ({ field, ...props }: FormFieldProps) => {
       return (
         <Select
           key={`field-select-${field.accessor}`}
-          onChange={handleOnSelectChange}
-          value={fieldValue}
           accessor={accessor}
-          options={options}
           label={label}
+          options={options}
           readonly={readonly}
           type={type}
+          value={fieldValue}
+          onChange={handleOnSelectChange}
           {...props}
           {...errorField}
         />
@@ -67,14 +67,14 @@ const FormField = ({ field, ...props }: FormFieldProps) => {
     default:
       return (
         <TextInputStyled
+          autoComplete='off'
+          id={accessor}
+          maxLength={maxLength}
           name={accessor}
+          placeholder={placeholder}
+          type={type}
           value={fieldValue}
           onChange={handleOnTextInputChange}
-          maxLength={maxLength}
-          type={type}
-          id={accessor}
-          placeholder={placeholder}
-          autoComplete='off'
         />
       );
   }

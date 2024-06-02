@@ -51,8 +51,8 @@ const Toasts = ({ position = 'bottomRight' }: TToastProps) => {
             </button>
             <NotificationImage>
               <img
-                src={toast.icon}
                 alt=''
+                src={toast.icon}
               />
             </NotificationImage>
             <>

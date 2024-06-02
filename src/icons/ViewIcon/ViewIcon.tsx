@@ -1,11 +1,11 @@
 const ViewIcon = () => (
   <svg
+    fill='none'
+    stroke='currentColor'
     strokeWidth='3'
     version='1.1'
     viewBox='0 0 64 64'
     xmlns='http://www.w3.org/2000/svg'
-    stroke='currentColor'
-    fill='none'
   >
     <g>
       <g>
