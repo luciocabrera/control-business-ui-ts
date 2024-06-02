@@ -95,7 +95,7 @@ const InvoiceDetailProduct = ({
 
   const errorDateField = getErrorField(dateField, errorsDateField);
 
-  const onSelectProduct = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelectProduct = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selected =
       parseInt(event.target.options[event.target.selectedIndex]?.value, 10) ||
       undefined;
@@ -112,10 +112,12 @@ const InvoiceDetailProduct = ({
       setDescription({ description: selectedProduct?.description });
   };
 
-  const onDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeDescription = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setDescription({ description: event.target.value });
   };
-  const onDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDate({ date: event.target.value });
   };
   return (
@@ -123,14 +125,14 @@ const InvoiceDetailProduct = ({
       <Select
         key={`field-select-product-id`}
         value={productId}
-        onChange={onSelectProduct}
+        onChange={handleSelectProduct}
         {...productField}
         {...props}
         {...errorFieldProductId}
       />
       <TextInput
         key={`field-input-description`}
-        onChange={onDescriptionChange}
+        onChange={handleChangeDescription}
         {...descriptionField}
         {...props}
         {...errorDescriptionField}
@@ -138,7 +140,7 @@ const InvoiceDetailProduct = ({
       />
       <TextInput
         key={`field-input-carried-out`}
-        onChange={onDateChange}
+        onChange={handleChangeDate}
         {...dateField}
         {...props}
         {...errorDateField}

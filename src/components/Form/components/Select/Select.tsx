@@ -3,25 +3,35 @@ import { FormFieldBase } from '../FormFieldBase';
 import { SelectStyled } from './styles';
 import type { SelectProps } from './types';
 
-const Select = ({ ref, ...props }: SelectProps) => {
-  const { accessor, label, onChange, options, value } = props;
-
+const Select = ({
+  accessor,
+  label,
+  options,
+  readonly,
+  ref,
+  required,
+  type,
+  value,
+  ...props
+}: SelectProps) => {
   return (
-    <FormFieldBase {...props}>
+    <FormFieldBase
+      accessor={accessor}
+      label={label}
+      required={required}
+      type={type}
+    >
       <SelectStyled
         ref={ref}
         aria-label={accessor}
         aria-labelledby={accessor}
-        disabled={props.readonly}
+        disabled={readonly}
         id={accessor}
         name={accessor}
         select-name={accessor}
         title={accessor}
         value={value}
-        onChange={(event) => {
-          event.preventDefault();
-          onChange?.(event);
-        }}
+        {...props}
       >
         <option
           key='default-option'

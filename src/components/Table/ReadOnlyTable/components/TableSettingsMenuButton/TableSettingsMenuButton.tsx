@@ -23,11 +23,11 @@ const TableSettingsMenuButton = ({
   const { search } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const onMenuClick = () => {
-    setIsOpen(!isOpen);
-  };
+  const handleMenuClick = () => setIsOpen(!isOpen);
+  const handleCloseMenu = () => setIsOpen(false);
 
-  const onCloseMenu = () => setIsOpen(false);
+  const handleClickExportToExcel = onClickExportToExcel;
+  const handleToggleExpandGroupedRows = onToggleExpandGroupedRows;
 
   const ref = useOutsideClick(() => {
     setIsOpen(false);
@@ -43,7 +43,7 @@ const TableSettingsMenuButton = ({
         name='tableSettingsButton'
         title='Table Settings'
         type='button'
-        onClick={onMenuClick}
+        onClick={handleMenuClick}
       >
         <GiHamburgerMenu />
       </button>
@@ -53,7 +53,7 @@ const TableSettingsMenuButton = ({
             <li>
               <Link
                 to={`filter${search}`}
-                onClick={onCloseMenu}
+                onClick={handleCloseMenu}
               >
                 <AiFillFilter />
                 Filters{''}
@@ -64,7 +64,7 @@ const TableSettingsMenuButton = ({
             <li>
               <Link
                 to={`sorting${search}`}
-                onClick={onCloseMenu}
+                onClick={handleCloseMenu}
               >
                 <BiSortAlt2 />
                 Sorting{''}
@@ -75,33 +75,33 @@ const TableSettingsMenuButton = ({
             <li>
               <Link
                 to={`columns${search}`}
-                onClick={onCloseMenu}
+                onClick={handleCloseMenu}
               >
                 <HiViewColumns />
                 Columns{''}
               </Link>
             </li>
           )}
-          <li onClick={onCloseMenu}>
+          <li onClick={handleCloseMenu}>
             <button
               aria-label='Export to Excel'
               name='exportToExcelButton'
               title='Export to Excel'
               type='button'
-              onClick={onClickExportToExcel}
+              onClick={handleClickExportToExcel}
             >
               <SiMicrosoftexcel />
               <span>Export</span>
             </button>
           </li>
           {isPivot && (
-            <li onClick={onCloseMenu}>
+            <li onClick={handleCloseMenu}>
               <button
                 aria-label='Expand / Collapse'
                 name='expandCollapseButton'
                 title='Expand / Collapse'
                 type='button'
-                onClick={onToggleExpandGroupedRows}
+                onClick={handleToggleExpandGroupedRows}
               >
                 <MdOutlineSwipeVertical />
                 <span>Expand/Collapse</span>
@@ -111,7 +111,7 @@ const TableSettingsMenuButton = ({
           <li>
             <Link
               to='/'
-              onClick={onCloseMenu}
+              onClick={handleCloseMenu}
             >
               <AiFillHome />
               Home{' '}
