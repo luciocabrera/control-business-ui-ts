@@ -5,15 +5,15 @@ export const Button = ({
   children,
   id,
   inverse = false,
-  onClick,
   warning = false,
+  ...props
 }: ButtonProps) => (
   <ButtonStyled
     id={id}
     inverse={inverse}
     type='button'
     warning={warning}
-    onClick={onClick}
+    {...props}
   >
     {children}
   </ButtonStyled>

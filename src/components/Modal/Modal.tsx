@@ -12,6 +12,8 @@ const Modal = ({
   onClose,
   title,
 }: ModalProps) => {
+  const handleClose = onClose;
+  const handleAccept = onAccept;
   return (
     <Portal data-testid='modal-portal'>
       <>
@@ -31,30 +33,28 @@ const Modal = ({
                   className='close'
                   data-dismiss='modal'
                   type='button'
-                  onClick={onClose}
+                  onClick={handleClose}
                 >
                   &times;
                 </button>
                 <h4 className='modal-title'>{title}</h4>
               </div>
-              <div className='modal-body'>
-                <>{message}</>
-              </div>
+              <div className='modal-body'>{message}</div>
               <div className='modal-footer'>
-                {onAccept && (
+                {handleAccept && (
                   <Button
                     className='btn btn-default'
                     data-dismiss='modal'
-                    onClick={onAccept}
+                    onClick={handleAccept}
                   >
                     Accept
                   </Button>
                 )}
-                {isConfirmation && onClose && (
+                {isConfirmation && handleClose && (
                   <Button
                     className='btn btn-default'
                     data-dismiss='modal'
-                    onClick={onClose}
+                    onClick={handleClose}
                   >
                     Cancel
                   </Button>

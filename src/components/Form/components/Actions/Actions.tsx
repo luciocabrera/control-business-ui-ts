@@ -35,7 +35,7 @@ const Actions = <TDataType extends Record<string, unknown>>({
   >((store) => store.submittedCounter);
   console.log('Actions');
 
-  const onSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     incrementSubmittedCounter?.({ submittedCounter: submittedCounter + 1 });
 
@@ -62,7 +62,7 @@ const Actions = <TDataType extends Record<string, unknown>>({
   return (
     <Button
       id='form-button-accept'
-      onClick={onSubmit}
+      onClick={handleSubmit}
     >
       Accept
     </Button>

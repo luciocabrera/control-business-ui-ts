@@ -5,15 +5,15 @@ export const IconButton = ({
   disabled = false,
   icon,
   id,
-  onClick,
   title = 'button',
+  ...props
 }: ButtonProps) => (
   <ButtonStyled
     disabled={disabled}
     id={id}
     title={title}
     type='button'
-    onClick={onClick}
+    {...props}
   >
     {icon}
   </ButtonStyled>

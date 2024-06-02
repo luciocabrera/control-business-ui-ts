@@ -68,14 +68,14 @@ const InvoiceAmountsField = ({ ...props }: InvoiceAmountsFieldProps) => {
 
   const errorTotalField = getErrorField(totalField, errorsTotal);
 
-  const onDisplayFieldChange = () => null;
+  const handleNullAction = () => null;
 
   return (
     <>
       <TextInput
         key={`field-input-subtotal`}
         textAlign='right'
-        onChange={onDisplayFieldChange}
+        onChange={handleNullAction}
         {...subtotalField}
         {...props}
         {...errorFieldSubtotal}
@@ -84,14 +84,14 @@ const InvoiceAmountsField = ({ ...props }: InvoiceAmountsFieldProps) => {
       <TextInput
         key={`field-input-taxes-percentage`}
         textAlign='right'
-        onChange={onDisplayFieldChange}
+        onChange={handleNullAction}
         {...taxesPercentageField}
         value={`${taxesPercentage}%`}
       />
       <TextInput
         key={`field-input-taxes`}
         textAlign='right'
-        onChange={onDisplayFieldChange}
+        onChange={handleNullAction}
         {...taxesField}
         {...props}
         {...errorTaxesField}
@@ -100,7 +100,7 @@ const InvoiceAmountsField = ({ ...props }: InvoiceAmountsFieldProps) => {
       <TextInput
         key={`field-input-total`}
         textAlign='right'
-        onChange={onDisplayFieldChange}
+        onChange={handleNullAction}
         {...totalField}
         {...props}
         {...errorTotalField}

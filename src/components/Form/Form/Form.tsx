@@ -16,36 +16,34 @@ const Form = <TData extends Record<string, unknown>>({
   title,
   viewMode,
   width,
-}: FormProps<TData>) => (
-  <FormStyled
-    noValidate
-    height={height}
-    width={width}
-  >
-    <Header
-      icon={icon}
-      title={title}
-      onClose={onFinish}
-    />
-    <main>
-      <>
-        <FormFields
-          groupId={''}
-          viewMode={viewMode}
-        />
-        {children}
-      </>
-    </main>
-    <footer>
-      {onAccept && (
-        <Actions<TData>
-          onAccept={onAccept}
-          onFinish={onFinish}
-        />
-      )}
-      {actions}
-    </footer>
-  </FormStyled>
-);
+}: FormProps<TData>) => {
+  const handleClose = onFinish;
+  return (
+    <FormStyled
+      noValidate
+      height={height}
+      width={width}
+    >
+      <Header
+        icon={icon}
+        title={title}
+        onClose={handleClose}
+      />
+      <main>
+        <>
+          <FormFields
+            groupId={''}
+            viewMode={viewMode}
+          />
+          {children}
+        </>
+      </main>
+      <footer>
+        {onAccept && <Actions<TData> {...{ onAccept, onFinish }} />}
+        {actions}
+      </footer>
+    </FormStyled>
+  );
+};
 
 export default Form;

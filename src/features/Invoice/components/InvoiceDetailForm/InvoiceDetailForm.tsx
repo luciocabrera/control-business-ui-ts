@@ -26,7 +26,7 @@ const InvoiceDetailForm = ({
 
   const { fields } = useInvoiceDetailFormConfig(products);
 
-  const onAccept = (detail: InvoiceDetailFormType) => {
+  const handleAccept = (detail: InvoiceDetailFormType) => {
     const selectedProduct = products?.find(
       ({ productId }: ProductType) =>
         productId ===
@@ -43,6 +43,7 @@ const InvoiceDetailForm = ({
       },
     });
   };
+  const handleFinish = onFinish;
 
   if (isLoadingProducts) return <PageSpinner />;
 
@@ -58,7 +59,7 @@ const InvoiceDetailForm = ({
           <Button
             inverse
             id='invoice-details-actions-button-cancel'
-            onClick={onFinish}
+            onClick={handleFinish}
           >
             Cancel
           </Button>
@@ -67,8 +68,8 @@ const InvoiceDetailForm = ({
         title={title}
         viewMode={false}
         width='650px'
-        onAccept={onAccept}
-        onFinish={onFinish}
+        onAccept={handleAccept}
+        onFinish={handleFinish}
       />
     </FormContextProvider>
   );
