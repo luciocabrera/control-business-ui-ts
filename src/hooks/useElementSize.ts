@@ -24,7 +24,7 @@ export const useElementSize = (htmlRef: React.RefObject<HTMLElement>) => {
     window.addEventListener('resize', debouncedHandleResize);
 
     return () => window.removeEventListener('resize', debouncedHandleResize);
-  }, [debouncedHandleResize, htmlRef]);
+  }, [debouncedHandleResize]);
 
   return windowSize;
 };

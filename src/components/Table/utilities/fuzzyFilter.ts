@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-// react table
 import { RankingInfo, rankItem } from '@tanstack/match-sorter-utils';
 import { FilterFn } from '@tanstack/react-table';
 

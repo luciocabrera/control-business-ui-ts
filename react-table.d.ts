@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
+ 
 import '@tanstack/react-table';
 
 export type TColumnMetaDataType =

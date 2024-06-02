@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "path": "../../../control-business-api-nest",
+    },
+    {
+      "path": "../..",
+    },
+    {
+      "path": "../../../dm_api",
+    },
+    {
+      "path": "../../../umd-ui-remix",
+    },
+    {
+      "path": "../../../datablender-api",
+    },
+    {
+      "path": "../../../analyzer-tool",
+    },
+  ],
+  "settings": {},
+}

@@ -1,23 +1,12 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { type ReactPortal } from 'react';
 import { createPortal } from 'react-dom';
 
-type PortalProps = {
-  children?: ReactElement | ReactElement[];
-  el?: string;
-};
+import type { TPortalProps } from './Portal.types';
 
-export const Portal = ({ children, el = 'fragment' }: PortalProps) => {
-  const [container] = useState(document.createElement(el));
+const Portal = ({ children }: TPortalProps): ReactPortal => {
+  const appEl = document.getElementById('main') as DocumentFragment | Element;
 
-  useEffect(() => {
-    document.body.appendChild(container);
-    return () => {
-      document.body.removeChild(container);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return createPortal(children, container);
+  return createPortal(children, appEl) as ReactPortal;
 };
 
 export default Portal;

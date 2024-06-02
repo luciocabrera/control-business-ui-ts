@@ -1,0 +1,44 @@
+import { test } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import App from 'root/App';
+import { server, rest } from './test/server';
+
+test.describe('App', () => {
+  test.beforeEach(() => {
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
+  });
+
+  test('renders without crashing', () => {
+    const linkElement = screen.getByText(/home/i);
+    expect(linkElement).toBeInTheDocument();
+  });
+
+  test('returns 200 status code for home page', async () => {
+    server.use(
+      rest.get('/', (req, res, ctx) => {
+        return res(ctx.status(200));
+      })
+    );
+
+    const response = await fetch('/');
+    expect(response.status).toBe(200);
+  });
+});
+
+test.describe('Index', () => {
+  test('renders the app component', () => {
+    const { container } = render(
+      <React.StrictMode>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </React.StrictMode>
+    );
+    expect(container.firstChild).toBeInTheDocument();
+  });
+});
