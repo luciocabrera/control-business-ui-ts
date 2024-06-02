@@ -20,12 +20,11 @@ export const useInvoiceConfig = ({
 }) => {
   const { data: customers } = useFetchCustomers();
 
-  const customersOptions = () =>
-    customers?.map((customer) => ({
-      label: `${customer.fullNameWithInitials}`,
-      value: customer.peopleId,
-    }));
-  const fields: FormFieldType[] = () => [
+  const customersOptions = customers?.map((customer) => ({
+    label: `${customer.fullNameWithInitials}`,
+    value: customer.peopleId,
+  }));
+  const fields: FormFieldType[] = [
     {
       fields: [
         {
@@ -44,8 +43,8 @@ export const useInvoiceConfig = ({
         {
           accessor: 'date',
           label: 'Date',
-          normalize: (value: DateParameterType | undefined) =>
-            getDateAsString(value, 'date', true),
+          normalize: (value) =>
+            getDateAsString(value as DateParameterType, 'date', true),
           required: true,
           type: 'date',
           value: invoice?.date,

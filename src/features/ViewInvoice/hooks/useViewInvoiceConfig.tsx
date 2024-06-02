@@ -16,7 +16,7 @@ import { TableField } from 'components/Form/components/TableField';
 import { getDateCell } from '../utilities';
 
 export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
-  const columns = () => [
+  const columns = [
     {
       accessorKey: 'productNameWithCode',
       enableGrouping: false,

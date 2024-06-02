@@ -71,7 +71,7 @@ export type FormFieldBaseType = {
   default?: string | null;
   placeholder?: string;
   tooltip?: string;
-  normalize?: (value?: FieldValueType) => FieldValueType;
+  normalize?: (value?: FieldBaseValueType) => FieldBaseValueType;
   onSelect?: (value?: FieldValueType) => void;
   change?: <TDataType>(
     data: TDataType,

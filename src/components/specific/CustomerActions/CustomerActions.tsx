@@ -60,7 +60,7 @@ const CustomerActions = ({ customer }: CustomerActionsProps) => {
     }
   };
 
-  const onDelete = () => {
+  const onDelete = () =>
     addNotification?.(
       'Are you sure you want to delete the current Customer?',
       'Confirm Deletion',
@@ -70,47 +70,44 @@ const CustomerActions = ({ customer }: CustomerActionsProps) => {
       true
     );
 
-    const onCancel = (event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-      navigate(`/customers`);
-    };
-
-    const onEdit = (event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-      navigate(`edit`);
-    };
-
-    return (
-      <>
-        {!isCreating && !isEditing && (
-          <Button
-            id='customer-actions-button-edit'
-            onClick={onEdit}
-          >
-            Edit
-          </Button>
-        )}
-        <Button
-          id='customer-actions-button-cancel'
-          inverse
-          onClick={onCancel}
-        >
-          Cancel
-        </Button>
-        {!isCreating && (
-          <Button
-            id='customer-actions-button-delete'
-            onClick={onDelete}
-            warning
-          >
-            Delete
-          </Button>
-        )}
-      </>
-    );
+  const onCancel = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    navigate(`/customers`);
   };
-};
 
-CustomerActions.displayName = 'CustomerActions';
+  const onEdit = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    navigate(`edit`);
+  };
+
+  return (
+    <>
+      {!isCreating && !isEditing && (
+        <Button
+          id='customer-actions-button-edit'
+          onClick={onEdit}
+        >
+          Edit
+        </Button>
+      )}
+      <Button
+        id='customer-actions-button-cancel'
+        inverse
+        onClick={onCancel}
+      >
+        Cancel
+      </Button>
+      {!isCreating && (
+        <Button
+          id='customer-actions-button-delete'
+          onClick={onDelete}
+          warning
+        >
+          Delete
+        </Button>
+      )}
+    </>
+  );
+};
 
 export default CustomerActions;

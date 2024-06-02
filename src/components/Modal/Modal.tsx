@@ -3,6 +3,7 @@ import { Button } from 'components/Form/components/Button';
 import Overlay from '../Overlay/Overlay';
 
 import type { ModalProps } from './Modal.types';
+import { Portal } from 'components/Portal';
 
 const Modal = ({
   onAccept,
@@ -13,54 +14,56 @@ const Modal = ({
 }: ModalProps) => {
   return (
     <Portal data-testid='modal-portal'>
-      <Overlay />
-      <div
-        className='fade'
-        id='myModal'
-        role='dialog'
-      >
+      <>
+        <Overlay />
         <div
-          className='modal-dialog'
-          style={{ zIndex: '100' }}
+          className='fade'
+          id='myModal'
+          role='dialog'
         >
-          <div className='modal-content'>
-            <div className='modal-header'>
-              <button
-                type='button'
-                onClick={onClose}
-                className='close'
-                data-dismiss='modal'
-              >
-                &times;
-              </button>
-              <h4 className='modal-title'>{title}</h4>
-            </div>
-            <div className='modal-body'>
-              <>{message}</>
-            </div>
-            <div className='modal-footer'>
-              {onAccept && (
-                <Button
-                  className='btn btn-default'
-                  data-dismiss='modal'
-                  onClick={onAccept}
-                >
-                  Accept
-                </Button>
-              )}
-              {isConfirmation && onClose && (
-                <Button
-                  className='btn btn-default'
-                  data-dismiss='modal'
+          <div
+            className='modal-dialog'
+            style={{ zIndex: '100' }}
+          >
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <button
+                  type='button'
                   onClick={onClose}
+                  className='close'
+                  data-dismiss='modal'
                 >
-                  Cancel
-                </Button>
-              )}
+                  &times;
+                </button>
+                <h4 className='modal-title'>{title}</h4>
+              </div>
+              <div className='modal-body'>
+                <>{message}</>
+              </div>
+              <div className='modal-footer'>
+                {onAccept && (
+                  <Button
+                    className='btn btn-default'
+                    data-dismiss='modal'
+                    onClick={onAccept}
+                  >
+                    Accept
+                  </Button>
+                )}
+                {isConfirmation && onClose && (
+                  <Button
+                    className='btn btn-default'
+                    data-dismiss='modal'
+                    onClick={onClose}
+                  >
+                    Cancel
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     </Portal>
   );
 };
