@@ -4,7 +4,7 @@ import routes from '../../root/routes';
 
 import { ContentStyled } from './Layout.styled';
 
-const Layout = (
+const Layout = () => (
   <>
     <NavBar routes={routes} />
     <ContentStyled>

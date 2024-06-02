@@ -1,5 +1,6 @@
 import { InvoiceAmountsField } from 'features/Invoice/components';
 import type {
+  ColumnDef,
   DateParameterType,
   InvoiceDetailForm,
   InvoicesDetails,
@@ -16,7 +17,7 @@ import { TableField } from 'components/Form/components/TableField';
 import { getDateCell } from '../utilities';
 
 export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
-  const columns = [
+  const columns: ColumnDef<InvoicesDetails, unknown>[] = [
     {
       accessorKey: 'productNameWithCode',
       enableGrouping: false,
@@ -70,8 +71,8 @@ export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
                 {
                   accessor: 'date',
                   label: 'Date',
-                  normalize: (value: DateParameterType | undefined) =>
-                    getDateAsString(value),
+                  normalize: (value) =>
+                    getDateAsString(value as DateParameterType),
                   readonly: true,
                   type: 'text',
                   value: invoice?.date,

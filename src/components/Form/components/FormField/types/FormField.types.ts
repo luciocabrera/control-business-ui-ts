@@ -47,11 +47,17 @@ export type FormOptionType = {
   label: string;
 };
 
-export type FormRuleType = {
-  type: string;
-  value: number | string;
-  message?: string;
-};
+export type FormRuleType =
+  | {
+      type: string;
+      value: number | string;
+      message?: string;
+    }
+  | {
+      type: 'required';
+      value?: never;
+      message?: string;
+    };
 
 export type FormTableSettingsFieldType = {
   accessor: string;
