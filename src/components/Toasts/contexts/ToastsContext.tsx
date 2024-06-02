@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { createContext, useCallback, use, useSyncExternalStore } from 'react';
+import { createContext, use, useSyncExternalStore } from 'react';
 import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
 
 import Toasts from '../Toasts';
@@ -20,9 +20,8 @@ export const useToastsStore = <SelectorOutput, TDataType = TToasts>(
     throw new Error('Store not found');
   }
 
-  const state = useSyncExternalStore(
-    store.subscribe,
-    useCallback(() => selector(store.get() as TDataType), [store, selector])
+  const state = useSyncExternalStore(store.subscribe, () =>
+    selector(store.get() as TDataType)
   );
   return [state, store.set];
 };
@@ -33,14 +32,11 @@ export const useAddToast = () => {
     throw new Error('Store not found');
   }
 
-  return useCallback(
-    (type: TToastType, description: ReactNode, title: string) => {
-      const toast = getToast(description, title, type);
-      const toasts = (store.get()?.toasts ?? []) as TToast[];
-      if (toast) store.set({ toasts: [...toasts, toast] });
-    },
-    [store]
-  );
+  return (type: TToastType, description: ReactNode, title: string) => {
+    const toast = getToast(description, title, type);
+    const toasts = (store.get()?.toasts ?? []) as TToast[];
+    if (toast) store.set({ toasts: [...toasts, toast] });
+  };
 };
 
 export const useDeleteToast = () => {
@@ -49,15 +45,12 @@ export const useDeleteToast = () => {
     throw new Error('Store not found');
   }
 
-  return useCallback(
-    (id: number) => {
-      const toasts = (store.get()?.toasts ?? []) as TToast[];
-      const newToasts = toasts.filter((toast) => toast.id !== id);
+  return (id: number) => {
+    const toasts = (store.get()?.toasts ?? []) as TToast[];
+    const newToasts = toasts.filter((toast) => toast.id !== id);
 
-      store.set({ toasts: newToasts });
-    },
-    [store]
-  );
+    store.set({ toasts: newToasts });
+  };
 };
 
 export const ToastsContextProvider = ({

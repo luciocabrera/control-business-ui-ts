@@ -1,5 +1,5 @@
 import type { MouseEventHandler, ReactNode } from 'react';
-import { createContext, useCallback, use, useSyncExternalStore } from 'react';
+import { createContext, use, useSyncExternalStore } from 'react';
 import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
 
 import Notifications from '../Notifications';
@@ -40,30 +40,26 @@ export const useAddNotification = () => {
     throw new Error('Store not found');
   }
 
-  return useCallback(
-    (
-      description: ReactNode,
-      title: string,
-      type: TNotificationType,
-      onClose?: MouseEventHandler<HTMLButtonElement>,
-      onAccept?: (() => Promise<void>) | (() => void),
-      isConfirmation?: boolean
-    ) => {
-      const notification = getNotification(
-        description,
-        title,
-        type,
-        onClose,
-        onAccept,
-        isConfirmation
-      );
-      const notifications = (store.get()?.notifications ??
-        []) as TNotification[];
-      if (notification)
-        store.set({ notifications: [...notifications, notification] });
-    },
-    [store]
-  );
+  return (
+    description: ReactNode,
+    title: string,
+    type: TNotificationType,
+    onClose?: MouseEventHandler<HTMLButtonElement>,
+    onAccept?: (() => Promise<void>) | (() => void),
+    isConfirmation?: boolean
+  ) => {
+    const notification = getNotification(
+      description,
+      title,
+      type,
+      onClose,
+      onAccept,
+      isConfirmation
+    );
+    const notifications = (store.get()?.notifications ?? []) as TNotification[];
+    if (notification)
+      store.set({ notifications: [...notifications, notification] });
+  };
 };
 
 export const useDeleteNotification = () => {
@@ -72,18 +68,14 @@ export const useDeleteNotification = () => {
     throw new Error('Store not found');
   }
 
-  return useCallback(
-    (id: number) => {
-      const notifications = (store.get()?.notifications ??
-        []) as TNotification[];
-      const newNotifications = notifications.filter(
-        (notification) => notification.id !== id
-      );
+  return (id: number) => {
+    const notifications = (store.get()?.notifications ?? []) as TNotification[];
+    const newNotifications = notifications.filter(
+      (notification) => notification.id !== id
+    );
 
-      store.set({ notifications: newNotifications });
-    },
-    [store]
-  );
+    store.set({ notifications: newNotifications });
+  };
 };
 
 export const NotificationsContextProvider = ({

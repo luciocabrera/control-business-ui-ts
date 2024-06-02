@@ -1,4 +1,3 @@
-import { useCallback, useMemo } from 'react';
 import useSWR, { SWRResponse, useSWRConfig } from 'swr';
 import useSWRInfinite, { type SWRInfiniteResponse } from 'swr/infinite';
 import type { OptionsType } from 'types';
@@ -36,7 +35,7 @@ export type ValidDataHookResponse<TData> =
   | UseApiDataListResponse<TData[]>
   | UseApiInfiniteDataResponse<TData[]>;
 
-export const isInfiniteResponse = <TDataType>(
+export const isInfiniteResponse = <TDataType,>(
   value: ValidDataHookResponse<TDataType>
 ): value is UseApiInfiniteDataResponse<TDataType[]> => {
   if ((value as UseApiInfiniteDataResponse<TDataType>).size) {
@@ -203,10 +202,8 @@ export const useApiInfiniteData = <
   const isRefreshing = (isValidating && data && data.length === size) || false;
   const loading =
     isLoadingMore || isLoadingInitialData || isRefreshing || false;
-  const flatData: TDataType = useMemo(
-    () => (data ? ([] as TDataType[]).concat(...data) : []) as TDataType,
-    [data]
-  );
+  const flatData: TDataType = () =>
+    (data ? ([] as TDataType[]).concat(...data) : []) as TDataType;
 
   return {
     data: flatData,
@@ -239,26 +236,20 @@ export const useApiRefreshData = () => useSWRConfig();
 
 export const useApiRequest = () => {
   const accessToken = 'token'; // useAccessToken();
-  return useCallback(
-    async <T>(endpointUrl: string, customOptions?: OptionsType) => {
-      const requestOptions = getRequestOptions(customOptions, accessToken);
-      return execRequest<T>(endpointUrl, requestOptions);
-    },
-    [accessToken]
-  );
+  return async <T,>(endpointUrl: string, customOptions?: OptionsType) => {
+    const requestOptions = getRequestOptions(customOptions, accessToken);
+    return execRequest<T>(endpointUrl, requestOptions);
+  };
 };
 
 export const useApiDownload = () => {
   const accessToken = 'token'; // useAccessToken();
-  return useCallback(
-    async (
-      endpointUrl: string,
-      fileName: string,
-      customOptions?: OptionsType
-    ) => {
-      const requestOptions = getRequestOptions(customOptions, accessToken);
-      return execDownload(endpointUrl, fileName, requestOptions);
-    },
-    [accessToken]
-  );
+  return async (
+    endpointUrl: string,
+    fileName: string,
+    customOptions?: OptionsType
+  ) => {
+    const requestOptions = getRequestOptions(customOptions, accessToken);
+    return execDownload(endpointUrl, fileName, requestOptions);
+  };
 };

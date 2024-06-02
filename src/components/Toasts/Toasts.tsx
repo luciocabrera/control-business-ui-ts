@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Portal } from 'components';
 
@@ -18,12 +18,9 @@ const Toasts = ({ position = 'bottomRight' }: TToastProps) => {
   );
   const deleteToast = useDeleteToast();
 
-  const handleDeleteToast = useCallback(
-    (id: number) => {
-      deleteToast?.(id);
-    },
-    [deleteToast]
-  );
+  const handleDeleteToast = (id: number) => {
+    deleteToast?.(id);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {

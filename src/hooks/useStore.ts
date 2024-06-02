@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useRef } from 'react';
 
 export type TStore<TData> = {
   get: () => TData | undefined;
@@ -11,19 +11,19 @@ export const useStore = <TData extends Record<string, unknown>>(
 ): TStore<TData> => {
   const store = useRef(initialState);
 
-  const get = useCallback(() => store.current, []);
+  const get = () => store.current;
 
   const listeners = useRef(new Set<() => void>());
 
-  const set = useCallback((value: Partial<TData>) => {
+  const set = (value: Partial<TData>) => {
     store.current = { ...store.current, ...value } as TData;
     listeners.current.forEach((callback) => callback());
-  }, []);
+  };
 
-  const subscribe = useCallback((callback: () => void) => {
+  const subscribe = (callback: () => void) => {
     listeners.current.add(callback);
     return () => listeners.current.delete(callback);
-  }, []);
+  };
 
   return {
     get,

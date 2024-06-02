@@ -1,6 +1,3 @@
-// components
-// react
-import { useCallback } from 'react';
 // contexts
 import { FormContextProvider, useAddNotification, useAddToast } from 'contexts';
 // hooks
@@ -45,80 +42,65 @@ const Customer = () => {
 
   const { fields } = useCustomerConfig(customer);
 
-  const handleOnAccept = useCallback(
-    async (payload: CustomerFormType) => {
-      const {
-        firstName,
-        lastName,
-        documentId,
-        documentTypeId,
-        titleId,
-        initials,
-        phone,
-        email,
-        ...defaultAddress
-      } = payload;
-      const calculatedCustomerId =
-        customerId === 'new' ? undefined : customerId;
+  const handleOnAccept = async (payload: CustomerFormType) => {
+    const {
+      firstName,
+      lastName,
+      documentId,
+      documentTypeId,
+      titleId,
+      initials,
+      phone,
+      email,
+      ...defaultAddress
+    } = payload;
+    const calculatedCustomerId = customerId === 'new' ? undefined : customerId;
 
-      const body: CustomerCreateType = {
-        companyId: 1,
-        customerId: calculatedCustomerId,
-        initials,
-        firstName,
-        lastName,
-        documentId,
-        documentTypeId:
-          typeof documentTypeId === 'string'
-            ? parseInt(documentTypeId, 10)
-            : documentTypeId,
-        titleId: typeof titleId === 'string' ? parseInt(titleId, 10) : titleId,
-        addresses: [{ ...defaultAddress, main: true }],
-        phones: phone ? [{ phone, main: true }] : [],
-        emails: email ? [{ email, main: true }] : [],
-      };
-      if (isCreating) {
-        body.createdBy = 1;
-      } else {
-        body.updatedBy = 1;
-      }
+    const body: CustomerCreateType = {
+      companyId: 1,
+      customerId: calculatedCustomerId,
+      initials,
+      firstName,
+      lastName,
+      documentId,
+      documentTypeId:
+        typeof documentTypeId === 'string'
+          ? parseInt(documentTypeId, 10)
+          : documentTypeId,
+      titleId: typeof titleId === 'string' ? parseInt(titleId, 10) : titleId,
+      addresses: [{ ...defaultAddress, main: true }],
+      phones: phone ? [{ phone, main: true }] : [],
+      emails: email ? [{ email, main: true }] : [],
+    };
+    if (isCreating) {
+      body.createdBy = 1;
+    } else {
+      body.updatedBy = 1;
+    }
 
-      try {
-        const res = await postCustomer(body);
-        if ([200, 201].includes(res?.status || 0)) {
-          refreshCustomers();
-          refreshCustomer(calculatedCustomerId);
-          addToast?.(
-            'success',
-            'Customer successfully saved',
-            `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully saved.`
-          );
-          navigate(`/customers`);
-        }
-      } catch (err) {
-        const error = err as APiResponseErrorType;
-        addNotification?.(
-          <ErrorDisplay errors={error.cause.errors} />,
-          'Error Saving Customer',
-          'error'
+    try {
+      const res = await postCustomer(body);
+      if ([200, 201].includes(res?.status || 0)) {
+        refreshCustomers();
+        refreshCustomer(calculatedCustomerId);
+        addToast?.(
+          'success',
+          'Customer successfully saved',
+          `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully saved.`
         );
+        navigate(`/customers`);
       }
-    },
-    [
-      addNotification,
-      addToast,
-      customer?.firstName,
-      customer?.lastName,
-      customerId,
-      isCreating,
-      navigate,
-      postCustomer,
-      refreshCustomer,
-      refreshCustomers,
-    ]
-  );
+    } catch (err) {
+      const error = err as APiResponseErrorType;
+      addNotification?.(
+        <ErrorDisplay errors={error.cause.errors} />,
+        'Error Saving Customer',
+        'error'
+      );
+    }
+  };
 
-  const handleOnFinish = useCallback(() => navigate('/customers'), [navigate]);
+  const handleOnFinish = () => navigate('/customers');
 
   if ((isLoadingCustomer || !fields) && !isCreating) return <PageSpinner />;
 

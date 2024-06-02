@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import type {
   ApiResponse,
   OptionsType,
@@ -25,7 +24,7 @@ export const useFetchTitles = () =>
 export const useRefreshTitles = () => {
   const { mutate } = useApiRefreshData();
 
-  return useCallback(() => mutate(`${endpoints.titles}`), [mutate]);
+  return () => mutate(`${endpoints.titles}`);
 };
 
 export const useFetchTitle = (titleId: IdType) =>
@@ -36,26 +35,20 @@ export const useFetchTitle = (titleId: IdType) =>
 export const useRefreshTitle = (titleId: IdType) => {
   const { mutate } = useApiRefreshData();
 
-  return useCallback(
-    () => mutate(`${endpoints.titles}/${titleId}`),
-    [titleId, mutate]
-  );
+  return () => mutate(`${endpoints.titles}/${titleId}`);
 };
 
 export const usePostTitle = () => {
   const apiRequest = useApiRequest();
-  return useCallback(
-    async (title: TitleCreateType): Promise<ApiResponse<TitleType>> => {
-      const requestOptions: OptionsType = {
-        method: title.titleId ? 'POST' : 'PATCH',
-        body: JSON.stringify(title),
-      };
-      const url = title.titleId
-        ? endpoints.titles
-        : `${endpoints.titles}/${title.titleId ?? ''}`;
+  return async (title: TitleCreateType): Promise<ApiResponse<TitleType>> => {
+    const requestOptions: OptionsType = {
+      method: title.titleId ? 'POST' : 'PATCH',
+      body: JSON.stringify(title),
+    };
+    const url = title.titleId
+      ? endpoints.titles
+      : `${endpoints.titles}/${title.titleId ?? ''}`;
 
-      return apiRequest<TitleType>(url, requestOptions);
-    },
-    [apiRequest]
-  );
+    return apiRequest<TitleType>(url, requestOptions);
+  };
 };
