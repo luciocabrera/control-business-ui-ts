@@ -1,5 +1,5 @@
 type ErrorDisplayProps = {
-  errors: string | string[];
+  errors: string[] | string;
 };
 
 const ErrorDisplay = ({ errors }: ErrorDisplayProps) =>

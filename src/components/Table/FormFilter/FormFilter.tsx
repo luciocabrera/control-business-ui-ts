@@ -1,13 +1,12 @@
 import { FormContextProvider, useAddNotification } from 'contexts';
-
 import { TableContextActionKind, useTableContext } from 'contexts/TableContext';
 
 import { Form } from 'components/Form/Form';
 
 const FormFilter = () => {
   const {
-    state: { columnFilters, showColumnFilters, columnMeta },
     dispatch,
+    state: { columnFilters, columnMeta, showColumnFilters },
   } = useTableContext();
 
   const addNotification = useAddNotification();
@@ -24,8 +23,8 @@ const FormFilter = () => {
   const formFields = columnMeta?.map((filter) => ({
     accessor: filter.id,
     label: filter.name,
-    type: filter.type ?? 'text',
     options: filter.options,
+    type: filter.type ?? 'text',
   }));
 
   const onAccept = async (payload: Record<string, unknown>) => {
@@ -34,8 +33,8 @@ const FormFilter = () => {
         .map((key) => ({ id: key, value: payload[key] }))
         .filter((fc) => fc.value);
       dispatch({
-        type: TableContextActionKind.SetColumnFilters,
         payload: { columnFilters },
+        type: TableContextActionKind.SetColumnFilters,
       });
     } catch (errorInfo) {
       addNotification?.(

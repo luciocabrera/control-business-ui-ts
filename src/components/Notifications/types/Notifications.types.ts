@@ -12,11 +12,7 @@ export type TNotification = {
 };
 
 export type TNotificationType =
-  | 'success'
-  | 'danger'
-  | 'info'
-  | 'warning'
-  | 'error';
+  'danger' | 'error' | 'info' | 'success' | 'warning';
 
 export type TNotifications = {
   notifications?: TNotification[];

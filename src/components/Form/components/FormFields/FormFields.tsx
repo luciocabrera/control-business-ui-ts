@@ -20,8 +20,8 @@ type TFormField = {
 };
 
 export const FormFields = ({
-  formFields,
   fieldWidth,
+  formFields,
   groupId = '',
   viewMode = true,
 }: TFormField) => {

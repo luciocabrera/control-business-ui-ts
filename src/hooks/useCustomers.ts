@@ -13,7 +13,7 @@ import {
   useApiRequest,
 } from './useApi';
 
-type IdType = string | number | undefined | null;
+type IdType = number | string | null | undefined;
 
 export const useFetchCustomers = () =>
   useApiDataList<CustomerType[]>({
@@ -46,8 +46,8 @@ export const usePostCustomer = () => {
   ): Promise<ApiResponse<CustomerType>> => {
     const { customerId, ...rest } = customer;
     const requestOptions: OptionsType = {
-      method: customerId ? 'PUT' : 'POST',
       body: JSON.stringify(rest),
+      method: customerId ? 'PUT' : 'POST',
     };
     const url = customerId
       ? `${endpoints.customers}/${customerId ?? ''}`

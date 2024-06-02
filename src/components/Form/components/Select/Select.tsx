@@ -1,11 +1,10 @@
 import { FormFieldBase } from '../FormFieldBase';
 
 import { SelectStyled } from './styles';
-
 import type { SelectProps } from './types';
 
 const Select = ({ ref, ...props }: SelectProps) => {
-  const { accessor, options, value, label, onChange } = props;
+  const { accessor, label, onChange, options, value } = props;
 
   return (
     <FormFieldBase {...props}>

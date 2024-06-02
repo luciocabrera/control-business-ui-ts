@@ -1,7 +1,7 @@
 import { getLanguage } from 'utilities';
 
 export const getFormattedNumber = (
-  value?: string | number,
+  value?: number | string,
   output: 'currency' | 'number' = 'number'
 ): string => {
   const sanitizedValue = (value as number) ?? 0;
@@ -11,8 +11,8 @@ export const getFormattedNumber = (
   switch (output) {
     case 'currency':
       return new Intl.NumberFormat(locale, {
-        style: 'currency',
         currency: 'EUR',
+        style: 'currency',
       }).format(sanitizedValue);
     case 'number':
     default:
@@ -21,7 +21,7 @@ export const getFormattedNumber = (
   }
 };
 
-export const parseToNumber = (value: string | number, decimalPlaces = 2) => {
+export const parseToNumber = (value: number | string, decimalPlaces = 2) => {
   const decimalPlacesString = decimalPlaces.toString();
   const valueString = typeof value === 'number' ? value.toString() : value;
   const mathRounded = Math.round(

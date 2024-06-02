@@ -27,8 +27,8 @@ export const validateFields = <T>(fields: FormFieldType[], data: T) => {
         if (required && isEmpty(data[fieldToValidate.accessor as keyof T])) {
           formErrors.push({
             accessor: fieldToValidate.accessor,
-            hasErrors: true,
             errorMessage: `The ${fieldToValidate.label} is mandatory!`,
+            hasErrors: true,
             value: data[
               fieldToValidate.accessor as keyof T
             ] as unknown as string,
@@ -56,8 +56,8 @@ export const validateField = (field: FormFieldType, value: unknown) => {
   if (required && isEmpty(value)) {
     formErrors.push({
       accessor: fieldToValidate.accessor,
-      hasErrors: true,
       errorMessage: `The ${fieldToValidate.label} is mandatory`,
+      hasErrors: true,
       value: value as string,
     });
   } else {

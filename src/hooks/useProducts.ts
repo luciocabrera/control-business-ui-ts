@@ -14,7 +14,7 @@ import {
   useApiRequest,
 } from './useApi';
 
-type IdType = string | number;
+type IdType = number | string;
 
 export const useFetchProducts = () =>
   useApiDataList<ProductType[]>({
@@ -44,8 +44,8 @@ export const usePostProduct = () => {
     product: ProductCreateType
   ): Promise<ApiResponse<ProductType>> => {
     const requestOptions: OptionsType = {
-      method: product.productId ? 'POST' : 'PATCH',
       body: JSON.stringify(product),
+      method: product.productId ? 'POST' : 'PATCH',
     };
     const url = product.productId
       ? endpoints.products

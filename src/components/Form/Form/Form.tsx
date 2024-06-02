@@ -7,15 +7,15 @@ import { FormStyled } from './styles';
 import type { FormProps } from './types';
 
 const Form = <TData extends Record<string, unknown>>({
-  viewMode,
   actions,
   children,
-  title,
+  height,
   icon,
   onAccept,
   onFinish,
+  title,
+  viewMode,
   width,
-  height,
 }: FormProps<TData>) => (
   <FormStyled
     noValidate

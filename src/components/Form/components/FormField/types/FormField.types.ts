@@ -48,14 +48,13 @@ export type FormOptionType = {
 };
 
 export type FormRuleType =
-  | {
-      type: string;
-      value: number | string;
-      message?: string;
-    }
-  | {
+  {
       type: 'required';
       value?: never;
+      message?: string;
+    } | {
+      type: string;
+      value: number | string;
       message?: string;
     };
 

@@ -7,15 +7,15 @@ export const getErrorField = (
   field: FormFieldBaseType,
   errors: FormFieldErrorType[]
 ) => {
-  const defaultError = { hasErrors: false, errorMessage: '' };
+  const defaultError = { errorMessage: '', hasErrors: false };
   if (!errors?.length) return defaultError;
   return (
     errors
       ?.filter((error) => error.accessor === field.accessor)
       .map((errorFiltered) => {
         return {
-          hasErrors: errorFiltered.hasErrors,
           errorMessage: errorFiltered.errorMessage,
+          hasErrors: errorFiltered.hasErrors,
         };
       })[0] || defaultError
   );

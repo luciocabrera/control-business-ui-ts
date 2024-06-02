@@ -1,5 +1,4 @@
 import { FormContextProvider, useAddNotification, useAddToast } from 'contexts';
-
 import {
   useFetchCustomer,
   useNavigate,
@@ -8,9 +7,7 @@ import {
   useRefreshCustomer,
   useRefreshCustomers,
 } from 'hooks';
-
 import { CustomerIcon } from 'icons';
-
 import type {
   APiResponseErrorType,
   CustomerCreateType,
@@ -43,33 +40,33 @@ const Customer = () => {
 
   const handleOnAccept = async (payload: CustomerFormType) => {
     const {
-      firstName,
-      lastName,
       documentId,
       documentTypeId,
-      titleId,
-      initials,
-      phone,
       email,
+      firstName,
+      initials,
+      lastName,
+      phone,
+      titleId,
       ...defaultAddress
     } = payload;
     const calculatedCustomerId = customerId === 'new' ? undefined : customerId;
 
     const body: CustomerCreateType = {
+      addresses: [{ ...defaultAddress, main: true }],
       companyId: 1,
       customerId: calculatedCustomerId,
-      initials,
-      firstName,
-      lastName,
       documentId,
       documentTypeId:
         typeof documentTypeId === 'string'
           ? parseInt(documentTypeId, 10)
           : documentTypeId,
-      titleId: typeof titleId === 'string' ? parseInt(titleId, 10) : titleId,
-      addresses: [{ ...defaultAddress, main: true }],
-      phones: phone ? [{ phone, main: true }] : [],
       emails: email ? [{ email, main: true }] : [],
+      firstName,
+      initials,
+      lastName,
+      phones: phone ? [{ main: true, phone }] : [],
+      titleId: typeof titleId === 'string' ? parseInt(titleId, 10) : titleId,
     };
     if (isCreating) {
       body.createdBy = 1;
@@ -80,8 +77,8 @@ const Customer = () => {
     try {
       const res = await postCustomer(body);
       if ([200, 201].includes(res?.status || 0)) {
-        refreshCustomers();
-        refreshCustomer(calculatedCustomerId);
+        await refreshCustomers();
+        await refreshCustomer(calculatedCustomerId);
         addToast?.(
           'success',
           'Customer successfully saved',

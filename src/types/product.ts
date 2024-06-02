@@ -11,10 +11,10 @@ export type ProductType = AuditType & {
 
 export type ProductFormType = Omit<
   ProductType,
-  'productId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'
+  'createdAt' | 'createdBy' | 'productId' | 'updatedAt' | 'updatedBy'
 >;
 
 export type ProductCreateType = Omit<
   ProductType,
-  'productId' | 'updatedAt' | 'createdAt' | 'createdBy' | 'updatedBy'
-> & { productId?: string | number };
+  'createdAt' | 'createdBy' | 'productId' | 'updatedAt' | 'updatedBy'
+> & { productId?: number | string };

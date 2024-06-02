@@ -111,7 +111,7 @@ const Invoice = () => {
       const res = await postInvoice(body);
       if ([200, 201].includes(res?.status || 0)) {
         await refreshInvoices();
-        refreshInvoice(calculatedInvoiceId);
+        await refreshInvoice(calculatedInvoiceId);
         addToast?.(
           'success',
           'Invoice successfully saved',

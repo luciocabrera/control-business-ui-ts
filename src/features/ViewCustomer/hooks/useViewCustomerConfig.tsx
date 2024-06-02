@@ -5,138 +5,138 @@ import type { FormFieldType } from 'components/Form/components/FormField/types';
 export const useViewCustomerConfig = (customer?: CustomerType) => {
   const fields: FormFieldType[] = [
     {
-      type: 'row',
       fields: [
         {
           accessor: 'documentTypeName',
           label: 'Id Type',
+          readonly: true,
           type: 'text',
           value: customer?.documentTypeName,
-          readonly: true,
         },
         {
           accessor: 'documentId',
           label: 'ID',
+          readonly: true,
           type: 'text',
           value: customer?.documentId,
-          readonly: true,
         },
       ],
+      type: 'row',
     },
     {
-      type: 'row',
       fields: [
         {
           accessor: 'titleName',
           label: 'Title',
+          readonly: true,
           type: 'text',
           value: customer?.titleName,
-          readonly: true,
         },
         {
           accessor: 'initials',
           label: 'Initials',
+          readonly: true,
           type: 'text',
           value: customer?.initials,
-          readonly: true,
         },
         {
           accessor: 'firstName',
           label: 'First Name',
+          readonly: true,
           type: 'text',
           value: customer?.firstName,
-          readonly: true,
         },
         {
           accessor: 'lastName',
           label: 'Last Name',
+          readonly: true,
           type: 'text',
           value: customer?.lastName,
-          readonly: true,
         },
       ],
+      type: 'row',
     },
     {
-      type: 'row',
       fields: [
         {
           accessor: 'number',
           label: 'Phone Number',
+          readonly: true,
           type: 'text',
           value: customer?.defaultPhone?.phone,
-          readonly: true,
         },
         {
           accessor: 'email',
           label: 'Email',
+          readonly: true,
           type: 'text',
           value: customer?.defaultEmail?.email,
-          readonly: true,
         },
       ],
+      type: 'row',
     },
     {
-      label: 'Address',
-      type: 'group',
       fields: [
         {
-          type: 'row',
           fields: [
             {
               accessor: 'line1',
               label: 'Line 1',
+              readonly: true,
               type: 'text',
               value: customer?.defaultAddress.line1,
-              readonly: true,
             },
             {
               accessor: 'line2',
               label: 'Line 2',
+              readonly: true,
               type: 'text',
               value: customer?.defaultAddress.line2,
-              readonly: true,
             },
           ],
+          type: 'row',
         },
         {
-          type: 'row',
           fields: [
             {
               accessor: 'country',
               label: 'Country',
+              readonly: true,
               type: 'text',
               value: customer?.defaultAddress.country,
-              readonly: true,
             },
             {
               accessor: 'state',
               label: 'State / Province',
+              readonly: true,
               type: 'text',
               value: customer?.defaultAddress.region,
-              readonly: true,
             },
           ],
+          type: 'row',
         },
         {
-          type: 'row',
           fields: [
             {
               accessor: 'city',
               label: 'City / Town',
+              readonly: true,
               type: 'text',
               value: customer?.defaultAddress.city,
-              readonly: true,
             },
             {
               accessor: 'postalCode',
               label: 'ZIP / Postal code',
+              readonly: true,
               type: 'text',
               value: customer?.defaultAddress.postalCode,
-              readonly: true,
             },
           ],
+          type: 'row',
         },
       ],
+      label: 'Address',
+      type: 'group',
     },
   ];
 

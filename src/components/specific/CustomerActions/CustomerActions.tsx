@@ -1,5 +1,4 @@
 import { useAddNotification, useAddToast } from 'contexts';
-
 import {
   useDeleteCustomer,
   useLocation,
@@ -7,7 +6,6 @@ import {
   useParams,
   useRefreshCustomers,
 } from 'hooks';
-
 import type { CustomerType, MouseEvent } from 'types';
 
 import { Button } from 'components/Form/components/Button';
@@ -17,7 +15,7 @@ type CustomerActionsProps = {
 };
 
 const CustomerActions = ({ customer }: CustomerActionsProps) => {
-  const { customerId, action } = useParams();
+  const { action, customerId } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
   const isEditing = !isCreating && action === 'edit';
@@ -48,7 +46,7 @@ const CustomerActions = ({ customer }: CustomerActionsProps) => {
         );
       }
 
-      refreshCustomers?.();
+      await refreshCustomers?.();
 
       if (location.pathname !== '/customers') navigate('/customers');
     } catch (err) {

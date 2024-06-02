@@ -1,9 +1,7 @@
 import type { FormBaseProps, MouseEvent } from 'types';
-
 import { deepEqual } from 'utilities';
 
 import ErrorDisplay from 'components/ErrorDisplay/ErrorDisplay';
-
 import {
   FormMetaType,
   useFieldsContext,

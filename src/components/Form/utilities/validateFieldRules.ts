@@ -50,8 +50,8 @@ export const validateFieldRules = <T>(field: FormFieldBaseType, data: T) => {
     if (hasErrors)
       fieldRuleErrors.push({
         accessor: field.accessor,
-        hasErrors: hasErrors,
         errorMessage: errorMessage,
+        hasErrors: hasErrors,
         value: fieldValue,
       });
   });

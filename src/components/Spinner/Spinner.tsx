@@ -1,7 +1,7 @@
 import { SpinnerStyled } from './Spinner.styled';
 
 type SpinnerProps = {
-  size?: 'md' | 'lg' | 'sm';
+  size?: 'lg' | 'md' | 'sm';
 };
 
 const Spinner = ({ size = 'md' }: SpinnerProps) => (

@@ -1,7 +1,6 @@
 import { ReactElement } from 'react';
 
 import { styles } from './styles';
-
 import type { HeaderProps } from './types';
 
 const getIcon = (icon?: ReactElement | string) =>
@@ -14,7 +13,7 @@ const getIcon = (icon?: ReactElement | string) =>
     icon
   );
 
-const Header = ({ icon, title, subtitle, children, onClose }: HeaderProps) => (
+const Header = ({ children, icon, onClose, subtitle, title }: HeaderProps) => (
   <header className={styles.header}>
     {icon && getIcon(icon)}
     <div className={styles.titleContent}>

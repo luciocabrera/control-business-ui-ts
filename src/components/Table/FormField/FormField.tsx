@@ -2,7 +2,6 @@ import { FormMetaType, useFieldsContext, useFormMetaContext } from 'contexts';
 
 import type { FieldBaseValueType } from 'components/Form/components/FormField/types';
 import { Select } from 'components/Form/components/Select';
-
 import { TextInputStyled } from 'components/Form/components/TextInput/styles';
 import { getErrorField, validateField } from 'components/Form/utilities';
 
@@ -11,7 +10,7 @@ import type { FormFieldProps } from './FormField.types';
 type RecordType = Record<string, FieldBaseValueType>;
 
 const FormField = ({ field, ...props }: FormFieldProps) => {
-  const { options, type, label, accessor, readonly, placeholder, rules } =
+  const { accessor, label, options, placeholder, readonly, rules, type } =
     field;
 
   const [fieldValue, setStore] = useFieldsContext<

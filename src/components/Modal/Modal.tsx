@@ -1,16 +1,16 @@
 import { Button } from 'components/Form/components/Button';
+import { Portal } from 'components/Portal';
 
 import Overlay from '../Overlay/Overlay';
 
 import type { ModalProps } from './Modal.types';
-import { Portal } from 'components/Portal';
 
 const Modal = ({
+  isConfirmation = false,
+  message,
   onAccept,
   onClose,
-  message,
   title,
-  isConfirmation = false,
 }: ModalProps) => {
   return (
     <Portal data-testid='modal-portal'>

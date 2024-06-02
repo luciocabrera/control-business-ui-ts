@@ -5,14 +5,14 @@ export const env = {
 
 // Endpoints
 export const endpoints = {
-  countries: '/geo/countries',
-  regions: '/geo/regions',
+  auth: { login: `/auth/login` },
   cities: '/geo/cities',
   companies: '/companies',
-  invoices: '/api/invoices',
+  countries: '/geo/countries',
   customers: '/api/people',
-  products: '/api/products',
   documentTypes: '/api/document_types',
+  invoices: '/api/invoices',
+  products: '/api/products',
+  regions: '/geo/regions',
   titles: '/api/titles',
-  auth: { login: `/auth/login` },
 };

@@ -5,16 +5,13 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react';
-
 import { FormWrapper } from 'styles';
-
 import type { ReactElement } from 'types';
 
 import { Overlay } from 'components';
 
 import { type TStoreReturn, useStore } from '../../../hooks/useStore';
 import { FormFieldType } from '../components/FormField/types';
-
 import { getInitialData } from '../utilities';
 
 export type FormMetaType<TDataType extends Record<string, unknown>> = {
@@ -37,9 +34,9 @@ const initialData = {
 
 const initialMetaData = {
   formMetaData: {
-    submittedCounter: 0,
     initialData: undefined,
     initialFields: [],
+    submittedCounter: 0,
   },
   handleSetFormMetaData: () => {
     /* placeholder function */
@@ -106,9 +103,9 @@ export const FormContextProvider = <TDataType extends Record<string, unknown>>({
   initialFields,
 }: FormContextProviderType<TDataType>) => {
   const [formMetaData, setFormMetaData] = useState<FormMetaType<TDataType>>({
-    submittedCounter: 0,
     initialData: {} as TDataType,
     initialFields: [],
+    submittedCounter: 0,
   });
   const initialFormData = getInitialData<TDataType>(initialFields, initialData);
 

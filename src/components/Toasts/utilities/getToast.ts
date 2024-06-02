@@ -14,48 +14,48 @@ export const getToast = (
   switch (type) {
     case 'success':
       toastProperties = {
+        backgroundColor: '#5cb85c',
+        description: description,
+        icon: checkImg,
         id,
         title: title || 'Success',
-        description: description,
-        backgroundColor: '#5cb85c',
-        icon: checkImg,
       };
       break;
     case 'danger':
     case 'error':
       toastProperties = {
+        backgroundColor: '#d9534f',
+        description: description,
+        icon: errorImg,
         id,
         title: title || 'Danger',
-        description: description,
-        backgroundColor: '#d9534f',
-        icon: errorImg,
       };
       break;
     case 'info':
       toastProperties = {
+        backgroundColor: '#5bc0de',
+        description: description,
+        icon: infoImg,
         id,
         title: title || 'Info',
-        description: description,
-        backgroundColor: '#5bc0de',
-        icon: infoImg,
       };
       break;
     case 'warning':
       toastProperties = {
+        backgroundColor: '#f0ad4e',
+        description: description,
+        icon: warningImg,
         id,
         title: title || 'Warning',
-        description: description,
-        backgroundColor: '#f0ad4e',
-        icon: warningImg,
       };
       break;
     default:
       toastProperties = {
+        backgroundColor: '#5bc0de',
+        description: description,
+        icon: infoImg,
         id,
         title: title || 'Default',
-        description: description,
-        backgroundColor: '#5bc0de',
-        icon: infoImg,
       };
       break;
   }

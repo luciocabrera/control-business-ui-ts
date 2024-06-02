@@ -14,7 +14,7 @@ import {
   useApiRequest,
 } from './useApi';
 
-type IdType = string | undefined | null;
+type IdType = string | null | undefined;
 
 export const useFetchTitles = () =>
   useApiDataList<TitleType[]>({
@@ -42,8 +42,8 @@ export const usePostTitle = () => {
   const apiRequest = useApiRequest();
   return async (title: TitleCreateType): Promise<ApiResponse<TitleType>> => {
     const requestOptions: OptionsType = {
-      method: title.titleId ? 'POST' : 'PATCH',
       body: JSON.stringify(title),
+      method: title.titleId ? 'POST' : 'PATCH',
     };
     const url = title.titleId
       ? endpoints.titles

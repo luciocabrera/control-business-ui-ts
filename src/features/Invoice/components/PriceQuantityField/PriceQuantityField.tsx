@@ -1,6 +1,5 @@
 import { FormMetaType, useFieldsContext, useFormMetaContext } from 'contexts';
 import type { InvoiceDetailForm } from 'types';
-
 import { getFormattedNumber } from 'utilities';
 
 import { TextInput } from 'components/Form/components/TextInput';
@@ -30,8 +29,8 @@ const PriceQuantityField = ({ ...props }: PriceQuantityFieldProps) => {
   const quantityField = {
     accessor: 'quantity',
     label: 'Quantity',
-    type: 'number',
     required: true,
+    type: 'number',
   };
 
   const errorsQuantity =
@@ -42,8 +41,8 @@ const PriceQuantityField = ({ ...props }: PriceQuantityFieldProps) => {
   const priceUnitField = {
     accessor: 'priceUnit',
     label: 'Price Unit',
-    type: 'number',
     required: true,
+    type: 'number',
   };
 
   const errorsPriceUnitField =
@@ -57,9 +56,9 @@ const PriceQuantityField = ({ ...props }: PriceQuantityFieldProps) => {
   const priceQuantityField = {
     accessor: 'priceQuantity',
     label: 'Price Quantity',
-    type: 'text',
-    required: true,
     readonly: true,
+    required: true,
+    type: 'text',
   };
 
   const errorsPriceQuantity =

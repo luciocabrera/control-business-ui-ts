@@ -1,12 +1,11 @@
 import { ButtonStyled } from './IconButton.styled';
-
 import { ButtonProps } from './IconButton.types';
 
 export const IconButton = ({
-  onClick,
-  icon,
   disabled = false,
+  icon,
   id,
+  onClick,
   title = 'button',
 }: ButtonProps) => (
   <ButtonStyled

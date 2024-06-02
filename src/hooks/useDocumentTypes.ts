@@ -17,7 +17,7 @@ import {
 } from './useApi';
 // utilities
 
-type IdType = string | number;
+type IdType = number | string;
 
 export const useFetchDocumentTypes = () =>
   useApiDataList<DocumentTypeType[]>({
@@ -49,8 +49,8 @@ export const usePostDocumentType = () => {
     documentType: DocumentTypeCreateType
   ): Promise<ApiResponse<DocumentTypeType>> => {
     const requestOptions: OptionsType = {
-      method: documentType.documentTypeId ? 'POST' : 'PATCH',
       body: JSON.stringify(DocumentType),
+      method: documentType.documentTypeId ? 'POST' : 'PATCH',
     };
     const url = documentType.documentTypeId
       ? endpoints.documentTypes

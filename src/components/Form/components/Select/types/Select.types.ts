@@ -1,12 +1,12 @@
 import { ComponentPropsWithRef } from 'react';
+
 import type { FormFieldBaseType } from '../../FormField/types';
 
-export type SelectProps = Omit<ComponentPropsWithRef<'select'>, 'required'> &
-  Omit<
+export type SelectProps = Omit<
     FormFieldBaseType,
-    'display' | 'default' | 'tooltip' | 'normalize' | 'rules' | 'value'
-  > & {
+    'default' | 'display' | 'normalize' | 'rules' | 'tooltip' | 'value'
+  > & Omit<ComponentPropsWithRef<'select'>, 'required'> & {
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     required?: boolean | ((p: unknown) => boolean) | undefined;
-    value?: string | number;
+    value?: number | string;
   };
