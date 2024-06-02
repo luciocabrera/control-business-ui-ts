@@ -1,5 +1,3 @@
-import { forwardRef } from 'react';
-
 // components
 import { FormFieldBase } from '../FormFieldBase';
 
@@ -8,49 +6,52 @@ import { SelectStyled } from './styles';
 // types
 import type { SelectProps } from './types';
 
-const Select = forwardRef(
-  (props: SelectProps, ref: React.ForwardedRef<unknown>) => {
-    const { accessor, options, value, label, onChange } = props;
+const Select = ({
+  ref,
+  ...props
+}: SelectProps & {
+  ref: React.RefObject<unknown>;
+}) => {
+  const { accessor, options, value, label, onChange } = props;
 
-    return (
-      <FormFieldBase
-        {...props}
-        ref={ref}
+  return (
+    <FormFieldBase
+      {...props}
+      ref={ref}
+    >
+      <SelectStyled
+        name={accessor}
+        select-name={accessor}
+        title={accessor}
+        aria-label={accessor}
+        aria-labelledby={accessor}
+        id={accessor}
+        value={value}
+        disabled={props.readonly}
+        onChange={(event) => {
+          event.preventDefault();
+          onChange?.(event);
+        }}
       >
-        <SelectStyled
-          name={accessor}
-          select-name={accessor}
-          title={accessor}
-          aria-label={accessor}
-          aria-labelledby={accessor}
-          id={accessor}
-          value={value}
-          disabled={props.readonly}
-          onChange={(event) => {
-            event.preventDefault();
-            onChange?.(event);
-          }}
+        <option
+          key='default-option'
+          value=''
         >
+          Choose {label}
+        </option>
+        {options?.map((option) => (
           <option
-            key='default-option'
-            value=''
+            id={`item-${option.value}`}
+            key={`item-${option.value}`}
+            value={option.value}
           >
-            Choose {label}
+            {option.label}
           </option>
-          {options?.map((option) => (
-            <option
-              id={`item-${option.value}`}
-              key={`item-${option.value}`}
-              value={option.value}
-            >
-              {option.label}
-            </option>
-          ))}
-        </SelectStyled>
-      </FormFieldBase>
-    );
-  }
-);
+        ))}
+      </SelectStyled>
+    </FormFieldBase>
+  );
+};
 
 Select.displayName = 'Select';
 

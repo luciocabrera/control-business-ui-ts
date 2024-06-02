@@ -1,10 +1,5 @@
 import type { MouseEventHandler, ReactNode } from 'react';
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useSyncExternalStore,
-} from 'react';
+import { createContext, useCallback, use, useSyncExternalStore } from 'react';
 import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
 
 import Notifications from '../Notifications';
@@ -27,7 +22,7 @@ export const useNotificationsStore = <
 >(
   selector: (store: TDataType) => SelectorOutput
 ): UsesStore<SelectorOutput, TDataType> => {
-  const store = useContext(NotificationsContext);
+  const store = use(NotificationsContext);
   if (!store) {
     throw new Error('Store not found');
   }
@@ -40,7 +35,7 @@ export const useNotificationsStore = <
 };
 
 export const useAddNotification = () => {
-  const store = useContext(NotificationsContext);
+  const store = use(NotificationsContext);
   if (!store) {
     throw new Error('Store not found');
   }
@@ -72,7 +67,7 @@ export const useAddNotification = () => {
 };
 
 export const useDeleteNotification = () => {
-  const store = useContext(NotificationsContext);
+  const store = use(NotificationsContext);
   if (!store) {
     throw new Error('Store not found');
   }
@@ -94,8 +89,8 @@ export const useDeleteNotification = () => {
 export const NotificationsContextProvider = ({
   children,
 }: NotificationsContextProviderProps) => (
-  <NotificationsContext.Provider value={useStore<TNotifications>()}>
+  <NotificationsContext value={useStore<TNotifications>()}>
     {children}
     <Notifications />
-  </NotificationsContext.Provider>
+  </NotificationsContext>
 );

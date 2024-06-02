@@ -1,9 +1,4 @@
-import {
-  createContext,
-  type ReactElement,
-  useContext,
-  useReducer,
-} from 'react';
+import { createContext, type ReactElement, use, useReducer } from 'react';
 import type { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 
 export type ColumnMetaItem = {
@@ -175,7 +170,7 @@ const useStoreContext = ({
 };
 
 export const useTableContext = () => {
-  const context = useContext(TableContext);
+  const context = use(TableContext);
   return { ...context };
 };
 
@@ -185,9 +180,7 @@ export const TableContextProvider = ({
   title,
   allowFilters,
 }: TableContextProviderProps) => (
-  <TableContext.Provider
-    value={useStoreContext({ columnMeta, title, allowFilters })}
-  >
+  <TableContext value={useStoreContext({ columnMeta, title, allowFilters })}>
     {children}
-  </TableContext.Provider>
+  </TableContext>
 );

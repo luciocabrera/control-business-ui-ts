@@ -1,10 +1,5 @@
 import type { ReactNode } from 'react';
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useSyncExternalStore,
-} from 'react';
+import { createContext, useCallback, use, useSyncExternalStore } from 'react';
 import { type TStoreReturn, type UsesStore, useStore } from 'hooks/useStore';
 
 import Toasts from '../Toasts';
@@ -20,7 +15,7 @@ const ToastsContext = createContext<TStoreReturn | null>(null);
 export const useToastsStore = <SelectorOutput, TDataType = TToasts>(
   selector: (store: TDataType) => SelectorOutput
 ): UsesStore<SelectorOutput, TDataType> => {
-  const store = useContext(ToastsContext);
+  const store = use(ToastsContext);
   if (!store) {
     throw new Error('Store not found');
   }
@@ -33,7 +28,7 @@ export const useToastsStore = <SelectorOutput, TDataType = TToasts>(
 };
 
 export const useAddToast = () => {
-  const store = useContext(ToastsContext);
+  const store = use(ToastsContext);
   if (!store) {
     throw new Error('Store not found');
   }
@@ -49,7 +44,7 @@ export const useAddToast = () => {
 };
 
 export const useDeleteToast = () => {
-  const store = useContext(ToastsContext);
+  const store = use(ToastsContext);
   if (!store) {
     throw new Error('Store not found');
   }
@@ -68,8 +63,8 @@ export const useDeleteToast = () => {
 export const ToastsContextProvider = ({
   children,
 }: ToastsContextProviderProps) => (
-  <ToastsContext.Provider value={useStore<TToasts>()}>
+  <ToastsContext value={useStore<TToasts>()}>
     {children}
     <Toasts />
-  </ToastsContext.Provider>
+  </ToastsContext>
 );

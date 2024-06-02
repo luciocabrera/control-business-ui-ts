@@ -3,7 +3,7 @@
 import {
   createContext,
   useCallback,
-  useContext,
+  use,
   useEffect,
   useMemo,
   useState,
@@ -74,7 +74,7 @@ type UsesStore<SelectorOutput, TDataType> = [
 export const useFieldsContext = <SelectorOutput, TDataType>(
   selector: (store: TDataType) => SelectorOutput
 ): UsesStore<SelectorOutput, TDataType> => {
-  const store = useContext(FormContext);
+  const store = use(FormContext);
   if (!store) {
     throw new Error('Store not found');
   }
@@ -92,7 +92,7 @@ export const useFormMetaContext = <
 >(
   selector: (store: TDataType) => SelectorOutput
 ): UsesStore<SelectorOutput, TDataType> => {
-  const store = useContext(FormContext);
+  const store = use(FormContext);
   if (!store) {
     throw new Error('Store not found');
   }
@@ -145,11 +145,11 @@ export const FormContextProvider = <TDataType extends Record<string, unknown>>({
   );
 
   return (
-    <FormContext.Provider value={value}>
+    <FormContext value={value}>
       <FormWrapper>
         <Overlay />
         {children}
       </FormWrapper>
-    </FormContext.Provider>
+    </FormContext>
   );
 };
