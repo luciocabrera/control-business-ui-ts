@@ -1,6 +1,5 @@
 import { InvoiceAmountsField } from 'features/Invoice/components';
 import type {
-  ColumnDef,
   DateParameterType,
   InvoiceDetailForm,
   InvoicesDetails,
@@ -54,7 +53,7 @@ export const useViewInvoiceConfig = (invoice?: InvoiceType) => {
     },
   ];
 
-  const fields: FormFieldType[] = () => [
+  const fields: FormFieldType[] = [
     {
       fields: [
         {

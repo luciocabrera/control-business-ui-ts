@@ -1,6 +1,5 @@
-// contexts
 import { FormContextProvider, useAddNotification, useAddToast } from 'contexts';
-// hooks
+
 import {
   useFetchCustomer,
   useNavigate,
@@ -9,9 +8,9 @@ import {
   useRefreshCustomer,
   useRefreshCustomers,
 } from 'hooks';
-// icons
+
 import { CustomerIcon } from 'icons';
-// types
+
 import type {
   APiResponseErrorType,
   CustomerCreateType,

@@ -1,10 +1,9 @@
-// types
 import type { CustomerType } from 'types';
 
 import type { FormFieldType } from 'components/Form/components/FormField/types';
 
 export const useViewCustomerConfig = (customer?: CustomerType) => {
-  const fields: FormFieldType[] = () => [
+  const fields: FormFieldType[] = [
     {
       type: 'row',
       fields: [

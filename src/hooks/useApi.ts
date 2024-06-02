@@ -35,7 +35,7 @@ export type ValidDataHookResponse<TData> =
   | UseApiDataListResponse<TData[]>
   | UseApiInfiniteDataResponse<TData[]>;
 
-export const isInfiniteResponse = <TDataType,>(
+export const isInfiniteResponse = <TDataType>(
   value: ValidDataHookResponse<TDataType>
 ): value is UseApiInfiniteDataResponse<TDataType[]> => {
   if ((value as UseApiInfiniteDataResponse<TDataType>).size) {
@@ -202,8 +202,9 @@ export const useApiInfiniteData = <
   const isRefreshing = (isValidating && data && data.length === size) || false;
   const loading =
     isLoadingMore || isLoadingInitialData || isRefreshing || false;
-  const flatData: TDataType = () =>
-    (data ? ([] as TDataType[]).concat(...data) : []) as TDataType;
+  const flatData: TDataType = (
+    data ? ([] as TDataType[]).concat(...data) : []
+  ) as TDataType;
 
   return {
     data: flatData,
@@ -236,7 +237,7 @@ export const useApiRefreshData = () => useSWRConfig();
 
 export const useApiRequest = () => {
   const accessToken = 'token'; // useAccessToken();
-  return async <T,>(endpointUrl: string, customOptions?: OptionsType) => {
+  return async <T>(endpointUrl: string, customOptions?: OptionsType) => {
     const requestOptions = getRequestOptions(customOptions, accessToken);
     return execRequest<T>(endpointUrl, requestOptions);
   };

@@ -97,7 +97,7 @@ export const useInvoicesConfig = () => {
     },
   ];
 
-  const columnMeta: ColumnMetaState = () => [
+  const columnMeta: ColumnMetaState = [
     { id: 'invoice', name: 'Invoice' },
     { id: 'documentId', name: 'ID', type: 'date' },
     { id: 'customer', name: 'Customer' },
