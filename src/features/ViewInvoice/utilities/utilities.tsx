@@ -14,8 +14,8 @@ export const getQuantityCell = ({
   },
 }: CellContext<InvoicesDetails, unknown>) => (
   <NumericDisplay
-    value={quantity}
     output='number'
+    value={quantity}
   />
 );
 
@@ -25,8 +25,8 @@ export const getPriceUnitCell = ({
   },
 }: CellContext<InvoicesDetails, unknown>) => (
   <NumericDisplay
-    value={priceUnit}
     output='currency'
+    value={priceUnit}
   />
 );
 
@@ -36,7 +36,7 @@ export const getPriceQuantityCell = ({
   },
 }: CellContext<InvoicesDetails, unknown>) => (
   <NumericDisplay
-    value={priceQuantity}
     output='currency'
+    value={priceQuantity}
   />
 );

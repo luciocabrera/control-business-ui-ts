@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import type {
   CellContext,
   ColumnDef,
@@ -98,17 +97,14 @@ export const useInvoicesConfig = () => {
     },
   ];
 
-  const columnMeta: ColumnMetaState = useMemo(
-    () => [
-      { id: 'invoice', name: 'Invoice' },
-      { id: 'documentId', name: 'ID', type: 'date' },
-      { id: 'customer', name: 'Customer' },
-      { id: 'subtotal', name: 'Sub Total', type: 'number' },
-      { id: 'taxes', name: 'Total', type: 'number' },
-      { id: 'total', name: 'Total', type: 'number' },
-    ],
-    []
-  );
+  const columnMeta: ColumnMetaState = [
+    { id: 'invoice', name: 'Invoice' },
+    { id: 'documentId', name: 'ID', type: 'date' },
+    { id: 'customer', name: 'Customer' },
+    { id: 'subtotal', name: 'Sub Total', type: 'number' },
+    { id: 'taxes', name: 'Total', type: 'number' },
+    { id: 'total', name: 'Total', type: 'number' },
+  ];
 
   return { columnMeta, columns };
 };

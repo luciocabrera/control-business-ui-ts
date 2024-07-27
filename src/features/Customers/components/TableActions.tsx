@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useLocation } from 'hooks';
 import { ViewIcon } from 'icons';
 import { TableActionsStyled } from 'styles';
@@ -9,20 +8,20 @@ type TableActionsProps = {
   customerId: number;
 };
 
-const TableActions = memo(({ customerId }: TableActionsProps) => {
+const TableActions = ({ customerId }: TableActionsProps) => {
   const location = useLocation();
   return (
     <TableActionsStyled>
       <Link
-        to={`${customerId?.toString() ?? ''}`}
         aria-label={`View customer ${customerId?.toString() ?? ''}`}
         state={{ backgroundLocation: location }}
+        to={`${customerId?.toString() ?? ''}`}
       >
         <ViewIcon />
       </Link>
     </TableActionsStyled>
   );
-});
+};
 
 TableActions.displayName = 'TableActions';
 

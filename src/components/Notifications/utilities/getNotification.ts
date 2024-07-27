@@ -1,5 +1,3 @@
-// assets
-// types
 import type { MouseEventHandler, ReactNode } from 'react';
 import { checkImg, errorImg, infoImg, warningImg } from 'assets';
 
@@ -19,62 +17,62 @@ export const getNotification = (
   switch (type) {
     case 'success':
       notificationProperties = {
-        id,
-        title: title || 'Success',
-        description: description,
         backgroundColor: '#5cb85c',
+        description: description,
         icon: checkImg,
-        onClose,
-        onAccept,
+        id,
         isConfirmation,
+        onAccept,
+        onClose,
+        title: title || 'Success',
       };
       break;
     case 'danger':
     case 'error':
       notificationProperties = {
-        id,
-        title: title || 'Danger',
-        description: description,
         backgroundColor: '#d9534f',
+        description: description,
         icon: errorImg,
-        onClose,
-        onAccept,
+        id,
         isConfirmation,
+        onAccept,
+        onClose,
+        title: title || 'Danger',
       };
       break;
     case 'info':
       notificationProperties = {
-        id,
-        title: title || 'Info',
-        description: description,
         backgroundColor: '#5bc0de',
+        description: description,
         icon: infoImg,
-        onClose,
-        onAccept,
+        id,
         isConfirmation,
+        onAccept,
+        onClose,
+        title: title || 'Info',
       };
       break;
     case 'warning':
       notificationProperties = {
-        id,
-        title: title || 'Warning',
-        description: description,
         backgroundColor: '#f0ad4e',
+        description: description,
         icon: warningImg,
-        onClose,
-        onAccept,
+        id,
         isConfirmation,
+        onAccept,
+        onClose,
+        title: title || 'Warning',
       };
       break;
     default:
       notificationProperties = {
-        id,
-        title: title || 'Default',
-        description: description,
         backgroundColor: '#5bc0de',
-        onClose,
-        onAccept,
+        description: description,
+        id,
         isConfirmation,
+        onAccept,
+        onClose,
+        title: title || 'Default',
       };
       break;
   }

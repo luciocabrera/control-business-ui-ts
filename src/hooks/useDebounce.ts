@@ -26,7 +26,7 @@ export const useDebounce = <Func extends SomeFunction>(
     const newTimer = setTimeout(() => {
       func(...args);
     }, delay);
-    clearTimeout(timer.current);
+    clearTimeout(timer?.current);
     timer.current = newTimer;
   }) as Func;
 

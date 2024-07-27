@@ -1,6 +1,3 @@
-// configs
-// react
-import { useCallback } from 'react';
 // types
 import type {
   ApiResponse,
@@ -20,7 +17,7 @@ import {
 } from './useApi';
 // utilities
 
-type IdType = string | number;
+type IdType = number | string;
 
 export const useFetchDocumentTypes = () =>
   useApiDataList<DocumentTypeType[]>({
@@ -30,7 +27,7 @@ export const useFetchDocumentTypes = () =>
 export const useRefreshDocumentTypes = () => {
   const { mutate } = useApiRefreshData();
 
-  return useCallback(() => mutate(`${endpoints.documentTypes}`), [mutate]);
+  return () => mutate(`${endpoints.documentTypes}`);
 };
 
 export const useFetchDocumentType = (documentTypeId: IdType) =>
@@ -43,28 +40,22 @@ export const useFetchDocumentType = (documentTypeId: IdType) =>
 export const useRefreshDocumentType = (documentTypeId: IdType) => {
   const { mutate } = useApiRefreshData();
 
-  return useCallback(
-    () => mutate(`${endpoints.documentTypes}/${documentTypeId}`),
-    [documentTypeId, mutate]
-  );
+  return () => mutate(`${endpoints.documentTypes}/${documentTypeId}`);
 };
 
 export const usePostDocumentType = () => {
   const apiRequest = useApiRequest();
-  return useCallback(
-    async (
-      documentType: DocumentTypeCreateType
-    ): Promise<ApiResponse<DocumentTypeType>> => {
-      const requestOptions: OptionsType = {
-        method: documentType.documentTypeId ? 'POST' : 'PATCH',
-        body: JSON.stringify(DocumentType),
-      };
-      const url = documentType.documentTypeId
-        ? endpoints.documentTypes
-        : `${endpoints.documentTypes}/${documentType.documentTypeId ?? ''}`;
+  return async (
+    documentType: DocumentTypeCreateType
+  ): Promise<ApiResponse<DocumentTypeType>> => {
+    const requestOptions: OptionsType = {
+      body: JSON.stringify(DocumentType),
+      method: documentType.documentTypeId ? 'POST' : 'PATCH',
+    };
+    const url = documentType.documentTypeId
+      ? endpoints.documentTypes
+      : `${endpoints.documentTypes}/${documentType.documentTypeId ?? ''}`;
 
-      return apiRequest<DocumentTypeType>(url, requestOptions);
-    },
-    [apiRequest]
-  );
+    return apiRequest<DocumentTypeType>(url, requestOptions);
+  };
 };

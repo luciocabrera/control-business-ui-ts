@@ -18,7 +18,7 @@ const createExportFile = async <TData>(
   XLSX.writeFile(wb, `${fileName}.${fileExtension}`);
 };
 
-export const exportFile = <TData extends Record<string, unknown>>({
+export const exportFile = async <TData extends Record<string, unknown>>({
   columns,
   data,
   fileName,
@@ -40,5 +40,5 @@ export const exportFile = <TData extends Record<string, unknown>>({
       return currentVisibleRow;
     }) ?? [];
 
-  createExportFile(rowsToExportFromColumnsConfig, fileName);
+  await createExportFile(rowsToExportFromColumnsConfig, fileName);
 };

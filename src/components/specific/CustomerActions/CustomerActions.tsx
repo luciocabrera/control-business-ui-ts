@@ -1,9 +1,4 @@
-// components
-// react
-import { memo, useCallback } from 'react';
-// contexts
 import { useAddNotification, useAddToast } from 'contexts';
-// hooks
 import {
   useDeleteCustomer,
   useLocation,
@@ -11,7 +6,6 @@ import {
   useParams,
   useRefreshCustomers,
 } from 'hooks';
-// types
 import type { CustomerType, MouseEvent } from 'types';
 
 import { Button } from 'components/Form/components/Button';
@@ -20,8 +14,8 @@ type CustomerActionsProps = {
   customer?: CustomerType;
 };
 
-const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
-  const { customerId, action } = useParams();
+const CustomerActions = ({ customer }: CustomerActionsProps) => {
+  const { action, customerId } = useParams();
 
   const isCreating = customerId === 'new' || !customerId;
   const isEditing = !isCreating && action === 'edit';
@@ -34,7 +28,7 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
   const refreshCustomers = useRefreshCustomers();
   const navigate = useNavigate();
 
-  const onConfirmDelete = useCallback(async () => {
+  const onConfirmDelete = async () => {
     try {
       const res = await deleteCustomer(customer?.peopleId);
 
@@ -52,7 +46,7 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
         );
       }
 
-      refreshCustomers?.();
+      await refreshCustomers?.();
 
       if (location.pathname !== '/customers') navigate('/customers');
     } catch (err) {
@@ -62,18 +56,9 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
         (err as { message: string }).message
       );
     }
-  }, [
-    deleteCustomer,
-    customer?.peopleId,
-    customer?.firstName,
-    customer?.lastName,
-    refreshCustomers,
-    location.pathname,
-    navigate,
-    addToast,
-  ]);
+  };
 
-  const onDelete = useCallback(() => {
+  const handleDelete = () =>
     addNotification?.(
       'Are you sure you want to delete the current Customer?',
       'Confirm Deletion',
@@ -82,54 +67,45 @@ const CustomerActions = memo(({ customer }: CustomerActionsProps) => {
       onConfirmDelete,
       true
     );
-  }, [addNotification, onConfirmDelete]);
 
-  const onCancel = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-      navigate(`/customers`);
-    },
-    [navigate]
-  );
+  const handleCancel = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    navigate(`/customers`);
+  };
 
-  const onEdit = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      event.preventDefault();
-      navigate(`edit`);
-    },
-    [navigate]
-  );
+  const handleEdit = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    navigate(`edit`);
+  };
 
   return (
     <>
       {!isCreating && !isEditing && (
         <Button
           id='customer-actions-button-edit'
-          onClick={onEdit}
+          onClick={handleEdit}
         >
           Edit
         </Button>
       )}
       <Button
-        id='customer-actions-button-cancel'
         inverse
-        onClick={onCancel}
+        id='customer-actions-button-cancel'
+        onClick={handleCancel}
       >
         Cancel
       </Button>
       {!isCreating && (
         <Button
-          id='customer-actions-button-delete'
-          onClick={onDelete}
           warning
+          id='customer-actions-button-delete'
+          onClick={handleDelete}
         >
           Delete
         </Button>
       )}
     </>
   );
-});
-
-CustomerActions.displayName = 'CustomerActions';
+};
 
 export default CustomerActions;

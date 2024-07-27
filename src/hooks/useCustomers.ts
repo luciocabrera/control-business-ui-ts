@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import { endpoints } from '../configs/configs';
 import type {
   ApiResponse,
@@ -15,7 +13,7 @@ import {
   useApiRequest,
 } from './useApi';
 
-type IdType = string | number | undefined | null;
+type IdType = number | string | null | undefined;
 
 export const useFetchCustomers = () =>
   useApiDataList<CustomerType[]>({
@@ -25,7 +23,7 @@ export const useFetchCustomers = () =>
 export const useRefreshCustomers = () => {
   const { mutate } = useApiRefreshData();
 
-  return useCallback(() => mutate(`${endpoints.customers}`), [mutate]);
+  return () => mutate(`${endpoints.customers}`);
 };
 
 export const useFetchCustomer = (customerId: IdType) =>
@@ -38,42 +36,33 @@ export const useFetchCustomer = (customerId: IdType) =>
 export const useRefreshCustomer = () => {
   const { mutate } = useApiRefreshData();
 
-  return useCallback(
-    (customerId: IdType) => mutate(`${endpoints.customers}/${customerId}`),
-    [mutate]
-  );
+  return (customerId: IdType) => mutate(`${endpoints.customers}/${customerId}`);
 };
 
 export const usePostCustomer = () => {
   const apiRequest = useApiRequest();
-  return useCallback(
-    async (
-      customer: CustomerCreateType
-    ): Promise<ApiResponse<CustomerType>> => {
-      const { customerId, ...rest } = customer;
-      const requestOptions: OptionsType = {
-        method: customerId ? 'PUT' : 'POST',
-        body: JSON.stringify(rest),
-      };
-      const url = customerId
-        ? `${endpoints.customers}/${customerId ?? ''}`
-        : endpoints.customers;
+  return async (
+    customer: CustomerCreateType
+  ): Promise<ApiResponse<CustomerType>> => {
+    const { customerId, ...rest } = customer;
+    const requestOptions: OptionsType = {
+      body: JSON.stringify(rest),
+      method: customerId ? 'PUT' : 'POST',
+    };
+    const url = customerId
+      ? `${endpoints.customers}/${customerId ?? ''}`
+      : endpoints.customers;
 
-      return apiRequest<CustomerType>(url, requestOptions);
-    },
-    [apiRequest]
-  );
+    return apiRequest<CustomerType>(url, requestOptions);
+  };
 };
 
 export const useDeleteCustomer = () => {
   const apiRequest = useApiRequest();
-  return useCallback(
-    async (customerId: IdType): Promise<ApiResponse<unknown>> => {
-      const requestOptions: OptionsType = {
-        method: 'DELETE',
-      };
-      return apiRequest(`${endpoints.customers}/${customerId}`, requestOptions);
-    },
-    [apiRequest]
-  );
+  return async (customerId: IdType): Promise<ApiResponse<unknown>> => {
+    const requestOptions: OptionsType = {
+      method: 'DELETE',
+    };
+    return apiRequest(`${endpoints.customers}/${customerId}`, requestOptions);
+  };
 };

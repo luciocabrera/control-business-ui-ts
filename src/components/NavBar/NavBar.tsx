@@ -1,4 +1,4 @@
-import { memo, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import AppIcon from 'icons/AppIcon/AppIcon';
 
@@ -13,7 +13,7 @@ type SideNavBarProps = {
   }[];
 };
 
-const NavBar = memo(({ routes }: SideNavBarProps) => (
+const NavBar = ({ routes }: SideNavBarProps) => (
   <nav className={styles.container}>
     <ul>
       <li
@@ -39,7 +39,7 @@ const NavBar = memo(({ routes }: SideNavBarProps) => (
       ))}
     </ul>
   </nav>
-));
+);
 
 NavBar.displayName = 'NavBar';
 

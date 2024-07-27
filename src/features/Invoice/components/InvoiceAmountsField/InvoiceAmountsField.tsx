@@ -1,14 +1,13 @@
-import { useCallback, useMemo } from 'react';
 import { FormMetaType, useFieldsContext, useFormMetaContext } from 'contexts';
 import type { InvoiceFormType } from 'types';
-import { getFormattedNumber, memo } from 'utilities';
+import { getFormattedNumber } from 'utilities';
 
 import { TextInput } from 'components/Form/components/TextInput';
 import { getErrorField, validateField } from 'components/Form/utilities';
 
 import type { InvoiceAmountsFieldProps } from './InvoiceAmountsField.types';
 
-const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
+const InvoiceAmountsField = ({ ...props }: InvoiceAmountsFieldProps) => {
   const [subtotal] = useFieldsContext<
     number,
     Pick<InvoiceFormType, 'subtotal'>
@@ -27,72 +26,56 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
     number,
     Pick<FormMetaType<InvoiceFormType>, 'submittedCounter'>
   >((store) => store.submittedCounter);
-  const subtotalField = useMemo(
-    () => ({ accessor: 'subtotal', label: 'Sub Total', type: 'text' }),
-    []
-  );
+  const subtotalField = {
+    accessor: 'subtotal',
+    label: 'Sub Total',
+    type: 'text',
+  };
 
-  const errorsSubtotal = useMemo(
-    () => (submittedCounter > 0 ? validateField(subtotalField, subtotal) : []),
-    [subtotal, subtotalField, submittedCounter]
-  );
+  const errorsSubtotal =
+    submittedCounter > 0 ? validateField(subtotalField, subtotal) : [];
 
-  const errorFieldSubtotal = useMemo(
-    () => getErrorField(subtotalField, errorsSubtotal),
-    [errorsSubtotal, subtotalField]
-  );
+  const errorFieldSubtotal = getErrorField(subtotalField, errorsSubtotal);
 
-  const taxesField = useMemo(
-    () => ({ accessor: 'taxes', label: 'Taxes', required: true, type: 'text' }),
-    []
-  );
+  const taxesField = {
+    accessor: 'taxes',
+    label: 'Taxes',
+    required: true,
+    type: 'text',
+  };
 
-  const errorsTaxesField = useMemo(
-    () => (submittedCounter > 0 ? validateField(taxesField, taxes) : []),
-    [taxes, taxesField, submittedCounter]
-  );
-  const errorTaxesField = useMemo(
-    () => getErrorField(taxesField, errorsTaxesField),
-    [errorsTaxesField, taxesField]
-  );
+  const errorsTaxesField =
+    submittedCounter > 0 ? validateField(taxesField, taxes) : [];
 
-  const taxesPercentageField = useMemo(
-    () => ({
-      accessor: 'taxesPercentage',
-      label: 'Taxes Percentage',
-      type: 'text',
-    }),
-    []
-  );
+  const errorTaxesField = getErrorField(taxesField, errorsTaxesField);
 
-  const totalField = useMemo(
-    () => ({
-      accessor: 'total',
-      label: 'Total',
-      readonly: true,
-      required: true,
-      type: 'text',
-    }),
-    []
-  );
-  const errorsTotal = useMemo(
-    () => (submittedCounter > 0 ? validateField(totalField, total) : []),
-    [total, totalField, submittedCounter]
-  );
+  const taxesPercentageField = {
+    accessor: 'taxesPercentage',
+    label: 'Taxes Percentage',
+    type: 'text',
+  };
 
-  const errorTotalField = useMemo(
-    () => getErrorField(totalField, errorsTotal),
-    [errorsTotal, totalField]
-  );
+  const totalField = {
+    accessor: 'total',
+    label: 'Total',
+    readonly: true,
+    required: true,
+    type: 'text',
+  };
 
-  const onDisplayFieldChange = useCallback(() => null, []);
+  const errorsTotal =
+    submittedCounter > 0 ? validateField(totalField, total) : [];
+
+  const errorTotalField = getErrorField(totalField, errorsTotal);
+
+  const handleNullAction = () => null;
 
   return (
     <>
       <TextInput
         key={`field-input-subtotal`}
         textAlign='right'
-        onChange={onDisplayFieldChange}
+        onChange={handleNullAction}
         {...subtotalField}
         {...props}
         {...errorFieldSubtotal}
@@ -101,14 +84,14 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
       <TextInput
         key={`field-input-taxes-percentage`}
         textAlign='right'
-        onChange={onDisplayFieldChange}
+        onChange={handleNullAction}
         {...taxesPercentageField}
         value={`${taxesPercentage}%`}
       />
       <TextInput
         key={`field-input-taxes`}
         textAlign='right'
-        onChange={onDisplayFieldChange}
+        onChange={handleNullAction}
         {...taxesField}
         {...props}
         {...errorTaxesField}
@@ -117,7 +100,7 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
       <TextInput
         key={`field-input-total`}
         textAlign='right'
-        onChange={onDisplayFieldChange}
+        onChange={handleNullAction}
         {...totalField}
         {...props}
         {...errorTotalField}
@@ -125,6 +108,6 @@ const InvoiceAmountsField = memo(({ ...props }: InvoiceAmountsFieldProps) => {
       />
     </>
   );
-});
+};
 
 export default InvoiceAmountsField;

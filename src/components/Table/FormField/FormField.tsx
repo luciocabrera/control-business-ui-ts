@@ -1,24 +1,16 @@
-// components
-// contexts
 import { FormMetaType, useFieldsContext, useFormMetaContext } from 'contexts';
-// hooks
-import { useCallback, useMemo } from 'hooks';
-// utilities
-import { memo } from 'utilities';
 
 import type { FieldBaseValueType } from 'components/Form/components/FormField/types';
 import { Select } from 'components/Form/components/Select';
-// styles
 import { TextInputStyled } from 'components/Form/components/TextInput/styles';
 import { getErrorField, validateField } from 'components/Form/utilities';
 
-// types
 import type { FormFieldProps } from './FormField.types';
 
 type RecordType = Record<string, FieldBaseValueType>;
 
-const FormField = memo(({ field, ...props }: FormFieldProps) => {
-  const { options, type, label, accessor, readonly, placeholder, rules } =
+const FormField = ({ field, ...props }: FormFieldProps) => {
+  const { accessor, label, options, placeholder, readonly, rules, type } =
     field;
 
   const [fieldValue, setStore] = useFieldsContext<
@@ -33,45 +25,40 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
 
   console.log('submittedCounter', submittedCounter);
 
-  const errorFields = useMemo(
-    () => (submittedCounter > 0 ? validateField(field, fieldValue) : []),
-    [field, fieldValue, submittedCounter]
-  );
-  const errorField = useMemo(
-    () => getErrorField(field, errorFields),
-    [errorFields, field]
-  );
+  const errorFields =
+    submittedCounter > 0 ? validateField(field, fieldValue) : [];
+
+  const errorField = getErrorField(field, errorFields);
+
   const maxLength = rules
     ?.filter((rule) => rule.type === 'maxLength')
     ?.map((filteredRule) => filteredRule.value)[0] as number;
 
-  const handleOnSelectChange = useCallback(
-    (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const selected = event.target.options[event.target.selectedIndex]?.value;
-      setStore({ [field.accessor]: selected });
-    },
-    [field.accessor, setStore]
-  );
+  const handleOnSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selected = event.target.options[event.target.selectedIndex]?.value;
+    setStore({ [field.accessor]: selected });
+  };
 
-  const handleOnTextInputChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setStore({ [field.accessor]: event.target.value });
-    },
-    [field.accessor, setStore]
-  );
+  const handleOnTextInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setStore({ [field.accessor]: event.target.value });
+  };
 
   switch (field.type) {
     case 'select':
       return (
         <Select
           key={`field-select-${field.accessor}`}
-          onChange={handleOnSelectChange}
-          value={fieldValue}
           accessor={accessor}
-          options={options}
           label={label}
+          options={options}
           readonly={readonly}
           type={type}
+          value={fieldValue}
+          onChange={handleOnSelectChange}
           {...props}
           {...errorField}
         />
@@ -80,17 +67,17 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
     default:
       return (
         <TextInputStyled
+          autoComplete='off'
+          id={accessor}
+          maxLength={maxLength}
           name={accessor}
+          placeholder={placeholder}
+          type={type}
           value={fieldValue}
           onChange={handleOnTextInputChange}
-          maxLength={maxLength}
-          type={type}
-          id={accessor}
-          placeholder={placeholder}
-          autoComplete='off'
         />
       );
   }
-});
+};
 
 export default FormField;

@@ -62,7 +62,7 @@ const InvoiceActions = ({ invoice }: InvoiceActionsProps) => {
     }
   };
 
-  const onDelete = () => {
+  const handleDelete = () => {
     addNotification?.(
       'Are you sure you want to delete the current Invoice?',
       'Confirm Deletion',
@@ -73,12 +73,12 @@ const InvoiceActions = ({ invoice }: InvoiceActionsProps) => {
     );
   };
 
-  const onCancel = (event: MouseEvent<HTMLElement>) => {
+  const handleCancel = (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     navigate(`/invoices`);
   };
 
-  const onEdit = (event: MouseEvent<HTMLElement>) => {
+  const handleEdit = (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
     navigate(`edit`);
   };
@@ -88,7 +88,7 @@ const InvoiceActions = ({ invoice }: InvoiceActionsProps) => {
       {!isCreating && !isEditing && !isCopying && (
         <Button
           id='invoice-actions-button-edit'
-          onClick={onEdit}
+          onClick={handleEdit}
         >
           Edit
         </Button>
@@ -96,7 +96,7 @@ const InvoiceActions = ({ invoice }: InvoiceActionsProps) => {
       <Button
         inverse
         id='invoice-actions-button-cancel'
-        onClick={onCancel}
+        onClick={handleCancel}
       >
         Cancel
       </Button>
@@ -104,7 +104,7 @@ const InvoiceActions = ({ invoice }: InvoiceActionsProps) => {
         <Button
           warning
           id='invoice-actions-button-delete'
-          onClick={onDelete}
+          onClick={handleDelete}
         >
           Delete
         </Button>

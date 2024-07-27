@@ -5,11 +5,11 @@ export type ApiResponse<T> = {
 
 export type OptionsType = {
   method?: string;
-  body?: string | FormData;
+  body?: FormData | string;
   headers?: Record<string, unknown>;
   omitDefaultHeaders?: boolean;
 };
 
 export type APiResponseErrorType = {
-  cause: { status: string | number; errors: string[] | string };
+  cause: { status: number | string; errors: string[] | string };
 };

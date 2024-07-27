@@ -1,19 +1,13 @@
-// components
-// react
-import { useCallback, useMemo } from 'react';
-// contexts
 import { FormMetaType, useFieldsContext, useFormMetaContext } from 'contexts';
 import type { InvoiceDetailForm } from 'types';
-// utilities
-import { getFormattedNumber, memo } from 'utilities';
+import { getFormattedNumber } from 'utilities';
 
 import { TextInput } from 'components/Form/components/TextInput';
 import { getErrorField, validateField } from 'components/Form/utilities';
 
-// types
 import type { PriceQuantityFieldProps } from './PriceQuantityField.types';
 
-const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
+const PriceQuantityField = ({ ...props }: PriceQuantityFieldProps) => {
   const [quantity, setQuantity] = useFieldsContext<
     number,
     Pick<InvoiceDetailForm, 'quantity'>
@@ -32,87 +26,74 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
     Pick<FormMetaType<InvoiceDetailForm>, 'submittedCounter'>
   >((store) => store.submittedCounter);
 
-  const quantityField = useMemo(
-    () => ({
-      accessor: 'quantity',
-      label: 'Quantity',
-      type: 'number',
-      required: true,
-    }),
-    []
+  const quantityField = {
+    accessor: 'quantity',
+    label: 'Quantity',
+    required: true,
+    type: 'number',
+  };
+
+  const errorsQuantity =
+    submittedCounter > 0 ? validateField(quantityField, quantity) : [];
+
+  const errorFieldQuantity = getErrorField(quantityField, errorsQuantity);
+
+  const priceUnitField = {
+    accessor: 'priceUnit',
+    label: 'Price Unit',
+    required: true,
+    type: 'number',
+  };
+
+  const errorsPriceUnitField =
+    submittedCounter > 0 ? validateField(priceUnitField, priceUnit) : [];
+
+  const errorPriceUnitField = getErrorField(
+    priceUnitField,
+    errorsPriceUnitField
   );
 
-  const errorsQuantity = useMemo(
-    () => (submittedCounter > 0 ? validateField(quantityField, quantity) : []),
-    [quantity, quantityField, submittedCounter]
+  const priceQuantityField = {
+    accessor: 'priceQuantity',
+    label: 'Price Quantity',
+    readonly: true,
+    required: true,
+    type: 'text',
+  };
+
+  const errorsPriceQuantity =
+    submittedCounter > 0
+      ? validateField(priceQuantityField, priceQuantity)
+      : [];
+  const errorPriceQuantityField = getErrorField(
+    priceQuantityField,
+    errorsPriceQuantity
   );
 
-  const errorFieldQuantity = useMemo(
-    () => getErrorField(quantityField, errorsQuantity),
-    [errorsQuantity, quantityField]
-  );
+  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuantity({ quantity: event.target.value as unknown as number });
+    setPriceQuantity({
+      priceQuantity: ((event.target.value || 0) as number) * priceUnit,
+    });
+  };
 
-  const priceUnitField = useMemo(
-    () => ({
-      accessor: 'priceUnit',
-      label: 'Price Unit',
-      type: 'number',
-      required: true,
-    }),
-    []
-  );
+  const handleUnitPriceChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPriceUnit({ priceUnit: event.target.value as unknown as number });
+    setPriceQuantity({
+      priceQuantity: quantity * ((event.target.value || 0) as number),
+    });
+  };
 
-  const errorsPriceUnitField = useMemo(
-    () =>
-      submittedCounter > 0 ? validateField(priceUnitField, priceUnit) : [],
-    [priceUnit, priceUnitField, submittedCounter]
-  );
-
-  const errorPriceUnitField = useMemo(
-    () => getErrorField(priceUnitField, errorsPriceUnitField),
-    [errorsPriceUnitField, priceUnitField]
-  );
-
-  const priceQuantityField = useMemo(
-    () => ({
-      accessor: 'priceQuantity',
-      label: 'Price Quantity',
-      type: 'text',
-      required: true,
-      readonly: true,
-    }),
-    []
-  );
-
-  const errorsPriceQuantity = useMemo(
-    () =>
-      submittedCounter > 0
-        ? validateField(priceQuantityField, priceQuantity)
-        : [],
-    [priceQuantity, priceQuantityField, submittedCounter]
-  );
-
-  const errorPriceQuantityField = useMemo(
-    () => getErrorField(priceQuantityField, errorsPriceQuantity),
-    [errorsPriceQuantity, priceQuantityField]
-  );
-
-  const onQuantityChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setQuantity({ quantity: event.target.value as unknown as number });
-      setPriceQuantity({
-        priceQuantity: ((event.target.value || 0) as number) * priceUnit,
-      });
-    },
-    [priceUnit, setPriceQuantity, setQuantity]
-  );
+  const handleNullAction = () => null;
 
   return (
     <>
       <TextInput
         key={`field-input-quantity`}
-        onChange={onQuantityChange}
         textAlign='right'
+        onChange={handleQuantityChange}
         {...quantityField}
         {...props}
         {...errorFieldQuantity}
@@ -120,13 +101,8 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
       />
       <TextInput
         key={`field-input-price-unit`}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setPriceUnit({ priceUnit: event.target.value as unknown as number });
-          setPriceQuantity({
-            priceQuantity: quantity * ((event.target.value || 0) as number),
-          });
-        }}
         textAlign='right'
+        onChange={handleUnitPriceChange}
         {...priceUnitField}
         {...props}
         {...errorPriceUnitField}
@@ -134,10 +110,8 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
       />
       <TextInput
         key={`field-input-price-quantity`}
-        onChange={() => {
-          /* placeholder function */
-        }}
         textAlign='right'
+        onChange={handleNullAction}
         {...priceQuantityField}
         {...props}
         {...errorPriceQuantityField}
@@ -145,6 +119,6 @@ const PriceQuantityField = memo(({ ...props }: PriceQuantityFieldProps) => {
       />
     </>
   );
-});
+};
 
 export default PriceQuantityField;

@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import type {
   ApiResponse,
   OptionsType,
@@ -15,7 +14,7 @@ import {
   useApiRequest,
 } from './useApi';
 
-type IdType = string | number;
+type IdType = number | string;
 
 export const useFetchProducts = () =>
   useApiDataList<ProductType[]>({
@@ -25,7 +24,7 @@ export const useFetchProducts = () =>
 export const useRefreshProducts = () => {
   const { mutate } = useApiRefreshData();
 
-  return useCallback(() => mutate(`${endpoints.products}`), [mutate]);
+  return () => mutate(`${endpoints.products}`);
 };
 
 export const useFetchProduct = (productId: IdType) =>
@@ -36,26 +35,22 @@ export const useFetchProduct = (productId: IdType) =>
 export const useRefreshProduct = (productId: IdType) => {
   const { mutate } = useApiRefreshData();
 
-  return useCallback(
-    () => mutate(`${endpoints.products}/${productId}`),
-    [productId, mutate]
-  );
+  return () => mutate(`${endpoints.products}/${productId}`);
 };
 
 export const usePostProduct = () => {
   const apiRequest = useApiRequest();
-  return useCallback(
-    async (product: ProductCreateType): Promise<ApiResponse<ProductType>> => {
-      const requestOptions: OptionsType = {
-        method: product.productId ? 'POST' : 'PATCH',
-        body: JSON.stringify(product),
-      };
-      const url = product.productId
-        ? endpoints.products
-        : `${endpoints.products}/${product.productId ?? ''}`;
+  return async (
+    product: ProductCreateType
+  ): Promise<ApiResponse<ProductType>> => {
+    const requestOptions: OptionsType = {
+      body: JSON.stringify(product),
+      method: product.productId ? 'POST' : 'PATCH',
+    };
+    const url = product.productId
+      ? endpoints.products
+      : `${endpoints.products}/${product.productId ?? ''}`;
 
-      return apiRequest<ProductType>(url, requestOptions);
-    },
-    [apiRequest]
-  );
+    return apiRequest<ProductType>(url, requestOptions);
+  };
 };

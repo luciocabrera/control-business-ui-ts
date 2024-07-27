@@ -1,5 +1,3 @@
-import { memo } from 'utilities';
-
 import styles from './MonthDisplay.module.css';
 
 type TMonthDisplayProps = {
@@ -26,8 +24,8 @@ const getMonthByNumber = (month: number) => {
   return monthNames[month];
 };
 
-const MonthDisplay = memo(({ value }: TMonthDisplayProps) => (
+const MonthDisplay = ({ value }: TMonthDisplayProps) => (
   <span className={styles.container}>{getMonthByNumber(value ?? 0)}</span>
-));
+);
 
 export default MonthDisplay;

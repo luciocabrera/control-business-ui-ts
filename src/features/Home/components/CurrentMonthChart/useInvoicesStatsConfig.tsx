@@ -1,5 +1,4 @@
-import { useMemo } from 'react';
-import { CellContext, ColumnDef } from '@tanstack/react-table';
+import { CellContext } from '@tanstack/react-table';
 import { InvoicesStats } from 'types';
 
 import { NumericDisplay } from 'components';
@@ -59,58 +58,56 @@ export const getTotalSumCell = ({
   />
 );
 
-export const useInvoicesStatsConfig = () =>
-  useMemo<ColumnDef<InvoicesStats>[]>(
-    () => [
-      {
-        accessorKey: 'period',
-        enableGrouping: false,
-        header: 'Period',
-      },
-      {
-        accessorKey: 'invoicesCount',
-        enableGrouping: false,
-        header: 'Invoices',
-        meta: { type: 'number' },
-      },
-      {
-        accessorKey: 'invoicesMin',
-        enableGrouping: false,
-        header: 'First Invoice',
-      },
-      {
-        accessorKey: 'invoicesMax',
-        enableGrouping: false,
-        header: 'Last Invoice',
-      },
-      {
-        accessorKey: 'quantitySum',
-        enableGrouping: false,
-        header: 'Nr of Hours',
-        meta: { type: 'number' },
-      },
+export const useInvoicesStatsConfig = () => {
+  return [
+    {
+      accessorKey: 'period',
+      enableGrouping: false,
+      header: 'Period',
+    },
+    {
+      accessorKey: 'invoicesCount',
+      enableGrouping: false,
+      header: 'Invoices',
+      meta: { type: 'number' },
+    },
+    {
+      accessorKey: 'invoicesMin',
+      enableGrouping: false,
+      header: 'First Invoice',
+    },
+    {
+      accessorKey: 'invoicesMax',
+      enableGrouping: false,
+      header: 'Last Invoice',
+    },
+    {
+      accessorKey: 'quantitySum',
+      enableGrouping: false,
+      header: 'Nr of Hours',
+      meta: { type: 'number' },
+    },
 
-      {
-        accessorKey: 'subtotalSum',
-        aggregationFn: 'sum',
-        enableGrouping: false,
-        header: 'Subtotal',
-        meta: { type: 'currency' },
-      },
-      {
-        accessorKey: 'taxesSum',
-        aggregationFn: 'sum',
-        enableGrouping: false,
-        header: 'Taxes',
-        meta: { type: 'currency' },
-      },
-      {
-        accessorKey: 'totalSum',
-        aggregationFn: 'sum',
-        enableGrouping: false,
-        header: 'Total',
-        meta: { type: 'currency' },
-      },
-    ],
-    []
-  );
+    {
+      accessorKey: 'subtotalSum',
+      aggregationFn: 'sum',
+      enableGrouping: false,
+      header: 'Subtotal',
+      meta: { type: 'currency' },
+    },
+    {
+      accessorKey: 'taxesSum',
+      aggregationFn: 'sum',
+      enableGrouping: false,
+      header: 'Taxes',
+      meta: { type: 'currency' },
+    },
+    {
+      accessorKey: 'totalSum',
+      aggregationFn: 'sum',
+      enableGrouping: false,
+      header: 'Total',
+      meta: { type: 'currency' },
+    },
+  ];
+};

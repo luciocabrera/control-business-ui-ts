@@ -1,9 +1,4 @@
-// components
-// react
-import { useCallback } from 'react';
-// contexts
 import { FormContextProvider, useAddNotification, useAddToast } from 'contexts';
-// hooks
 import {
   useFetchCustomer,
   useNavigate,
@@ -12,9 +7,7 @@ import {
   useRefreshCustomer,
   useRefreshCustomers,
 } from 'hooks';
-// icons
 import { CustomerIcon } from 'icons';
-// types
 import type {
   APiResponseErrorType,
   CustomerCreateType,
@@ -45,80 +38,65 @@ const Customer = () => {
 
   const { fields } = useCustomerConfig(customer);
 
-  const handleOnAccept = useCallback(
-    async (payload: CustomerFormType) => {
-      const {
-        firstName,
-        lastName,
-        documentId,
-        documentTypeId,
-        titleId,
-        initials,
-        phone,
-        email,
-        ...defaultAddress
-      } = payload;
-      const calculatedCustomerId =
-        customerId === 'new' ? undefined : customerId;
+  const handleOnAccept = async (payload: CustomerFormType) => {
+    const {
+      documentId,
+      documentTypeId,
+      email,
+      firstName,
+      initials,
+      lastName,
+      phone,
+      titleId,
+      ...defaultAddress
+    } = payload;
+    const calculatedCustomerId = customerId === 'new' ? undefined : customerId;
 
-      const body: CustomerCreateType = {
-        companyId: 1,
-        customerId: calculatedCustomerId,
-        initials,
-        firstName,
-        lastName,
-        documentId,
-        documentTypeId:
-          typeof documentTypeId === 'string'
-            ? parseInt(documentTypeId, 10)
-            : documentTypeId,
-        titleId: typeof titleId === 'string' ? parseInt(titleId, 10) : titleId,
-        addresses: [{ ...defaultAddress, main: true }],
-        phones: phone ? [{ phone, main: true }] : [],
-        emails: email ? [{ email, main: true }] : [],
-      };
-      if (isCreating) {
-        body.createdBy = 1;
-      } else {
-        body.updatedBy = 1;
-      }
+    const body: CustomerCreateType = {
+      addresses: [{ ...defaultAddress, main: true }],
+      companyId: 1,
+      customerId: calculatedCustomerId,
+      documentId,
+      documentTypeId:
+        typeof documentTypeId === 'string'
+          ? parseInt(documentTypeId, 10)
+          : documentTypeId,
+      emails: email ? [{ email, main: true }] : [],
+      firstName,
+      initials,
+      lastName,
+      phones: phone ? [{ main: true, phone }] : [],
+      titleId: typeof titleId === 'string' ? parseInt(titleId, 10) : titleId,
+    };
+    if (isCreating) {
+      body.createdBy = 1;
+    } else {
+      body.updatedBy = 1;
+    }
 
-      try {
-        const res = await postCustomer(body);
-        if ([200, 201].includes(res?.status || 0)) {
-          refreshCustomers();
-          refreshCustomer(calculatedCustomerId);
-          addToast?.(
-            'success',
-            'Customer successfully saved',
-            `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully saved.`
-          );
-          navigate(`/customers`);
-        }
-      } catch (err) {
-        const error = err as APiResponseErrorType;
-        addNotification?.(
-          <ErrorDisplay errors={error.cause.errors} />,
-          'Error Saving Customer',
-          'error'
+    try {
+      const res = await postCustomer(body);
+      if ([200, 201].includes(res?.status || 0)) {
+        await refreshCustomers();
+        await refreshCustomer(calculatedCustomerId);
+        addToast?.(
+          'success',
+          'Customer successfully saved',
+          `The Customer ${customer?.firstName} ${customer?.lastName} has been successfully saved.`
         );
+        navigate(`/customers`);
       }
-    },
-    [
-      addNotification,
-      addToast,
-      customer?.firstName,
-      customer?.lastName,
-      customerId,
-      isCreating,
-      navigate,
-      postCustomer,
-      refreshCustomer,
-      refreshCustomers,
-    ]
-  );
+    } catch (err) {
+      const error = err as APiResponseErrorType;
+      addNotification?.(
+        <ErrorDisplay errors={error.cause.errors} />,
+        'Error Saving Customer',
+        'error'
+      );
+    }
+  };
 
-  const handleOnFinish = useCallback(() => navigate('/customers'), [navigate]);
+  const handleOnFinish = () => navigate('/customers');
 
   if ((isLoadingCustomer || !fields) && !isCreating) return <PageSpinner />;
 
@@ -126,18 +104,18 @@ const Customer = () => {
 
   return (
     <FormContextProvider<CustomerFormType>
-      initialFields={fields}
       initialData={customer}
+      initialFields={fields}
     >
       <Form<CustomerFormType>
+        actions={<CustomerActions customer={customer} />}
+        height='600px'
         icon={<CustomerIcon />}
         title={title}
+        viewMode={false}
+        width='850px'
         onAccept={handleOnAccept}
         onFinish={handleOnFinish}
-        actions={<CustomerActions customer={customer} />}
-        viewMode={false}
-        height='600px'
-        width='850px'
       />
     </FormContextProvider>
   );

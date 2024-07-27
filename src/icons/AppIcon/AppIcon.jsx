@@ -1,10 +1,10 @@
 const HomeIcon = () => (
   <svg
-    stroke='currentColor'
     fill='currentColor'
+    height='2rem'
+    stroke='currentColor'
     strokeWidth='0'
     viewBox='0 0 1024 1024'
-    height='2rem'
     width='2rem'
     xmlns='http://www.w3.org/2000/svg'
   >

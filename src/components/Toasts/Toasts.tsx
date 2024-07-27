@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Portal } from 'components';
 
@@ -18,21 +18,18 @@ const Toasts = ({ position = 'bottomRight' }: TToastProps) => {
   );
   const deleteToast = useDeleteToast();
 
-  const handleDeleteToast = useCallback(
-    (id: number) => {
-      deleteToast?.(id);
-    },
-    [deleteToast]
-  );
+  const handleDeleteToast = (id: number) => {
+    deleteToast?.(id);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (toasts && toasts?.length > 0) {
-        handleDeleteToast(toasts[0].id);
+        deleteToast(toasts[0].id);
       }
     }, 6000);
     return () => clearInterval(interval);
-  }, [handleDeleteToast, toasts]);
+  }, [deleteToast, toasts]);
 
   return (
     <Portal>
@@ -54,8 +51,8 @@ const Toasts = ({ position = 'bottomRight' }: TToastProps) => {
             </button>
             <NotificationImage>
               <img
-                src={toast.icon}
                 alt=''
+                src={toast.icon}
               />
             </NotificationImage>
             <>

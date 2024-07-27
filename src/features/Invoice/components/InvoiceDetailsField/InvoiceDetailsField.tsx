@@ -51,30 +51,30 @@ const InvoiceDetailsField = ({ normalize }: InvoiceDetailsFieldProps) => {
     setTotal({ total: newTotal });
   };
 
-  const onRemoveDetail = (original: InvoicesDetails) => {
+  const handleDeleteDetail = (original: InvoicesDetails) => {
     const newDetails = invoicesDetails.filter((detail) => detail !== original);
 
     setInvoicesDetails({ details: newDetails });
     updateAmounts(newDetails);
   };
 
-  const onEditDetail = (original: InvoicesDetails) => {
-    onRemoveDetail(original);
+  const handleEditDetail = (original: InvoicesDetails) => {
+    handleDeleteDetail(original);
     setDetail(original);
     setShowDetailForm(true);
   };
 
-  const onCopyDetail = (original: InvoicesDetails) => {
+  const handleCopyDetail = (original: InvoicesDetails) => {
     setDetail(original);
     setShowDetailForm(true);
   };
 
-  const onAddDetail = () => {
+  const handleAddDetail = () => {
     setDetail(undefined);
     setShowDetailForm(true);
   };
 
-  const onAcceptDetail = (detail: InvoicesDetails) => {
+  const handleAcceptDetail = (detail: InvoicesDetails) => {
     const newDetails = [...new Set([...invoicesDetails, detail])];
     setInvoicesDetails({ details: newDetails });
     updateAmounts(newDetails);
@@ -87,17 +87,17 @@ const InvoiceDetailsField = ({ normalize }: InvoiceDetailsFieldProps) => {
       <IconButton
         icon={<EditIcon />}
         id='edit-invoice-detail'
-        onClick={() => onEditDetail(original)}
+        onClick={() => handleEditDetail(original)}
       />
       <IconButton
         icon={<CopyIcon />}
         id='copy-invoice-detail'
-        onClick={() => onCopyDetail(original)}
+        onClick={() => handleCopyDetail(original)}
       />
       <IconButton
         icon={<DeleteIcon />}
         id='delete-invoice-detail'
-        onClick={() => onRemoveDetail(original)}
+        onClick={() => handleDeleteDetail(original)}
       />
     </div>
   );
@@ -112,7 +112,7 @@ const InvoiceDetailsField = ({ normalize }: InvoiceDetailsFieldProps) => {
       sort: false,
     },
   ];
-  const onFinish = () => setShowDetailForm(false);
+  const handleFinish = () => setShowDetailForm(false);
 
   const labelWithAdd = (
     <div className={styles['label-wrapper']}>
@@ -124,7 +124,7 @@ const InvoiceDetailsField = ({ normalize }: InvoiceDetailsFieldProps) => {
         <IconButton
           icon={<NewIcon />}
           id='new-invoice-detail'
-          onClick={onAddDetail}
+          onClick={handleAddDetail}
         />
       </div>
     </div>
@@ -152,8 +152,8 @@ const InvoiceDetailsField = ({ normalize }: InvoiceDetailsFieldProps) => {
         <Portal>
           <InvoiceDetailForm
             detail={detail}
-            onAcceptDetail={onAcceptDetail}
-            onFinish={onFinish}
+            onAcceptDetail={handleAcceptDetail}
+            onFinish={handleFinish}
           />
         </Portal>
       )}

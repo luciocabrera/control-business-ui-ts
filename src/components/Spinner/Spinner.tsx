@@ -1,16 +1,12 @@
-// Styles
-// react
-import { memo } from 'react';
-
 import { SpinnerStyled } from './Spinner.styled';
 
 type SpinnerProps = {
-  size?: 'md' | 'lg' | 'sm';
+  size?: 'lg' | 'md' | 'sm';
 };
 
-const Spinner = memo(({ size = 'md' }: SpinnerProps) => (
+const Spinner = ({ size = 'md' }: SpinnerProps) => (
   <SpinnerStyled size={size} />
-));
+);
 
 Spinner.displayName = 'Spinner';
 

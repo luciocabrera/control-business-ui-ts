@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { isInfiniteResponse } from 'hooks';
 
 import ReadOnlyTable from '../ReadOnlyTable/ReadOnlyTable';
@@ -37,4 +36,4 @@ const ReadOnlyHookedTable = <TData extends Record<string, unknown>>({
   );
 };
 
-export default memo(ReadOnlyHookedTable) as typeof ReadOnlyHookedTable;
+export default ReadOnlyHookedTable;

@@ -43,24 +43,10 @@ export type CustomerType = AuditType & {
 };
 
 export type CustomerExcludes =
-  | 'peopleId'
-  | 'customerId'
-  | 'documentTypeName'
-  | 'titleName'
-  | 'updatedAt'
-  | 'createdAt'
-  | 'defaultAddress'
-  | 'defaultPhone'
-  | 'defaultEmail'
-  | 'createdByAlias'
-  | 'updatedByAlias'
-  | 'fullNameWithInitials';
+  'createdAt' | 'createdByAlias' | 'customerId' | 'defaultAddress' | 'defaultEmail' | 'defaultPhone' | 'documentTypeName' | 'fullNameWithInitials' | 'peopleId' | 'titleName' | 'updatedAt' | 'updatedByAlias';
 
 export type CustomerCreateType = Omit<CustomerType, CustomerExcludes> & {
-  customerId?: string | number;
+  customerId?: number | string;
 };
 
-export type CustomerFormType = Omit<CustomerType, CustomerExcludes> &
-  AddressType &
-  PhoneType &
-  EmailType;
+export type CustomerFormType = AddressType & EmailType & Omit<CustomerType, CustomerExcludes> & PhoneType;

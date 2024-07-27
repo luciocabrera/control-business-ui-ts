@@ -47,11 +47,16 @@ export type FormOptionType = {
   label: string;
 };
 
-export type FormRuleType = {
-  type: string;
-  value: number | string;
-  message: string;
-};
+export type FormRuleType =
+  {
+      type: 'required';
+      value?: never;
+      message?: string;
+    } | {
+      type: string;
+      value: number | string;
+      message?: string;
+    };
 
 export type FormTableSettingsFieldType = {
   accessor: string;
@@ -71,7 +76,7 @@ export type FormFieldBaseType = {
   default?: string | null;
   placeholder?: string;
   tooltip?: string;
-  normalize?: (value?: FieldValueType) => FieldValueType;
+  normalize?: (value?: FieldBaseValueType) => FieldBaseValueType;
   onSelect?: (value?: FieldValueType) => void;
   change?: <TDataType>(
     data: TDataType,

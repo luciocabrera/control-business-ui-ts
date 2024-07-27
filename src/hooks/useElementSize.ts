@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useDebounce } from 'hooks';
 
 const getSize = (htmlRef: React.RefObject<HTMLElement>) => ({
-  clientWidth: htmlRef?.current?.clientWidth,
   clientHeight: htmlRef?.current?.clientHeight,
+  clientWidth: htmlRef?.current?.clientWidth,
 });
 
 /**

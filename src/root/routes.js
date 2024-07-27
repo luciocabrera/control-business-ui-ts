@@ -1,11 +1,11 @@
 const routes = [
   {
-    text: 'Customers',
-    path: 'customers'
+    path: 'customers',
+    text: 'Customers'
   },
   {
-    text: 'Invoices',
-    path: 'invoices'
+    path: 'invoices',
+    text: 'Invoices'
   }
 ];
 

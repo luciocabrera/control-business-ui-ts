@@ -1,6 +1,3 @@
-import { useCallback } from 'react';
-import { memo } from 'utilities';
-
 import {
   type FormMetaType,
   useFieldsContext,
@@ -13,7 +10,7 @@ import { TextInput } from '../TextInput';
 
 import type { FieldBaseValueType, FormFieldProps } from './types';
 
-const FormField = memo(({ field, ...props }: FormFieldProps) => {
+const FormField = ({ field, ...props }: FormFieldProps) => {
   const {
     accessor,
     label,
@@ -41,21 +38,17 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
     submittedCounter > 0 ? validateField(field, fieldValue) : [];
   const errorField = getErrorField(field, errorFields);
 
-  const handleSelectOnChange = useCallback(
-    (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const selected = event.target.options[event.target.selectedIndex]?.value;
-      setStore({ [field.accessor]: selected });
-    },
-    [field.accessor, setStore]
-  );
-
-  const handleTextInputOnChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setStore({ [field.accessor]: event.target.value });
-    },
-    [field.accessor, setStore]
-  );
-
+  const handleSelectOnChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selected = event.target.options[event.target.selectedIndex]?.value;
+    setStore({ [field.accessor]: selected });
+  };
+  const handleTextInputOnChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setStore({ [field.accessor]: event.target.value });
+  };
   switch (field.type) {
     case 'select':
       return (
@@ -94,6 +87,6 @@ const FormField = memo(({ field, ...props }: FormFieldProps) => {
         />
       );
   }
-});
+};
 
 export default FormField;

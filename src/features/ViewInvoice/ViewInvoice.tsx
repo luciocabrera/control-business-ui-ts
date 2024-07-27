@@ -2,7 +2,7 @@
 // contexts
 import { FormContextProvider } from 'contexts';
 // hooks
-import { useCallback, useFetchInvoice, useNavigate, useParams } from 'hooks';
+import { useFetchInvoice, useNavigate, useParams } from 'hooks';
 // icons
 import { InvoiceIcon } from 'icons';
 // types
@@ -22,22 +22,22 @@ const ViewInvoice = () => {
     useFetchInvoice(invoiceId);
   const { fields } = useViewInvoiceConfig(invoice);
 
-  const onFinish = useCallback(() => navigate('/invoices'), [navigate]);
+  const onFinish = () => navigate('/invoices');
 
   if (isLoadingInvoice || !fields) return <PageSpinner />;
 
   return (
     <FormContextProvider<InvoiceFormType>
-      initialFields={fields}
       initialData={invoice}
+      initialFields={fields}
     >
       <Form<InvoiceFormType>
+        actions={<InvoiceActions invoice={invoice} />}
+        height='612px'
         icon={<InvoiceIcon />}
         title='View invoice'
-        actions={<InvoiceActions invoice={invoice} />}
-        onFinish={onFinish}
-        height='612px'
         width='1120px'
+        onFinish={onFinish}
       />
     </FormContextProvider>
   );

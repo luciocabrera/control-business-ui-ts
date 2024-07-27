@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type {
   ColumnOrderState,
   GroupingState,
@@ -177,25 +177,21 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   //   // If column selected as a row, group by that column
   // }, [grouping.length, isPivot, tableVisibleColumns, visibleRows]);
 
-  const onToggleExpandGroupedRows = useCallback(() => {
+  const onToggleExpandGroupedRows = () => {
     rows.forEach((row) => {
       if (row.getCanExpand()) {
         row.toggleExpanded(collapsed);
       }
     });
     setCollapsed(!collapsed);
-  }, [collapsed, rows]);
+  };
 
-  const onClickExportToExcel = useCallback(
-    () =>
-      exportFile({
-        columns: tableVisibleColumns,
-        data,
-        fileName: title ?? 'table',
-      }),
-
-    [data, tableVisibleColumns, title]
-  );
+  const onClickExportToExcel = () =>
+    exportFile({
+      columns: tableVisibleColumns,
+      data,
+      fileName: title ?? 'table',
+    });
 
   return (
     <>
@@ -249,4 +245,4 @@ const ReadOnlyTable = <TData extends Record<string, unknown>>({
   );
 };
 
-export default memo(ReadOnlyTable) as typeof ReadOnlyTable;
+export default ReadOnlyTable;

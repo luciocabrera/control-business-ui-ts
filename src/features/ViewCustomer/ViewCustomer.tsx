@@ -1,6 +1,3 @@
-// components
-// react
-import { useCallback } from 'react';
 // contexts
 import { FormContextProvider } from 'contexts';
 // hooks
@@ -23,22 +20,22 @@ const ViewCustomer = () => {
     useFetchCustomer(customerId);
   const { fields } = useViewCustomerConfig(customer);
 
-  const onFinish = useCallback(() => navigate('/customers'), [navigate]);
+  const onFinish = () => navigate('/customers');
 
   if (isLoadingCustomer || !fields) return <PageSpinner />;
 
   return (
     <FormContextProvider<CustomerFormType>
-      initialFields={fields}
       initialData={customer}
+      initialFields={fields}
     >
       <Form<CustomerFormType>
+        actions={<CustomerActions customer={customer} />}
+        height='600px'
         icon={<CustomerIcon />}
         title='View Customer'
-        actions={<CustomerActions customer={customer} />}
-        onFinish={onFinish}
-        height='600px'
         width='850px'
+        onFinish={onFinish}
       />
     </FormContextProvider>
   );

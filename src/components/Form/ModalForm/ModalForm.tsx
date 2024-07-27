@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import type { ReactNode } from 'types';
 
 import { Overlay } from 'components';
@@ -9,12 +8,12 @@ type ModalWrapperProps = {
   children: ReactNode;
 };
 
-const ModalForm = memo(({ children }: ModalWrapperProps) => (
+const ModalForm = ({ children }: ModalWrapperProps) => (
   <FormWrapper>
     <Overlay />
     {children}
   </FormWrapper>
-));
+);
 
 ModalForm.displayName = 'ModalForm';
 

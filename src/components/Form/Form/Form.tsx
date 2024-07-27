@@ -1,5 +1,3 @@
-import { memo } from 'react';
-
 import { Header } from 'components';
 
 import Actions from '../components/Actions/Actions';
@@ -9,45 +7,43 @@ import { FormStyled } from './styles';
 import type { FormProps } from './types';
 
 const Form = <TData extends Record<string, unknown>>({
-  viewMode,
   actions,
   children,
-  title,
+  height,
   icon,
   onAccept,
   onFinish,
+  title,
+  viewMode,
   width,
-  height,
-}: FormProps<TData>) => (
-  <FormStyled
-    noValidate
-    width={width}
-    height={height}
-  >
-    <Header
-      icon={icon}
-      title={title}
-      onClose={onFinish}
-    />
-    <main>
-      <>
-        <FormFields
-          groupId={''}
-          viewMode={viewMode}
-        />
-        {children}
-      </>
-    </main>
-    <footer>
-      {onAccept && (
-        <Actions<TData>
-          onAccept={onAccept}
-          onFinish={onFinish}
-        />
-      )}
-      {actions}
-    </footer>
-  </FormStyled>
-);
+}: FormProps<TData>) => {
+  const handleClose = onFinish;
+  return (
+    <FormStyled
+      noValidate
+      height={height}
+      width={width}
+    >
+      <Header
+        icon={icon}
+        title={title}
+        onClose={handleClose}
+      />
+      <main>
+        <>
+          <FormFields
+            groupId={''}
+            viewMode={viewMode}
+          />
+          {children}
+        </>
+      </main>
+      <footer>
+        {onAccept && <Actions<TData> {...{ onAccept, onFinish }} />}
+        {actions}
+      </footer>
+    </FormStyled>
+  );
+};
 
-export default memo(Form) as typeof Form;
+export default Form;

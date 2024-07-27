@@ -16,4 +16,4 @@ export type TToast = {
   icon: string;
 };
 
-export type TToastType = 'success' | 'danger' | 'info' | 'warning' | 'error';
+export type TToastType = 'danger' | 'error' | 'info' | 'success' | 'warning';

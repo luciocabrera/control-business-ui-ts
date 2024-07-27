@@ -20,8 +20,8 @@ type TFormField = {
 };
 
 export const FormFields = ({
-  formFields,
   fieldWidth,
+  formFields,
   groupId = '',
   viewMode = true,
 }: TFormField) => {
@@ -50,10 +50,10 @@ export const FormFields = ({
                   <legend>{groupField?.label}</legend>
                   <FormFields
                     key={`field-${groupKey}`}
-                    groupId={groupKey}
-                    viewMode={viewMode}
                     fieldWidth={100}
                     formFields={groupField?.fields}
+                    groupId={groupKey}
+                    viewMode={viewMode}
                   />
                 </FieldGroupStyled>
               )
@@ -71,10 +71,10 @@ export const FormFields = ({
                 >
                   <FormFields
                     key={`field-${rowKey}`}
-                    groupId={rowKey}
-                    viewMode={viewMode}
                     fieldWidth={calculatedWidth}
                     formFields={rowField?.fields}
+                    groupId={rowKey}
+                    viewMode={viewMode}
                   />
                 </FieldRowStyled>
               )
@@ -90,9 +90,9 @@ export const FormFields = ({
             if (field?.render)
               return (
                 <CustomFieldWrapper
+                  key={fieldKey}
                   id='custom-field-wrapper'
                   width={fieldWidth}
-                  key={fieldKey}
                 >
                   {field?.render()}
                 </CustomFieldWrapper>
@@ -101,8 +101,8 @@ export const FormFields = ({
               <FormField
                 key={fieldKey}
                 field={simpleField}
-                width={fieldWidth}
                 viewMode={viewMode}
+                width={fieldWidth}
               />
             );
           }

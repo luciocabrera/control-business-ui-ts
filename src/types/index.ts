@@ -30,4 +30,4 @@ export type { ColumnDef, CellContext } from '@tanstack/react-table';
 
 export type { ColumnMetaState } from 'contexts';
 
-export type Maybe<T> = T | undefined | null;
+export type Maybe<T> = T | null | undefined;
