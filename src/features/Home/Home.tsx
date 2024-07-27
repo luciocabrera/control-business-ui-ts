@@ -21,6 +21,7 @@ import CurrentMonthChart from './components/CurrentMonthChart/CurrentMonthChart'
 const Home = () => {
   return (
     <CurrentMonthChart />
+    // <>Working on it</>
     // <Tabs tabs={tabs} />
     // <div className={styles['home-wrapper']}>
     //   <CurrentMonthChart />

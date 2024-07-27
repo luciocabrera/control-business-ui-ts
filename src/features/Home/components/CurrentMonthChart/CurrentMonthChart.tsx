@@ -37,38 +37,38 @@ const CurrentMonthChart = () => {
 
   return (
     <div className={styles['section-wrapper']}>
-      <div
+      {/* <div
         className={styles['section-column']}
         data-parent='section-wrapper'
-      >
-        {' '}
-        <div>
-          <input
-            id='monthly'
-            name='analysisType'
-            type='radio'
-            value={type === 'monthly' ? 'monthly' : ''}
-            onChange={onInputChange}
-          />
-          <label htmlFor='monthly'>Monthly</label>
-          <input
-            id='quarter'
-            name='analysisType'
-            type='radio'
-            value={type === 'quarter' || type.length === 0 ? 'quarter' : ''}
-            onChange={onInputChange}
-          />
-          <label htmlFor='quarter'>Quarter</label>
-          <input
-            id='yearly'
-            name='analysisType'
-            type='radio'
-            value={type === 'yearly' ? 'yearly' : ''}
-            onChange={onInputChange}
-          />{' '}
-          <label htmlFor='yearly'>Yearly</label>
-        </div>
-        {/* <div
+      > */}
+
+      <div>
+        <input
+          id='monthly'
+          name='analysisType'
+          type='radio'
+          value={type === 'monthly' ? 'monthly' : ''}
+          onChange={onInputChange}
+        />
+        <label htmlFor='monthly'>Monthly</label>
+        <input
+          id='quarter'
+          name='analysisType'
+          type='radio'
+          value={type === 'quarter' || type.length === 0 ? 'quarter' : ''}
+          onChange={onInputChange}
+        />
+        <label htmlFor='quarter'>Quarter</label>
+        <input
+          id='yearly'
+          name='analysisType'
+          type='radio'
+          value={type === 'yearly' ? 'yearly' : ''}
+          onChange={onInputChange}
+        />{' '}
+        <label htmlFor='yearly'>Yearly</label>
+      </div>
+      {/* <div
           className={styles['card-chart-wrapper']}
           data-parent='section-wrapper'
         >
@@ -105,7 +105,7 @@ const CurrentMonthChart = () => {
               />
             </ComposedChart>
           </CardChart>
-        </div> */}
+        </div> 
         <div
           className={styles['card-chart-wrapper']}
           data-parent='section-wrapper'
@@ -132,34 +132,34 @@ const CurrentMonthChart = () => {
                 name='Nr of Invoices'
                 stroke='#8884d8'
                 type='basis'
-              />
-              {/* <Line
+              /> 
+               <Line
                 dataKey='quantitySum'
                 name='Nr of Hours'
                 stroke='#82ca9d'
                 type='basis'
-              /> */}
-            </LineChart>
+              />
+             </LineChart>
           </CardChart>
         </div>
-      </div>
+      </div> */}
 
-      <div
-        className={styles['section-column']}
+      {/* <div
+        // className={styles['section-column']}
         data-dashboard-role='table'
         data-parent='section-wrapper'
-      >
-        <div data-parent='section-wrapper'>
-          <ReadOnlyTable<InvoicesStats>
-            columns={columns}
-            data={data}
-            defaultColumnOrder={[]}
-            hidden={[]}
-            isLoading={isLoading}
-            visible={[]} // showHeader={true}
-          />
-        </div>
+      > */}
+      <div data-parent='section-wrapper'>
+        <ReadOnlyTable<InvoicesStats>
+          columns={columns}
+          data={data}
+          defaultColumnOrder={[]}
+          hidden={[]}
+          isLoading={isLoading}
+          visible={[]} // showHeader={true}
+        />
       </div>
+      {/* </div> */}
     </div>
   );
 };

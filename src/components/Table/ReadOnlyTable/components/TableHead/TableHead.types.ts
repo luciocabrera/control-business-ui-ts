@@ -1,8 +1,8 @@
-import type { RefObject } from 'react';
+import type { ComponentPropsWithRef, RefObject } from 'react';
 import type { HeaderGroup } from '@tanstack/react-table';
 
-export type TTableHeadProps<TData> = {
+export type TTableHeadProps<TData> = ComponentPropsWithRef<'thead'> & {
   headerGroups: HeaderGroup<TData>[];
-  parentRef: RefObject<HTMLDivElement>;
   showTopRadius?: boolean;
+  parentRef: RefObject<HTMLDivElement | null>;
 };
