@@ -4,7 +4,7 @@ import { BiSortAlt2 } from 'react-icons/bi';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { HiViewColumns } from 'react-icons/hi2';
 import { MdOutlineSwipeVertical } from 'react-icons/md';
-import { SiMicrosoftexcel } from 'react-icons/si';
+
 import { Link, useLocation } from 'react-router-dom';
 import { useOutsideClick } from 'hooks/useOutsideClick';
 
@@ -90,7 +90,7 @@ const TableSettingsMenuButton = ({
               type='button'
               onClick={handleClickExportToExcel}
             >
-              <SiMicrosoftexcel />
+              <MdOutlineSwipeVertical />
               <span>Export</span>
             </button>
           </li>
